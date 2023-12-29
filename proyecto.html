@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/hamburgers/1.2.1/hamburgers.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="proyecto.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Ejercicios del DOM</h1>
+    </header>
+    <button class="panel-btn hamburger hamburger--vortex " type="button">
+    <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+    </span>
+    </button>
+    <aside class="panel">
+      <nav class="menu">
+         <a href="#seccion1">Reloj Digital y Alarma Sonora</a>
+         <a href="#seccion2">Eventos de Teclado</a>
+         <a href="#seccion3">Contador de Dias Faltantes</a>
+         <a href="#seccion4">Filtrador</a>
+         <a href="#seccion5">Sorteo</a>
+         <a href="#seccion6">Responsive Slider</a>
+         <a href="#seccion7">Video Inteligente</a>
+         <a href="#seccion8">Seccion 8</a>
+      </nav>
+    </aside>
+    <main>
+        <section id="seccion1" class="section">
+            <h1>Reloj Digital y Alarma Sonora</h1>
+            <div id="reloj"></div>
+            <button class="button" id="activar-reloj">Activar Reloj</button>
+            <button class="button" id="desactivar-reloj">Detener Reloj</button>
+            <button class="button" id="activar-alarma">Iniciar Alarma</button>
+            <button class="button" id="desactivar-alarma">Detener Alarma</button>
+        </section>
+        <section id="seccion2" class="section">
+            <h1>Eventos de Teclado</h1>
+            <article id = "juego" class="stage" tabindex="0">
+                <div class="ball"></div>
+            </article>
+        </section>
+        <section id="seccion3" class="section">
+            <h1>Contador de Dias Faltantes</h1>
+            <form id="fechaForm">
+                <label for="dia">Día:</label>
+                <input type="number" id="dia" name="dia" min="1" max="31">
+              
+                <label for="mes">Mes:</label>
+                <input type="number" id="mes" name="mes" min="1" max="12">
+                <wbr>
+                <label for="anio">Año:</label>
+                <input type="number" id="anio" name="anio">
+                <br>
+                <button class="button" id="crearFecha">Crear Fecha</button>
+              </form>
+              <div class="diferencia"></div>
+        </section>
+        <section id="seccion4" class="section">
+            <h1>Filtrador</h1>
+            <input placeholder = "Buscar por nombre" type="search" name="buscador" id="buscador" class="input">
+            <div class="cardContainer">
+                <figure class="card">
+                    <img src="https://source.unsplash.com/200x300/?cats">
+                    <figcaption>Gato</figcaption>
+                </figure>
+                <figure class="card">
+                    <img src="https://source.unsplash.com/200x300/?dogs">
+                    <figcaption>Perro</figcaption>
+                </figure>
+                <figure class="card">
+                    <img src="https://source.unsplash.com/200x300/?Rabbits">
+                    <figcaption>Conejo</figcaption>
+                </figure>
+                <figure class="card">
+                    <img src="https://source.unsplash.com/200x300/?Elephant">
+                    <figcaption>Elefante</figcaption>
+                </figure>
+                <figure class="card">
+                    <img src="https://source.unsplash.com/200x300/?Monkey">
+                    <figcaption>Mono</figcaption>
+                </figure>
+                <figure class="card">
+                    <img src="https://source.unsplash.com/200x300/?Cow">
+                    <figcaption>Vaca</figcaption>
+                </figure>
+                <figure class="card">
+                    <img src="https://source.unsplash.com/200x300/?bird">
+                    <figcaption>Pajaro</figcaption>
+                </figure>
+                <figure class="card">
+                    <img src="https://source.unsplash.com/200x300/?Bear">
+                    <figcaption>Oso</figcaption>
+                </figure>
+            </div>
+        </section>
+        <section id="seccion5" class="section">
+            <h1>Sorteo</h1>
+            <!-- Tu input de tipo texto -->
+            <input type="text" class="input" id = "inputSorteo" placeholder="Agregar Elementos">
+            <br>
+            <button id = "agregarSorteo" class="button">Agregar</button>
+            <br>
+            <button id = "finalizarSorteo" class="button">Finalizar</button>
+            <br>
+            <p id="parrafo"></p>
+        </section>
+        <section id="seccion6" class="section">
+            <h1>Responsive Slider</h1>
+            <div class="Secion6Container">
+                <div class="responsive-slider">
+                    <div class="flechas" id="flechaIzq">&lt;&lt;</div>
+                    <div class="flechas" id="flechaDer">&gt;&gt;</div>
+                    <img src="https://source.unsplash.com/200x300/?cats">
+                </div>
+                </div>
+            </div>
+        </section>
+        <section id="seccion7" class="section">
+            <h1>Video Inteligente</h1>
+            <div class="contenedorVideo">
+                <video src="assets/video.mp4" muted controls loop ></video>
+            </div>
+        </section>
+        <section id="seccion8" class="section">
+            <h1>Seccion 8</h1>
+        </section>
+    </main> 
+    <!-- Templates -->
+    <template id="template-card">
+        <figure class="card">
+            <img>
+            <figcaption></figcaption>
+        </figure>
+    </template>
+    <!-- 🌞 🌜 -->
+    <button class="scroll-top-btn hidden">&#11014;</button>
+    <button class="button-dark-mode"></button>
+    <script src="proyecto.js" type="module"></script>
+</body>
+</html>
