@@ -42,10 +42,16 @@ header h1{
     padding-bottom: 0;
 }
 
+.mensajeInicio{
+    width: 60%;
+}
+
 .mensajeInicio h2{
     font-family: old standard tt,Sans-serif;
     font-style: italic;
-    font-size: 5rem;
+    font-size: 5vw;
+    padding: 50px;
+    color: white;
 }
 
 .anton{
@@ -55,6 +61,7 @@ header h1{
 }
 
 .outfit {
+    font-size: 20px;
     font-family: "Outfit", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
