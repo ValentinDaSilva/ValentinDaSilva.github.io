@@ -6,10 +6,12 @@
     <title>Clases Particulares</title>
     <link rel="icon" type="image/x-icon" href="assets/img/icono.ico">
     <link rel="stylesheet" href="clasesParticulares.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
+    <img id="iconoWhatsApp" src="assets/img/iconoWhatsApp.jpeg" onclick="abrirWhatsApp()">
     <div id="portada">    
-        <img src="assets/img/portada.jpeg" id="portada">
+        <img src="assets/img/2.jpg" id="portada">
         <header>
             <h1 class=" anton titulo">Clases Particulares</h1>
             <div class="menu">
@@ -20,10 +22,15 @@
             </div>
         </header>
         <div class="mensajeInicio">
-            <h2>
+            <h2 class="animate__animated animate__backInDown">
                 Desbloquea tu potencial, una clase a la vez. Juntos, conquistamos los desafíos académicos.
             </h2>
         </div>
     </div>
 </body>
+    <script>
+        function abrirWhatsApp() {
+        window.open("https://api.whatsapp.com/send?phone=3425986867", "_blank");
+        }
+    </script>
 </html>
