@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Outfit&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 
 body{
     margin:0;
@@ -88,40 +89,20 @@ header h1{
     animation-fill-mode: both;
 }
 
-.main {
-    display: flex;
-    flex-wrap: wrap;
+.encabezado {
+    display: inline-flex;
+    height: 215px;
+    align-items: center;
+    width: 100%;
 }
 
-.main .materias {
-    margin:20px;
-    border: 2px solid black;
-    height: 100px;
-    width: calc(50% - 45px);
-    border-radius: 10px;
-    display: flex;
-    background-color: white;
-    cursor:pointer;
-}
-
-.main .materias img{
-    width: 35%;
-    height: 100px;
-    opacity: 1;
-    border-right: 2px solid black;
-    border-radius: 10px;
-}
-
-.main .materias .nombre{
-    width: 75%;
-    display: flex;
-    text-align: center;
-    align-self: center;
-    font-family: old standard tt,Sans-serif;
+.encabezado h2{
+    display: inline;
+    font-family: "EB Garamond", serif;
     font-style: italic;
-    font-size: 130%;
+    margin:0;
+    padding-left: 5%;
 }
-
 
 .anton{
     font-family: "Anton", sans-serif;
