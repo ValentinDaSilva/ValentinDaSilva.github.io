@@ -20,6 +20,8 @@ body{
     overflow: hidden;
     width: 100%;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -183,6 +185,7 @@ header h1{
     width: 50px;
     height: 50px;
     margin-right: 5%;
+    opacity: 1;
 }
 
 .main .clases2 .parte1{
@@ -196,3 +199,52 @@ header h1{
     font-size: 50px;
 }
 
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 10px 0;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para la sección de contacto */
+footer {
+    padding-bottom: 10px;
+}
+
+.contact-section h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.contact-section p {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.contact-section a {
+    font-size: 16px;
+}
+
+footer h3{
+    padding-top: 10px;
+}
+
+@media only screen and (max-width: 916px) {
+    html {
+        display: none;
+    }
+}
