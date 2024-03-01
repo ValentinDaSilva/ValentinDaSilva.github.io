@@ -3,6 +3,7 @@
 body{
     margin:0;
     box-sizing: border-box;
+    background-color: rgba(170, 145, 145, 0.288);
 }
 
 #portada{
@@ -84,6 +85,18 @@ header h1{
     animation-duration: 0.5s;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
+}
+
+.main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main .materias {
+    margin:20px;
+    border: 2px solid black;
+    height: 150px;
+    width: calc(50% - 45px);
 }
 
 .anton{
