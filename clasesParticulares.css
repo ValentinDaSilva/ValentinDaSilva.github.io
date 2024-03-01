@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Outfit&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 
+:root{
+    --font1: normal normal bold 72px/1.4em georgia,palatino,'book antiqua','palatino linotype',serif;
+}
+
+p{
+    display: inline;
+    color:white;
+}
+
 body{
     margin:0;
     box-sizing: border-box;
@@ -102,6 +111,7 @@ header h1{
     font-style: italic;
     margin:0;
     padding-left: 5%;
+    font-size: 200%;
 }
 
 .anton{
@@ -129,3 +139,43 @@ header h1{
         transform: scale(1);
     }
 }
+
+.clases{
+    width: calc ( 100% - 40px );
+    height: 260px;
+    border: 2px solid black;
+    margin: 20px;
+    background-color: #202020;
+    display: flex;
+}
+
+.main .clases .parte1 {
+    font: var(--font1);
+}
+
+.main .clases .parte1, .main .clases .parte2{
+    width: calc(50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main .clases .parte2{
+    font-size: 120%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.main .clases .parte2 p{
+    padding: 5%;
+    border-left: 3px solid #FA6254; 
+}
+
+.main .clases .parte1 svg{
+    width: 50px;
+    height: 50px;
+    margin-right:5%;
+    cursor:pointer;
+}
+
