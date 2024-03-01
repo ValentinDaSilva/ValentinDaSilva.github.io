@@ -95,9 +95,38 @@ header h1{
 .main .materias {
     margin:20px;
     border: 2px solid black;
-    height: 150px;
+    height: 100px;
     width: calc(50% - 45px);
+    border-radius: 10px;
+    display: flex;
+    background-color: white;
 }
+
+.main .materias img{
+    width: 35%;
+    height: 100px;
+    opacity: 1;
+    border-right: 2px solid black;
+    border-radius: 10px;
+}
+
+.main .materias .nombre{
+    width: 75%;
+    display: flex;
+    text-align: center;
+    align-self: center;
+    font-family: old standard tt,Sans-serif;
+    font-style: italic;
+    font-size: 130%;
+}
+
+/* .main .materias p{
+    width: 70%;
+    text-align: center;
+    height: 100px;
+    font-family: old standard tt,Sans-serif;
+    display: inline;
+} */
 
 .anton{
     font-family: "Anton", sans-serif;
