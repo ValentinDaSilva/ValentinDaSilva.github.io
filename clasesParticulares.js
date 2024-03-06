@@ -36,8 +36,24 @@ const verificarVisibilidad = (entradas) => {
         })
       }
     });
+    entradas.forEach(entrada => {
+      // Verificar si el elemento 1 es intersectado
+      if (!entrada.isIntersecting && entrada.target.id === "seccion1") {
+        $hijosClases1.forEach((elem) => {
+            elem.classList.remove("animate__animated");
+            elem.classList.remove("animate__fadeIn");
+        })
+        }
+      // Verificar si el elemento 2 es intersectado
+      if (!entrada.isIntersecting && entrada.target.id === "seccion2") {
+        $hijosClases2.forEach((elem) => {
+            elem.classList.remove("animate__animated");
+            elem.classList.remove("animate__fadeIn");
+        })
+      }
+    });
   };
 
-const observer = new IntersectionObserver(verificarVisibilidad,{threshold: 0.7});
+const observer = new IntersectionObserver(verificarVisibilidad,{threshold: 0.5});
 observer.observe($clases1);
 observer.observe($clases2);
