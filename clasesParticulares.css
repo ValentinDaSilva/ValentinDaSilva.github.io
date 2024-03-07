@@ -223,6 +223,7 @@ footer a:hover {
 /* Estilos para la sección de contacto */
 footer {
     padding-bottom: 10px;
+    margin-top: 100px;
 }
 
 .contact-section h3 {
@@ -260,13 +261,15 @@ footer h3{
 .Galeria img {
     margin-left:5%;
     width: 40%;    
-    opacity: 1;
     height: 600px;
+    opacity: 1;
     border: 2px solid rgba(0, 0, 0, 0.363);
     border-radius: 5%;
     position: relative;
     z-index: 1;
+    transition: opacity 1s ease-in-out;
 }
+
 
 .oficinas .opciones{
     display: flex;
@@ -292,8 +295,15 @@ footer h3{
     transform: translateX(20px);
 }
 
+@keyframes fadeIn {
+    from {
+      opacity: 0.7;
+    }
+    to {
+      opacity: 1;
+    }
+}
 
-
-
-
-
+.animacionOpacidad{
+    animation: fadeIn 1.5s ease-in-out;
+}
