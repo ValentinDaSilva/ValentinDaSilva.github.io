@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded", function() {
+  // Aquí puedes escribir el código que deseas ejecutar cuando el DOM haya sido completamente cargado
+  let $mensajeInicio = document.querySelector(".mensajeInicio h2");
+  $mensajeInicio.style.display = "block";
+});
+
 function abrirWhatsApp() {
     window.open("https://api.whatsapp.com/send?phone=3425986867", "_blank");
 }
