@@ -3,6 +3,11 @@
 
 :root{
     --font1: normal normal bold 72px/1.4em georgia,palatino,'book antiqua','palatino linotype',serif;
+    --font_8: normal normal normal 16px / 1.4em georgia, palatino, 'book antiqua', 'palatino linotype', serif;
+}
+
+.font_8 {
+    font: var(--font_8);
 }
 
 p{
@@ -260,17 +265,44 @@ footer h3{
 }
 
 .Galeria img {
-    margin-left:5%;
-    width: 40%;    
-    height: 600px;
+    width: 100%;    
+    height: 100%;
     opacity: 1;
     border: 2px solid rgba(0, 0, 0, 0.363);
-    border-radius: 5%;
+    border-radius: 50%;
     position: relative;
     z-index: 1;
     transition: opacity 1s ease-in-out;
+    
 }
 
+.GaleriaTexto{
+    width: 100%;
+    height: 600px;
+    display: flex;
+}
+
+.Galeria {
+    margin-left: 5%;
+    width: 45%;
+    height: 600px;
+}
+
+.Texto{
+    margin-right: 5%;
+    width: 45%;
+    height: 600px;
+    padding-left: 5%;
+}
+
+.Texto p{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 5%;
+    color:black;
+}
 
 .oficinas .opciones{
     display: flex;
@@ -285,7 +317,7 @@ footer h3{
 .oficinas input[type="radio"]{
     position: absolute;
     z-index: 2;
-    left:calc(25% - 10px);
+    left:calc(25%);
     width: 12px; /* Ancho deseado */
     height: 12px; /* Alto deseado */
     bottom: 10px;
