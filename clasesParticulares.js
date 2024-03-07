@@ -60,7 +60,6 @@ observer.observe($clases2);
 
 let $opcion1 = document.getElementById("opcion1");
 let $opcion2 = document.getElementById("opcion2");
-let $opciones = document.querySelectorAll(".opciones input");
 let $imagen1 = document.getElementById("imagen1");
 let $imagen2 = document.getElementById("imagen2");
 
