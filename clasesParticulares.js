@@ -57,3 +57,22 @@ const verificarVisibilidad = (entradas) => {
 const observer = new IntersectionObserver(verificarVisibilidad,{threshold: 0.5});
 observer.observe($clases1);
 observer.observe($clases2);
+
+let $opcion1 = document.getElementById("opcion1");
+let $opcion2 = document.getElementById("opcion2");
+let $opciones = document.querySelectorAll(".opciones input");
+let $imagen1 = document.getElementById("imagen1");
+let $imagen2 = document.getElementById("imagen2");
+
+$opciones.forEach((elem)=>{
+  elem.addEventListener("click",()=>{
+    if(elem.id == "opcion1"){
+      $imagen1.style.display = "block";
+      $imagen2.style.display = "none";
+    }
+    else if(elem.id == "opcion2"){
+      $imagen2.style.display = "block";
+      $imagen1.style.display = "none";
+    }
+  })
+})

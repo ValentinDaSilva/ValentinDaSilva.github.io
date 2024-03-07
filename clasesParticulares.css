@@ -252,3 +252,48 @@ footer h3{
         display: none;
     }
 }
+
+.Galeria img:nth-child(1) {
+    display: none;    
+}
+
+.Galeria img {
+    margin-left:5%;
+    width: 40%;    
+    opacity: 1;
+    height: 600px;
+    border: 2px solid rgba(0, 0, 0, 0.363);
+    border-radius: 5%;
+    position: relative;
+    z-index: 1;
+}
+
+.oficinas .opciones{
+    display: flex;
+}
+
+.oficinas {
+    height: calc(600px + 220px);
+    position: relative;
+    width: 100%;
+}
+
+.oficinas input[type="radio"]{
+    position: absolute;
+    z-index: 2;
+    left:calc(25% - 10px);
+    width: 12px; /* Ancho deseado */
+    height: 12px; /* Alto deseado */
+    bottom: 10px;
+    
+}
+
+.oficinas input[type="radio"]:nth-child(2){
+    transform: translateX(20px);
+}
+
+
+
+
+
+
