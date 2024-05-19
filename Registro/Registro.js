@@ -19,8 +19,8 @@ document.getElementById('formularioRegistro').addEventListener('submit', functio
                     auxiliar.push(value);
                 }
                 else if(indice == 6){
+                    let auxiliar = [];
                     auxiliar[0] = auxiliar[0]+element[1];
-                    
                     datosAEnviar.push(auxiliar[0]);
                 }
             }
