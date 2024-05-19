@@ -23,7 +23,14 @@ $botonEnviar.addEventListener("click",(e)=>{
     //alert("HOLA");
     const form = document.getElementById('formularioRegistro');
     let formData = new FormData(form);
-    alert("Termine");
+    let formContent = '';
+
+        // Recorre todos los pares clave/valor de FormData
+        formData.forEach((value, key) => {
+            formContent += `${key}: ${value}\n`;
+        });
+
+        alert(formContent);
 })
 
 document.getElementById('formularioRegistro').addEventListener('submit', function (event) {
