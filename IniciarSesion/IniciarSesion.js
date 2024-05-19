@@ -20,12 +20,15 @@ var url = "https://script.google.com/macros/s/AKfycbzdklIYGsaVytfEq2mOegd4oiLuxe
 let $botonEnviar = document.getElementById("botonEnviar");
 $botonEnviar.addEventListener("click",(e)=>{
     //e.preventDefault();
-    alert("HOLA");
+    //alert("HOLA");
+    const form = document.getElementById('formularioRegistro');
+    let formData = new FormData(form);
+    alert("Termine");
 })
 
 document.getElementById('formularioRegistro').addEventListener('submit', function (event) {
   event.preventDefault();
-  let formData = new FormData(this);
+  let formData = new FormData();
   let valores = formData.entries();
   let datosAEnviar = [];
   valores.forEach((element, indice) => {
