@@ -18,23 +18,16 @@ var Alumno;
 var url = "https://script.google.com/macros/s/AKfycbzdklIYGsaVytfEq2mOegd4oiLuxe14Xt_6tXRy9kCHn1iPIGLRm2zC3F7TjhhlJY0/exec";
 
 let $botonEnviar = document.getElementById("botonEnviar");
-$botonEnviar.addEventListener("click",(e)=>{
-    //e.preventDefault();
-    //alert("HOLA");
+$botonEnviar.addEventListener("click",()=>{
     const form = document.getElementById('formularioRegistro');
     let formData = new FormData(form);
-    let formContent = '';
-
-        // Recorre todos los pares clave/valor de FormData
-        formData.forEach((value, key) => {
-            formContent += `${key}: ${value}\n`;
-        });
-    let datosAEnviar = ['valentin','contraseña'];
+    let datosAEnviar = [];
+    formData.forEach((value, key) => {
+        datosAEnviar.push(value);
+    });
     datosAEnviar[0] = datosAEnviar[0].toLowerCase();
-    console.log(datosAEnviar);
     let urlFinal = url + "?correo=" + datosAEnviar[0] + "&contrasenia=" + datosAEnviar[1];
-    console.log(urlFinal);
-        alert(formContent);
+    alert(datosAEnviar[0]+" "+datosAEnviar[1]);
 })
 
 document.getElementById('formularioRegistro').addEventListener('submit', function (event) {
