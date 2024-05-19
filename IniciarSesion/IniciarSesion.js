@@ -17,26 +17,13 @@ class Persona {
 var Alumno;
 var url = "https://script.google.com/macros/s/AKfycbzdklIYGsaVytfEq2mOegd4oiLuxe14Xt_6tXRy9kCHn1iPIGLRm2zC3F7TjhhlJY0/exec";
 
-let $botonEnviar = document.getElementById("botonEnviar");
-$botonEnviar.addEventListener("click",()=>{
-    const form = document.getElementById('formularioRegistro');
-    let formData = new FormData(form);
-    let datosAEnviar = [];
-    formData.forEach((value, key) => {
-        datosAEnviar.push(value);
-    });
-    datosAEnviar[0] = datosAEnviar[0].toLowerCase();
-    let urlFinal = url + "?correo=" + datosAEnviar[0] + "&contrasenia=" + datosAEnviar[1];
-    enviar(urlFinal);
-})
 
 document.getElementById('formularioRegistro').addEventListener('submit', function (event) {
   event.preventDefault();
   let formData = new FormData();
-  let valores = formData.entries();
   let datosAEnviar = [];
-  valores.forEach((element, indice) => {
-    datosAEnviar.push(element[1]);
+  formData.forEach((value, key) => {
+    datosAEnviar.push(value);
   });
   datosAEnviar[0] = datosAEnviar[0].toLowerCase();
   console.log(datosAEnviar);
