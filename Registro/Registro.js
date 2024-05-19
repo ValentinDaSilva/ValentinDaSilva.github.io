@@ -15,11 +15,11 @@ document.getElementById('formularioRegistro').addEventListener('submit', functio
             if(indice != 4 && indice != 5 && indice != 6){
                 datosAEnviar.push(value);
             }else{
+                let auxiliar = [];
                 if(indice == 5) {
                     auxiliar.push(value);
                 }
                 else if(indice == 6){
-                    let auxiliar = [];
                     auxiliar[0] = auxiliar[0]+element[1];
                     datosAEnviar.push(auxiliar[0]);
                 }
