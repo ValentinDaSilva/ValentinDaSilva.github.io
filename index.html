@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horarios</title>
+    <link rel="stylesheet" href="horarios.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="contenedorLouder">
+    <div id="loader" class="loader"></div>
+  </div>
+  <div class="tablaContenedor">
+    <table id="tablaHorarios">
+        <thead>
+          <tr>
+            <th id="titulo" colspan="7">Horarios Mayo Semana 1<br>(Puedes hacer click para seleccionar o deseleccionar un horario)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Horarios</td>
+            <td>lunes 29/04</td>
+            <td>martes 30/04</td>
+            <td>mi�rcoles 01/05</td>
+            <td>jueves 02/05</td>
+            <td>viernes 03/05</td>
+            <td>s�bado 04/05</td>
+          </tr>
+          <tr class="invisible">
+            <td>7:30</td>
+            <td data-fila="3" data-columna="B"></td>
+            <td data-fila="3" data-columna="C"></td>
+            <td data-fila="3" data-columna="D"></td>
+            <td data-fila="3" data-columna="E"></td>
+            <td data-fila="3" data-columna="F"></td>
+            <td data-fila="3" data-columna="G"></td>
+          </tr>
+          <tr>
+            <td>8:00</td>
+            <td data-fila="4" data-columna="B"></td>
+            <td data-fila="4" data-columna="C"></td>
+            <td data-fila="4" data-columna="D"></td>
+            <td data-fila="4" data-columna="E"></td>
+            <td data-fila="4" data-columna="F" class="inmovible" ></td>
+            <td data-fila="4" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>8:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>9:00</td>
+            <td data-fila="6" data-columna="B"></td>
+            <td data-fila="6" data-columna="C"></td>
+            <td data-fila="6" data-columna="D"></td>
+            <td data-fila="6" data-columna="E"></td>
+            <td data-fila="6" data-columna="F" class="inmovible" class="inmovible" class="inmovible" ></td>
+            <td data-fila="6" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>9:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>10:00</td>
+            <td data-fila="8" data-columna="B"></td>
+            <td data-fila="8" data-columna="C"></td>
+            <td data-fila="8" data-columna="D"></td>
+            <td data-fila="8" data-columna="E"></td>
+            <td data-fila="8" data-columna="F" class="inmovible" class="inmovible" ></td>
+            <td data-fila="8" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>10:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>11:00</td>
+            <td data-fila="10" data-columna="B"></td>
+            <td data-fila="10" data-columna="C"></td>
+            <td data-fila="10" data-columna="D"></td>
+            <td data-fila="10" data-columna="E"></td>
+            <td data-fila="10" data-columna="F"></td>
+            <td data-fila="10" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>11:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td >12:00</td>
+            <td data-fila="12" data-columna="B"></td>
+            <td data-fila="12" data-columna="C"></td>
+            <td data-fila="12" data-columna="D"></td>
+            <td data-fila="12" data-columna="E"></td>
+            <td data-fila="12" data-columna="F"></td>
+            <td data-fila="12" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>12:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>13:00</td>
+            <td data-fila="14" data-columna="B"></td>
+            <td data-fila="14" data-columna="C"></td>
+            <td data-fila="14" data-columna="D"></td>
+            <td data-fila="14" data-columna="E"></td>
+            <td data-fila="14" data-columna="F"></td>
+            <td data-fila="14" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>13:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>14:00</td>
+            <td data-fila="16" data-columna="B"></td>
+            <td data-fila="16" data-columna="C"></td>
+            <td data-fila="16" data-columna="D"></td>
+            <td data-fila="16" data-columna="E"></td>
+            <td data-fila="16" data-columna="F"></td>
+            <td data-fila="16" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>14:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>15:00</td>
+            <td data-fila="18" data-columna="B"></td>
+            <td data-fila="18" data-columna="C"></td>
+            <td data-fila="18" data-columna="D"></td>
+            <td data-fila="18" data-columna="E"></td>
+            <td data-fila="18" data-columna="F"></td>
+            <td data-fila="18" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>15:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>16:00</td>
+            <td data-fila="20" data-columna="B"></td>
+            <td data-fila="20" data-columna="C"></td>
+            <td data-fila="20" data-columna="D"></td>
+            <td data-fila="20" data-columna="E"></td>
+            <td data-fila="20" data-columna="F"></td>
+            <td data-fila="20" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>16:30</td>
+            <td ></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>17:00</td>
+            <td class="inmovible" data-fila="22" data-columna="B"></td>
+            <td data-fila="22" data-columna="C"></td>
+            <td data-fila="22" data-columna="D"></td>
+            <td data-fila="22" data-columna="E"></td>
+            <td data-fila="22" data-columna="F"></td>
+            <td data-fila="22" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>17:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>18:00</td>
+            <td class="inmovible" data-fila="24" data-columna="B"></td>
+            <td data-fila="24" data-columna="C"></td>
+            <td data-fila="24" data-columna="D"></td>
+            <td data-fila="24" data-columna="E"></td>
+            <td data-fila="24" data-columna="F"></td>
+            <td data-fila="24" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>18:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>19:00</td>
+            <td class="inmovible" data-fila="26" data-columna="B"></td>
+            <td data-fila="26" data-columna="C"></td>
+            <td data-fila="26" data-columna="D"></td>
+            <td data-fila="26" data-columna="E"></td>
+            <td data-fila="26" data-columna="F"></td>
+            <td data-fila="26" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>19:30</td>
+            <td class="inmovible"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>20:00</td>
+            <td class="inmovible" data-fila="28" data-columna="B"></td>
+            <td data-fila="28" data-columna="C"></td>
+            <td data-fila="28" data-columna="D"></td>
+            <td data-fila="28" data-columna="E"></td>
+            <td data-fila="28" data-columna="F"></td>
+            <td data-fila="28" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>20:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>21:00</td>
+            <td data-fila="30" data-columna="B"></td>
+            <td data-fila="30" data-columna="C"></td>
+            <td data-fila="30" data-columna="D"></td>
+            <td data-fila="30" data-columna="E"></td>
+            <td data-fila="30" data-columna="F"></td>
+            <td data-fila="30" data-columna="G"></td>
+          </tr>
+          <tr class="invisible">
+            <td>21:30</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="botones">
+      <div class="caja" id="ReservarTurnos">
+        Reservar Turnos
+      </div>
+      <div class="siguiente" id="siguiente">
+          <p>Siguiente semana</p>
+          <svg>
+            <image href="assets/fotos/FlechaHaciaDerecha.svg" width="100%" height="100%" />
+          </svg>
+      </div>
+      <div class="caja" id="IniciarSesion">
+        Iniciar Sesion / Registrarse
+      </div>
+    </div>
+</body>
+<script src="horarios.js"></script>
+</html>
