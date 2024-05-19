@@ -9,10 +9,9 @@ document.getElementById('formularioRegistro').addEventListener('submit', functio
     event.preventDefault();
     if(validarFormulario()){
         let formData = new FormData(this);
-        let valores = formData.entries();
         let datosAEnviar = [];
         let auxiliar = [];
-        valores.forEach((element, indice) => {
+        formData.forEach((element, indice) => {
             if(indice != 4 && indice != 5 && indice != 6){
                 datosAEnviar.push(element[1]);
             }else{
@@ -28,7 +27,6 @@ document.getElementById('formularioRegistro').addEventListener('submit', functio
         });
         datosAEnviar[2] = datosAEnviar[2].toLowerCase();
         datosAEnviar.push(contraseñas);
-        //conso(datosAEnviar);
         let envioFetch = new EnvioPOST("agregarAlumno",datosAEnviar);
         enviar(envioFetch);
     }
