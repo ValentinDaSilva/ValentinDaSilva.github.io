@@ -27,7 +27,7 @@ $botonEnviar.addEventListener("click",()=>{
     });
     datosAEnviar[0] = datosAEnviar[0].toLowerCase();
     let urlFinal = url + "?correo=" + datosAEnviar[0] + "&contrasenia=" + datosAEnviar[1];
-    alert(datosAEnviar[0]+" "+datosAEnviar[1]);
+    enviar(urlFinal);
 })
 
 document.getElementById('formularioRegistro').addEventListener('submit', function (event) {
