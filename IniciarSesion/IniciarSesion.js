@@ -29,7 +29,7 @@ $botonEnviar.addEventListener("click",(e)=>{
         formData.forEach((value, key) => {
             formContent += `${key}: ${value}\n`;
         });
-    let datosAEnviar = [];
+    let datosAEnviar = ['valentin','contraseña'];
     datosAEnviar[0] = datosAEnviar[0].toLowerCase();
     console.log(datosAEnviar);
     let urlFinal = url + "?correo=" + datosAEnviar[0] + "&contrasenia=" + datosAEnviar[1];
