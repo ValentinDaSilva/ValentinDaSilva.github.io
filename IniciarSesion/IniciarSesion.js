@@ -17,7 +17,7 @@ class Persona {
 var Alumno;
 var url = "https://script.google.com/macros/s/AKfycbzdklIYGsaVytfEq2mOegd4oiLuxe14Xt_6tXRy9kCHn1iPIGLRm2zC3F7TjhhlJY0/exec";
 
-let $botonEnviar = document.getElementoByID("botonEnviar");
+let $botonEnviar = document.getElementById("botonEnviar");
 $botonEnviar.addEventListener("click",()=>{
     e.preventDefault();
     alert("HOLA");
