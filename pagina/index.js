@@ -141,9 +141,9 @@ function convertirDeOtroADecimal(numero, baseOrigen){
 }
 
 function conversion(){
-    let valorOrigen = document.getElementById("numeroInput").value,
-        baseOrigen = document.getElementById("baseOrigen").value,
-        baseDestino = document.getElementById("baseDestino").value,
+    let valorOrigen = modificarEntrada(document.getElementById("numeroInput").value),
+        baseOrigen = modificarEntrada(document.getElementById("baseOrigen").value),
+        baseDestino = modificarEntrada(document.getElementById("baseDestino").value),
         resultado;
     if(baseOrigen == 10) resultado = convertirDecimalAOtro(valorOrigen,baseDestino);
     else if(baseDestino == 10) resultado = convertirDeOtroADecimal(valorOrigen,baseOrigen);
@@ -236,8 +236,8 @@ function sumarDosNumerosBinarios(n1,n2){
 }
 
 function sumaBinaria(){
-    let numero1 = document.getElementById("numeroInput1").value,
-        numero2 = document.getElementById("numeroInput2").value,
+    let numero1 = modificarEntrada(document.getElementById("numeroInput1").value),
+        numero2 = modificarEntrada(document.getElementById("numeroInput2").value),
         resultado = sumarDosNumerosBinarios(numero1,numero2);
     if(resultado.acarreo != "0"){
         document.getElementById("resultadoOutput2").innerHTML = "Resultado: "+resultado.acarreo+resultado.resultado;
@@ -287,8 +287,8 @@ function restarDosNumerosBinarios(n1,n2){
 }
 
 function restaBinaria(){
-    let numero1 = document.getElementById("numeroResta1").value,
-        numero2 = document.getElementById("numeroResta2").value,
+    let numero1 = modificarEntrada(document.getElementById("numeroResta1").value),
+        numero2 = modificarEntrada(document.getElementById("numeroResta2").value),
         resultado = restarDosNumerosBinarios(numero1,numero2);
         document.getElementById("resultadoOutput3").innerHTML = "Resultado: "+resultado.acarreo+" "+resultado.resultado;
         if(resultado.acarreo == "0")document.getElementById("resultadoOutput4").innerHTML = "Valor Absoluto: "+CA2(resultado.resultado);
@@ -336,8 +336,8 @@ function multiplicarDosNumeros(n1,n2){
 }
 
 function multiplicacionBinaria(){
-    let numero1 = document.getElementById("numeroMultiplicar1").value,
-        numero2 = document.getElementById("numeroMultiplicar2").value,
+    let numero1 = modificarEntrada(document.getElementById("numeroMultiplicar1").value),
+        numero2 = modificarEntrada(document.getElementById("numeroMultiplicar2").value),
         resultado = multiplicarDosNumeros(numero1,numero2);
         document.getElementById("resultadoOutput5").innerHTML = "Resultado: "+resultado;
 }
@@ -403,6 +403,10 @@ function esPotenciaDeDos(n) {
 function calcularCodigoHamming(numero){
     //Calcular cantidad de bits totales y bits de paridad
     if(numero == undefined) numero = document.getElementById("numeroHamming").value;
+    if(numero.includes(" ") || numero.includes(".") || numero.includes(",")){
+        alert("Los datos de entrada no son validos");
+        return "";
+    }
     let bitsTotales = numero.length, bitsParidad = 0;
     while(Math.pow(2,bitsParidad) < numero.length + bitsParidad + 1){
         bitsParidad++; bitsTotales++;
@@ -435,9 +439,7 @@ function calcularCodigoHamming(numero){
                 bit = XOR(bit,parseInt(numFinal[i]));
             }
         }
-        //console.log((bit == false)? "0": "1");
         numFinal[contador-1] = (bit == false)? "0": "1";
-        //console.log(numFinal.reverse());
         contador*=2;
         vueltas++;
     }while(vueltas < bitsParidad);
@@ -475,9 +477,12 @@ function sumarDosNumerosBCDN(n1,n2){
     if(tieneComa(n1)  || tieneComa(n2)){
         let parteDecimalN1 = parteDecimal(n1),
         parteDecimalN2 = parteDecimal(n2);
-        
-        while(parteDecimalN1.length < parteDecimalN2.length) n1 = agregar0Atras(n1);
-        while(parteDecimalN2.length < parteDecimalN1.length) n2 = agregar0Atras(n2);
+        while(parteDecimalN1.length < parteDecimalN2.length){
+            parteDecimalN1 = agregar0Atras(parteDecimalN1);
+        } 
+        while(parteDecimalN2.length < parteDecimalN1.length) {
+            parteDecimalN2 = agregar0Atras(parteDecimalN2);
+        }
         let ultimoIndice = parteDecimalN1.length - 1;
         while(ultimoIndice > 0){
             let contador = 0, digitoN1 = "", digitoN2 = "";
@@ -514,31 +519,54 @@ function sumarDosNumerosBCDN(n1,n2){
 }
 
 function sumaBCDN(){
-    let numero1 = document.getElementById("sumaBCDN1").value,
-        numero2 = document.getElementById("sumaBCDN2").value,
+    let numero1 = modificarEntradaBCDN(document.getElementById("sumaBCDN1").value),
+        numero2 = modificarEntradaBCDN(document.getElementById("sumaBCDN2").value);
         resultado = sumarDosNumerosBCDN(numero1,numero2);
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
         vector.forEach((elem)=>{
             resultadoFinal += (elem+" ");
         })
-        console.log(resultadoFinal)
-        if(resultado.acarreoFinal == "0001") {
-            resultadoFinal = resultado.acarreoFinal + resultadoFinal;
-            document.getElementById("resultadoOutput8").innerHTML = "Resultado: "+resultado.acarreoFinal+" "+resultado.resultado;
-        }
-        if(resultado.acarreoFinal == "0000") document.getElementById("resultadoOutput8").innerHTML = resultadoFinal;
+        if(resultado.acarreoFinal == "0001") resultadoFinal = resultado.acarreoFinal + " " + resultadoFinal;
+        document.getElementById("resultadoOutput8").innerHTML = "Resultado = " + resultadoFinal;
 }
 
-function dividirDeA4(inputString) {
-    // Array para almacenar los chunks de 4 caracteres
-    let chunks = [];
-    
-    // Bucle para recorrer la cadena de 4 en 4
-    for (let i = 0; i < inputString.length; i += 4) {
-        // Extraer un chunk de 4 caracteres y añadirlo al array
-        chunks.push(inputString.slice(i, i + 4));
+function dividirDeA4(cadena) {
+    let array = [], longitudCadena = cadena.length, i = 0, posicionVector = 0;
+    while(i < longitudCadena){
+        array.push(cadena.slice(i,i+4));
+        i+=4;
+        if(cadena[i]=="."){
+            array[posicionVector]+=".";
+            i++;
+        }
+        posicionVector++;
     }
-    
-    return chunks;
+    return array;
+}
+
+function modificarEntradaBCDN(entrada){
+    while(entrada.includes(" ")){
+        entrada = entrada.substr(0,entrada.indexOf(" ")) + entrada.substr(entrada.indexOf(" ") + 1);
+    }
+    if(entrada.includes(".") && ((entrada.length -1) %4 != 0)){
+        alert("La cantidad de digitos debe ser multiplo de 4");
+    }else if(!entrada.includes(".") && (entrada.length)%4 != 0){
+        alert("La cantidad de digitos debe ser multiplo de 4");
+    }
+    let vector = dividirDeA4(entrada), i = 0;
+    vector.forEach((elem)=>{
+        if(parseInt(elem.slice(0,4)) > 1001) alert("No puede haber numeros mayores que 9");
+    })
+    return entrada;
+}
+
+function modificarEntrada(entrada){
+    if(entrada.includes(",")){
+        entrada = entrada.substr(0,entrada.indexOf(",")) + "." +entrada.substr(entrada.indexOf(",") + 1);
+    }
+    while(entrada.includes(" ")){
+        entrada = entrada.substr(0,entrada.indexOf(" ")) + entrada.substr(entrada.indexOf(" ") + 1);
+    }
+    return entrada;
 }
