@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+    <div class="container1" id="menuContainer"style="display: flex;">
+        <h1 class="animate__animated animate__fadeInDown">Elige una opcion</h1>
+        <div class="options">
+            <div class="option animate__animated animate__rotateIn" id="Conversion">
+                <img src="assets/fotos/conversion.jpg" alt="Conversión de Sistemas Numéricos">
+                <p>Conversión de Sistemas Numéricos</p>
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="Suma">
+                <img src="assets/fotos/suma.jpg" alt="Suma Binaria">
+                <p>Suma Binaria</p>
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="Resta">
+                <img src="assets/fotos/resta.jpg" alt="Resta Binaria">
+                <p>Resta Binaria</p>
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="Multiplicacion">
+                <img src="assets/fotos/multiplicacion.jpg" alt="Multiplicación Binaria">
+                <p>Multiplicación Binaria</p>
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="Division">
+                <img src="assets/fotos/division.jpg" alt="División Binaria">
+                <p>División Binaria</p>
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="Hamming">
+                <img src="assets/fotos/hamming.jpg" alt="Calcular codigo hamming">
+                <p>Codigo Hamming</p>
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="SumaBCDN">
+                <img src="assets/fotos/sumaBCDN.png" alt="Calcular suma BCDN">
+                <p>Suma BCDN</p>
+            </div>
+        </div>
+    </div>
+    <div class="contenedorGrande">
+        <div class="container conversor" style="display: none;" id="conversor">
+            <h1>Conversor de Números</h1>
+            <div class="converter">
+                <h2>Ingresa un número y selecciona las bases de origen y destino</h2>
+                <input type="text" id="numeroInput" placeholder="Ingresa un número">
+                <div class="base-container">
+                    <label for="baseOrigen">Base de Origen:</label>
+                    <select id="baseOrigen">
+                        <option value="2">Binario</option>
+                        <option value="10" selected>Decimal</option>
+                        <option value="8">Octal</option>
+                        <option value="16">Hexadecimal</option>
+                    </select>
+                </div>
+                <div class="base-container">
+                    <label for="baseDestino">Base de Destino:</label>
+                    <select id="baseDestino">
+                        <option value="2">Binario</option>
+                        <option value="10">Decimal</option>
+                        <option value="8">Octal</option>
+                        <option value="16">Hexadecimal</option>
+                    </select>
+                </div>
+                <button onclick="conversion()">Convertir</button>
+                <p id="resultadoOutput"></p>
+            </div>
+        </div>
+        <div class="container suma" style="display: none;" id="suma">
+            <h1>Sumar dos numeros en binario</h1>
+            
+            <div class="converter">
+                <h2>Ingresa el primer numero</h2>
+                <input type="text" id="numeroInput1" placeholder="Ingresa un número">
+                <h2>Ingresa el segundo numero</h2>
+                <input type="text" id="numeroInput2" placeholder="Ingresa un número">
+                <button onclick="sumaBinaria()">Sumar</button>
+                <p id="resultadoOutput2"></p>
+            </div>
+        </div>
+        <div class="container resta" style="display: none;" id="resta">
+            <h1>Restar dos numeros en binario</h1>
+            <div class="converter">
+                <h2>Ingresa el primer numero</h2>
+                <input type="text" id="numeroResta1" placeholder="Ingresa un número">
+                <h2>Ingresa el segundo numero</h2>
+                <input type="text" id="numeroResta2" placeholder="Ingresa un número">
+                <button onclick="restaBinaria()">Restar</button>
+                <p id="resultadoOutput3"></p>
+                <p id="resultadoOutput4"></p>
+            </div>
+        </div>
+        <div class="container multiplicacion" style="display: none;" id="multiplicacion">
+            <h1>Multiplicar dos numeros en binario</h1>
+            <div class="converter">
+                <h2>Ingresa el primer numero</h2>
+                <div style="display:flex" class="entradaMultiplicacion">
+                    <!-- <div>+</div> -->
+                    <input type="text" id="numeroMultiplicar1" placeholder="Ingresa un número">
+                </div>
+                <h2>Ingresa el segundo numero</h2>
+                <input type="text" id="numeroMultiplicar2" placeholder="Ingresa un número">
+                <button onclick="multiplicacionBinaria()">Multiplicar</button>
+                <p id="resultadoOutput5"></p>
+            </div>
+        </div>
+        <div class="container division" style="display: none;" id="division">
+            <h1>Dividir dos numeros en binario</h1>
+            <div class="converter">
+                <h2>Ingresa el primer numero</h2>
+                <div style="display:flex" class="entradaMultiplicacion">
+                    <!-- <div>+</div> -->
+                    <input type="text" id="numeroDividir1" placeholder="Ingresa un número">
+                </div>
+                <h2>Ingresa el segundo numero</h2>
+                <input type="text" id="numeroDividir2" placeholder="Ingresa un número">
+                <button onclick="dividirDosNumeros()">Dividir</button>
+                <p id="resultadoOutput6"></p>
+            </div>
+        </div>
+        <div class="container hamming" style="display: none;" id="hamming">
+            <h1>Codigo Hamming</h1>
+            <div class="converter">
+                <h2>Ingresa el numero</h2>
+                <input type="text" id="numeroHamming" placeholder="Ingresa un número">
+                <button onclick="calcularCodigoHamming()">Calcular</button>
+                <p id="resultadoOutput7"></p>
+            </div>
+        </div>
+        <div class="container sumaBCDN" style="display: none;" id="sumaBCDN">
+            <h1>Sumar dos numeros BCDN</h1>
+            <div class="converter">
+                <h2>Ingresa el primer numero</h2>
+                <input type="text" id="sumaBCDN1" placeholder="Ingresa un número">
+                <h2>Ingresa el segundo numero</h2>
+                <input type="text" id="sumaBCDN2" placeholder="Ingresa un número">
+                <button onclick="sumaBCDN()">Dividir</button>
+                <p id="resultadoOutput8"></p>
+            </div>
+        </div>
+    </div>
+    <img style="display:none"id="Atras" onclick="goBackToMenu()" src="assets/fotos/flehcaHaciaAtras.png" alt="Flecha hacia atras" class="flechaHaciaAtras">
+    <script src="index.js"></script>
+</body>
+</html>
