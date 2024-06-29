@@ -572,8 +572,9 @@ function modificarEntrada(entrada){
 }
 
 function restaBCDN(){
-    let numero1 = modificarEntradaBCDN(document.getElementById("sumaBCDN1").value),
-        numero2 = CA2(modificarEntradaBCDN(document.getElementById("sumaBCDN2").value));
+    let numero1 = modificarEntradaBCDN(document.getElementById("restaBCDN1").value),
+        numero2 = modificarEntradaBCDN(document.getElementById("restaBCDN2").value);
+
         resultado = sumarDosNumerosBCDN(numero1,numero2);
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
@@ -581,9 +582,19 @@ function restaBCDN(){
             resultadoFinal += (elem+" ");
         })
         if(resultado.acarreoFinal == "0001"){
-            document.getElementById("resultadoOutput9").innerHTML = "Resultado = (negativo) " + resultadoFinal;
-        }else{
             document.getElementById("resultadoOutput9").innerHTML = "Resultado = (positivo) " + resultadoFinal;
+        }else{
+            document.getElementById("resultadoOutput9").innerHTML = "Resultado = (negativo) " + resultadoFinal;
         }
         
+}
+
+function igualarNumeros(n1,n2){
+    if(n1.includes(".") && !n2.includes(".")) n2+=".";
+    if(!n1.includes(".") && n2.includes(".")) n1+=".";
+    while(parteEntera(n1).length < parteEntera(n2).length) n1 = agregar0Adelante(n1);
+    while(parteEntera(n2).length < parteEntera(n1).length) n2 = agregar0Adelante(n2);
+    while(parteDecimal(n1).length < parteDecimal(n2).length) n1 = agregar0Atras(n1);
+    while(parteDecimal(n2).length < parteDecimal(n1).length) n2 = agregar0Atras(n2);
+    n2 = CA2(n2);
 }
