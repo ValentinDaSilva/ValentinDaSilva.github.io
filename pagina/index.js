@@ -476,7 +476,7 @@ function sumarDosNumerosBCDN(n1,n2){
     if(!tieneComa(n1)  && tieneComa(n2)) n1 += ".";
     if(tieneComa(n1)  || tieneComa(n2)){
         let parteDecimalN1 = parteDecimal(n1),
-        parteDecimalN2 = parteDecimal(n2);
+            parteDecimalN2 = parteDecimal(n2);
         while(parteDecimalN1.length < parteDecimalN2.length){
             parteDecimalN1 = agregar0Atras(parteDecimalN1);
         } 
@@ -569,4 +569,21 @@ function modificarEntrada(entrada){
         entrada = entrada.substr(0,entrada.indexOf(" ")) + entrada.substr(entrada.indexOf(" ") + 1);
     }
     return entrada;
+}
+
+function restaBCDN(){
+    let numero1 = modificarEntradaBCDN(document.getElementById("sumaBCDN1").value),
+        numero2 = CA2(modificarEntradaBCDN(document.getElementById("sumaBCDN2").value));
+        resultado = sumarDosNumerosBCDN(numero1,numero2);
+        let resultadoFinal = "", vector;
+        vector = dividirDeA4(resultado.resultado);
+        vector.forEach((elem)=>{
+            resultadoFinal += (elem+" ");
+        })
+        if(resultado.acarreoFinal == "0001"){
+            document.getElementById("resultadoOutput9").innerHTML = "Resultado = (negativo) " + resultadoFinal;
+        }else{
+            document.getElementById("resultadoOutput9").innerHTML = "Resultado = (positivo) " + resultadoFinal;
+        }
+        
 }
