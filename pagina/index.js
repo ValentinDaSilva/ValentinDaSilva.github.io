@@ -5,6 +5,7 @@ document.getElementById('Multiplicacion').addEventListener('click', () => showCo
 document.getElementById('Division').addEventListener('click', () => showContainer('division'));
 document.getElementById('Hamming').addEventListener('click', () => showContainer('hamming'));
 document.getElementById('SumaBCDN').addEventListener('click', () => showContainer('sumaBCDN'));
+document.getElementById('RestaBCDN').addEventListener('click', () => showContainer('restaBCDN'));
 
 function showContainer(containerId) {
     document.getElementById('menuContainer').style.display = 'none';
@@ -574,7 +575,9 @@ function modificarEntrada(entrada){
 function restaBCDN(){
     let numero1 = modificarEntradaBCDN(document.getElementById("restaBCDN1").value),
         numero2 = modificarEntradaBCDN(document.getElementById("restaBCDN2").value);
-
+        numero1 = igualarNumeros(numero1,numero2).n1;
+        console.log(igualarNumeros(numero1,numero2).n1,igualarNumeros(numero1,numero2).n2,CA2(igualarNumeros(numero1,numero2).n1))
+        numero2 = CA2(igualarNumeros(numero1,numero2).n2);
         resultado = sumarDosNumerosBCDN(numero1,numero2);
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
@@ -586,7 +589,6 @@ function restaBCDN(){
         }else{
             document.getElementById("resultadoOutput9").innerHTML = "Resultado = (negativo) " + resultadoFinal;
         }
-        
 }
 
 function igualarNumeros(n1,n2){
@@ -596,5 +598,5 @@ function igualarNumeros(n1,n2){
     while(parteEntera(n2).length < parteEntera(n1).length) n2 = agregar0Adelante(n2);
     while(parteDecimal(n1).length < parteDecimal(n2).length) n1 = agregar0Atras(n1);
     while(parteDecimal(n2).length < parteDecimal(n1).length) n2 = agregar0Atras(n2);
-    n2 = CA2(n2);
+    return {n1,n2}
 }
