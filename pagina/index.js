@@ -689,7 +689,7 @@ function CA10(numero){
 }
 
 function sumarDosDigitosBCDEx3(n1,n2,acarreo){
-    if(n1.length != 4 || n2.length != 4) alert("El numero de digitos debe ser si o si 4");
+    if(n1.length != 4 || n2.length != 4) alert("El numero de digitos debe ser si o si 4" + " " + n1.length + " " + n2.length);
     else{
         let aux = sumarDosNumerosBinarios(n2,acarreo),
             suma = aux.resultado;
@@ -714,6 +714,7 @@ function sumarDosNumerosBCDEx3(n1,n2){
     if(tieneComa(n1) && !tieneComa(n2)) n2 += ".";
     if(!tieneComa(n1)  && tieneComa(n2)) n1 += ".";
     if(tieneComa(n1)  || tieneComa(n2)){
+        console.log("tiene coma");
         let parteDecimalN1 = parteDecimal(n1),
             parteDecimalN2 = parteDecimal(n2);
         while(parteDecimalN1.length < parteDecimalN2.length){
@@ -794,16 +795,21 @@ function restaBCDEx3(){
         numero2 = igualarNumerosBCDEx3(numero1,numero2).n2;
         numero2 = invertirDigitos(numero2);
         resultado = sumarDosNumerosBCDEx3(numero1,numero2);
-        console.log("N1: ",numero1,"N2: ",numero2,"resultado:", resultado);
+        console.log("N1: ",numero1,"N2: ",numero2);
+        console.log("resultado:", resultado);
         if(resultado.acarreoFinal == "0001"){
             if(!resultado.resultado.includes(".")){
-                resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal).resultado;
+                resultado.resultado = sumarDosNumerosBCDEx3(resultado.resultado,resultado.acarreoFinal).resultado;
             }else{
+                console.log(resultado.resultado,resultado.acarreoFinal)
                 let posicionComa = resultado.resultado.indexOf(".");
                 resultado.resultado = borrarComa(resultado.resultado);
-                let suma = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal);
+                console.log(resultado.resultado,resultado.acarreoFinal)
+                let suma = sumarDosNumerosBinarios(resultado.resultado,resultado.acarreoFinal);
+                console.log("Suma: ",suma.resultado)
                 resultado.resultado = suma.resultado;
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
+                console.log(resultado);
             }
         }
         let resultadoFinal = "", vector;
@@ -813,7 +819,7 @@ function restaBCDEx3(){
         })
         if(resultado.acarreoFinal == "0001"){
             document.getElementById("resultadoOutput12").innerHTML = "Resultado = " + resultadoFinal;
-            document.getElementById("resultadoOutput13").innerHTML = "(Positivo)";
+            document.getElementById("resultadoOutput13").innerHTML = "(BCD-Ex3 Positivo)";
         }else{
             document.getElementById("resultadoOutput12").innerHTML = "Resultado = " + resultadoFinal;
             document.getElementById("resultadoOutput13").innerHTML = "(BCD-Ex3 Negativo)";
