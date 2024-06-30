@@ -451,10 +451,11 @@ function calcularCodigoHamming(numero){
 function sumarDosDigitosBCDN(n1,n2,acarreo){
     if(n1.length != 4 || n2.length != 4) alert("El numero de digitos debe ser si o si 4");
     else{
-        let aux = sumarDosNumerosBinarios(n1,acarreo),
+        let aux = sumarDosNumerosBinarios(n2,acarreo),
             suma = aux.resultado;
-            aux = sumarDosNumerosBinarios(suma,n2);
+            aux = sumarDosNumerosBinarios(suma,n1);
             suma = aux.resultado;
+            console.log(suma);
             let acarreoFinal1 = aux.acarreo,
             acarreoFinal2 = "0";
         if(parseInt(suma) > 1001 || acarreoFinal1 == "1"){
@@ -501,9 +502,9 @@ function sumarDosNumerosBCDN(n1,n2){
     }
     let parteEnteraN1 = parteEntera(n1),
         parteEnteraN2 = parteEntera(n2);
-    while(parteEnteraN1.length < parteEnteraN2.length) parteEnteraN1 = agregar0Adelante(parteEnteraN1);
-    while(parteEnteraN2.length < parteEnteraN1.length) parteEnteraN2 = agregar0Adelante(parteEnteraN2);
-    let ultimoIndice = parteEnteraN1.length - 1;
+        while(parteEnteraN1.length < parteEnteraN2.length) parteEnteraN1 = agregar0Adelante(parteEnteraN1);
+        while(parteEnteraN2.length < parteEnteraN1.length) parteEnteraN2 = agregar0Adelante(parteEnteraN2);
+        let ultimoIndice = parteEnteraN1.length - 1;
     while(ultimoIndice > 0){
         let contador = 0, digitoN1 = "", digitoN2 = "";
         while(contador < 4){
@@ -576,9 +577,9 @@ function restaBCDN(){
     let numero1 = modificarEntradaBCDN(document.getElementById("restaBCDN1").value),
         numero2 = modificarEntradaBCDN(document.getElementById("restaBCDN2").value);
         numero1 = igualarNumeros(numero1,numero2).n1;
-        console.log(igualarNumeros(numero1,numero2).n1,igualarNumeros(numero1,numero2).n2,CA2(igualarNumeros(numero1,numero2).n1))
         numero2 = CA2(igualarNumeros(numero1,numero2).n2);
         resultado = sumarDosNumerosBCDN(numero1,numero2);
+        console.log(numero1,numero2,resultado)
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
         vector.forEach((elem)=>{
