@@ -204,6 +204,7 @@ function borrarComa(cadena){
 }
 
 function sumarDosNumerosBinarios(n1,n2){
+    console.log(n1,n2, "entre a suma")
     let lugaresComa = Math.max(cantLugaresDespuesDeLaComa(n1),cantLugaresDespuesDeLaComa(n2));
     let resultado = "", acarreoAnterior = 0;
     if(n1.includes(".") && !n2.includes(".")) n2+=".";
@@ -247,16 +248,23 @@ function sumarDosNumerosBinarios(n1,n2){
         }
         resultado = aux;
     }
-    console.log(resultadoMostrado)
-    if(acarreoAnterior == "1"){
+    eliminarTodosLosHijos("pasos");
+    if(acarreoAnterior == "1" && document.getElementById("suma").style.display == "block"){
         sumando1 = `0 <sup>${acarreoAnterior}</sup> ${sumando1} `;
         sumando2 = `0 <sup style="visibility: hidden;">${acarreoAnterior}</sup> ${sumando2} `;
         resultadoMostrado = `${acarreoAnterior} <sup style="visibility: hidden;">${acarreoAnterior}</sup> ${resultadoMostrado}`;
+    }else if(acarreoAnterior == "1" && document.getElementById("resta").style.display == "block"){
+        sumando1 = `<sup style="visibility: hidden;">${acarreoAnterior}</sup> ${sumando1} `;
+        sumando2 = `<sup style="visibility: hidden;">${acarreoAnterior}</sup> ${sumando2} `;
+        resultadoMostrado = `<sup><s>${acarreoAnterior}</s></sup> ${resultadoMostrado}`;
     }
     document.getElementById("pasos").style.display ="block";
-    document.getElementById("sumando1").innerHTML = sumando1;
-    document.getElementById("sumando2").innerHTML = sumando2;
-    document.querySelector("#pasos #resultado").innerHTML = resultadoMostrado;
+    let vector = [sumando1,sumando2,"---------------------",resultadoMostrado];
+    vector.forEach((elem)=>{
+        let elementoP = document.createElement("p");
+        elementoP.innerHTML = elem;
+        document.getElementById("pasos").appendChild(elementoP);
+    })
     return {resultado,acarreo:acarreoAnterior};
 }
 
@@ -274,6 +282,7 @@ function sumaBinaria(){
 
 function CA2(n1){
     //Se supone que ya se le agregaron todos los ceros adelante y atras que se necesitan.
+    console.log("estoy en ca2")
     let lugaresComa = cantLugaresDespuesDeLaComa(n1);
     n1 = borrarComa(n1);
     let resultado = "";
@@ -315,8 +324,9 @@ function restaBinaria(){
     let numero1 = modificarEntrada(document.getElementById("numeroResta1").value),
         numero2 = modificarEntrada(document.getElementById("numeroResta2").value),
         resultado = restarDosNumerosBinarios(numero1,numero2);
-        document.getElementById("resultadoOutput3").innerHTML = "Resultado: "+resultado.acarreo+" "+resultado.resultado;
-        if(resultado.acarreo == "0")document.getElementById("resultadoOutput4").innerHTML = "Valor Absoluto: "+CA2(resultado.resultado);
+        document.getElementById("resultadoOutput3").innerHTML = "Resultado: " + resultado.resultado;
+        if(resultado.acarreo == "0") document.getElementById("resultadoOutput4").innerHTML = "(Negativo)";
+        else document.getElementById("resultadoOutput4").innerHTML = "(Positivo)";
 }
 
 function agregarNCeros(cadena,cantidad){
@@ -334,9 +344,11 @@ function multiplicarDosNumeros(n1,n2){
     n1 = borrarComa(n1);
     n2 = borrarComa(n2);
     let longitudN2 = n2.length, resultado = "0", cantCeros = 0;
+    let vectorMostrar = [`${n1}`,`X ${n2}`,"-----------------"];
     while(longitudN2 > 0){
         if(n2[longitudN2 - 1] == "1"){
             let n1ConCeros = agregarNCeros(n1,cantCeros);
+            vectorMostrar.push(n1ConCeros);
             let aux = sumarDosNumerosBinarios(resultado,n1ConCeros);
             resultado =  (aux.acarreo == "1")? aux.acarreo + aux.resultado : aux.resultado;
         }
@@ -357,7 +369,24 @@ function multiplicarDosNumeros(n1,n2){
         }
         resultado = aux;
     }
+    vectorMostrar.push("-----------------"); vectorMostrar.push(resultado);
+    eliminarTodosLosHijos("pasos");
+    vectorMostrar.forEach((elem,indice)=>{
+        let elemento = elem;
+        if(indice != 0 && indice != 1) while(elemento.length < resultado.length) elemento = "0" + elemento;
+        let elementoP = document.createElement("p");
+        elementoP.innerHTML = elemento;
+        document.getElementById("pasos").appendChild(elementoP);
+    })
+    document.getElementById("pasos").style.display = "block";
     return resultado;
+}
+
+function eliminarTodosLosHijos(ID){
+    const elemento = document.getElementById(ID);
+    while (elemento.firstChild) {
+        elemento.removeChild(elemento.firstChild);
+    }
 }
 
 function multiplicacionBinaria(){
@@ -432,10 +461,12 @@ function calcularCodigoHamming(numero){
         alert("Los datos de entrada no son validos");
         return "";
     }
+    let vectorMostrar = [];
     let bitsTotales = numero.length, bitsParidad = 0;
     while(Math.pow(2,bitsParidad) < numero.length + bitsParidad + 1){
         bitsParidad++; bitsTotales++;
     }
+    vectorMostrar.push(`2<sup>${bitsParidad}</sup> &ge; ${numero.length} + ${bitsParidad} + 1`);
     let numFinal = new Array(bitsTotales), i = 0;
     for(let i = bitsTotales, w = 0, j = 0; i >= 1; i--, w++){
         if(!esPotenciaDeDos(i)){
@@ -443,8 +474,22 @@ function calcularCodigoHamming(numero){
             j++;
         }
     }
+    console.log("numFinal: ",numFinal)
+    let cadenaAux = "Numeros acomodados: ";
+    for(let i = 0; i < numFinal.length; i++){
+        let elem = numFinal[i];
+        if(elem != undefined){
+            cadenaAux += `<u>${elem}</u> `;
+        }else{
+            console.log("entre");
+            cadenaAux += `<b>_</b> `;
+        }
+    }
+    vectorMostrar.push(cadenaAux);
     let contador = 1, vueltas = 0;
     numFinal = numFinal.reverse();
+    let vectorMostrarAuxiliar = [];
+    let vectorMostrarAuxiliar2 = [];
     do{
         let posicionVector = 0, bit = 0;
             let arrayAux = new Array(bitsTotales+1);
@@ -458,16 +503,46 @@ function calcularCodigoHamming(numero){
                 posicionVector++;
             }
         }
+        console.log(arrayAux);
         arrayAux = arrayAux.slice(1);
+        let bitC = `c${contador} = `;
+        let bitCConNumeros = `c${contador} = `;
         for(let i = 0; i < arrayAux.length; i++){
             if(arrayAux[i] == 1){
                 bit = XOR(bit,parseInt(numFinal[i]));
+                let posicion = `b${i+1} ⊕ `;
+                bitC += posicion;
+                if(numFinal[i] != undefined){
+                    let posicion2 = `${numFinal[i]} ⊕ `;
+                    bitCConNumeros += posicion2;
+                }else{
+                    bitCConNumeros += posicion;
+                }
             }
         }
+        bitC = bitC.substring(0,bitC.length - 3);
+        bitCConNumeros = bitCConNumeros.substring(0,bitC.length - 3);
+        vectorMostrar.push(bitC);
+        vectorMostrarAuxiliar.push(bitCConNumeros);
         numFinal[contador-1] = (bit == false)? "0": "1";
+        vectorMostrarAuxiliar2.push(`b${contador} = ${(bit == false)? "0": "1"}`);
         contador*=2;
         vueltas++;
     }while(vueltas < bitsParidad);
+    vectorMostrar.push("<br>");
+    vectorMostrar = vectorMostrar.concat(vectorMostrarAuxiliar);
+    vectorMostrar.push("<br>");
+    vectorMostrar = vectorMostrar.concat(vectorMostrarAuxiliar2);
+    vectorMostrar.push("<br>");
+    vectorMostrar.push(`Numero Final: ${[numFinal.reverse().join(' ')]}`);
+    console.log(vectorMostrar)
+    eliminarTodosLosHijos("pasos");
+    vectorMostrar.forEach((elem,indice)=>{
+        let elementoP = document.createElement("p");
+        elementoP.innerHTML = elem;
+        document.getElementById("pasos").appendChild(elementoP);
+    })
+    document.getElementById("pasos").style.display = "block";
     document.getElementById("resultadoOutput7").innerHTML = "Resultado: " + numFinal.reverse().join(' ');
     return numFinal.reverse().join(' ');
 }
@@ -736,7 +811,6 @@ function sumarDosNumerosBCDEx3(n1,n2){
     if(tieneComa(n1) && !tieneComa(n2)) n2 += ".";
     if(!tieneComa(n1)  && tieneComa(n2)) n1 += ".";
     if(tieneComa(n1)  || tieneComa(n2)){
-        console.log("tiene coma");
         let parteDecimalN1 = parteDecimal(n1),
             parteDecimalN2 = parteDecimal(n2);
         while(parteDecimalN1.length < parteDecimalN2.length){
@@ -783,7 +857,6 @@ function sumarDosNumerosBCDEx3(n1,n2){
 function sumaBCDEx3(){
     let numero1 = modificarEntradaBCDEx3(modificarEntrada(document.getElementById("sumaBCDEx31").value)),
         numero2 = modificarEntradaBCDEx3(modificarEntrada(document.getElementById("sumaBCDEx32").value));
-        console.log(numero1,numero2);
         resultado = sumarDosNumerosBCDEx3(numero1,numero2);
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
@@ -817,21 +890,15 @@ function restaBCDEx3(){
         numero2 = igualarNumerosBCDEx3(numero1,numero2).n2;
         numero2 = invertirDigitos(numero2);
         resultado = sumarDosNumerosBCDEx3(numero1,numero2);
-        console.log("N1: ",numero1,"N2: ",numero2);
-        console.log("resultado:", resultado);
         if(resultado.acarreoFinal == "0001"){
             if(!resultado.resultado.includes(".")){
                 resultado.resultado = sumarDosNumerosBCDEx3(resultado.resultado,resultado.acarreoFinal).resultado;
             }else{
-                console.log(resultado.resultado,resultado.acarreoFinal)
                 let posicionComa = resultado.resultado.indexOf(".");
                 resultado.resultado = borrarComa(resultado.resultado);
-                console.log(resultado.resultado,resultado.acarreoFinal)
                 let suma = sumarDosNumerosBinarios(resultado.resultado,resultado.acarreoFinal);
-                console.log("Suma: ",suma.resultado)
                 resultado.resultado = suma.resultado;
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
-                console.log(resultado);
             }
         }
         let resultadoFinal = "", vector;
