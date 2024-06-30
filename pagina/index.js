@@ -787,13 +787,14 @@ function modificarEntradaBCDEx3(entrada){
     return entrada;
 }
 
-function restaBCDN(){
-    let numero1 = modificarEntradaBCDN(document.getElementById("restaBCDN1").value),
-        numero2 = modificarEntradaBCDN(document.getElementById("restaBCDN2").value);
-        numero1 = igualarNumeros(numero1,numero2).n1;
-        numero2 = igualarNumeros(numero1,numero2).n2;
-        numero2 = CA9(numero2);
-        resultado = sumarDosNumerosBCDN(numero1,numero2);
+function restaBCDEx3(){
+    let numero1 = modificarEntradaBCDEx3(modificarEntrada((document.getElementById("restaBCDEx31").value))),
+        numero2 = modificarEntradaBCDEx3(document.getElementById("restaBCDEx32").value);
+        numero1 = igualarNumerosBCDEx3(numero1,numero2).n1;
+        numero2 = igualarNumerosBCDEx3(numero1,numero2).n2;
+        numero2 = invertirDigitos(numero2);
+        resultado = sumarDosNumerosBCDEx3(numero1,numero2);
+        console.log("N1: ",numero1,"N2: ",numero2,"resultado:", resultado);
         if(resultado.acarreoFinal == "0001"){
             if(!resultado.resultado.includes(".")){
                 resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal).resultado;
@@ -811,11 +812,11 @@ function restaBCDN(){
             resultadoFinal += (elem+" ");
         })
         if(resultado.acarreoFinal == "0001"){
-            document.getElementById("resultadoOutput9").innerHTML = "Resultado = " + resultadoFinal;
-            document.getElementById("resultadoOutput10").innerHTML = "(Positivo)";
+            document.getElementById("resultadoOutput12").innerHTML = "Resultado = " + resultadoFinal;
+            document.getElementById("resultadoOutput13").innerHTML = "(Positivo)";
         }else{
-            document.getElementById("resultadoOutput9").innerHTML = "Resultado = " + resultadoFinal;
-            document.getElementById("resultadoOutput10").innerHTML = "(Negativo)";
+            document.getElementById("resultadoOutput12").innerHTML = "Resultado = " + resultadoFinal;
+            document.getElementById("resultadoOutput13").innerHTML = "(BCD-Ex3 Negativo)";
         }
 }
 
@@ -827,4 +828,17 @@ function igualarNumerosBCDEx3(n1,n2){
     while(parteDecimal(n1).length < parteDecimal(n2).length) n1 += "0011";
     while(parteDecimal(n2).length < parteDecimal(n1).length) n2 += "0011";
     return {n1,n2}
+}
+
+function invertirDigitos(n1){
+    let resultado = "";
+    for(let i = 0; i < n1.length; i++){
+        if(n1[i] != "."){
+            if(n1[i] == "0") resultado += "1";
+            else resultado += "0";
+        }else{
+            resultado += ".";
+        }
+    }
+    return resultado;
 }
