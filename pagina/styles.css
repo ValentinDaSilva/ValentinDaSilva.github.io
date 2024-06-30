@@ -144,11 +144,9 @@ p {
     .flechaHaciaAtras {
         display: none;
         position: fixed;
-        width: 80px;
-        height: 70px;
-        top:5%;
-        left:5%;
-        margin-bottom: 50px;
-        border-radius: 2px solid black;
+        width: 50px;
+        height: 80px;
+        top:2%;
+        left: calc(50vw - 50px);
     }
 }
