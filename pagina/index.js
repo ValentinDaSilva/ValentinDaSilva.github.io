@@ -89,7 +89,7 @@ function parteDecimal(cadena){
     if(cadena.includes(".")){
         cadena = cadena.substr(cadena.indexOf(".") + 1);
     }else{
-        cadena = "0";
+        cadena = "";
     }
     return cadena;
 }
@@ -535,7 +535,6 @@ function sumaBCDN(){
 }
 
 function dividirDeA4(cadena) {
-    console.log("Entrada dividir de a 4: ",cadena)
     let array = [], longitudCadena = cadena.length, i = 0, posicionVector = 0;
     while(i < longitudCadena){
         array.push(cadena.slice(i,i+4));
@@ -581,9 +580,7 @@ function restaBCDN(){
         numero1 = igualarNumeros(numero1,numero2).n1;
         numero2 = igualarNumeros(numero1,numero2).n2;
         numero2 = CA9(numero2);
-        console.log(numero1,numero2);
         resultado = sumarDosNumerosBCDN(numero1,numero2);
-        console.log(resultado);
         if(resultado.acarreoFinal == "0001"){
             if(!resultado.resultado.includes(".")){
                 resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal).resultado;
@@ -595,14 +592,11 @@ function restaBCDN(){
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
             }
         }
-        console.log("resultado: ",resultado.resultado);
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
-        console.log("vector: ",vector)
         vector.forEach((elem)=>{
             resultadoFinal += (elem+" ");
         })
-        console.log("resultado Final: ",resultadoFinal);
         if(resultado.acarreoFinal == "0001"){
             document.getElementById("resultadoOutput9").innerHTML = "Resultado = " + resultadoFinal;
             document.getElementById("resultadoOutput10").innerHTML = "(Positivo)";
@@ -715,7 +709,7 @@ function sumarDosDigitosBCDEx3(n1,n2,acarreo){
     } 
 }
 
-function restarDosNumerosBCDN(n1,n2){
+function sumarDosNumerosBCDEx3(n1,n2){
     let acarreoAnterior = "0000", resultado = "";
     if(tieneComa(n1) && !tieneComa(n2)) n2 += ".";
     if(!tieneComa(n1)  && tieneComa(n2)) n1 += ".";
@@ -756,9 +750,81 @@ function restarDosNumerosBCDN(n1,n2){
             ultimoIndice--;
             contador++;
         }
-        let sumaAux = sumarDosDigitosBCDN(digitoN1,digitoN2,acarreoAnterior);
+        let sumaAux = sumarDosDigitosBCDEx3(digitoN1,digitoN2,acarreoAnterior);
         resultado = sumaAux.resultado + resultado;
-        acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0100":"0011";
+        acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0001":"0000";
     }
     return {resultado,acarreoFinal: acarreoAnterior};
+}
+
+function sumaBCDEx3(){
+    let numero1 = modificarEntradaBCDEx3(modificarEntrada(document.getElementById("sumaBCDEx31").value)),
+        numero2 = modificarEntradaBCDEx3(modificarEntrada(document.getElementById("sumaBCDEx32").value));
+        console.log(numero1,numero2);
+        resultado = sumarDosNumerosBCDEx3(numero1,numero2);
+        let resultadoFinal = "", vector;
+        vector = dividirDeA4(resultado.resultado);
+        vector.forEach((elem)=>{
+            resultadoFinal += (elem+" ");
+        })
+        if(resultado.acarreoFinal == "0001") resultadoFinal = resultado.acarreoFinal + " " + resultadoFinal;
+        document.getElementById("resultadoOutput11").innerHTML = "Resultado = " + resultadoFinal;
+}
+
+function modificarEntradaBCDEx3(entrada){
+    while(entrada.includes(" ")){
+        entrada = entrada.substr(0,entrada.indexOf(" ")) + entrada.substr(entrada.indexOf(" ") + 1);
+    }
+    if(entrada.includes(".") && ((entrada.length -1) %4 != 0)){
+        alert("La cantidad de digitos debe ser multiplo de 4" + " " + entrada);
+    }else if(!entrada.includes(".") && (entrada.length)%4 != 0){
+        alert("La cantidad de digitos debe ser multiplo de 4" + " " +  entrada);
+    }
+    let vector = dividirDeA4(entrada), i = 0;
+    vector.forEach((elem)=>{
+        if(parseInt(elem.slice(0,4)) > 1100 || parseInt(elem.slice(0,4)) < 11) alert("No puede haber numeros mayores que 9 (1100) o menores que 0 (0011)" + " " + parseInt(elem.slice(0,4)) + " " + elem.slice(0,4));
+    })
+    return entrada;
+}
+
+function restaBCDN(){
+    let numero1 = modificarEntradaBCDN(document.getElementById("restaBCDN1").value),
+        numero2 = modificarEntradaBCDN(document.getElementById("restaBCDN2").value);
+        numero1 = igualarNumeros(numero1,numero2).n1;
+        numero2 = igualarNumeros(numero1,numero2).n2;
+        numero2 = CA9(numero2);
+        resultado = sumarDosNumerosBCDN(numero1,numero2);
+        if(resultado.acarreoFinal == "0001"){
+            if(!resultado.resultado.includes(".")){
+                resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal).resultado;
+            }else{
+                let posicionComa = resultado.resultado.indexOf(".");
+                resultado.resultado = borrarComa(resultado.resultado);
+                let suma = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal);
+                resultado.resultado = suma.resultado;
+                resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
+            }
+        }
+        let resultadoFinal = "", vector;
+        vector = dividirDeA4(resultado.resultado);
+        vector.forEach((elem)=>{
+            resultadoFinal += (elem+" ");
+        })
+        if(resultado.acarreoFinal == "0001"){
+            document.getElementById("resultadoOutput9").innerHTML = "Resultado = " + resultadoFinal;
+            document.getElementById("resultadoOutput10").innerHTML = "(Positivo)";
+        }else{
+            document.getElementById("resultadoOutput9").innerHTML = "Resultado = " + resultadoFinal;
+            document.getElementById("resultadoOutput10").innerHTML = "(Negativo)";
+        }
+}
+
+function igualarNumerosBCDEx3(n1,n2){
+    if(n1.includes(".") && !n2.includes(".")) n2+=".";
+    if(!n1.includes(".") && n2.includes(".")) n1+=".";
+    while(parteEntera(n1).length < parteEntera(n2).length) n1 = "0011" + n1;
+    while(parteEntera(n2).length < parteEntera(n1).length) n2 = "0011" + n2;
+    while(parteDecimal(n1).length < parteDecimal(n2).length) n1 += "0011";
+    while(parteDecimal(n2).length < parteDecimal(n1).length) n2 += "0011";
+    return {n1,n2}
 }
