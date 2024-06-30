@@ -147,6 +147,6 @@ p {
         width: 50px;
         height: 80px;
         top:2%;
-        left: calc(50vw - 50px);
+        left: calc(50vw + 50px);
     }
 }
