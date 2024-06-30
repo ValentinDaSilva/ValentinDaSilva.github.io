@@ -455,7 +455,6 @@ function sumarDosDigitosBCDN(n1,n2,acarreo){
             suma = aux.resultado;
             aux = sumarDosNumerosBinarios(suma,n1);
             suma = aux.resultado;
-            console.log(suma);
             let acarreoFinal1 = aux.acarreo,
             acarreoFinal2 = "0";
         if(parseInt(suma) > 1001 || acarreoFinal1 == "1"){
@@ -534,6 +533,7 @@ function sumaBCDN(){
 }
 
 function dividirDeA4(cadena) {
+    console.log("Entrada dividir de a 4: ",cadena)
     let array = [], longitudCadena = cadena.length, i = 0, posicionVector = 0;
     while(i < longitudCadena){
         array.push(cadena.slice(i,i+4));
@@ -582,16 +582,23 @@ function restaBCDN(){
         resultado = sumarDosNumerosBCDN(numero1,numero2);
         if(resultado.acarreoFinal == "0001"){
             if(!resultado.resultado.includes(".")){
-                resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,acarreoFinal);
+                resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal).resultado;
             }else{
                 let posicionComa = resultado.resultado.indexOf(".");
+                resultado.resultado = borrarComa(resultado.resultado);
+                let suma = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreo);
+                resultado.resultado = suma.resultado;
+                resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
             }
         }
+        console.log("resultado: ",resultado.resultado);
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
+        console.log("vector: ",vector)
         vector.forEach((elem)=>{
             resultadoFinal += (elem+" ");
         })
+        console.log("resultado Final: ",resultadoFinal);
         if(resultado.acarreoFinal == "0001"){
             document.getElementById("resultadoOutput9").innerHTML = "Resultado = (positivo) " + resultadoFinal;
         }else{
@@ -612,7 +619,6 @@ function igualarNumeros(n1,n2){
 function CA9UnDigito(numero){
     numero = parseInt(convertirDeOtroADecimal(numero,2));
     let resultado = 9 - numero;
-    console.log(resultado)
     resultado = convertirDecimalAOtro(resultado.toString(),2);
     while(resultado.length < 4) resultado = agregar0Adelante(resultado);
     return resultado;
@@ -634,7 +640,6 @@ function CA9(numero){
         resultado = "." + resultado;
     }
     let parteEnteraN = parteEntera(numero), ultimoIndice = parteEnteraN.length - 1;
-    console.log(parteEnteraN,ultimoIndice)
         while(ultimoIndice > 0){
             let contador = 0, digito = "";
             while(contador < 4){
@@ -650,7 +655,6 @@ function CA9(numero){
 function CA10UnDigito(numero){
     numero = parseInt(convertirDeOtroADecimal(numero,2));
     let resultado = 10 - numero;
-    console.log(resultado)
     resultado = convertirDecimalAOtro(resultado.toString(),2);
     while(resultado.length < 4) resultado = agregar0Adelante(resultado);
     return resultado;
@@ -672,7 +676,6 @@ function CA10(numero){
         resultado = "." + resultado;
     }
     let parteEnteraN = parteEntera(numero), ultimoIndice = parteEnteraN.length - 1;
-    console.log(parteEnteraN,ultimoIndice)
         while(ultimoIndice > 0){
             let contador = 0, digito = "";
             while(contador < 4){
