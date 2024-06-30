@@ -1197,8 +1197,10 @@ function restaBCDEx3(){
                 resultado.resultado = suma.resultado;
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
             }
-            if(resultado.resultado.includes(".")) while(uno.length < resultado.resultado.length) uno = agregar0Adelante(uno);
-            else while(uno.length < resultado.resultado.length - 1) uno = agregar0Adelante(uno);
+            console.log(resultado.resultado)
+            while(uno.length < resultado.resultado.length) uno = agregar0Adelante(uno);
+            if(resultado.resultado.includes(".")) uno = uno.substring(1);
+            console.log(uno)
             let elemento = document.createElement("p");
                 elemento.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(uno).join(" ")}`;
                 document.getElementById("pasos").appendChild(elemento);
