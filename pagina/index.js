@@ -577,9 +577,16 @@ function restaBCDN(){
     let numero1 = modificarEntradaBCDN(document.getElementById("restaBCDN1").value),
         numero2 = modificarEntradaBCDN(document.getElementById("restaBCDN2").value);
         numero1 = igualarNumeros(numero1,numero2).n1;
-        numero2 = CA2(igualarNumeros(numero1,numero2).n2);
+        numero2 = igualarNumeros(numero1,numero2).n2;
+        numero2 = CA9(numero2);
         resultado = sumarDosNumerosBCDN(numero1,numero2);
-        console.log(numero1,numero2,resultado)
+        if(resultado.acarreoFinal == "0001"){
+            if(!resultado.resultado.includes(".")){
+                resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,acarreoFinal);
+            }else{
+                let posicionComa = resultado.resultado.indexOf(".");
+            }
+        }
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
         vector.forEach((elem)=>{
@@ -600,4 +607,80 @@ function igualarNumeros(n1,n2){
     while(parteDecimal(n1).length < parteDecimal(n2).length) n1 = agregar0Atras(n1);
     while(parteDecimal(n2).length < parteDecimal(n1).length) n2 = agregar0Atras(n2);
     return {n1,n2}
+}
+
+function CA9UnDigito(numero){
+    numero = parseInt(convertirDeOtroADecimal(numero,2));
+    let resultado = 9 - numero;
+    console.log(resultado)
+    resultado = convertirDecimalAOtro(resultado.toString(),2);
+    while(resultado.length < 4) resultado = agregar0Adelante(resultado);
+    return resultado;
+}
+
+function CA9(numero){
+    let resultado = "";
+    if(numero.includes(".")){
+        let parteDecimalN = parteDecimal(numero), ultimoIndice = parteDecimalN.length - 1;
+        while(ultimoIndice > 0){
+            let contador = 0, digito = "";
+            while(contador < 4){
+                digito = parteDecimalN[ultimoIndice] + digito;
+                ultimoIndice--;
+                contador++;
+            }
+            resultado = CA9UnDigito(digito) + resultado;
+        }
+        resultado = "." + resultado;
+    }
+    let parteEnteraN = parteEntera(numero), ultimoIndice = parteEnteraN.length - 1;
+    console.log(parteEnteraN,ultimoIndice)
+        while(ultimoIndice > 0){
+            let contador = 0, digito = "";
+            while(contador < 4){
+                digito = parteEnteraN[ultimoIndice] + digito;
+                ultimoIndice--;
+                contador++;
+            }
+            resultado = CA9UnDigito(digito) + resultado;
+        }
+    return resultado;
+}
+
+function CA10UnDigito(numero){
+    numero = parseInt(convertirDeOtroADecimal(numero,2));
+    let resultado = 10 - numero;
+    console.log(resultado)
+    resultado = convertirDecimalAOtro(resultado.toString(),2);
+    while(resultado.length < 4) resultado = agregar0Adelante(resultado);
+    return resultado;
+}
+
+function CA10(numero){
+    let resultado = "";
+    if(numero.includes(".")){
+        let parteDecimalN = parteDecimal(numero), ultimoIndice = parteDecimalN.length - 1;
+        while(ultimoIndice > 0){
+            let contador = 0, digito = "";
+            while(contador < 4){
+                digito = parteDecimalN[ultimoIndice] + digito;
+                ultimoIndice--;
+                contador++;
+            }
+            resultado = CA10UnDigito(digito) + resultado;
+        }
+        resultado = "." + resultado;
+    }
+    let parteEnteraN = parteEntera(numero), ultimoIndice = parteEnteraN.length - 1;
+    console.log(parteEnteraN,ultimoIndice)
+        while(ultimoIndice > 0){
+            let contador = 0, digito = "";
+            while(contador < 4){
+                digito = parteEnteraN[ultimoIndice] + digito;
+                ultimoIndice--;
+                contador++;
+            }
+            resultado = CA9UnDigito(digito) + resultado;
+        }
+    return resultado;
 }
