@@ -142,11 +142,12 @@ p {
         margin-top: 5vh;
     }
     .flechaHaciaAtras {
+        --tamanioFlecha: 50px;
         display: none;
         position: fixed;
-        width: 50px;
+        width: var(--tamanioFlecha);
         height: 80px;
         top:2%;
-        left: calc(50vw);
+        left: 10px;
     }
 }
