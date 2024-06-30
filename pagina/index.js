@@ -6,6 +6,8 @@ document.getElementById('Division').addEventListener('click', () => showContaine
 document.getElementById('Hamming').addEventListener('click', () => showContainer('hamming'));
 document.getElementById('SumaBCDN').addEventListener('click', () => showContainer('sumaBCDN'));
 document.getElementById('RestaBCDN').addEventListener('click', () => showContainer('restaBCDN'));
+document.getElementById('SumaBCDEx3').addEventListener('click', () => showContainer('sumaBCDEx3'));
+document.getElementById('RestaBCDEx3').addEventListener('click', () => showContainer('restaBCDEx3'));
 
 function showContainer(containerId) {
     document.getElementById('menuContainer').style.display = 'none';
@@ -690,4 +692,73 @@ function CA10(numero){
             resultado = CA9UnDigito(digito) + resultado;
         }
     return resultado;
+}
+
+function sumarDosDigitosBCDEx3(n1,n2,acarreo){
+    if(n1.length != 4 || n2.length != 4) alert("El numero de digitos debe ser si o si 4");
+    else{
+        let aux = sumarDosNumerosBinarios(n2,acarreo),
+            suma = aux.resultado;
+            aux = sumarDosNumerosBinarios(suma,n1);
+            suma = aux.resultado;
+            let acarreoFinal1 = aux.acarreo;
+        if(acarreoFinal1 == "1"){
+            aux = sumarDosNumerosBinarios(suma,"0011");
+            suma = aux.resultado;
+            acarreoFinal2 = aux.acarreo;
+        }else{
+            aux = restarDosNumerosBinarios(suma,"0011");
+            suma = aux.resultado;
+        }
+        let acarreoFinal = (acarreoFinal1 == "1")? "1":"0";
+        return {resultado:suma,acarreoFinal};
+    } 
+}
+
+function restarDosNumerosBCDN(n1,n2){
+    let acarreoAnterior = "0000", resultado = "";
+    if(tieneComa(n1) && !tieneComa(n2)) n2 += ".";
+    if(!tieneComa(n1)  && tieneComa(n2)) n1 += ".";
+    if(tieneComa(n1)  || tieneComa(n2)){
+        let parteDecimalN1 = parteDecimal(n1),
+            parteDecimalN2 = parteDecimal(n2);
+        while(parteDecimalN1.length < parteDecimalN2.length){
+            parteDecimalN1 += "0011";
+        } 
+        while(parteDecimalN2.length < parteDecimalN1.length) {
+            parteDecimalN2 += "0011";
+        }
+        let ultimoIndice = parteDecimalN1.length - 1;
+        while(ultimoIndice > 0){
+            let contador = 0, digitoN1 = "", digitoN2 = "";
+            while(contador < 4){
+                digitoN1 = parteDecimalN1[ultimoIndice] + digitoN1;
+                digitoN2 = parteDecimalN2[ultimoIndice] + digitoN2;
+                ultimoIndice--;
+                contador++;
+            }
+            let sumaAux = sumarDosDigitosBCDEx3(digitoN1,digitoN2,acarreoAnterior);
+            resultado = sumaAux.resultado + resultado;
+            acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0001":"0000";
+        }
+        resultado = "." + resultado;
+    }
+    let parteEnteraN1 = parteEntera(n1),
+        parteEnteraN2 = parteEntera(n2);
+        while(parteEnteraN1.length < parteEnteraN2.length) parteEnteraN1 = "0011" + parteEnteraN1;
+        while(parteEnteraN2.length < parteEnteraN1.length) parteEnteraN2 = "0011" + parteEnteraN2;
+        let ultimoIndice = parteEnteraN1.length - 1;
+    while(ultimoIndice > 0){
+        let contador = 0, digitoN1 = "", digitoN2 = "";
+        while(contador < 4){
+            digitoN1 = parteEnteraN1[ultimoIndice] + digitoN1;
+            digitoN2 = parteEnteraN2[ultimoIndice] + digitoN2;
+            ultimoIndice--;
+            contador++;
+        }
+        let sumaAux = sumarDosDigitosBCDN(digitoN1,digitoN2,acarreoAnterior);
+        resultado = sumaAux.resultado + resultado;
+        acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0100":"0011";
+    }
+    return {resultado,acarreoFinal: acarreoAnterior};
 }
