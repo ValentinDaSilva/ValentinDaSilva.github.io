@@ -23,6 +23,7 @@ function goBackToMenu() {
     containers.forEach(container => {
         container.style.display = 'none';
     });
+    document.getElementById("pasos").style.display = "none";
     document.getElementById('Atras').style.display = 'none';
 }
 
@@ -213,9 +214,21 @@ function sumarDosNumerosBinarios(n1,n2){
     while(parteDecimal(n2).length < parteDecimal(n1).length) n2 = agregar0Atras(n2);
     n1 = borrarComa(n1);
     n2 = borrarComa(n2);
-    let ultimoIndice = n1.length - 1; 
+    let ultimoIndice = n1.length - 1;
+    let sumando1 = "", sumando2 = "", resultadoMostrado = "";
     while(ultimoIndice >= 0){
         let aux = sumarDosDigitosBinarios(n1[ultimoIndice],n2[ultimoIndice],acarreoAnterior);
+        if(acarreoAnterior == "0"){
+             sumando1 = `${n1[ultimoIndice]} ${sumando1}`;
+             sumando2 = `${n2[ultimoIndice]} ${sumando2}`;
+             resultadoMostrado = `${aux.resultado} ${resultadoMostrado}`;
+        }
+        else{
+            sumando1 = `${n1[ultimoIndice]} <sup>${acarreoAnterior}</sup> ${sumando1} `;
+            sumando2 = `${n2[ultimoIndice]} <sup style="visibility: hidden;">${acarreoAnterior}</sup> ${sumando2} `;
+            resultadoMostrado = `${aux.resultado} <sup style="visibility: hidden;">${acarreoAnterior}</sup> ${resultadoMostrado} `;
+        } 
+        
         resultado = aux.resultado + resultado; 
         acarreoAnterior = aux.acarreo;
         ultimoIndice--;
@@ -234,7 +247,16 @@ function sumarDosNumerosBinarios(n1,n2){
         }
         resultado = aux;
     }
-
+    console.log(resultadoMostrado)
+    if(acarreoAnterior == "1"){
+        sumando1 = `0 <sup>${acarreoAnterior}</sup> ${sumando1} `;
+        sumando2 = `0 <sup style="visibility: hidden;">${acarreoAnterior}</sup> ${sumando2} `;
+        resultadoMostrado = `${acarreoAnterior} <sup style="visibility: hidden;">${acarreoAnterior}</sup> ${resultadoMostrado}`;
+    }
+    document.getElementById("pasos").style.display ="block";
+    document.getElementById("sumando1").innerHTML = sumando1;
+    document.getElementById("sumando2").innerHTML = sumando2;
+    document.querySelector("#pasos #resultado").innerHTML = resultadoMostrado;
     return {resultado,acarreo:acarreoAnterior};
 }
 
