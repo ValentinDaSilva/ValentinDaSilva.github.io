@@ -204,7 +204,6 @@ function borrarComa(cadena){
 }
 
 function sumarDosNumerosBinarios(n1,n2){
-    console.log(n1,n2, "entre a suma")
     let lugaresComa = Math.max(cantLugaresDespuesDeLaComa(n1),cantLugaresDespuesDeLaComa(n2));
     let resultado = "", acarreoAnterior = 0;
     if(n1.includes(".") && !n2.includes(".")) n2+=".";
@@ -282,7 +281,6 @@ function sumaBinaria(){
 
 function CA2(n1){
     //Se supone que ya se le agregaron todos los ceros adelante y atras que se necesitan.
-    console.log("estoy en ca2")
     let lugaresComa = cantLugaresDespuesDeLaComa(n1);
     n1 = borrarComa(n1);
     let resultado = "";
@@ -474,14 +472,12 @@ function calcularCodigoHamming(numero){
             j++;
         }
     }
-    console.log("numFinal: ",numFinal)
     let cadenaAux = "Numeros acomodados: ";
     for(let i = 0; i < numFinal.length; i++){
         let elem = numFinal[i];
         if(elem != undefined){
             cadenaAux += `<u>${elem}</u> `;
         }else{
-            console.log("entre");
             cadenaAux += `<b>_</b> `;
         }
     }
@@ -503,7 +499,6 @@ function calcularCodigoHamming(numero){
                 posicionVector++;
             }
         }
-        console.log(arrayAux);
         arrayAux = arrayAux.slice(1);
         let bitC = `c${contador} = `;
         let bitCConNumeros = `c${contador} = `;
@@ -535,7 +530,6 @@ function calcularCodigoHamming(numero){
     vectorMostrar = vectorMostrar.concat(vectorMostrarAuxiliar2);
     vectorMostrar.push("<br>");
     vectorMostrar.push(`Numero Final: ${[numFinal.reverse().join(' ')]}`);
-    console.log(vectorMostrar)
     eliminarTodosLosHijos("pasos");
     vectorMostrar.forEach((elem,indice)=>{
         let elementoP = document.createElement("p");
@@ -550,45 +544,148 @@ function calcularCodigoHamming(numero){
 function sumarDosDigitosBCDN(n1,n2,acarreo){
     if(n1.length != 4 || n2.length != 4) alert("El numero de digitos debe ser si o si 4");
     else{
+        let acarreoAtras = false;
+        let acarreoAdelante = false;
+        let N1Mostrar = n1;
+        let N2Mostrar = n2;
+        let R1Mostrar = "";
+        let R2Mostrar = "";
+        let ResultadoMostrar = "";
+        let hayAcarreoInicial = (acarreo == "0000")? false:true;
+        if(hayAcarreoInicial){
+            N1Mostrar += `<sup>1</sup>`;
+            N2Mostrar += `<sup style="visibility: hidden;">1</sup>`;
+            R1Mostrar += `<sup style="visibility: hidden;">1</sup>`;
+            R2Mostrar += `<sup style="visibility: hidden;">1</sup>`;
+            ResultadoMostrar = `<sup style="visibility: hidden;">1</sup>`;
+            console.log("hubo acarreo inicial");
+            acarreoAtras = true;
+        }
         let aux = sumarDosNumerosBinarios(n2,acarreo),
             suma = aux.resultado;
             aux = sumarDosNumerosBinarios(suma,n1);
             suma = aux.resultado;
+            let auxResultado = suma;
+            if(aux.acarreo == 1){
+                N1Mostrar = `<sup style="visibility: hidden;">1</sup>` + N1Mostrar;
+                N2Mostrar = `<sup style="visibility: hidden;">1</sup>` + N2Mostrar;
+                R1Mostrar = `<sup>1</sup>` + suma + R1Mostrar;
+                R2Mostrar = `<sup style="visibility: hidden;">1</sup>` + R2Mostrar;
+                ResultadoMostrar = `<sup style="visibility: hidden;">1</sup>` + ResultadoMostrar;
+                acarreoAdelante = true;
+                console.log("hubo acarreo adelante");
+            }else{
+                R1Mostrar = suma + R1Mostrar;
+            }
             let acarreoFinal1 = aux.acarreo,
             acarreoFinal2 = "0";
-        if(parseInt(suma) > 1001 || acarreoFinal1 == "1"){
-            aux = sumarDosNumerosBinarios(suma,"0110");
-            suma = aux.resultado;
-            acarreoFinal2 = aux.acarreo;
+            if(parseInt(suma) > 1001 || acarreoFinal1 == "1"){
+                aux = sumarDosNumerosBinarios(suma,"0110");
+                suma = aux.resultado;
+                acarreoFinal2 = aux.acarreo;
+                if(acarreoAdelante){
+                    let indice = R2Mostrar.indexOf("</sup>") + 5;
+                    R2Mostrar = R2Mostrar.substring(0,indice+1)+"0110"+R2Mostrar.substring(indice+1)
+                }else{
+                    R2Mostrar = "0110" + R2Mostrar;
+                }
+            }else{
+                if(acarreoAdelante){
+                    let indice = R2Mostrar.indexOf("</sup>") + 5;
+                    R2Mostrar = R2Mostrar.substring(0,indice+1)+"0000"+R2Mostrar.substring(indice+1);
+                }else{
+                    R2Mostrar = "0000" + R2Mostrar;
+                }
+            }
+        if(acarreoAdelante){
+            console.log("Linea 602");
+            let indice = R2Mostrar.indexOf("</sup>") + 5;
+                ResultadoMostrar = ResultadoMostrar.substring(0,indice+1)+suma+ResultadoMostrar.substring(indice+1)
+        }else{
+            ResultadoMostrar = suma + ResultadoMostrar;
         }
         let acarreoFinal = (acarreoFinal1 == "1" || acarreoFinal2 == "1")? "1":"0";
+        if(acarreoAdelante && acarreoFinal2 == "1"){
+            reemplazarPrimera(resultadoFinal,`<sup style="visibility: hidden;">1</sup>`,`<sup>1</sup>`);
+        }else if(!acarreoAdelante && acarreoFinal2 == "1"){
+            N1Mostrar = `<sup style="visibility: hidden;">1</sup>` + N1Mostrar;
+            N2Mostrar = `<sup style="visibility: hidden;">1</sup>` + N2Mostrar;
+            R1Mostrar = `<sup style="visibility: hidden;">1</sup>` + R1Mostrar;
+            R2Mostrar = `<sup style="visibility: hidden;">1</sup>` + R2Mostrar;
+            ResultadoMostrar = `<sup>1</sup>` + ResultadoMostrar;
+        }
+        console.log("ResultadoAMostrar: ",ResultadoMostrar)
+        SumaBCDNvectorMostrarL1.unshift(N1Mostrar);
+        SumaBCDNvectorMostrarL2.unshift(N2Mostrar);
+        SumaBCDNvectorMostrarL3.unshift(R1Mostrar);
+        SumaBCDNvectorMostrarL4.unshift(R2Mostrar);
+        SumaBCDNvectorMostrarL5.unshift(ResultadoMostrar);
+        console.log("fin");
         return {resultado:suma,acarreoFinal};
     } 
+}
+
+function reemplazarPrimera(cadena, palabra1, palabra2) {
+    let indice = cadena.indexOf(palabra1);
+    if (indice !== -1) {
+        return cadena.slice(0, indice) + palabra2 + cadena.slice(indice + palabra1.length);
+    }
 }
 
 function tieneComa(n1){
     return (n1.includes("."));
 }
 
+var SumaBCDNvectorMostrarL1 = [];
+var SumaBCDNvectorMostrarL2 = [];
+var SumaBCDNvectorMostrarL3 = [];
+var SumaBCDNvectorMostrarL4 = [];
+var SumaBCDNvectorMostrarL5 = [];
+
 function sumarDosNumerosBCDN(n1,n2){
-    let acarreoAnterior = "0000", resultado = "";
-    if(tieneComa(n1) && !tieneComa(n2)) n2 += ".";
-    if(!tieneComa(n1)  && tieneComa(n2)) n1 += ".";
-    if(tieneComa(n1)  || tieneComa(n2)){
-        let parteDecimalN1 = parteDecimal(n1),
-            parteDecimalN2 = parteDecimal(n2);
-        while(parteDecimalN1.length < parteDecimalN2.length){
-            parteDecimalN1 = agregar0Atras(parteDecimalN1);
-        } 
-        while(parteDecimalN2.length < parteDecimalN1.length) {
-            parteDecimalN2 = agregar0Atras(parteDecimalN2);
+        SumaBCDNvectorMostrarL1 = [];
+        SumaBCDNvectorMostrarL2 = [];
+        SumaBCDNvectorMostrarL3 = [];
+        SumaBCDNvectorMostrarL4 = [];
+        SumaBCDNvectorMostrarL5 = [];
+        
+        let acarreoAnterior = "0000", resultado = "";
+        if(tieneComa(n1) && !tieneComa(n2)) n2 += ".";
+        if(!tieneComa(n1)  && tieneComa(n2)) n1 += ".";
+        if(tieneComa(n1)  || tieneComa(n2)){
+            let parteDecimalN1 = parteDecimal(n1),
+                parteDecimalN2 = parteDecimal(n2);
+            while(parteDecimalN1.length < parteDecimalN2.length){
+                parteDecimalN1 = agregar0Atras(parteDecimalN1);
+            } 
+            while(parteDecimalN2.length < parteDecimalN1.length) {
+                parteDecimalN2 = agregar0Atras(parteDecimalN2);
+            }
+            let ultimoIndice = parteDecimalN1.length - 1;
+            while(ultimoIndice > 0){
+                let contador = 0, digitoN1 = "", digitoN2 = "";
+                while(contador < 4){
+                    digitoN1 = parteDecimalN1[ultimoIndice] + digitoN1;
+                    digitoN2 = parteDecimalN2[ultimoIndice] + digitoN2;
+                    ultimoIndice--;
+                    contador++;
+                }
+                let sumaAux = sumarDosDigitosBCDN(digitoN1,digitoN2,acarreoAnterior);
+                resultado = sumaAux.resultado + resultado;
+                acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0001":"0000";
+            }
+            resultado = "." + resultado;
         }
-        let ultimoIndice = parteDecimalN1.length - 1;
+        let parteEnteraN1 = parteEntera(n1),
+        parteEnteraN2 = parteEntera(n2);
+        while(parteEnteraN1.length < parteEnteraN2.length) parteEnteraN1 = agregar0Adelante(parteEnteraN1);
+        while(parteEnteraN2.length < parteEnteraN1.length) parteEnteraN2 = agregar0Adelante(parteEnteraN2);
+        let ultimoIndice = parteEnteraN1.length - 1;
         while(ultimoIndice > 0){
             let contador = 0, digitoN1 = "", digitoN2 = "";
             while(contador < 4){
-                digitoN1 = parteDecimalN1[ultimoIndice] + digitoN1;
-                digitoN2 = parteDecimalN2[ultimoIndice] + digitoN2;
+                digitoN1 = parteEnteraN1[ultimoIndice] + digitoN1;
+                digitoN2 = parteEnteraN2[ultimoIndice] + digitoN2;
                 ultimoIndice--;
                 contador++;
             }
@@ -596,26 +693,57 @@ function sumarDosNumerosBCDN(n1,n2){
             resultado = sumaAux.resultado + resultado;
             acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0001":"0000";
         }
-        resultado = "." + resultado;
-    }
-    let parteEnteraN1 = parteEntera(n1),
-        parteEnteraN2 = parteEntera(n2);
-        while(parteEnteraN1.length < parteEnteraN2.length) parteEnteraN1 = agregar0Adelante(parteEnteraN1);
-        while(parteEnteraN2.length < parteEnteraN1.length) parteEnteraN2 = agregar0Adelante(parteEnteraN2);
-        let ultimoIndice = parteEnteraN1.length - 1;
-    while(ultimoIndice > 0){
-        let contador = 0, digitoN1 = "", digitoN2 = "";
-        while(contador < 4){
-            digitoN1 = parteEnteraN1[ultimoIndice] + digitoN1;
-            digitoN2 = parteEnteraN2[ultimoIndice] + digitoN2;
-            ultimoIndice--;
-            contador++;
+        let resultadoMostrar = resultado, cantGuiones = resultado.length;
+        if(acarreoAnterior === "0001" && document.getElementById("sumaBCDN").style.display == "block"){
+            SumaBCDNvectorMostrarL1.unshift(`0000<sup>1</sup>`);
+            SumaBCDNvectorMostrarL2.unshift(`0000<sup style="visibility:hidden;">1</sup>`);
+            SumaBCDNvectorMostrarL3.unshift(`0001<sup style="visibility:hidden;">1</sup>`);
+            SumaBCDNvectorMostrarL4.unshift(`0000<sup style="visibility:hidden;">1</sup>`);
+            SumaBCDNvectorMostrarL5.unshift(`0001<sup style="visibility:hidden;">1</sup>`);
+            cantGuiones+=4;
         }
-        let sumaAux = sumarDosDigitosBCDN(digitoN1,digitoN2,acarreoAnterior);
-        resultado = sumaAux.resultado + resultado;
-        acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0001":"0000";
-    }
-    return {resultado,acarreoFinal: acarreoAnterior};
+            console.log("paso por sumador");
+            eliminarTodosLosHijos("pasos");
+
+            let elemento1 = document.createElement("p");
+            elemento1.innerHTML = SumaBCDNvectorMostrarL1.join(" ");
+            document.getElementById("pasos").appendChild(elemento1);
+
+            let elemento2 = document.createElement("p");
+            elemento2.innerHTML = SumaBCDNvectorMostrarL2.join(" ");
+            document.getElementById("pasos").appendChild(elemento2);
+
+            let elemento2_5 = document.createElement("p");
+            let i = 0;
+            while(i < cantGuiones * 2){
+                elemento2_5.innerHTML += "-";
+                i++;
+            } 
+            document.getElementById("pasos").appendChild(elemento2_5);
+
+            let elemento3 = document.createElement("p");
+            elemento3.innerHTML = SumaBCDNvectorMostrarL3.join(" ");
+            document.getElementById("pasos").appendChild(elemento3);
+
+            let elemento4 = document.createElement("p");
+            elemento4.innerHTML = SumaBCDNvectorMostrarL4.join(" ");
+            document.getElementById("pasos").appendChild(elemento4);
+
+            let elemento4_5 = document.createElement("p");
+            i = 0;
+            while(i < cantGuiones * 2){
+                elemento4_5.innerHTML += "-";
+                i++;
+            }
+            document.getElementById("pasos").appendChild(elemento4_5);
+
+            let elemento5 = document.createElement("p");
+            elemento5.innerHTML = SumaBCDNvectorMostrarL5.join(" ");
+            document.getElementById("pasos").appendChild(elemento5);
+
+            document.getElementById("pasos").style.display = "block";
+            
+        return {resultado,acarreoFinal: acarreoAnterior};
 }
 
 function sumaBCDN(){
@@ -670,6 +798,54 @@ function modificarEntrada(entrada){
     }
     return entrada;
 }
+var contadorSumas = 0;
+
+function sumarDosNumerosBinariosSinMostrar(n1,n2){
+    let lugaresComa = Math.max(cantLugaresDespuesDeLaComa(n1),cantLugaresDespuesDeLaComa(n2));
+    let resultado = "", acarreoAnterior = 0;
+    if(n1.includes(".") && !n2.includes(".")) n2+=".";
+    if(!n1.includes(".") && n2.includes(".")) n1+=".";
+    while(parteEntera(n1).length < parteEntera(n2).length) n1 = agregar0Adelante(n1);
+    while(parteEntera(n2).length < parteEntera(n1).length) n2 = agregar0Adelante(n2);
+    while(parteDecimal(n1).length < parteDecimal(n2).length) n1 = agregar0Atras(n1);
+    while(parteDecimal(n2).length < parteDecimal(n1).length) n2 = agregar0Atras(n2);
+    n1 = borrarComa(n1);
+    n2 = borrarComa(n2);
+    let ultimoIndice = n1.length - 1;
+    let sumando1 = "", sumando2 = "", resultadoMostrado = "";
+    while(ultimoIndice >= 0){
+        let aux = sumarDosDigitosBinarios(n1[ultimoIndice],n2[ultimoIndice],acarreoAnterior);
+        if(acarreoAnterior == "0"){
+             sumando1 = `${n1[ultimoIndice]} ${sumando1}`;
+             sumando2 = `${n2[ultimoIndice]} ${sumando2}`;
+             resultadoMostrado = `${aux.resultado} ${resultadoMostrado}`;
+        }
+        else{
+            sumando1 = `${n1[ultimoIndice]} <sup>${acarreoAnterior}</sup> ${sumando1} `;
+            sumando2 = `${n2[ultimoIndice]} <sup style="visibility: hidden;">${acarreoAnterior}</sup> ${sumando2} `;
+            resultadoMostrado = `${aux.resultado} <sup style="visibility: hidden;">${acarreoAnterior}</sup> ${resultadoMostrado} `;
+        } 
+        
+        resultado = aux.resultado + resultado; 
+        acarreoAnterior = aux.acarreo;
+        ultimoIndice--;
+    }
+    let aux = "", longitud = resultado.length - 1;
+    if(lugaresComa != 0){
+        while(longitud >= 0){
+            if(lugaresComa !=0){
+                aux = resultado[longitud] + aux;
+                longitud--;
+                lugaresComa--;
+            }else{
+                aux = "." + aux;
+                lugaresComa--;
+            }
+        }
+        resultado = aux;
+    }
+    return {resultado,acarreo:acarreoAnterior};
+}
 
 function restaBCDN(){
     let numero1 = modificarEntradaBCDN(document.getElementById("restaBCDN1").value),
@@ -678,16 +854,33 @@ function restaBCDN(){
         numero2 = igualarNumeros(numero1,numero2).n2;
         numero2 = CA9(numero2);
         resultado = sumarDosNumerosBCDN(numero1,numero2);
+        console.log("resultado: ",resultado);
         if(resultado.acarreoFinal == "0001"){
+            let uno = "1";
             if(!resultado.resultado.includes(".")){
-                resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal).resultado;
+                resultado.resultado = sumarDosNumerosBinariosSinMostrar(resultado.resultado,resultado.acarreoFinal).resultado;
             }else{
                 let posicionComa = resultado.resultado.indexOf(".");
                 resultado.resultado = borrarComa(resultado.resultado);
-                let suma = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal);
+                let suma = sumarDosNumerosBinariosSinMostrar(resultado.resultado,resultado.acarreoFinal);
                 resultado.resultado = suma.resultado;
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
-            }
+            }  
+                while(uno.length < resultado.resultado.length) uno = agregar0Adelante(uno);
+                if(resultado.resultado.includes(".")) uno = uno.substring(1);
+                let elemento = document.createElement("p");
+                elemento.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(uno).join(" ")}`;
+                document.getElementById("pasos").appendChild(elemento);
+                let elemento4_5 = document.createElement("p");
+                i = 0;
+                while(i < resultado.resultado.length * 2){
+                    elemento4_5.innerHTML += "-";
+                    i++;
+                }
+                document.getElementById("pasos").appendChild(elemento4_5);
+                let elemento2 = document.createElement("p");
+                elemento2.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(resultado.resultado).join(" ")}`;
+                document.getElementById("pasos").appendChild(elemento2);
         }
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
@@ -788,25 +981,87 @@ function CA10(numero){
 function sumarDosDigitosBCDEx3(n1,n2,acarreo){
     if(n1.length != 4 || n2.length != 4) alert("El numero de digitos debe ser si o si 4" + " " + n1.length + " " + n2.length);
     else{
+        let acarreoAtras = false;
+        let acarreoAdelante = false;
+        let N1Mostrar = n1;
+        let N2Mostrar = n2;
+        let R1Mostrar = "";
+        let R2Mostrar = "";
+        let ResultadoMostrar = "";
+        let hayAcarreoInicial = (acarreo == "0000")? false:true;
+        if(hayAcarreoInicial){
+            N1Mostrar += `<sup>1</sup>`;
+            N2Mostrar += `<sup style="visibility: hidden;">1</sup>`;
+            R1Mostrar += `<sup style="visibility: hidden;">1</sup>`;
+            R2Mostrar += `<sup style="visibility: hidden;">1</sup>`;
+            ResultadoMostrar = `<sup style="visibility: hidden;">1</sup>`;
+            console.log("hubo acarreo inicial");
+            acarreoAtras = true;
+        }
         let aux = sumarDosNumerosBinarios(n2,acarreo),
             suma = aux.resultado;
             aux = sumarDosNumerosBinarios(suma,n1);
             suma = aux.resultado;
+            if(aux.acarreo == 1){
+                N1Mostrar = `<sup style="visibility: hidden;">1</sup>` + N1Mostrar;
+                N2Mostrar = `<sup style="visibility: hidden;">1</sup>` + N2Mostrar;
+                R1Mostrar = `<sup>1</sup>` + suma + R1Mostrar;
+                R2Mostrar = `<sup style="visibility: hidden;">1</sup>` + R2Mostrar;
+                ResultadoMostrar = `<sup style="visibility: hidden;">1</sup>` + ResultadoMostrar;
+                acarreoAdelante = true;
+                console.log("hubo acarreo adelante");
+            }else{
+                R1Mostrar = suma + R1Mostrar;
+            }
             let acarreoFinal1 = aux.acarreo;
         if(acarreoFinal1 == "1"){
             aux = sumarDosNumerosBinarios(suma,"0011");
             suma = aux.resultado;
-            acarreoFinal2 = aux.acarreo;
+            if(acarreoAdelante){
+                let indice = R2Mostrar.indexOf("</sup>") + 5;
+                R2Mostrar = R2Mostrar.substring(0,indice+1)+"0011"+R2Mostrar.substring(indice+1)
+            }else{
+                R2Mostrar = "0011" + R2Mostrar;
+            }
         }else{
             aux = restarDosNumerosBinarios(suma,"0011");
             suma = aux.resultado;
+            if(acarreoAdelante){
+                let indice = R2Mostrar.indexOf("</sup>") + 5;
+                R2Mostrar = R2Mostrar.substring(0,indice+1)+"1101"+R2Mostrar.substring(indice+1);
+            }else{
+                R2Mostrar = "1101" + R2Mostrar;
+            }
+        }
+        if(acarreoAdelante){
+            let indice = R2Mostrar.indexOf("</sup>") + 5;
+                ResultadoMostrar = ResultadoMostrar.substring(0,indice+1)+suma+ResultadoMostrar.substring(indice+1)
+        }else{
+            ResultadoMostrar = suma + ResultadoMostrar;
         }
         let acarreoFinal = (acarreoFinal1 == "1")? "1":"0";
+        SumaBCDEx3vectorMostrarL1.unshift(N1Mostrar);
+        SumaBCDEx3vectorMostrarL2.unshift(N2Mostrar);
+        SumaBCDEx3vectorMostrarL3.unshift(R1Mostrar);
+        SumaBCDEx3vectorMostrarL4.unshift(R2Mostrar);
+        SumaBCDEx3vectorMostrarL5.unshift(ResultadoMostrar);
         return {resultado:suma,acarreoFinal};
     } 
 }
 
+var SumaBCDEx3vectorMostrarL1 = [];
+var SumaBCDEx3vectorMostrarL2 = [];
+var SumaBCDEx3vectorMostrarL3 = [];
+var SumaBCDEx3vectorMostrarL4 = [];
+var SumaBCDEx3vectorMostrarL5 = [];
+
 function sumarDosNumerosBCDEx3(n1,n2){
+    SumaBCDEx3vectorMostrarL1 = [];
+    SumaBCDEx3vectorMostrarL2 = [];
+    SumaBCDEx3vectorMostrarL3 = [];
+    SumaBCDEx3vectorMostrarL4 = [];
+    SumaBCDEx3vectorMostrarL5 = [];
+
     let acarreoAnterior = "0000", resultado = "";
     if(tieneComa(n1) && !tieneComa(n2)) n2 += ".";
     if(!tieneComa(n1)  && tieneComa(n2)) n1 += ".";
@@ -851,8 +1106,49 @@ function sumarDosNumerosBCDEx3(n1,n2){
         resultado = sumaAux.resultado + resultado;
         acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0001":"0000";
     }
+    let resultadoMostrar = resultado, cantGuiones = resultado.length;
+        if(acarreoAnterior === "0001" && document.getElementById("sumaBCDEx3").style.display == "block"){
+            SumaBCDEx3vectorMostrarL1.unshift(`0011<sup>1</sup>`);
+            SumaBCDEx3vectorMostrarL2.unshift(`0011<sup style="visibility:hidden;">1</sup>`);
+            SumaBCDEx3vectorMostrarL3.unshift(`0111<sup style="visibility:hidden;">1</sup>`);
+            SumaBCDEx3vectorMostrarL4.unshift(`1101<sup style="visibility:hidden;">1</sup>`);
+            SumaBCDEx3vectorMostrarL5.unshift(`0100<sup style="visibility:hidden;">1</sup>`);
+            cantGuiones+=4;
+        }
+    eliminarTodosLosHijos("pasos");
+    let elemento1 = document.createElement("p");
+    elemento1.innerHTML = SumaBCDEx3vectorMostrarL1.join(" ");
+    document.getElementById("pasos").appendChild(elemento1);
+    let elemento2 = document.createElement("p");
+    elemento2.innerHTML = SumaBCDEx3vectorMostrarL2.join(" ");
+    document.getElementById("pasos").appendChild(elemento2);
+    let elemento2_5 = document.createElement("p");
+    let i = 0;
+    while(i < cantGuiones * 2){
+        elemento2_5.innerHTML += "-";
+        i++;
+    } 
+    document.getElementById("pasos").appendChild(elemento2_5);
+    let elemento3 = document.createElement("p");
+    elemento3.innerHTML = SumaBCDEx3vectorMostrarL3.join(" ");
+    document.getElementById("pasos").appendChild(elemento3);
+    let elemento4 = document.createElement("p");
+    elemento4.innerHTML = SumaBCDEx3vectorMostrarL4.join(" ");
+    document.getElementById("pasos").appendChild(elemento4);
+    let elemento4_5 = document.createElement("p");
+    i = 0;
+    while(i < cantGuiones * 2){
+        elemento4_5.innerHTML += "-";
+        i++;
+    }
+    document.getElementById("pasos").appendChild(elemento4_5);
+    let elemento5 = document.createElement("p");
+    elemento5.innerHTML = SumaBCDEx3vectorMostrarL5.join(" ");
+    document.getElementById("pasos").appendChild(elemento5);
+    document.getElementById("pasos").style.display = "block";
     return {resultado,acarreoFinal: acarreoAnterior};
 }
+
 
 function sumaBCDEx3(){
     let numero1 = modificarEntradaBCDEx3(modificarEntrada(document.getElementById("sumaBCDEx31").value)),
@@ -891,15 +1187,31 @@ function restaBCDEx3(){
         numero2 = invertirDigitos(numero2);
         resultado = sumarDosNumerosBCDEx3(numero1,numero2);
         if(resultado.acarreoFinal == "0001"){
+            let uno = "1";
             if(!resultado.resultado.includes(".")){
-                resultado.resultado = sumarDosNumerosBCDEx3(resultado.resultado,resultado.acarreoFinal).resultado;
+                resultado.resultado = sumarDosNumerosBinariosSinMostrar(resultado.resultado,resultado.acarreoFinal).resultado;
             }else{
                 let posicionComa = resultado.resultado.indexOf(".");
                 resultado.resultado = borrarComa(resultado.resultado);
-                let suma = sumarDosNumerosBinarios(resultado.resultado,resultado.acarreoFinal);
+                let suma = sumarDosNumerosBinariosSinMostrar(resultado.resultado,resultado.acarreoFinal);
                 resultado.resultado = suma.resultado;
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
             }
+            if(resultado.resultado.includes(".")) while(uno.length < resultado.resultado.length) uno = agregar0Adelante(uno);
+            else while(uno.length < resultado.resultado.length - 1) uno = agregar0Adelante(uno);
+            let elemento = document.createElement("p");
+                elemento.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(uno).join(" ")}`;
+                document.getElementById("pasos").appendChild(elemento);
+                let elemento4_5 = document.createElement("p");
+                i = 0;
+                while(i < resultado.resultado.length * 2){
+                    elemento4_5.innerHTML += "-";
+                    i++;
+                }
+                document.getElementById("pasos").appendChild(elemento4_5);
+                let elemento2 = document.createElement("p");
+                elemento2.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(resultado.resultado).join(" ")}`;
+                document.getElementById("pasos").appendChild(elemento2);
         }
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
