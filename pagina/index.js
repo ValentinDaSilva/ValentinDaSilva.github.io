@@ -579,14 +579,16 @@ function restaBCDN(){
         numero1 = igualarNumeros(numero1,numero2).n1;
         numero2 = igualarNumeros(numero1,numero2).n2;
         numero2 = CA9(numero2);
+        console.log(numero1,numero2);
         resultado = sumarDosNumerosBCDN(numero1,numero2);
+        console.log(resultado);
         if(resultado.acarreoFinal == "0001"){
             if(!resultado.resultado.includes(".")){
                 resultado.resultado = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal).resultado;
             }else{
                 let posicionComa = resultado.resultado.indexOf(".");
                 resultado.resultado = borrarComa(resultado.resultado);
-                let suma = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreo);
+                let suma = sumarDosNumerosBCDN(resultado.resultado,resultado.acarreoFinal);
                 resultado.resultado = suma.resultado;
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
             }
@@ -600,9 +602,11 @@ function restaBCDN(){
         })
         console.log("resultado Final: ",resultadoFinal);
         if(resultado.acarreoFinal == "0001"){
-            document.getElementById("resultadoOutput9").innerHTML = "Resultado = (positivo) " + resultadoFinal;
+            document.getElementById("resultadoOutput9").innerHTML = "Resultado = " + resultadoFinal;
+            document.getElementById("resultadoOutput10").innerHTML = "(Positivo)";
         }else{
-            document.getElementById("resultadoOutput9").innerHTML = "Resultado = (negativo) " + resultadoFinal;
+            document.getElementById("resultadoOutput9").innerHTML = "Resultado = " + resultadoFinal;
+            document.getElementById("resultadoOutput10").innerHTML = "(Negativo)";
         }
 }
 
