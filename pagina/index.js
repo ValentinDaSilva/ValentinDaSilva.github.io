@@ -620,6 +620,15 @@ function sumarDosDigitosBCDN(n1,n2,acarreo){
         SumaBCDNvectorMostrarL3.unshift(R1Mostrar);
         SumaBCDNvectorMostrarL4.unshift(R2Mostrar);
         SumaBCDNvectorMostrarL5.unshift(ResultadoMostrar);
+        let auxiliar = "";
+        for(let i = 0; i < ResultadoMostrar.length; i++){
+            if(ResultadoMostrar[i] != "1"){
+                auxiliar += ResultadoMostrar[i];
+            }else if(ResultadoMostrar[i] == "1"){
+                auxiliar += "0";
+            }
+        }
+        uno.unshift(reemplazarTodaOcurrencia(auxiliar,"<sup>",`<sup style="visibility:hidden;">`));
         console.log("fin");
         return {resultado:suma,acarreoFinal};
     } 
@@ -630,6 +639,15 @@ function reemplazarPrimera(cadena, palabra1, palabra2) {
     if (indice !== -1) {
         return cadena.slice(0, indice) + palabra2 + cadena.slice(indice + palabra1.length);
     }
+}
+
+function reemplazarTodaOcurrencia(cadena, palabra1, palabra2) {
+    let indice = cadena.indexOf(palabra1);
+    while (cadena.indexOf(palabra1) !== -1) {
+        cadena = cadena.slice(0, indice) + palabra2 + cadena.slice(indice + palabra1.length);
+        console.log("entre en el bucle");
+    }
+    return cadena;
 }
 
 function tieneComa(n1){
@@ -847,7 +865,10 @@ function sumarDosNumerosBinariosSinMostrar(n1,n2){
     return {resultado,acarreo:acarreoAnterior};
 }
 
+var uno = [];
+
 function restaBCDN(){
+    uno = [];
     let numero1 = modificarEntradaBCDN(document.getElementById("restaBCDN1").value),
         numero2 = modificarEntradaBCDN(document.getElementById("restaBCDN2").value);
         numero1 = igualarNumeros(numero1,numero2).n1;
@@ -856,7 +877,6 @@ function restaBCDN(){
         resultado = sumarDosNumerosBCDN(numero1,numero2);
         console.log("resultado: ",resultado);
         if(resultado.acarreoFinal == "0001"){
-            let uno = "1";
             if(!resultado.resultado.includes(".")){
                 resultado.resultado = sumarDosNumerosBinariosSinMostrar(resultado.resultado,resultado.acarreoFinal).resultado;
             }else{
@@ -865,22 +885,21 @@ function restaBCDN(){
                 let suma = sumarDosNumerosBinariosSinMostrar(resultado.resultado,resultado.acarreoFinal);
                 resultado.resultado = suma.resultado;
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
-            }  
-                while(uno.length < resultado.resultado.length) uno = agregar0Adelante(uno);
-                if(resultado.resultado.includes(".")) uno = uno.substring(1);
-                let elemento = document.createElement("p");
-                elemento.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(uno).join(" ")}`;
-                document.getElementById("pasos").appendChild(elemento);
-                let elemento4_5 = document.createElement("p");
-                i = 0;
-                while(i < resultado.resultado.length * 2){
-                    elemento4_5.innerHTML += "-";
-                    i++;
-                }
-                document.getElementById("pasos").appendChild(elemento4_5);
-                let elemento2 = document.createElement("p");
-                elemento2.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(resultado.resultado).join(" ")}`;
-                document.getElementById("pasos").appendChild(elemento2);
+            }
+            uno[uno.length - 1] =  uno[uno.length - 1].substring(0, uno[uno.length - 1].length - 1) + "1";
+            let elemento = document.createElement("p");
+            elemento.innerHTML = uno.join(" ");
+            document.getElementById("pasos").appendChild(elemento);
+            let elemento4_5 = document.createElement("p");
+            i = 0;
+            while(i < resultado.resultado.length * 2){
+                elemento4_5.innerHTML += "-";
+                i++;
+            }
+            document.getElementById("pasos").appendChild(elemento4_5);
+            let elemento2 = document.createElement("p");
+            elemento2.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(resultado.resultado).join(" ")}`;
+            document.getElementById("pasos").appendChild(elemento2);
         }
         let resultadoFinal = "", vector;
         vector = dividirDeA4(resultado.resultado);
@@ -1045,6 +1064,16 @@ function sumarDosDigitosBCDEx3(n1,n2,acarreo){
         SumaBCDEx3vectorMostrarL3.unshift(R1Mostrar);
         SumaBCDEx3vectorMostrarL4.unshift(R2Mostrar);
         SumaBCDEx3vectorMostrarL5.unshift(ResultadoMostrar);
+        let auxiliar = "";
+        for(let i = 0; i < ResultadoMostrar.length; i++){
+            if(ResultadoMostrar[i] != "1"){
+                auxiliar += ResultadoMostrar[i];
+            }else if(ResultadoMostrar[i] == "1"){
+                auxiliar += "0";
+            }
+        }
+        uno.unshift(reemplazarTodaOcurrencia(auxiliar,"<sup>",`<sup style="visibility:hidden;">`));
+        console.log("fin");
         return {resultado:suma,acarreoFinal};
     } 
 }
@@ -1180,6 +1209,7 @@ function modificarEntradaBCDEx3(entrada){
 }
 
 function restaBCDEx3(){
+    uno = [];
     let numero1 = modificarEntradaBCDEx3(modificarEntrada((document.getElementById("restaBCDEx31").value))),
         numero2 = modificarEntradaBCDEx3(document.getElementById("restaBCDEx32").value);
         numero1 = igualarNumerosBCDEx3(numero1,numero2).n1;
@@ -1187,7 +1217,6 @@ function restaBCDEx3(){
         numero2 = invertirDigitos(numero2);
         resultado = sumarDosNumerosBCDEx3(numero1,numero2);
         if(resultado.acarreoFinal == "0001"){
-            let uno = "1";
             if(!resultado.resultado.includes(".")){
                 resultado.resultado = sumarDosNumerosBinariosSinMostrar(resultado.resultado,resultado.acarreoFinal).resultado;
             }else{
@@ -1197,12 +1226,9 @@ function restaBCDEx3(){
                 resultado.resultado = suma.resultado;
                 resultado.resultado = resultado.resultado.substr(0,posicionComa) + "." + resultado.resultado.substr(posicionComa);
             }
-            console.log(resultado.resultado)
-            while(uno.length < resultado.resultado.length) uno = agregar0Adelante(uno);
-            if(resultado.resultado.includes(".")) uno = uno.substring(1);
-            console.log(uno)
+            uno[uno.length - 1] =  uno[uno.length - 1].substring(0, uno[uno.length - 1].length - 1) + "1";
             let elemento = document.createElement("p");
-                elemento.innerHTML = `<sup style="visibility:hidden">1</sup>${dividirDeA4(uno).join(" ")}`;
+                elemento.innerHTML = uno.join(" ");
                 document.getElementById("pasos").appendChild(elemento);
                 let elemento4_5 = document.createElement("p");
                 i = 0;
