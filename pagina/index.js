@@ -1,4 +1,5 @@
 document.getElementById('Conversion').addEventListener('click', () => showContainer('conversor'));
+document.getElementById('Johnson').addEventListener('click', () => showContainer('johnson'));
 document.getElementById('Suma').addEventListener('click', () => showContainer('suma'));
 document.getElementById('Resta').addEventListener('click', () => showContainer('resta'));
 document.getElementById('Multiplicacion').addEventListener('click', () => showContainer('multiplicacion'));
@@ -8,12 +9,29 @@ document.getElementById('SumaBCDN').addEventListener('click', () => showContaine
 document.getElementById('RestaBCDN').addEventListener('click', () => showContainer('restaBCDN'));
 document.getElementById('SumaBCDEx3').addEventListener('click', () => showContainer('sumaBCDEx3'));
 document.getElementById('RestaBCDEx3').addEventListener('click', () => showContainer('restaBCDEx3'));
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        if(document.getElementById("conversor").style.display == 'block') conversion();
+        else if(document.getElementById("johnson").style.display == 'block') codigoJohnson();
+        else if(document.getElementById("suma").style.display == 'block') sumaBinaria();
+        else if(document.getElementById("resta").style.display == 'block') restaBinaria();
+        else if(document.getElementById("multiplicacion").style.display == 'block') multiplicacionBinaria();
+        else if(document.getElementById("division").style.display == 'block') dividirDosNumeros();
+        else if(document.getElementById("hamming").style.display == 'block') calcularCodigoHamming();
+        else if(document.getElementById("sumaBCDN").style.display == 'block') sumaBCDN();
+        else if(document.getElementById("restaBCDN").style.display == 'block') restaBCDN();
+        else if(document.getElementById("sumaBCDEx3").style.display == 'block') sumaBCDEx3();
+        else if(document.getElementById("restaBCDEx3").style.display == 'block') restaBCDEx3();
+    }
+});
 
 function showContainer(containerId) {
     document.getElementById('menuContainer').style.display = 'none';
     document.querySelector('.contenedorGrande').style.display = 'flex'
     document.getElementById(containerId).style.display = 'block';
     document.getElementById('Atras').style.display = 'block';
+    document.querySelector(`#${containerId} .converter input`).focus();
+    eliminarTodosLosHijos("pasos");
 }
 
 function goBackToMenu() {
@@ -258,7 +276,7 @@ function sumarDosNumerosBinarios(n1,n2){
         resultadoMostrado = `<sup><s>${acarreoAnterior}</s></sup> ${resultadoMostrado}`;
     }
     document.getElementById("pasos").style.display ="block";
-    let vector = [sumando1,sumando2,"---------------------",resultadoMostrado];
+    let vector = ["<b>Pasos de la operacion: </b>",sumando1,sumando2,"---------------------",resultadoMostrado];
     vector.forEach((elem)=>{
         let elementoP = document.createElement("p");
         elementoP.innerHTML = elem;
@@ -342,7 +360,7 @@ function multiplicarDosNumeros(n1,n2){
     n1 = borrarComa(n1);
     n2 = borrarComa(n2);
     let longitudN2 = n2.length, resultado = "0", cantCeros = 0;
-    let vectorMostrar = [`${n1}`,`X ${n2}`,"-----------------"];
+    let vectorMostrar = ["Pasos para la multiplicacion: ",`${n1}`,`X ${n2}`,"-----------------"];
     while(longitudN2 > 0){
         if(n2[longitudN2 - 1] == "1"){
             let n1ConCeros = agregarNCeros(n1,cantCeros);
@@ -459,7 +477,7 @@ function calcularCodigoHamming(numero){
         alert("Los datos de entrada no son validos");
         return "";
     }
-    let vectorMostrar = [];
+    let vectorMostrar = [`<b>Pasos para calcular codigo Hamming de ${numero}</b>`];
     let bitsTotales = numero.length, bitsParidad = 0;
     while(Math.pow(2,bitsParidad) < numero.length + bitsParidad + 1){
         bitsParidad++; bitsTotales++;
@@ -645,7 +663,6 @@ function reemplazarTodaOcurrencia(cadena, palabra1, palabra2) {
     let indice = cadena.indexOf(palabra1);
     while (cadena.indexOf(palabra1) !== -1) {
         cadena = cadena.slice(0, indice) + palabra2 + cadena.slice(indice + palabra1.length);
-        console.log("entre en el bucle");
     }
     return cadena;
 }
@@ -722,6 +739,10 @@ function sumarDosNumerosBCDN(n1,n2){
         }
             console.log("paso por sumador");
             eliminarTodosLosHijos("pasos");
+
+            let elemento0 = document.createElement("p");
+            elemento0.innerHTML = "Pasos para realizar la operacion BCDN: ";
+            document.getElementById("pasos").appendChild(elemento0);
 
             let elemento1 = document.createElement("p");
             elemento1.innerHTML = SumaBCDNvectorMostrarL1.join(" ");
@@ -1275,5 +1296,49 @@ function invertirDigitos(n1){
             resultado += ".";
         }
     }
+    return resultado;
+}
+
+function codigoJohnson(numero){
+    if(numero == undefined) numero = parseInt(document.getElementById("jonhson1").value);
+    function agregar1(cadena){
+        if (cadena.length <= 1) {
+            return cadena; // Si la cadena es de un solo carácter o está vacía, no se hace nada
+        }
+        // Mover todos los caracteres una posición a la izquierda
+        return cadena.slice(1) + "1";
+    }
+
+    function agregar0(cadena){
+        if (cadena.length <= 1) {
+            return cadena; // Si la cadena es de un solo carácter o está vacía, no se hace nada
+        }
+        // Mover todos los caracteres una posición a la izquierda
+        return cadena.slice(1) + "0";
+    }
+
+    let resultado = "0", parte1 = true, vectorMostrar = ["<b>Pasos codigo Johnson:</b>"];
+    let bitsNecesarios = Math.ceil((numero + 1) / 2);
+    while(resultado.length < bitsNecesarios){
+        resultado = agregar0Adelante(resultado);
+    }  
+    let mitad = resultado;
+    while(mitad.includes("0")) mitad = reemplazarPrimera(mitad,"0","1");
+    console.log(resultado,mitad);
+    for(let i = 1; i <= numero;  i++){
+        vectorMostrar.push(`${i-1} --> ${resultado}`);
+        resultado = (parte1)? agregar1(resultado):agregar0(resultado);
+        if(resultado == mitad) parte1 = false;
+    }
+    vectorMostrar.push(`${numero} --> ${resultado}`);
+    vectorMostrar.forEach((elem,indice)=>{
+        let elemento = elem;
+        if(indice != 0 && indice != 1) while(elemento.length < resultado.length) elemento = "0" + elemento;
+        let elementoP = document.createElement("p");
+        elementoP.innerHTML = elemento;
+        document.getElementById("pasos").appendChild(elementoP);
+    })
+    document.getElementById("pasos").style.display = "block";
+    document.getElementById("resultadoJohnson").innerHTML = `Resultado: ${resultado}`;
     return resultado;
 }

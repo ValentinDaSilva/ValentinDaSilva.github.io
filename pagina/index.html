@@ -15,6 +15,10 @@
                 <img src="assets/fotos/conversion.jpg" alt="Conversión de Sistemas Numéricos">
                 <p>Conversión de Sistemas Numéricos</p>
             </div>
+            <div class="option animate__animated animate__rotateIn" id="Johnson">
+                <img src="assets/fotos/johnson.png" alt="Conversión de decimal a johnson">
+                <p>Codigo Johnson</p>
+            </div>
             <div class="option animate__animated animate__rotateIn animate__rotateIn" id="Suma">
                 <img src="assets/fotos/suma.jpg" alt="Suma Binaria">
                 <p>Suma Binaria</p>
@@ -81,9 +85,17 @@
                 <p id="resultadoOutput"></p>
             </div>
         </div>
+        <div class="container johnson" style="display: none;" id="johnson">
+            <h1>Conversor a Johnson</h1>
+            <div class="converter">
+                <h2>Ingresa un número en decimal</h2>
+                <input type="text" id="jonhson1" placeholder="Ingresa un número">
+                <button onclick="codigoJohnson()">Convertir</button>
+                <p id="resultadoJohnson"></p>
+            </div>
+        </div>
         <div class="container suma" style="display: none;" id="suma">
             <h1>Sumar dos numeros en binario</h1>
-            
             <div class="converter">
                 <h2>Ingresa el primer numero</h2>
                 <input type="text" id="numeroInput1" placeholder="Ingresa un número">
@@ -109,10 +121,7 @@
             <h1>Multiplicar dos numeros en binario</h1>
             <div class="converter">
                 <h2>Ingresa el primer numero</h2>
-                <div style="display:flex" class="entradaMultiplicacion">
-                    <!-- <div>+</div> -->
                     <input type="text" id="numeroMultiplicar1" placeholder="Ingresa un número">
-                </div>
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="numeroMultiplicar2" placeholder="Ingresa un número">
                 <button onclick="multiplicacionBinaria()">Multiplicar</button>
@@ -123,10 +132,7 @@
             <h1>Dividir dos numeros en binario</h1>
             <div class="converter">
                 <h2>Ingresa el primer numero</h2>
-                <div style="display:flex" class="entradaMultiplicacion">
-                    <!-- <div>+</div> -->
-                    <input type="text" id="numeroDividir1" placeholder="Ingresa un número">
-                </div>
+                <input type="text" id="numeroDividir1" placeholder="Ingresa un número">
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="numeroDividir2" placeholder="Ingresa un número">
                 <button onclick="dividirDosNumeros()">Dividir</button>
