@@ -1403,3 +1403,48 @@ function codigoGray(numero){
     document.getElementById("pasos").style.display = "block";
     return resultado;
 }
+
+function division(divisor,dividendo){
+    let indice = 0, numero = divisor[indice], resultado = "", ultimoIndice = false;
+    do{
+        while(parseInt(numero) < parseInt(dividendo) && indice < divisor.length && !ultimoIndice){
+                indice++;
+                numero+=divisor[indice];
+                resultado+="0";
+            if(indice == divisor.length - 1) ultimoIndice = true;
+        }
+        if(!ultimoIndice){
+            resultado+="1";
+            let resta = restarDosNumerosBinarios(numero,dividendo).resultado;
+            indice++; resta+=divisor[indice]; 
+            numero = resta;
+        }
+        if(indice == divisor.length - 1){
+            ultimoIndice = true;
+            if(parseInt(numero) < parseInt(dividendo)) resultado += "0";
+            else resultado+="1";
+        }
+    }while(!ultimoIndice);
+    console.log("numero: ",numero,"resultado: ",resultado)
+    if(parseInt(numero) != 0){
+        resultado+=".";
+        divisor+=" ";
+        indice++;
+        numero+="0";
+        let contador = 0;
+        do{
+            while(parseInt(numero) < parseInt(dividendo) && indice < divisor.length){
+                divisor+=" ";
+                indice++;
+                numero+="0";
+                resultado+="0";
+            }
+            resultado+="1";
+            contador++;
+            let resta = restarDosNumerosBinarios(numero,dividendo).resultado;
+            indice++; resta+="0"; 
+            numero = resta;
+        }while(contador<2);
+    }
+    return resultado;
+}
