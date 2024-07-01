@@ -537,8 +537,8 @@ function calcularCodigoHamming(numero){
         document.getElementById("pasos").appendChild(elementoP);
     })
     document.getElementById("pasos").style.display = "block";
-    document.getElementById("resultadoOutput7").innerHTML = "Resultado: " + numFinal.reverse().join(' ');
-    return numFinal.reverse().join(' ');
+    document.getElementById("resultadoOutput7").innerHTML = "Resultado: " + numFinal.join(' ');
+    return numFinal.join(' ');
 }
 
 function sumarDosDigitosBCDN(n1,n2,acarreo){
