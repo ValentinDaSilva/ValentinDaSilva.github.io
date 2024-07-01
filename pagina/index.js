@@ -1416,9 +1416,9 @@ function division(dividendo,divisor){
             resultado+="0";
             if(indice == dividendo.length - 1){
                 ultimoIndice = true;
+                grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
+                grid.querySelector(".operaciones").appendChild(crearP(numero));
             } 
-            grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
-            grid.querySelector(".operaciones").appendChild(crearP(numero));
         }
         if(!ultimoIndice){
             resultado+="1";
@@ -1432,7 +1432,7 @@ function division(dividendo,divisor){
 
             let resta = restarDosNumerosBinarios(numero,divisor).resultado;
             indice++; resta+=dividendo[indice]; 
-            numero = resta;
+            
             auxiliarTotal = dividendo.substr(0,indice + 1);
             if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
             else auxiliarResta = numero.toString();
@@ -1442,29 +1442,44 @@ function division(dividendo,divisor){
         if(indice == dividendo.length - 1){
             ultimoIndice = true;
             if(parseInt(numero) < parseInt(divisor)) resultado += "0";
-            else resultado+="1";
+            else{
+              resultado+="1";
+              let auxiliarTotal = dividendo.substr(0,indice + 1), auxiliarDivisor = divisor, barras = "", auxiliarResta;
+              while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = " " + auxiliarDivisor;
+              while(barras.length < parseInt(numero).toString().length) barras = "-" + barras;
+              while(barras.length < auxiliarTotal.length) barras = " " + barras;
+              grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
+              grid.querySelector(".operaciones").appendChild(crearP(barras));
+              let resta = restarDosNumerosBinarios(parseInt(numero).toString(),divisor).resultado;
+              numero = resta;
+              auxiliarTotal = dividendo.substr(0,indice + 1);
+              if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
+              else auxiliarResta = numero.toString();
+              while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
+              grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
+            } 
         }
     }while(!ultimoIndice);
-    grid.querySelector(".resultado").appendChild(crearP(parseInt(resultado).toString()));
+    grid.querySelector(".resultado").appendChild(crearP(parseFloat(resultado).toString()));
     if(parseInt(numero) != 0){
         resultado+=".";
-        dividendo+=" ";
+        dividendo+="0";
         indice++;
-        numero+="0";
+        grid.querySelector(".dividendo p").innerHTML = dividendo;
+        numero = parseInt(numero) + "0";
+        let auxiliarTotal = dividendo.substr(0,indice + 1);
+        while(numero.length < auxiliarTotal.length) numero = " " + numero;
+        grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
+        grid.querySelector(".operaciones").appendChild(crearP(numero));
         let contador = 0;
         do{
-            console.log("numero: ",numero,"resultado: ",resultado)
             while(parseInt(numero) < parseInt(divisor)){
-                dividendo+=" ";
+                dividendo+="0";
                 indice++;
-                numero+="0";
-                resultado+="0";
+                grid.querySelector(".dividendo p").innerHTML = dividendo;
+                numero = parseInt(numero) + "0";
+                
             }
-            resultado+="1";
-            contador++;
-            let resta = restarDosNumerosBinarios(numero,divisor).resultado;
-            indice++; resta+="0"; 
-            numero = resta;
         }while(contador<2);
     }
     eliminarTodosLosHijos("pasos");
