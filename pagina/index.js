@@ -1402,7 +1402,7 @@ function division(dividendo,divisor){
             resultado+="0";
             if(indice == dividendo.length - 1){
                 ultimoIndice = true;
-                grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
+                if(grid.querySelector(".operaciones").lastChild)grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
                 grid.querySelector(".operaciones").appendChild(crearP(numero));
             } 
         }
@@ -1415,14 +1415,13 @@ function division(dividendo,divisor){
             while(barras.length < auxiliarTotal.length) barras = " " + barras;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
             grid.querySelector(".operaciones").appendChild(crearP(barras));
+            
             let resta = restarDosNumerosBinarios(numero,divisor).resultado;
-            if(parseInt(resta) != 0) auxiliarResta = parseInt(resta).toString();
-            else auxiliarResta = resta.toString();
-            indice++; resta+=dividendo[indice];
-            auxiliarResta += dividendo[indice];
+            indice++; resta+=dividendo[indice]; 
             numero = resta;
             auxiliarTotal = dividendo.substr(0,indice + 1);
-            console.log("resta: ",auxiliarResta);
+            if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
+            else auxiliarResta = numero.toString();
             while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
         }
@@ -1458,9 +1457,11 @@ function division(dividendo,divisor){
         while(numero.length < auxiliarTotal.length) numero = " " + numero;
         grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
         grid.querySelector(".operaciones").appendChild(crearP(numero));
-        let contador = 0;
+        let contador = 0, vueltas = 0;
         do{
-            while(parseInt(numero) < parseInt(divisor)){
+            vueltas++;
+            let contadorInterno = 0;
+            while(parseInt(numero) < parseInt(divisor) && parseInt(numero) != 0){
                 //Manejo del dividendo
                 dividendo+="0";
                 indice++;
@@ -1474,6 +1475,7 @@ function division(dividendo,divisor){
                 grid.querySelector(".operaciones").appendChild(crearP(auxiliarNumero));
                 //Resultado
                 resultado+="0";
+                contadorInterno++;
             }
             resultado+="1";
             contador++;
@@ -1496,7 +1498,7 @@ function division(dividendo,divisor){
             let auxiliarResta = parseInt(numero).toString();
             while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
-        }while(contador<3);
+        }while(contador<3 && parseInt(numero) != 0);
     }
     eliminarTodosLosHijos("pasos");
     grid.querySelector(".resultado").appendChild(crearP(parseFloat(resultado).toString()));
