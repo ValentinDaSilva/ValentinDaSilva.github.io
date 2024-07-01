@@ -1,5 +1,6 @@
 document.getElementById('Conversion').addEventListener('click', () => showContainer('conversor'));
 document.getElementById('Johnson').addEventListener('click', () => showContainer('johnson'));
+document.getElementById('Gray').addEventListener('click', () => showContainer('gray'));
 document.getElementById('Suma').addEventListener('click', () => showContainer('suma'));
 document.getElementById('Resta').addEventListener('click', () => showContainer('resta'));
 document.getElementById('Multiplicacion').addEventListener('click', () => showContainer('multiplicacion'));
@@ -13,6 +14,7 @@ document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         if(document.getElementById("conversor").style.display == 'block') conversion();
         else if(document.getElementById("johnson").style.display == 'block') codigoJohnson();
+        else if(document.getElementById("gray").style.display == 'block') codigoGray();
         else if(document.getElementById("suma").style.display == 'block') sumaBinaria();
         else if(document.getElementById("resta").style.display == 'block') restaBinaria();
         else if(document.getElementById("multiplicacion").style.display == 'block') multiplicacionBinaria();
@@ -360,7 +362,7 @@ function multiplicarDosNumeros(n1,n2){
     n1 = borrarComa(n1);
     n2 = borrarComa(n2);
     let longitudN2 = n2.length, resultado = "0", cantCeros = 0;
-    let vectorMostrar = ["Pasos para la multiplicacion: ",`${n1}`,`X ${n2}`,"-----------------"];
+    let vectorMostrar = ["<b>Pasos para la multiplicacion: </b>",`${n1}`,`X ${n2}`,"-----------------"];
     while(longitudN2 > 0){
         if(n2[longitudN2 - 1] == "1"){
             let n1ConCeros = agregarNCeros(n1,cantCeros);
@@ -389,13 +391,21 @@ function multiplicarDosNumeros(n1,n2){
     eliminarTodosLosHijos("pasos");
     vectorMostrar.forEach((elem,indice)=>{
         let elemento = elem;
-        if(indice != 0 && indice != 1) while(elemento.length < resultado.length) elemento = "0" + elemento;
+        console.log("indice", indice)
+        if(indice > 3 && EntradaBinaria(elemento)) while(elemento.length < resultado.length) elemento = "0" + elemento;
         let elementoP = document.createElement("p");
         elementoP.innerHTML = elemento;
         document.getElementById("pasos").appendChild(elementoP);
     })
     document.getElementById("pasos").style.display = "block";
     return resultado;
+}
+
+function EntradaBinaria(cadena){
+    for(let i = 0; i < cadena.length; i++){
+        if(cadena[i] != "0" && cadena[i]!="1") return false;
+    }
+    return true;
 }
 
 function eliminarTodosLosHijos(ID){
@@ -741,7 +751,7 @@ function sumarDosNumerosBCDN(n1,n2){
             eliminarTodosLosHijos("pasos");
 
             let elemento0 = document.createElement("p");
-            elemento0.innerHTML = "Pasos para realizar la operacion BCDN: ";
+            elemento0.innerHTML = "<b>Pasos para realizar la operacion BCDN: </b>";
             document.getElementById("pasos").appendChild(elemento0);
 
             let elemento1 = document.createElement("p");
@@ -1095,6 +1105,7 @@ function sumarDosDigitosBCDEx3(n1,n2,acarreo){
         }
         uno.unshift(reemplazarTodaOcurrencia(auxiliar,"<sup>",`<sup style="visibility:hidden;">`));
         console.log("fin");
+        console.log("Resultado: ", suma)
         return {resultado:suma,acarreoFinal};
     } 
 }
@@ -1153,6 +1164,7 @@ function sumarDosNumerosBCDEx3(n1,n2){
             contador++;
         }
         let sumaAux = sumarDosDigitosBCDEx3(digitoN1,digitoN2,acarreoAnterior);
+        console.log("Suma Aux", sumaAux)
         resultado = sumaAux.resultado + resultado;
         acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0001":"0000";
     }
@@ -1166,6 +1178,11 @@ function sumarDosNumerosBCDEx3(n1,n2){
             cantGuiones+=4;
         }
     eliminarTodosLosHijos("pasos");
+
+    let elemento0 = document.createElement("p");
+    elemento0.innerHTML = "<b>Pasos para realizar la operacion BCD-Ex3: </b>";
+    document.getElementById("pasos").appendChild(elemento0);
+
     let elemento1 = document.createElement("p");
     elemento1.innerHTML = SumaBCDEx3vectorMostrarL1.join(" ");
     document.getElementById("pasos").appendChild(elemento1);
@@ -1209,7 +1226,7 @@ function sumaBCDEx3(){
         vector.forEach((elem)=>{
             resultadoFinal += (elem+" ");
         })
-        if(resultado.acarreoFinal == "0001") resultadoFinal = resultado.acarreoFinal + " " + resultadoFinal;
+        if(resultado.acarreoFinal == "0001") resultadoFinal = "0100" + " " + resultadoFinal;
         document.getElementById("resultadoOutput11").innerHTML = "Resultado = " + resultadoFinal;
 }
 
@@ -1300,6 +1317,7 @@ function invertirDigitos(n1){
 }
 
 function codigoJohnson(numero){
+    eliminarTodosLosHijos("pasos");
     if(numero == undefined) numero = parseInt(document.getElementById("jonhson1").value);
     function agregar1(cadena){
         if (cadena.length <= 1) {
@@ -1340,5 +1358,48 @@ function codigoJohnson(numero){
     })
     document.getElementById("pasos").style.display = "block";
     document.getElementById("resultadoJohnson").innerHTML = `Resultado: ${resultado}`;
+    return resultado;
+}
+
+function binarioACodigoGray(binario) {
+    // Convertir el número binario (en formato string) a un número entero
+    let binarioEntero = parseInt(binario, 2);
+
+    // Aplicar la fórmula de conversión a código Gray
+    let grayEntero = binarioEntero ^ (binarioEntero >> 1);
+
+    // Convertir el número Gray (entero) a una cadena binaria
+    let grayBinario = grayEntero.toString(2);
+
+    // Rellenar con ceros a la izquierda para que tenga la misma longitud que la entrada binaria
+    while (grayBinario.length < binario.length) {
+        grayBinario = '0' + grayBinario;
+    }
+
+    return grayBinario;
+}
+
+function codigoGray(numero){
+    if(numero == undefined) numero = document.getElementById("gray1").value;
+    eliminarTodosLosHijos("pasos");
+    let resultado = binarioACodigoGray(convertirDecimalAOtro(numero,2));
+    let vectorMostrar = ["Tabla de codigo Gray: "];
+    document.getElementById("resultadoGray").innerHTML = `Resultado: ${resultado}`;
+    for(let i = 0 ; i <= parseInt(numero); i++){
+        let iString = i.toString();
+        while(iString.length < numero.length) iString = agregar0Adelante(iString);
+        let numeroEnBinario = convertirDecimalAOtro(iString,2);
+        let auxResultado = binarioACodigoGray(numeroEnBinario);
+        while(auxResultado.length < resultado.length) auxResultado = agregar0Adelante(auxResultado);
+        vectorMostrar.push(`${iString} --> ${auxResultado}`);
+    }
+    vectorMostrar.forEach((elem,indice)=>{
+        let elemento = elem;
+        if(indice != 0 && indice != 1) while(elemento.length < resultado.length) elemento = "0" + elemento;
+        let elementoP = document.createElement("p");
+        elementoP.innerHTML = elemento;
+        document.getElementById("pasos").appendChild(elementoP);
+    })
+    document.getElementById("pasos").style.display = "block";
     return resultado;
 }
