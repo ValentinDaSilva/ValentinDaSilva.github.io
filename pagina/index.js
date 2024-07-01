@@ -1414,14 +1414,17 @@ function division(dividendo,divisor){
             indice++;
             numero+=dividendo[indice];
             resultado+="0";
-            if(indice == dividendo.length - 1) ultimoIndice = true;
+            if(indice == dividendo.length - 1){
+                ultimoIndice = true;
+            } 
+            grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
+            grid.querySelector(".operaciones").appendChild(crearP(numero));
         }
         if(!ultimoIndice){
             resultado+="1";
             //IntefazGrafica
             let auxiliarTotal = dividendo.substr(0,indice + 1), auxiliarDivisor = divisor, barras = "", auxiliarResta;
             while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = " " + auxiliarDivisor;
-            console.log(numero,"numero")
             while(barras.length < parseInt(numero).toString().length) barras = "-" + barras;
             while(barras.length < auxiliarTotal.length) barras = " " + barras;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
@@ -1431,7 +1434,8 @@ function division(dividendo,divisor){
             indice++; resta+=dividendo[indice]; 
             numero = resta;
             auxiliarTotal = dividendo.substr(0,indice + 1);
-            auxiliarResta = parseInt(numero).toString();
+            if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
+            else auxiliarResta = numero.toString();
             while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
         }
@@ -1442,7 +1446,6 @@ function division(dividendo,divisor){
         }
     }while(!ultimoIndice);
     grid.querySelector(".resultado").appendChild(crearP(parseInt(resultado).toString()));
-    console.log("numero: ",numero,"resultado: ",resultado)
     if(parseInt(numero) != 0){
         resultado+=".";
         dividendo+=" ";
