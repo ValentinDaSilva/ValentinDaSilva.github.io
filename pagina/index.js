@@ -391,7 +391,6 @@ function multiplicarDosNumeros(n1,n2){
     eliminarTodosLosHijos("pasos");
     vectorMostrar.forEach((elem,indice)=>{
         let elemento = elem;
-        console.log("indice", indice)
         if(indice > 3 && EntradaBinaria(elemento)) while(elemento.length < resultado.length) elemento = "0" + elemento;
         let elementoP = document.createElement("p");
         elementoP.innerHTML = elemento;
@@ -586,7 +585,6 @@ function sumarDosDigitosBCDN(n1,n2,acarreo){
             R1Mostrar += `<sup style="visibility: hidden;">1</sup>`;
             R2Mostrar += `<sup style="visibility: hidden;">1</sup>`;
             ResultadoMostrar = `<sup style="visibility: hidden;">1</sup>`;
-            console.log("hubo acarreo inicial");
             acarreoAtras = true;
         }
         let aux = sumarDosNumerosBinarios(n2,acarreo),
@@ -601,7 +599,6 @@ function sumarDosDigitosBCDN(n1,n2,acarreo){
                 R2Mostrar = `<sup style="visibility: hidden;">1</sup>` + R2Mostrar;
                 ResultadoMostrar = `<sup style="visibility: hidden;">1</sup>` + ResultadoMostrar;
                 acarreoAdelante = true;
-                console.log("hubo acarreo adelante");
             }else{
                 R1Mostrar = suma + R1Mostrar;
             }
@@ -626,7 +623,6 @@ function sumarDosDigitosBCDN(n1,n2,acarreo){
                 }
             }
         if(acarreoAdelante){
-            console.log("Linea 602");
             let indice = R2Mostrar.indexOf("</sup>") + 5;
                 ResultadoMostrar = ResultadoMostrar.substring(0,indice+1)+suma+ResultadoMostrar.substring(indice+1)
         }else{
@@ -642,7 +638,6 @@ function sumarDosDigitosBCDN(n1,n2,acarreo){
             R2Mostrar = `<sup style="visibility: hidden;">1</sup>` + R2Mostrar;
             ResultadoMostrar = `<sup>1</sup>` + ResultadoMostrar;
         }
-        console.log("ResultadoAMostrar: ",ResultadoMostrar)
         SumaBCDNvectorMostrarL1.unshift(N1Mostrar);
         SumaBCDNvectorMostrarL2.unshift(N2Mostrar);
         SumaBCDNvectorMostrarL3.unshift(R1Mostrar);
@@ -657,7 +652,6 @@ function sumarDosDigitosBCDN(n1,n2,acarreo){
             }
         }
         uno.unshift(reemplazarTodaOcurrencia(auxiliar,"<sup>",`<sup style="visibility:hidden;">`));
-        console.log("fin");
         return {resultado:suma,acarreoFinal};
     } 
 }
@@ -747,7 +741,6 @@ function sumarDosNumerosBCDN(n1,n2){
             SumaBCDNvectorMostrarL5.unshift(`0001<sup style="visibility:hidden;">1</sup>`);
             cantGuiones+=4;
         }
-            console.log("paso por sumador");
             eliminarTodosLosHijos("pasos");
 
             let elemento0 = document.createElement("p");
@@ -906,7 +899,6 @@ function restaBCDN(){
         numero2 = igualarNumeros(numero1,numero2).n2;
         numero2 = CA9(numero2);
         resultado = sumarDosNumerosBCDN(numero1,numero2);
-        console.log("resultado: ",resultado);
         if(resultado.acarreoFinal == "0001"){
             if(!resultado.resultado.includes(".")){
                 resultado.resultado = sumarDosNumerosBinariosSinMostrar(resultado.resultado,resultado.acarreoFinal).resultado;
@@ -1045,7 +1037,6 @@ function sumarDosDigitosBCDEx3(n1,n2,acarreo){
             R1Mostrar += `<sup style="visibility: hidden;">1</sup>`;
             R2Mostrar += `<sup style="visibility: hidden;">1</sup>`;
             ResultadoMostrar = `<sup style="visibility: hidden;">1</sup>`;
-            console.log("hubo acarreo inicial");
             acarreoAtras = true;
         }
         let aux = sumarDosNumerosBinarios(n2,acarreo),
@@ -1059,7 +1050,6 @@ function sumarDosDigitosBCDEx3(n1,n2,acarreo){
                 R2Mostrar = `<sup style="visibility: hidden;">1</sup>` + R2Mostrar;
                 ResultadoMostrar = `<sup style="visibility: hidden;">1</sup>` + ResultadoMostrar;
                 acarreoAdelante = true;
-                console.log("hubo acarreo adelante");
             }else{
                 R1Mostrar = suma + R1Mostrar;
             }
@@ -1104,8 +1094,6 @@ function sumarDosDigitosBCDEx3(n1,n2,acarreo){
             }
         }
         uno.unshift(reemplazarTodaOcurrencia(auxiliar,"<sup>",`<sup style="visibility:hidden;">`));
-        console.log("fin");
-        console.log("Resultado: ", suma)
         return {resultado:suma,acarreoFinal};
     } 
 }
@@ -1164,7 +1152,6 @@ function sumarDosNumerosBCDEx3(n1,n2){
             contador++;
         }
         let sumaAux = sumarDosDigitosBCDEx3(digitoN1,digitoN2,acarreoAnterior);
-        console.log("Suma Aux", sumaAux)
         resultado = sumaAux.resultado + resultado;
         acarreoAnterior = (sumaAux.acarreoFinal == "1")? "0001":"0000";
     }
@@ -1342,7 +1329,6 @@ function codigoJohnson(numero){
     }  
     let mitad = resultado;
     while(mitad.includes("0")) mitad = reemplazarPrimera(mitad,"0","1");
-    console.log(resultado,mitad);
     for(let i = 1; i <= numero;  i++){
         vectorMostrar.push(`${i-1} --> ${resultado}`);
         resultado = (parte1)? agregar1(resultado):agregar0(resultado);
@@ -1429,13 +1415,14 @@ function division(dividendo,divisor){
             while(barras.length < auxiliarTotal.length) barras = " " + barras;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
             grid.querySelector(".operaciones").appendChild(crearP(barras));
-
             let resta = restarDosNumerosBinarios(numero,divisor).resultado;
-            indice++; resta+=dividendo[indice]; 
-            
+            if(parseInt(resta) != 0) auxiliarResta = parseInt(resta).toString();
+            else auxiliarResta = resta.toString();
+            indice++; resta+=dividendo[indice];
+            auxiliarResta += dividendo[indice];
+            numero = resta;
             auxiliarTotal = dividendo.substr(0,indice + 1);
-            if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
-            else auxiliarResta = numero.toString();
+            console.log("resta: ",auxiliarResta);
             while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
         }
@@ -1443,6 +1430,7 @@ function division(dividendo,divisor){
             ultimoIndice = true;
             if(parseInt(numero) < parseInt(divisor)) resultado += "0";
             else{
+              console.log(numero);
               resultado+="1";
               let auxiliarTotal = dividendo.substr(0,indice + 1), auxiliarDivisor = divisor, barras = "", auxiliarResta;
               while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = " " + auxiliarDivisor;
@@ -1471,7 +1459,6 @@ function division(dividendo,divisor){
         grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
         grid.querySelector(".operaciones").appendChild(crearP(numero));
         let contador = 0;
-        console.log("numero: ", numero);
         do{
             while(parseInt(numero) < parseInt(divisor)){
                 //Manejo del dividendo
@@ -1501,14 +1488,12 @@ function division(dividendo,divisor){
             while(barras.length < auxiliarTotal.length) barras = " " + barras;
             grid.querySelector(".operaciones").appendChild(crearP(barras));
             //Resta resultado
-            console.log("aca", (parseInt(numero).toString()),divisor);
             let resta = restarDosNumerosBinarios(parseInt(numero).toString(),divisor).resultado;
             dividendo+="0"; indice++; auxiliarTotal = dividendo.substr(0,indice + 1);
             grid.querySelector(".dividendo p").innerHTML = dividendo;
             resta += "0"; auxiliarTotal = dividendo.substr(0,indice + 1);
             numero = parseInt(resta).toString();
             let auxiliarResta = parseInt(numero).toString();
-            console.log("Auxiliar resta: ",auxiliarResta,auxiliarTotal);
             while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
         }while(contador<3);
