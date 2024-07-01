@@ -455,21 +455,15 @@ function dividirDosNumeros(bin1, bin2) {
     
 	if(bin1 === undefined) bin1 = parseFloat(document.getElementById("numeroDividir1").value);
     if(bin2 === undefined) bin2 = parseFloat(document.getElementById("numeroDividir2").value);
-    // Convertimos los números binarios a decimales
-    
-    let decimal1 = binaryToDecimal(bin1);
-    let decimal2 = binaryToDecimal(bin2);
+    console.log(bin1.toString(),bin2.toString());
+    while(bin1.toString().includes(".") || bin2.toString().includes(".")){
+        bin1 = bin1 * 10;
+        bin2 = bin2 * 10;
+    }
+    let resultado = division(bin1.toString(),bin2.toString());
 
-    // Realizamos la división
-    let resultDecimal = decimal1 / decimal2;
-
-    // Redondeamos el resultado a dos decimales
-    resultDecimal = parseFloat(resultDecimal.toFixed(2));
-
-    // Convertimos el resultado de nuevo a binario
-    let resultBinary = decimalToBinary(resultDecimal);
-	 document.getElementById("resultadoOutput6").innerHTML = "Resultado: "+resultBinary;
-    return resultBinary;
+	document.getElementById("resultadoOutput6").innerHTML = "Resultado: "+resultado;
+    return resultado;
 }
 
 function esPotenciaDeDos(n) {
