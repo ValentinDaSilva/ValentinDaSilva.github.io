@@ -1404,47 +1404,89 @@ function codigoGray(numero){
     return resultado;
 }
 
-function division(divisor,dividendo){
-    let indice = 0, numero = divisor[indice], resultado = "", ultimoIndice = false;
+function division(dividendo,divisor){
+    let grid = createGrid();
+    grid.querySelector(".dividendo").appendChild(crearP(dividendo));
+    grid.querySelector(".divisor").appendChild(crearP(divisor));
+    let indice = 0, numero = dividendo[indice], resultado = "", ultimoIndice = false;
     do{
-        while(parseInt(numero) < parseInt(dividendo) && indice < divisor.length && !ultimoIndice){
-                indice++;
-                numero+=divisor[indice];
-                resultado+="0";
-            if(indice == divisor.length - 1) ultimoIndice = true;
+        while(parseInt(numero) < parseInt(divisor) && indice < dividendo.length && !ultimoIndice){
+            indice++;
+            numero+=dividendo[indice];
+            resultado+="0";
+            if(indice == dividendo.length - 1) ultimoIndice = true;
         }
         if(!ultimoIndice){
             resultado+="1";
-            let resta = restarDosNumerosBinarios(numero,dividendo).resultado;
-            indice++; resta+=divisor[indice]; 
+            //IntefazGrafica
+            let auxiliarTotal = dividendo.substr(0,indice + 1), auxiliarDivisor = divisor, barras = "", auxiliarResta;
+            while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = " " + auxiliarDivisor;
+            console.log(numero,"numero")
+            while(barras.length < parseInt(numero).toString().length) barras = "-" + barras;
+            while(barras.length < auxiliarTotal.length) barras = " " + barras;
+            grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
+            grid.querySelector(".operaciones").appendChild(crearP(barras));
+
+            let resta = restarDosNumerosBinarios(numero,divisor).resultado;
+            indice++; resta+=dividendo[indice]; 
             numero = resta;
+            auxiliarTotal = dividendo.substr(0,indice + 1);
+            auxiliarResta = parseInt(numero).toString();
+            while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
+            grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
         }
-        if(indice == divisor.length - 1){
+        if(indice == dividendo.length - 1){
             ultimoIndice = true;
-            if(parseInt(numero) < parseInt(dividendo)) resultado += "0";
+            if(parseInt(numero) < parseInt(divisor)) resultado += "0";
             else resultado+="1";
         }
     }while(!ultimoIndice);
+    grid.querySelector(".resultado").appendChild(crearP(parseInt(resultado).toString()));
     console.log("numero: ",numero,"resultado: ",resultado)
     if(parseInt(numero) != 0){
         resultado+=".";
-        divisor+=" ";
+        dividendo+=" ";
         indice++;
         numero+="0";
         let contador = 0;
         do{
-            while(parseInt(numero) < parseInt(dividendo) && indice < divisor.length){
-                divisor+=" ";
+            console.log("numero: ",numero,"resultado: ",resultado)
+            while(parseInt(numero) < parseInt(divisor)){
+                dividendo+=" ";
                 indice++;
                 numero+="0";
                 resultado+="0";
             }
             resultado+="1";
             contador++;
-            let resta = restarDosNumerosBinarios(numero,dividendo).resultado;
+            let resta = restarDosNumerosBinarios(numero,divisor).resultado;
             indice++; resta+="0"; 
             numero = resta;
         }while(contador<2);
     }
+    eliminarTodosLosHijos("pasos");
+    document.getElementById("pasos").style.display = "block";
+    document.getElementById("pasos").appendChild(grid);
     return resultado;
+}
+
+function createGrid() {
+    let gridContainer = document.createElement('div');
+    gridContainer.classList.add('grid-container');
+    gridContainer.id = 'division';
+
+    // Crear los elementos de la grid
+    const items = ['dividendo', 'divisor', 'operaciones', 'resultado'];
+    items.forEach(item => {
+        const gridItem = document.createElement('div');
+        gridItem.classList.add('grid-item', item);
+        gridContainer.appendChild(gridItem);
+    });
+    return gridContainer;
+}
+
+function crearP(texto){
+    let elemento = document.createElement("p");
+    elemento.innerHTML = texto;
+    return elemento;
 }

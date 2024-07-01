@@ -89,6 +89,46 @@ p {
     align-items: center;
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: min-content min-content;
+    grid-template-rows: min-content min-content;
+    gap: 10px;
+}
+
+.grid-container .grid-item {
+    padding: 5px;
+    text-align: center;
+}
+
+.grid-container  .dividendo {
+    background-color: lightblue;
+}
+
+.grid-container  .divisor {
+    background-color: lightgreen;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.grid-container .operaciones {
+    background-color: lightcoral;
+    text-align: left;
+}
+
+.grid-container .resultado {
+    background-color: lightyellow;
+}
+
+#pasos p{
+    margin: 0;
+    font-size: 2em;
+    font-family: 'Courier New', Courier, monospace; /* Fuente monoespaciada */
+    letter-spacing: 2px; /* Separación entre caracteres */
+    text-align: left; /* Centra el texto dentro del contenedor */
+    white-space: pre-wrap; 
+}
+
 
 @media (min-width: 700px) {
     body {
