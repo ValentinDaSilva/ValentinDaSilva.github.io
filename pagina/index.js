@@ -1716,7 +1716,7 @@ function regla1Simplificacion(expresion){
     let hiceAlgunaOperacion = false;
     vector = eliminarRepetidos(vector);
     vector.forEach((elementoExterno, indiceExterno)=>{
-        // console.log(elementoExterno);
+        console.log(elementoExterno);
         vector.forEach((elementoInterno,indiceInterno)=>{
             if(indiceExterno != indiceInterno){
                 console.log("   ",elementoInterno);
