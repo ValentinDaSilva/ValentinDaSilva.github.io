@@ -1681,31 +1681,8 @@ function eliminarCaracter(cadena, caracter) {
 }
 
 function estaComplementamenteIncluido(cadena1,cadena2){
-    let contador = 0, cantCaracteres = 0;
-    for(let i = 0 ; i < cadena1.length; i++){
-        let caracter1;
-        if(cadena1[i+1] == "'"){
-            caracter1 = cadena1[i] + cadena1[i+1];
-            i++;
-        }else{
-            caracter1 = cadena1[i];
-        }
-        cantCaracteres++;
-        for(let j = 0; j < cadena2.length;j++){
-            let caracter2;
-            if(cadena2[j+1] == "'"){
-                caracter2 = cadena2[j] + cadena2[j+1];
-                j++;
-            }else{
-                caracter2 = cadena2[j];
-            }
-            if(caracter1 == caracter2){
-                contador++;
-            }
-        }
-    }
-    if(contador == cantCaracteres) return true;
-    else return false;
+    let estaPeroNoComplementado = 0;
+    
 }
 
 function C(...Mensajes){
