@@ -1722,7 +1722,7 @@ function regla1Simplificacion(expresion){
                 console.log("   ",elementoInterno);
                 let Adyacentes = sonAdyacentes(elementoExterno,elementoInterno);
                 if(Adyacentes !== false){
-                    vector[indiceExterno] = eliminarCaracter(elementoExterno,Adyacentes);
+                    if(cantCaracteres(vector[indiceExterno]) < cantCaracteres(vector[indiceInterno])) vector[indiceExterno] = eliminarCaracter(elementoExterno,Adyacentes);
                     console.log("   Simplifique adyacente",vector[indiceExterno] );
                     hiceAlgunaOperacion = true;
                 }
