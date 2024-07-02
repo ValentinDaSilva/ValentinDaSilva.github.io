@@ -1712,33 +1712,48 @@ function C(...Mensajes){
     console.log(Mensajes);
 }
 
-function regla1Simplificacion(expresion){
+function regla1Simplificacion(vector){
     let hiceAlgunaOperacion = false;
-    vector = eliminarRepetidos(vector);
-    vector.forEach((elementoExterno, indiceExterno)=>{
-        console.log(elementoExterno);
-        vector.forEach((elementoInterno,indiceInterno)=>{
-            if(indiceExterno != indiceInterno){
-                console.log("   ",elementoInterno);
-                let Adyacentes = sonAdyacentes(elementoExterno,elementoInterno);
-                if(Adyacentes !== false){
-                    if(cantCaracteres(vector[indiceExterno]) < cantCaracteres(vector[indiceInterno])) vector[indiceExterno] = eliminarCaracter(elementoExterno,Adyacentes);
-                    console.log("   Simplifique adyacente",vector[indiceExterno] );
-                    hiceAlgunaOperacion = true;
+    for(let i = 0; i < vector.length; i++){
+        console.log(vector[i]);
+        for(let j = 0; j < vector.length; j++){
+            if(i != j){
+                console.log("   ",vector[j]);
+                let auxiliar = reglas(vector[i],vector[j]);
+                if(auxiliar.hiceOperacion){
+                    vector[i] = auxiliar.cadena1;
+                    vector[j] = auxiliar.cadena2;
+                    hiceAlgunaOperacion = auxiliar.hiceOperacion;
                 }
             }
-        })
-        // console.log(vector);
-    })
+        }
+    }
     return {vector,hiceAlgunaOperacion};
 }
 
 function simplificarExpresion(expresion){
-    let aux;
+    let aux, contador = 0;
     expresion = vector = sumaDeProductosComoVector(expresion);
     do{
         aux = regla1Simplificacion(expresion);
         expresion = aux.vector;
-        console.log(expresion)
-    }while(aux.hiceAlgunaOperacion);
+        console.log(expresion);
+        contador++;
+    }while(aux.hiceAlgunaOperacion && contador<2);
+}
+
+function reglas(cadena1,cadena2){
+    let hiceOperacion = false;
+    if(estaComplementamenteIncluido(cadena1,cadena2)){
+        cadena2 = "";
+        hiceOperacion = true;
+    }else if(sonAdyacentes(cadena1,cadena2) != false){
+        hiceOperacion = true;
+        if(cantCaracteres(cadena1) >= cantCaracteres(cadena2)){
+            cadena1 = eliminarCaracter(cadena1,sonAdyacentes(cadena1,cadena2));
+        }else{
+            cadena2 = eliminarCaracter(cadena2,sonAdyacentes(cadena1,cadena2));
+        }   
+    }
+    return {cadena1,cadena2,hiceOperacion};
 }
