@@ -1465,7 +1465,6 @@ function division(dividendo,divisor){
                 }
                 ultimoIndice = true;
                 let auxiliarNumero = parseInt(numero).toString();
-                console.log("auxiliarNumero",auxiliarNumero);
                 while(auxiliarNumero.length < auxiliarTotal.length) auxiliarNumero = espacios + auxiliarNumero;
                 if(grid.querySelector(".operaciones").lastChild)grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
                 grid.querySelector(".operaciones").appendChild(crearP(auxiliarNumero));
@@ -1485,7 +1484,6 @@ function division(dividendo,divisor){
             numero = resta;
             auxiliarTotal = dividendo.substr(0,indice + 1);
             auxiliarResta = parseInt(numero).toString(); 
-            console.log("entre aca")
             while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = espacios + auxiliarResta;
             //if(parseInt(auxiliarResta).length == 1) auxiliarTotal = agregar0Adelante(auxiliarResta);
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
@@ -1507,7 +1505,6 @@ function division(dividendo,divisor){
               auxiliarResta = parseInt(numero).toString(); 
               while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = espacios + auxiliarResta;
               grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
-              console.log("entre aca", auxiliarResta)
             } 
         }
     }while(!ultimoIndice);
@@ -1625,7 +1622,20 @@ function eliminarRepetidos(vector) {
     return [...conjunto];
 }
 
+function cantCaracteres(cadena){
+    let cantidad = 0;
+    for(let i = 0; i < cadena.length; i++){
+        let caracter1;
+        if(cadena[i+1] == "'"){
+            i++;
+        }
+        cantidad++;
+    }
+    return cantidad;
+}
+
 function sonAdyacentes(combinacion1,combinacion2){
+    if(cantCaracteres(combinacion1) != cantCaracteres(combinacion2)) return false;
     let contadorDiferentes = 0;
     let elementoDiferente, numCombinacion;
     for(let i = 0, j = 0; (Math.min(i,j)) < Math.min(combinacion1.length,combinacion2.length); i++, j++){
@@ -1636,7 +1646,6 @@ function sonAdyacentes(combinacion1,combinacion2){
         }else{
             caracter1 = combinacion1[i];
         }
-        console.log(caracter1);
         let caracter2;
         if(combinacion2[j+1] == "'"){
             caracter2 = combinacion2[j] + combinacion2[j+1];
@@ -1644,7 +1653,6 @@ function sonAdyacentes(combinacion1,combinacion2){
         }else{
             caracter2 = combinacion2[j];
         }
-        console.log(caracter2);
         if(caracter1 != caracter2){
             contadorDiferentes++;
             elementoDiferente = caracter1;
@@ -1672,21 +1680,65 @@ function eliminarCaracter(cadena, caracter) {
     return cadena;
 }
 
-function simplificarExpresion(expresion){
-    let vector = sumaDeProductosComoVector(expresion);
+function estaComplementamenteIncluido(cadena1,cadena2){
+    let contador = 0, cantCaracteres = 0;
+    for(let i = 0 ; i < cadena1.length; i++){
+        let caracter1;
+        if(cadena1[i+1] == "'"){
+            caracter1 = cadena1[i] + cadena1[i+1];
+            i++;
+        }else{
+            caracter1 = cadena1[i];
+        }
+        cantCaracteres++;
+        for(let j = 0; j < cadena2.length;j++){
+            let caracter2;
+            if(cadena2[j+1] == "'"){
+                caracter2 = cadena2[j] + cadena2[j+1];
+                j++;
+            }else{
+                caracter2 = cadena2[j];
+            }
+            if(caracter1 == caracter2){
+                contador++;
+            }
+        }
+    }
+    if(contador == cantCaracteres) return true;
+    else return false;
+}
+
+function C(...Mensajes){
+    console.log(Mensajes);
+}
+
+function regla1Simplificacion(expresion){
+    let hiceAlgunaOperacion = false;
     vector = eliminarRepetidos(vector);
     vector.forEach((elementoExterno, indiceExterno)=>{
-        console.log(elementoExterno);
+        // console.log(elementoExterno);
         vector.forEach((elementoInterno,indiceInterno)=>{
             if(indiceExterno != indiceInterno){
                 console.log("   ",elementoInterno);
                 let Adyacentes = sonAdyacentes(elementoExterno,elementoInterno);
                 if(Adyacentes !== false){
-                    vector.splice(indiceInterno,1);
                     vector[indiceExterno] = eliminarCaracter(elementoExterno,Adyacentes);
+                    console.log("   Simplifique adyacente",vector[indiceExterno] );
+                    hiceAlgunaOperacion = true;
                 }
             }
         })
+        // console.log(vector);
     })
-    return vector;
+    return {vector,hiceAlgunaOperacion};
+}
+
+function simplificarExpresion(expresion){
+    let aux;
+    expresion = vector = sumaDeProductosComoVector(expresion);
+    do{
+        aux = regla1Simplificacion(expresion);
+        expresion = aux.vector;
+        console.log(expresion)
+    }while(aux.hiceAlgunaOperacion);
 }
