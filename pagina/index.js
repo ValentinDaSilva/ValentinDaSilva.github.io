@@ -1608,3 +1608,60 @@ function borrarCampos(id1, id2,id3,id4){
     eliminarTodosLosHijos("pasos");
     document.getElementById("pasos").style.display = "none";
 }
+
+function sumaDeProductosComoVector(cadena){
+    for(let i = 0; i < cadena.length; i++){
+        if(cadena[i] == " " || cadena[i] == ")" || cadena[i] == "(" || cadena[i] == "." || cadena[i] == "*"){
+            cadena = cadena.substring(0,i) + cadena.substring(i+1);
+            i--;
+        } 
+    }
+    return cadena.split("+");
+}
+
+
+function eliminarRepetidos(vector) {
+    let conjunto = new Set(vector);
+    return [...conjunto];
+}
+
+function sonAdyacentes(combinacion1,combinacion2){
+    let contadorDiferentes = 0;
+    
+    for(let i = 0, j = 0; (Math.min(i,j)) < Math.min(combinacion1.length,combinacion2.length); i++, j++){
+        let caracter1;
+        if(combinacion1[i+1] == "'"){
+            caracter1 = combinacion1[i] + combinacion1[i+1];
+            i++;
+        }else{
+            caracter1 = combinacion1[i];
+        }
+        console.log(caracter1);
+        let caracter2;
+        if(combinacion2[j+1] == "'"){
+            caracter2 = combinacion2[j] + combinacion2[j+1];
+            j++;
+        }else{
+            caracter2 = combinacion2[j];
+        }
+        console.log(caracter2);
+        if(caracter1 != caracter2){
+            contadorDiferentes++;
+        }
+        if(contadorDiferentes == 2){
+            return false;
+        }
+    }
+    return true;
+}
+
+function simplificarExpresion(vector){
+    vector = eliminarRepetidos(vector);
+    vector.forEach((elem, indiceExterno)=>{
+        vector.forEach((elementoInterno,indiceInterno)=>{
+            if(indiceExterno != indiceInterno){
+                vector.splice(posicionAEliminar, 1);
+            }
+        })
+    })
+}
