@@ -425,7 +425,6 @@ function binaryToDecimal(binary) {
     return parseInt(binary, 2);
 }
 
-// Función para convertir un número decimal a binario (en formato string)
 function decimalToBinary(decimal) {
     // Convertimos la parte entera
     let integerPart = Math.floor(decimal);
@@ -455,7 +454,6 @@ function dividirDosNumeros(bin1, bin2) {
     
 	if(bin1 === undefined) bin1 = parseFloat(document.getElementById("numeroDividir1").value);
     if(bin2 === undefined) bin2 = parseFloat(document.getElementById("numeroDividir2").value);
-    console.log(bin1.toString(),bin2.toString());
     while(bin1.toString().includes(".") || bin2.toString().includes(".")){
         bin1 = bin1 * 10;
         bin2 = bin2 * 10;
@@ -1324,7 +1322,9 @@ function codigoJohnson(numero){
     let mitad = resultado;
     while(mitad.includes("0")) mitad = reemplazarPrimera(mitad,"0","1");
     for(let i = 1; i <= numero;  i++){
-        vectorMostrar.push(`${i-1} --> ${resultado}`);
+        let auxI = (i - 1).toString();
+        while(auxI.length < numero.toString().length) auxI = agregar0Adelante(auxI);
+        vectorMostrar.push(`${auxI} --> ${resultado}`);
         resultado = (parte1)? agregar1(resultado):agregar0(resultado);
         if(resultado == mitad) parte1 = false;
     }
@@ -1409,21 +1409,24 @@ function division(dividendo,divisor){
             while(barras.length < auxiliarTotal.length) barras = " " + barras;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
             grid.querySelector(".operaciones").appendChild(crearP(barras));
-            
             let resta = restarDosNumerosBinarios(numero,divisor).resultado;
             indice++; resta+=dividendo[indice]; 
             numero = resta;
             auxiliarTotal = dividendo.substr(0,indice + 1);
             if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
-            else auxiliarResta = numero.toString();
+            else{
+                auxiliarResta = parseInt(numero).toString();
+                auxiliarResta = agregar0Adelante(auxiliarResta);
+            } 
+            console.log("entre aca")
             while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
+            //if(parseInt(auxiliarResta).length == 1) auxiliarTotal = agregar0Adelante(auxiliarResta);
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
         }
         if(indice == dividendo.length - 1){
             ultimoIndice = true;
             if(parseInt(numero) < parseInt(divisor)) resultado += "0";
             else{
-              console.log(numero);
               resultado+="1";
               let auxiliarTotal = dividendo.substr(0,indice + 1), auxiliarDivisor = divisor, barras = "", auxiliarResta;
               while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = " " + auxiliarDivisor;
@@ -1435,7 +1438,11 @@ function division(dividendo,divisor){
               numero = resta;
               auxiliarTotal = dividendo.substr(0,indice + 1);
               if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
-              else auxiliarResta = numero.toString();
+              else{
+                auxiliarResta = parseInt(numero).toString();
+                auxiliarResta = agregar0Adelante(auxiliarResta);
+              } 
+              console.log("AuxiliarResta",auxiliarResta,numero,auxiliarTotal);
               while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
               grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
             } 
