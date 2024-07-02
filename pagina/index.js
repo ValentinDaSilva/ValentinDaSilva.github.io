@@ -1627,7 +1627,7 @@ function eliminarRepetidos(vector) {
 
 function sonAdyacentes(combinacion1,combinacion2){
     let contadorDiferentes = 0;
-    
+    let elementoDiferente, numCombinacion;
     for(let i = 0, j = 0; (Math.min(i,j)) < Math.min(combinacion1.length,combinacion2.length); i++, j++){
         let caracter1;
         if(combinacion1[i+1] == "'"){
@@ -1647,21 +1647,46 @@ function sonAdyacentes(combinacion1,combinacion2){
         console.log(caracter2);
         if(caracter1 != caracter2){
             contadorDiferentes++;
+            elementoDiferente = caracter1;
         }
         if(contadorDiferentes == 2){
             return false;
         }
     }
-    return true;
+    return elementoDiferente;
 }
 
-function simplificarExpresion(vector){
+function eliminarCaracter(cadena, caracter) {
+    for(let i = 0; i < cadena.length; i++){
+        let caracter1;
+        if((i+1) < cadena.length && cadena[i+1] == "'"){
+            caracter1 = cadena[i] + cadena[i+1];
+        }else{
+            caracter1 = cadena[i];
+        }
+        if(caracter1 == caracter){
+            return cadena.substring(0, i) + cadena.substring(i + caracter.length);
+        }
+        if(caracter1.length > 1) i++;
+    }
+    return cadena;
+}
+
+function simplificarExpresion(expresion){
+    let vector = sumaDeProductosComoVector(expresion);
     vector = eliminarRepetidos(vector);
-    vector.forEach((elem, indiceExterno)=>{
+    vector.forEach((elementoExterno, indiceExterno)=>{
+        console.log(elementoExterno);
         vector.forEach((elementoInterno,indiceInterno)=>{
             if(indiceExterno != indiceInterno){
-                vector.splice(posicionAEliminar, 1);
+                console.log("   ",elementoInterno);
+                let Adyacentes = sonAdyacentes(elementoExterno,elementoInterno);
+                if(Adyacentes !== false){
+                    vector.splice(indiceInterno,1);
+                    vector[indiceExterno] = eliminarCaracter(elementoExterno,Adyacentes);
+                }
             }
         })
     })
+    return vector;
 }
