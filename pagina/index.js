@@ -10,6 +10,7 @@ document.getElementById('SumaBCDN').addEventListener('click', () => showContaine
 document.getElementById('RestaBCDN').addEventListener('click', () => showContainer('restaBCDN'));
 document.getElementById('SumaBCDEx3').addEventListener('click', () => showContainer('sumaBCDEx3'));
 document.getElementById('RestaBCDEx3').addEventListener('click', () => showContainer('restaBCDEx3'));
+
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         if(document.getElementById("conversor").style.display == 'block') conversion();
