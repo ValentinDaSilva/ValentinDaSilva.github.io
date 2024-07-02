@@ -27,6 +27,29 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('jonhson1').value = "16";
+    document.getElementById('gray1').value = "16";
+    document.getElementById('numeroInput1').value = "1011110,101";
+    document.getElementById('numeroInput2').value = "110101,01";
+    document.getElementById('numeroResta1').value = "1100";
+    document.getElementById('numeroResta2').value = "1010";
+    document.getElementById('numeroMultiplicar1').value = "1010";
+    document.getElementById('numeroMultiplicar2').value = "111";
+    document.getElementById('numeroDividir1').value = "1010010.01";
+    document.getElementById('numeroDividir2').value = " 110.1";
+    document.getElementById('numeroHamming').value = "1010";
+    document.getElementById('sumaBCDN1').value = "1001 0100. 0011"; //94,3 + 44,5 
+    document.getElementById('sumaBCDN2').value = "0100 0100. 0101";
+    document.getElementById('restaBCDN1').value = "0100 1000"; // 48 - 98,2
+    document.getElementById('restaBCDN2').value = "1001 1000. 0010";
+    document.getElementById('sumaBCDEx31').value = "0111 1011"; // 48 + 98,2
+    document.getElementById('sumaBCDEx32').value = "1100 1011. 0100";
+    document.getElementById('restaBCDEx31').value = "0101 0110. 1010";
+    document.getElementById('restaBCDEx32').value = "0100 1100";
+});
+
+
 function showContainer(containerId) {
     document.getElementById('menuContainer').style.display = 'none';
     document.querySelector('.contenedorGrande').style.display = 'flex'
@@ -1384,6 +1407,45 @@ function codigoGray(numero){
     return resultado;
 }
 
+function createCheckbox() {
+    const checkboxContainer = document.getElementById('checkboxContainer');
+
+    // Crear el elemento checkbox
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = 'dynamicCheckbox';
+
+    // Crear una etiqueta para el checkbox
+    const label = document.createElement('label');
+    label.htmlFor = 'dynamicCheckbox';
+    label.textContent = 'Este es un checkbox dinámico';
+
+    // Añadir el checkbox y la etiqueta al contenedor
+    checkboxContainer.appendChild(checkbox);
+    checkboxContainer.appendChild(label);
+    return checkboxContainer;
+}
+
+function cambiarEspaciosDivision(){
+    const checkbox = document.getElementById('staticCheckbox');
+    if(document.getElementById("numeroDividir1").value != "" && document.getElementById("numeroDividir1").value != ""){
+            if (checkbox.checked) {
+                espacios = "0";
+                espaciosBarras = "-";
+                dividirDosNumeros();
+            } else {
+                espacios = " ";
+                espaciosBarras = " ";
+                dividirDosNumeros();
+            }
+    }else{
+        alert("Los campos deben contener numeros primero");
+        checkbox.checked = false;
+    }
+}
+
+var espacios = " ";
+var espaciosBarras =  " ";
 function division(dividendo,divisor){
     let grid = createGrid();
     grid.querySelector(".dividendo").appendChild(crearP(dividendo));
@@ -1395,31 +1457,35 @@ function division(dividendo,divisor){
             numero+=dividendo[indice];
             resultado+="0";
             if(indice == dividendo.length - 1){
+                if(typeof window.AuxiliarTotal === 'undefined'){
+                    auxiliarTotal = dividendo.substr(0,indice + 1)
+                }else{
+                    let auxiliarTotal = dividendo.substr(0,indice + 1);
+                }
                 ultimoIndice = true;
+                let auxiliarNumero = parseInt(numero).toString();
+                console.log("auxiliarNumero",auxiliarNumero);
+                while(auxiliarNumero.length < auxiliarTotal.length) auxiliarNumero = espacios + auxiliarNumero;
                 if(grid.querySelector(".operaciones").lastChild)grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
-                grid.querySelector(".operaciones").appendChild(crearP(numero));
+                grid.querySelector(".operaciones").appendChild(crearP(auxiliarNumero));
             } 
         }
         if(!ultimoIndice){
             resultado+="1";
             //IntefazGrafica
             let auxiliarTotal = dividendo.substr(0,indice + 1), auxiliarDivisor = divisor, barras = "", auxiliarResta;
-            while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = " " + auxiliarDivisor;
+            while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = espacios + auxiliarDivisor;
             while(barras.length < parseInt(numero).toString().length) barras = "-" + barras;
-            while(barras.length < auxiliarTotal.length) barras = " " + barras;
+            while(barras.length < auxiliarTotal.length) barras = espaciosBarras + barras;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
             grid.querySelector(".operaciones").appendChild(crearP(barras));
             let resta = restarDosNumerosBinarios(numero,divisor).resultado;
             indice++; resta+=dividendo[indice]; 
             numero = resta;
             auxiliarTotal = dividendo.substr(0,indice + 1);
-            if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
-            else{
-                auxiliarResta = parseInt(numero).toString();
-                auxiliarResta = agregar0Adelante(auxiliarResta);
-            } 
+            auxiliarResta = parseInt(numero).toString(); 
             console.log("entre aca")
-            while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
+            while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = espacios + auxiliarResta;
             //if(parseInt(auxiliarResta).length == 1) auxiliarTotal = agregar0Adelante(auxiliarResta);
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
         }
@@ -1429,22 +1495,18 @@ function division(dividendo,divisor){
             else{
               resultado+="1";
               let auxiliarTotal = dividendo.substr(0,indice + 1), auxiliarDivisor = divisor, barras = "", auxiliarResta;
-              while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = " " + auxiliarDivisor;
+              while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = espacios + auxiliarDivisor;
               while(barras.length < parseInt(numero).toString().length) barras = "-" + barras;
-              while(barras.length < auxiliarTotal.length) barras = " " + barras;
+              while(barras.length < auxiliarTotal.length) barras = espaciosBarras + barras;
               grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
               grid.querySelector(".operaciones").appendChild(crearP(barras));
               let resta = restarDosNumerosBinarios(parseInt(numero).toString(),divisor).resultado;
               numero = resta;
               auxiliarTotal = dividendo.substr(0,indice + 1);
-              if(parseInt(numero) != 0) auxiliarResta = parseInt(numero).toString();
-              else{
-                auxiliarResta = parseInt(numero).toString();
-                auxiliarResta = agregar0Adelante(auxiliarResta);
-              } 
-              console.log("AuxiliarResta",auxiliarResta,numero,auxiliarTotal);
-              while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
+              auxiliarResta = parseInt(numero).toString(); 
+              while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = espacios + auxiliarResta;
               grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
+              console.log("entre aca", auxiliarResta)
             } 
         }
     }while(!ultimoIndice);
@@ -1455,7 +1517,7 @@ function division(dividendo,divisor){
         grid.querySelector(".dividendo p").innerHTML = dividendo;
         numero = parseInt(numero) + "0";
         let auxiliarTotal = dividendo.substr(0,indice + 1);
-        while(numero.length < auxiliarTotal.length) numero = " " + numero;
+        while(numero.length < auxiliarTotal.length) numero = espacios + numero;
         grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
         grid.querySelector(".operaciones").appendChild(crearP(numero));
         let contador = 0, vueltas = 0;
@@ -1471,7 +1533,7 @@ function division(dividendo,divisor){
                 //Manejo de la resta/numero
                 numero+="0";
                 let auxiliarNumero = numero;
-                while(auxiliarNumero.length < auxiliarTotal.length) auxiliarNumero = " " + auxiliarNumero;
+                while(auxiliarNumero.length < auxiliarTotal.length) auxiliarNumero = espacios + auxiliarNumero;
                 grid.querySelector(".operaciones").removeChild(grid.querySelector(".operaciones").lastChild);
                 grid.querySelector(".operaciones").appendChild(crearP(auxiliarNumero));
                 //Resultado
@@ -1483,12 +1545,12 @@ function division(dividendo,divisor){
             //Resta - parte divisor
             auxiliarTotal = dividendo.substr(0,indice + 1);
             let auxiliarDivisor = divisor;
-            while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = " " + auxiliarDivisor;
+            while(auxiliarDivisor.length < auxiliarTotal.length) auxiliarDivisor = espacios + auxiliarDivisor;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarDivisor));
             //Resta Barras
             let barras = "";
             while(barras.length < parseInt(numero).toString().length) barras = "-" + barras;
-            while(barras.length < auxiliarTotal.length) barras = " " + barras;
+            while(barras.length < auxiliarTotal.length) barras = espaciosBarras + barras;
             grid.querySelector(".operaciones").appendChild(crearP(barras));
             //Resta resultado
             let resta = restarDosNumerosBinarios(parseInt(numero).toString(),divisor).resultado;
@@ -1497,7 +1559,7 @@ function division(dividendo,divisor){
             resta += "0"; auxiliarTotal = dividendo.substr(0,indice + 1);
             numero = parseInt(resta).toString();
             let auxiliarResta = parseInt(numero).toString();
-            while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = " " + auxiliarResta;
+            while(auxiliarResta.length < auxiliarTotal.length) auxiliarResta = espacios + auxiliarResta;
             grid.querySelector(".operaciones").appendChild(crearP(auxiliarResta));
         }while(contador<3 && parseInt(numero) != 0);
     }
@@ -1527,4 +1589,21 @@ function crearP(texto){
     let elemento = document.createElement("p");
     elemento.innerHTML = texto;
     return elemento;
+}
+
+function borrarCampos(id1, id2,id3,id4){
+    if(id1 !== undefined){
+        document.getElementById(id1).value = "";
+    }
+    if(id2 !== undefined){
+        document.getElementById(id2).value = "";
+    }
+    if(id3 !== undefined){
+        document.getElementById(id3).innerHTML = "";
+    }
+    if(id4 !== undefined){
+        document.getElementById(id4).innerHTML = "";
+    }
+    eliminarTodosLosHijos("pasos");
+    document.getElementById("pasos").style.display = "none";
 }

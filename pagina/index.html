@@ -95,6 +95,7 @@
                 <h2>Ingresa un número en decimal</h2>
                 <input type="text" id="jonhson1" placeholder="Ingresa un número">
                 <button onclick="codigoJohnson()">Convertir</button>
+                <button onclick="borrarCampos('jonhson1',undefined,'resultadoJohnson')">Borrar</button>
                 <p id="resultadoJohnson"></p>
             </div>
         </div>
@@ -104,6 +105,7 @@
                 <h2>Ingresa un número en decimal</h2>
                 <input type="text" id="gray1" placeholder="Ingresa un número">
                 <button onclick="codigoGray()">Convertir</button>
+                <button onclick="borrarCampos('gray1',undefined,'resultadoGray')">Borrar</button>
                 <p id="resultadoGray"></p>
             </div>
         </div>
@@ -115,6 +117,7 @@
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="numeroInput2" placeholder="Ingresa un número">
                 <button onclick="sumaBinaria()">Sumar</button>
+                <button onclick="borrarCampos('numeroInput1','numeroInput1','resultadoOutput2')">Borrar</button>
                 <p id="resultadoOutput2"></p>
             </div>
         </div>
@@ -126,6 +129,7 @@
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="numeroResta2" placeholder="Ingresa un número">
                 <button onclick="restaBinaria()">Restar</button>
+                <button onclick="borrarCampos('numeroResta1','numeroResta2','resultadoOutput3','resultadoOutput4')">Borrar</button>
                 <p id="resultadoOutput3"></p>
                 <p id="resultadoOutput4"></p>
             </div>
@@ -138,6 +142,7 @@
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="numeroMultiplicar2" placeholder="Ingresa un número">
                 <button onclick="multiplicacionBinaria()">Multiplicar</button>
+                <button onclick="borrarCampos('numeroMultiplicar1','numeroMultiplicar2','resultadoOutput5')">Borrar</button>
                 <p id="resultadoOutput5"></p>
             </div>
         </div>
@@ -149,7 +154,12 @@
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="numeroDividir2" placeholder="Ingresa un número">
                 <button onclick="dividirDosNumeros()">Dividir</button>
+                <button onclick="borrarCampos('numeroDividir1','numeroDividir2','resultadoOutput6')">Borrar</button>
                 <p id="resultadoOutput6"></p>
+            </div>
+            <div style="position: absolute; bottom: 5%; left:5%;display: flex;">
+                <input onClick="cambiarEspaciosDivision()" type="checkbox" id="staticCheckbox">
+                <label for="staticCheckbox">Mostrar 0's en el grafico</label>
             </div>
         </div>
         <div class="container hamming" style="display: none;" id="hamming">
@@ -158,6 +168,7 @@
                 <h2>Ingresa el numero</h2>
                 <input type="text" id="numeroHamming" placeholder="Ingresa un número">
                 <button onclick="calcularCodigoHamming()">Calcular</button>
+                <button onclick="borrarCampos('numeroInput1',undefined,'resultadoOutput7')">Borrar</button>
                 <p id="resultadoOutput7"></p>
             </div>
         </div>
@@ -169,6 +180,7 @@
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="sumaBCDN2" placeholder="Ingresa un número">
                 <button onclick="sumaBCDN()">Calcular</button>
+                <button onclick="borrarCampos('sumaBCDN1','sumaBCDN2','resultadoOutput8')">Borrar</button>
                 <p id="resultadoOutput8"></p>
             </div>
         </div>
@@ -180,6 +192,7 @@
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="restaBCDN2" placeholder="Ingresa un número">
                 <button onclick="restaBCDN()">Calcular</button>
+                <button onclick="borrarCampos('restaBCDN1','restaBCDN2','resultadoOutput9','resultadoOutput10')">Borrar</button>
                 <p id="resultadoOutput9"></p>
                 <p id="resultadoOutput10"></p>
             </div>
@@ -192,6 +205,7 @@
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="sumaBCDEx32" placeholder="Ingresa un número">
                 <button onclick="sumaBCDEx3()">Calcular</button>
+                <button onclick="borrarCampos('sumaBCDEx31','sumaBCDEx32','resultadoOutput11')">Borrar</button>
                 <p id="resultadoOutput11"></p>
             </div>
         </div>
@@ -203,6 +217,7 @@
                 <h2>Ingresa el segundo numero</h2>
                 <input type="text" id="restaBCDEx32" placeholder="Ingresa un número">
                 <button onclick="restaBCDEx3()">Calcular</button>
+                <button onclick="borrarCampos(`restaBCDEx31`,`restaBCDEx32`,'resultadoOutput12','resultadoOutput13')">Borrar</button>
                 <p id="resultadoOutput12"></p>
                 <p id="resultadoOutput13"></p>
             </div>

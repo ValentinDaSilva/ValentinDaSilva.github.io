@@ -78,7 +78,7 @@ button:hover {
 
 p {
     margin-top: 20px;
-    font-size: 1.2em;
+    font-size: 1.5em;
 }
 
 .contenedorGrande{
@@ -102,31 +102,35 @@ p {
 }
 
 .grid-container  .dividendo {
-    background-color: lightblue;
+    /* background-color: lightblue; */
 }
 
 .grid-container  .divisor {
-    background-color: lightgreen;
+    /* background-color: lightgreen; */
     border-left: 2px solid black;
     border-bottom: 2px solid black;
 }
 
 .grid-container .operaciones {
-    background-color: lightcoral;
+    /* background-color: lightcoral; */
     text-align: left;
 }
 
 .grid-container .resultado {
-    background-color: lightyellow;
+    /* background-color: lightyellow; */
 }
 
-#pasos p{
+.grid-container p{
     margin: 0;
     font-size: 2em;
     font-family: 'Courier New', Courier, monospace; /* Fuente monoespaciada */
     letter-spacing: 2px; /* Separación entre caracteres */
     text-align: left; /* Centra el texto dentro del contenedor */
     white-space: pre-wrap; 
+}
+
+#pasos {
+    margin-bottom: 50px;
 }
 
 
