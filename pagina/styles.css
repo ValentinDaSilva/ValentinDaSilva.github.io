@@ -76,7 +76,7 @@ button:hover {
     background-color: #0056b3;
 }
 
-p {
+#pasos p {
     margin-top: 20px;
     font-size: 1.5em;
 }
@@ -147,11 +147,14 @@ p {
         flex-direction: row;
         justify-content: center;
         flex-wrap: wrap;
+        height: 80vh;
+        overflow: scroll;
     }
     .container1 h1{
         width: 100vw;
         text-align: center;
         margin-top: 0;
+        height: 5vh;
     }
     .container1{
         height: 100vh;
@@ -165,6 +168,12 @@ p {
         top:5%;
         left:5%;
         border-radius: 2px solid black;
+    }
+    #checkbox{
+        position: absolute;
+        bottom: 5%;
+        left: 5%;
+        display: flex;
     }
 }
 
