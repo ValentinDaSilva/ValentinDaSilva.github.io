@@ -1686,7 +1686,7 @@ function estaComplementamenteIncluido(cadena1,cadena2){
 }
 
 function C(...Mensajes){
-    console.log(Mensajes);
+    let aux = "";
 }
 
 function regla1Simplificacion(vector){
