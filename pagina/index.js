@@ -1611,7 +1611,8 @@ function sumaDeProductosComoVector(cadena){
         if(cadena[i] == " " || cadena[i] == ")" || cadena[i] == "(" || cadena[i] == "." || cadena[i] == "*"){
             cadena = cadena.substring(0,i) + cadena.substring(i+1);
             i--;
-        } 
+        }
+        else if(cadena[i] == "\′") cadena = cadena.substring(0,i) + "'" +cadena.substring(i+1);
     }
     return cadena.split("+");
 }
@@ -1634,36 +1635,6 @@ function cantCaracteres(cadena){
     return cantidad;
 }
 
-function sonAdyacentes(combinacion1,combinacion2){
-    if(cantCaracteres(combinacion1) != cantCaracteres(combinacion2)) return false;
-    let contadorDiferentes = 0;
-    let elementoDiferente, numCombinacion;
-    for(let i = 0, j = 0; (Math.min(i,j)) < Math.min(combinacion1.length,combinacion2.length); i++, j++){
-        let caracter1;
-        if(combinacion1[i+1] == "'"){
-            caracter1 = combinacion1[i] + combinacion1[i+1];
-            i++;
-        }else{
-            caracter1 = combinacion1[i];
-        }
-        let caracter2;
-        if(combinacion2[j+1] == "'"){
-            caracter2 = combinacion2[j] + combinacion2[j+1];
-            j++;
-        }else{
-            caracter2 = combinacion2[j];
-        }
-        if(caracter1 != caracter2){
-            contadorDiferentes++;
-            elementoDiferente = caracter1;
-        }
-        if(contadorDiferentes == 2){
-            return false;
-        }
-    }
-    return elementoDiferente;
-}
-
 function eliminarCaracter(cadena, caracter) {
     for(let i = 0; i < cadena.length; i++){
         let caracter1;
@@ -1681,26 +1652,57 @@ function eliminarCaracter(cadena, caracter) {
 }
 
 function estaComplementamenteIncluido(cadena1,cadena2){
-    let estaPeroNoComplementado = 0;
-    
+    let estaPeroNoComplementado = 0, caracter, estanTodos = true;
+    if(cadena1 == '') return;
+    if(cantCaracteres(cadena1) > cantCaracteres(cadena2)) return ;
+    for(let i = 0; i < cadena1.length;i++){
+        let encontrado = false;
+        let caracter1;
+        if(cadena1[i+1] == "'"){
+            caracter1 = cadena1[i] + cadena1[i+1];
+            i++;
+        }else{
+            caracter1 = cadena1[i];
+        }
+        for(let j = 0; j < cadena2.length;j++){
+            let caracter2;
+            if(cadena2[j+1] == "'"){
+                caracter2 = cadena2[j] + cadena2[j+1];
+                j++;
+            }else{
+                caracter2 = cadena2[j];
+            }
+            if(caracter1[0]==caracter2[0]){
+                encontrado = true;
+                if(caracter1.length != caracter2.length){
+                    estaPeroNoComplementado++;
+                    caracter = caracter1[0];
+                }
+                break;
+            }
+        }
+        if(!encontrado) estanTodos = false;
+    }
+    if(estaPeroNoComplementado == 0 && estanTodos) return 0;
+    else if(estaPeroNoComplementado == 1 && estanTodos) return caracter;
+    else return ;
 }
 
 function C(...Mensajes){
-    let aux = "";
+    console.log(...Mensajes);
 }
 
 function regla1Simplificacion(vector){
     let hiceAlgunaOperacion = false;
     for(let i = 0; i < vector.length; i++){
-        console.log(vector[i]);
         for(let j = 0; j < vector.length; j++){
             if(i != j){
-                console.log("   ",vector[j]);
                 let auxiliar = reglas(vector[i],vector[j]);
                 if(auxiliar.hiceOperacion){
                     vector[i] = auxiliar.cadena1;
                     vector[j] = auxiliar.cadena2;
                     hiceAlgunaOperacion = auxiliar.hiceOperacion;
+                    console.log(i+1,j+1)
                 }
             }
         }
@@ -1710,27 +1712,46 @@ function regla1Simplificacion(vector){
 
 function simplificarExpresion(expresion){
     let aux, contador = 0;
-    expresion = vector = sumaDeProductosComoVector(expresion);
+    expresion = sumaDeProductosComoVector(expresion);
     do{
         aux = regla1Simplificacion(expresion);
         expresion = aux.vector;
-        console.log(expresion);
         contador++;
-    }while(aux.hiceAlgunaOperacion && contador<2);
+    }while(aux.hiceAlgunaOperacion);
+    return expresion;
 }
 
 function reglas(cadena1,cadena2){
     let hiceOperacion = false;
-    if(estaComplementamenteIncluido(cadena1,cadena2)){
+    let operacion = estaComplementamenteIncluido(cadena1,cadena2);
+    if(operacion == 0){
+        C("El elemento esta completamente incluido en el otro: ",cadena1,cadena2);
         cadena2 = "";
         hiceOperacion = true;
-    }else if(sonAdyacentes(cadena1,cadena2) != false){
+        C("Conclusion: ",cadena1,cadena2);  
+    }else if(typeof operacion == "string"){
         hiceOperacion = true;
+        C("Solo difieren en 1 complemento: ",cadena1,cadena2);
         if(cantCaracteres(cadena1) >= cantCaracteres(cadena2)){
-            cadena1 = eliminarCaracter(cadena1,sonAdyacentes(cadena1,cadena2));
+            if(cadena1.includes(operacion + "'")){
+                cadena1 = eliminarCaracter(cadena1,operacion + "'");
+                //console.log("Entre aca",operacion)
+            } 
+            else {
+                cadena1 = eliminarCaracter(cadena1,operacion);
+                //console.log("entre aca 2",operacion)
+            }
         }else{
-            cadena2 = eliminarCaracter(cadena2,sonAdyacentes(cadena1,cadena2));
-        }   
+            if(cadena2.includes(operacion + "'")){
+                cadena2 = eliminarCaracter(cadena2,operacion + "'");
+                //console.log("Entre aca 3",operacion)
+            } 
+            else {
+                cadena2 = eliminarCaracter(cadena2,operacion);
+                //console.log("entre aca 4",operacion)
+            }
+        }
+        C("Conclusion: ",cadena1,cadena2);   
     }
     return {cadena1,cadena2,hiceOperacion};
 }

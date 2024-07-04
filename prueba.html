@@ -1,76 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    .grid-container {
-        display: grid;
-        grid-template-columns: min-content min-content;
-        grid-template-rows: min-content min-content;
-        gap: 10px;
-    }
-
-    .grid-item {
-        padding: 5px;
-        text-align: center;
-    }
-
-    .dividendo {
-        background-color: lightblue;
-    }
-
-    .divisor {
-        background-color: lightgreen;
-        border-left: 2px solid black;
-        border-bottom: 2px solid black;
-    }
-
-    .operaciones {
-        background-color: lightcoral;
-        text-align: left;
-    }
-
-    .resultado {
-        background-color: lightyellow;
-    }
-    p{
-        margin: 0;
-        font-size: 2em;
-        font-family: 'Courier New', Courier, monospace; /* Fuente monoespaciada */
-        letter-spacing: 2px; /* Separación entre caracteres */
-        text-align: left; /* Centra el texto dentro del contenedor */
-        white-space: pre-wrap; 
-    }
-</style>
-<title>Grid 2x2</title>
-<script src="/pagina/index.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
 </head>
 <body>
-    <div class="grid-container">
-        <div class="grid-item dividendo">
-            <p>10101101</p>
-        </div>
-        <div class="grid-item divisor">
-            <p>101</p>
-        </div>
-        <div class="grid-item operaciones">
-            <p> 101</p>
-            <p>----</p>
-            <p> 1011</p>
-            <p>  101</p>
-            <p> ----</p>
-            <p>  1101</p>
-            <p>   101</p>
-            <p>  ----</p>
-            <p>  1000</p>
-        </div>
-        <div class="grid-item resultado">
-            <p>111</p>
-        </div>
-    </div>
-    <script>
-        
-    </script>
+    <table id="table-container"></table>
+    <script src="script.js"></script>
 </body>
 </html>
