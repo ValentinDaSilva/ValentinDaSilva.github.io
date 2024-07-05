@@ -10,6 +10,7 @@ document.getElementById('SumaBCDN').addEventListener('click', () => showContaine
 document.getElementById('RestaBCDN').addEventListener('click', () => showContainer('restaBCDN'));
 document.getElementById('SumaBCDEx3').addEventListener('click', () => showContainer('sumaBCDEx3'));
 document.getElementById('RestaBCDEx3').addEventListener('click', () => showContainer('restaBCDEx3'));
+document.getElementById('Simplificacion').addEventListener('click', () => menuSimplificar());
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
@@ -25,6 +26,7 @@ document.addEventListener('keydown', function(event) {
         else if(document.getElementById("restaBCDN").style.display == 'block') restaBCDN();
         else if(document.getElementById("sumaBCDEx3").style.display == 'block') sumaBCDEx3();
         else if(document.getElementById("restaBCDEx3").style.display == 'block') restaBCDEx3();
+        else if(document.getElementById("mapaKarnaugh").style.display == 'block') construirTabla();
     }
 });
 
@@ -48,6 +50,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('sumaBCDEx32').value = "1100 1011. 0100";
     document.getElementById('restaBCDEx31').value = "0101 0110. 1010";
     document.getElementById('restaBCDEx32').value = "0100 1100";
+    document.getElementById('karnaugh1').value = "A,B,C,D";
 });
 
 
@@ -1754,4 +1757,507 @@ function reglas(cadena1,cadena2){
         C("Conclusion: ",cadena1,cadena2);   
     }
     return {cadena1,cadena2,hiceOperacion};
+}
+
+function todosIguales(vector){
+    if(vector.length == 1) return true;
+    else{
+        if(vector[0] == vector[1]) return todosIguales(vector.slice(1));
+        else return false;
+    }
+}
+
+function difierenEn1([cadena1,cadena2]){
+    let cadena1Bits = [],cadena2Bits = [];
+    let contadorDifieren = 0;
+    for(let i = 0,j=0; i < cadena1.length;i++,j++){
+        let caracter1,caracter2;
+        if(cadena1[i+1]=="'"){
+            caracter1 = cadena1[i]+cadena1[i+1];
+            i++;
+        }else{
+            caracter1 = cadena1[i];
+        }
+        if(cadena2[j+1]=="'"){
+            caracter2 = cadena2[j]+cadena2[j+1];
+            j++;
+        }else{
+            caracter2 = cadena2[j];
+        }
+        cadena1Bits.push(caracter1);
+        cadena2Bits.push(caracter2);
+    }
+    let bit1 = [cadena1Bits[0],cadena2Bits[0]];
+    let bit2 = [cadena1Bits[1],cadena2Bits[1]];
+    let bit3 = [cadena1Bits[2],cadena2Bits[2]];
+    let bit4 = [cadena1Bits[3],cadena2Bits[3]];
+    if(!todosIguales(bit1)) contadorDifieren++;
+    if(!todosIguales(bit2)) contadorDifieren++;
+    if(!todosIguales(bit3)) contadorDifieren++;
+    if(!todosIguales(bit4)) contadorDifieren++;
+    if(contadorDifieren == 1) return true;
+    else return false;
+}
+
+
+function difierenEn2([cadena1,cadena2,cadena3,cadena4]){
+    let cadena1Bits = [],cadena2Bits = [],cadena3Bits = [],cadena4Bits = [];
+    let contadorDifieren = 0;
+    for(let i = 0,j=0,k=0,w=0; i < cadena1.length;i++,j++,k++,w++){
+        let caracter1,caracter2,caracter3,caracter4;
+        if(cadena1[i+1]=="'"){
+            caracter1 = cadena1[i]+cadena1[i+1];
+            i++;
+        }else{
+            caracter1 = cadena1[i];
+        }
+        if(cadena2[j+1]=="'"){
+            caracter2 = cadena2[j]+cadena2[j+1];
+            j++;
+        }else{
+            caracter2 = cadena2[j];
+        }
+        if(cadena3[k+1]=="'"){
+            caracter3 = cadena3[k]+cadena3[k+1];
+            k++;
+        }else{
+            caracter3 = cadena3[k];
+        }
+        if(cadena4[w+1]=="'"){
+            caracter4 = cadena4[w]+cadena4[w+1];
+            w++;
+        }else{
+            caracter4 = cadena4[w];
+        }
+        cadena1Bits.push(caracter1);
+        cadena2Bits.push(caracter2);
+        cadena3Bits.push(caracter3);
+        cadena4Bits.push(caracter4);
+    }
+    let bit1 = [cadena1Bits[0],cadena2Bits[0],cadena3Bits[0],cadena4Bits[0]];
+    let bit2 = [cadena1Bits[1],cadena2Bits[1],cadena3Bits[1],cadena4Bits[1]];
+    let bit3 = [cadena1Bits[2],cadena2Bits[2],cadena3Bits[2],cadena4Bits[2]];
+    let bit4 = [cadena1Bits[3],cadena2Bits[3],cadena3Bits[3],cadena4Bits[3]];
+    if(!todosIguales(bit1)) contadorDifieren++;
+    if(!todosIguales(bit2)) contadorDifieren++;
+    if(!todosIguales(bit3)) contadorDifieren++;
+    if(!todosIguales(bit4)) contadorDifieren++;
+    if(contadorDifieren == 2) return true;
+    else return false;
+}
+
+function difierenEn3([cadena1,cadena2,cadena3,cadena4,cadena5,cadena6,cadena7,cadena8]){
+    let cadena1Bits = [],cadena2Bits = [],cadena3Bits = [],cadena4Bits = [],cadena5Bits = [],cadena6Bits = [],cadena7Bits = [],cadena8Bits = [];
+    let contadorDifieren = 0;
+    for(let i = 0,j=0,k=0,w=0,a = 0,b = 0,c = 0,d = 0; i < cadena1.length;i++,j++,k++,w++,a++,b++,c++,d++){
+        let caracter1,caracter2,caracter3,caracter4;
+        let caracter5,caracter6,caracter7,caracter8;
+        if(cadena1[i+1]=="'"){
+            caracter1 = cadena1[i]+cadena1[i+1];
+            i++;
+        }else{
+            caracter1 = cadena1[i];
+        }
+        if(cadena2[j+1]=="'"){
+            caracter2 = cadena2[j]+cadena2[j+1];
+            j++;
+        }else{
+            caracter2 = cadena2[j];
+        }
+        if(cadena3[k+1]=="'"){
+            caracter3 = cadena3[k]+cadena3[k+1];
+            k++;
+        }else{
+            caracter3 = cadena3[k];
+        }
+        if(cadena4[w+1]=="'"){
+            caracter4 = cadena4[w]+cadena4[w+1];
+            w++;
+        }else{
+            caracter4 = cadena4[w];
+        }
+        if(cadena5[a+1]=="'"){
+            caracter5 = cadena5[a]+cadena5[a+1];
+            a++;
+        }else{
+            caracter5 = cadena5[i];
+        }
+        if(cadena6[b+1]=="'"){
+            caracter6 = cadena6[b]+cadena6[b+1];
+            b++;
+        }else{
+            caracter6 = cadena6[b];
+        }
+        if(cadena7[c+1]=="'"){
+            caracter7 = cadena7[c]+cadena7[c+1];
+            c++;
+        }else{
+            caracter7 = cadena7[c];
+        }
+        if(cadena8[d+1]=="'"){
+            caracter8 = cadena8[d]+cadena8[d+1];
+            d++;
+        }else{
+            caracter8 = cadena8[d];
+        }
+        cadena1Bits.push(caracter1);
+        cadena2Bits.push(caracter2);
+        cadena3Bits.push(caracter3);
+        cadena4Bits.push(caracter4);
+        cadena5Bits.push(caracter5);
+        cadena6Bits.push(caracter6);
+        cadena7Bits.push(caracter7);
+        cadena8Bits.push(caracter8);
+    }
+    for(let i = 0; i < 8;i++){
+        let bit = [cadena1Bits[i],cadena2Bits[i],cadena3Bits[i],cadena4Bits[i],cadena5Bits[i],cadena6Bits[i],cadena7Bits[i],cadena8Bits[i]];
+        if(!todosIguales(bit)) contadorDifieren++
+    }
+    if(contadorDifieren == 3) return true;
+    else return false;
+}
+
+function combinaciones(arr, k) {
+    let result = [];
+
+    function combine(start, chosen) {
+        if (chosen.length === k) {
+            result.push(chosen.join('+'));
+            return;
+        }
+
+        for (let i = start; i < arr.length; i++) {
+            combine(i + 1, chosen.concat(arr[i]));
+        }
+    }
+
+    combine(0, []);
+    return result;
+}
+
+async function pintar(vector){
+        vector.forEach((celda)=>{
+            if(celda.style.backgroundColor === ""){
+                celda.style.backgroundColor = "rgb(255, 85, 85)";
+            }else{
+                oscurecerFondo(celda);
+            }
+        })
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return;
+}
+
+
+
+async function grupos(expresion){
+    if(expresion === undefined) expresion = primerFormaCanonica();
+    if(typeof expresion == "string") expresion = sumaDeProductosComoVector(expresion);
+    let comb = combinaciones(expresion,8);
+    for(let elem of comb){
+        let aux = sumaDeProductosComoVector(elem);
+        if(difierenEn3(aux)){
+            let vector = []
+            let color = colorAlazar();
+            aux.forEach((elem)=>{
+                let celda = devolverCelda(pasarANumeros(elem));
+                vector.push(celda);
+            })
+            let unaLibre = false;
+            vector.forEach((celda)=>{
+                if(celda.style.backgroundColor == "") unaLibre = true;
+            })
+            if(unaLibre) await pintar(vector);
+        }
+    }
+    comb = combinaciones(expresion,4);
+    for(let elem of comb){
+        let aux = sumaDeProductosComoVector(elem);
+        if(difierenEn2(aux)){
+            let vector = []
+            let color = colorAlazar();
+            aux.forEach((elem)=>{
+                let celda = devolverCelda(pasarANumeros(elem));
+                vector.push(celda);
+            })
+            let unaLibre = false;
+            vector.forEach((celda)=>{
+                if(celda.style.backgroundColor == "") unaLibre = true;
+            })
+            if(unaLibre) await pintar(vector);
+        }
+    }
+    comb = combinaciones(expresion,2);
+    for(let elem of comb){
+        let aux = sumaDeProductosComoVector(elem);
+        if(difierenEn1(aux)){
+            let vector = []
+            let color = colorAlazar();
+            aux.forEach((elem)=>{
+                let celda = devolverCelda(pasarANumeros(elem));
+                vector.push(celda);
+            })
+            let unaLibre = false;
+            vector.forEach((celda)=>{
+                if(celda.style.backgroundColor == "") unaLibre = true;
+            })
+            if(unaLibre) await pintar(vector);
+        }
+    }
+    comb = combinaciones(expresion,1);
+    for(let elem of comb){
+        let aux = sumaDeProductosComoVector(elem);
+            let vector = []
+            let color = colorAlazar();
+            aux.forEach((elem)=>{
+                let celda = devolverCelda(pasarANumeros(elem));
+                vector.push(celda);
+            })
+            let unaLibre = false;
+            vector.forEach((celda)=>{
+                if(celda.style.backgroundColor == "") unaLibre = true;
+            })
+            if(unaLibre) await pintar(vector);
+    }
+}
+
+function pasarALetras(numeros){
+    let cadena = "", letras = ["a","b","c","d"];
+    let i = 0;
+    for(let numero of numeros){
+        if(numero == "0") cadena = cadena + letras[i]+"'";
+        else cadena += letras[i];
+        i++;
+    } 
+    return cadena;
+}
+
+function pasarANumeros(cadena1){
+    let numeros = "";
+    for(let i = 0; i < cadena1.length;i++){
+        let caracter1;
+        if(cadena1[i+1] == "'"){
+            caracter1 = cadena1[i] + cadena1[i+1];
+            i++;
+        }else{
+            caracter1 = cadena1[i];
+        }
+        if(caracter1.length == 2) numeros+="0";
+        else numeros+="1";
+    }
+    return numeros;
+}
+
+function pal(numeros) {return pasarALetras(numeros)}
+
+
+function devolverCelda(posicionBinaria){
+    let fila,columna;
+    if(posicionBinaria.length == 3){
+        fila = parseInt(posicionBinaria[0])+1;
+        columna = posicionBinaria.slice(1);
+        console.log(columna)
+        switch(columna){
+            case "00": columna = 1;break;
+            case "01": columna = 2;break;
+            case "11": columna = 3;break;
+            case "10": columna = 4;break;
+        }
+    }else if(posicionBinaria.length == 4){
+        fila = posicionBinaria.substring(0,2);
+        switch(fila){
+            case "00": fila = 1;break;
+            case "01": fila = 2;break;
+            case "11": fila = 3;break;
+            case "10": fila = 4;break;
+            default: alert("Ocurrio un error en devolver celda");
+        }
+        columna = posicionBinaria.substring(2);
+        switch(columna){
+            case "00": columna = 1;break;
+            case "01": columna = 2;break;
+            case "11": columna = 3;break;
+            case "10": columna = 4;break;
+            default: alert("Ocurrio un error en devolver celda");
+        }
+    }
+    return document.getElementById("karnaugh").rows[fila].cells[columna];
+}
+
+function colorAlazar(){
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
+function tablaDeNxM(fila,columna){
+    // Crear las celdas de la tabla
+    let vectorFilas = (fila == 3)? ["0","1"]:["00","01","11","10"], indiceFila = 0;
+    let vectorColumnas = ["00","01","11","10"], indiceColumna = 0;
+    let table = document.createElement("table");
+    table.id = "karnaugh";
+    for (let i = 0; i < fila; i++) {
+        const tr = document.createElement('tr');
+        for (let j = 0; j < columna; j++) {
+            const td = document.createElement('td');
+            td.dataset.fila = i;
+            td.dataset.columna = j;
+            if(i == 0 && j!=0){
+                td.innerHTML = vectorColumnas[indiceColumna];
+                indiceColumna++;
+            }
+            else if(i != 0 && j==0){
+                td.innerHTML = vectorFilas[indiceFila];
+                indiceFila++;
+            }
+            else if(i==0 && j==0) td.innerHTML = "variables";
+            else{
+                td.innerText = '0';
+                td.style.cursor = "pointer";
+                td.addEventListener('click', function() {
+                    // Alternar el valor entre 0 y 1 al hacer clic
+                    td.innerText = td.innerText === '0' ? '1' : '0';
+                    console.log(td.dataset.fila,td.dataset.columna)
+                }); 
+            } 
+            tr.appendChild(td);
+        }
+        table.appendChild(tr);
+    }
+    return table;
+}
+
+function construirTabla(...variables){
+    console.log("vector: ",variables);
+    if(variables == ""){
+        variables = document.getElementById("karnaugh1").value.split(",");
+    }
+    let cantVariables = variables.length, tabla;
+    if(cantVariables == 3){
+        tabla = tablaDeNxM(2+1,4+1);
+    }else if(cantVariables == 4){
+        tabla = tablaDeNxM(4+1,4+1);
+    }else{
+        alert("Solamente se pueden usar 3 o 4 variables");
+    }
+    tabla.style.border = "2px solid black";
+    eliminarTodosLosHijos("pasos");
+    let h1 = document.createElement("h1");
+    h1.innerHTML = "Mapa de Karnaugh";
+    let boton = document.createElement("button");
+    boton.innerHTML = "Buscar Grupos";
+    boton.style.width = "100px";
+    boton.setAttribute("onClick","grupos()");
+    h1.innerHTML = "Mapa de Karnaugh";
+    document.getElementById("pasos").appendChild(h1);
+    document.getElementById("pasos").style.display = "block";
+    document.getElementById("pasos").appendChild(tabla);
+    document.getElementById("pasos").appendChild(boton);
+    return tabla;
+}
+
+function primerFormaCanonica(){
+    let tabla = document.getElementById("karnaugh");
+    let filas = tabla.rows;
+    let vector = [];
+    for(let i = 1; i < filas.length; i++){
+        for(let j = 1; j < filas[0].cells.length; j++){
+            let celda = filas[i].cells[j];
+            if(celda.innerHTML == "1"){
+                console.log(i+1,j+1)
+                let posicion = filas[i].cells[0].innerHTML + filas[0].cells[j].innerHTML;
+                console.log(posicion)
+                vector.push(pasarALetras(posicion));
+            }
+        }
+    }
+    return vector.join("+");
+}
+
+function hexToRgb(hex) {
+    let bigint = parseInt(hex.slice(1), 16);
+    let r = (bigint >> 16) & 255;
+    let g = (bigint >> 8) & 255;
+    let b = bigint & 255;
+
+    return [r, g, b];
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function oscurecerFondo(elemento) {
+    let bgColor = window.getComputedStyle(elemento).backgroundColor;
+    let rgb = bgColor.match(/\d+/g);
+
+    // Reducimos el brillo al 50%
+    let factorOscurecimiento = 0.5;
+    let r = Math.floor(rgb[0] * factorOscurecimiento);
+    let g = Math.floor(rgb[1] * factorOscurecimiento);
+    let b = Math.floor(rgb[2] * factorOscurecimiento);
+
+    // Convertimos el nuevo color a formato hex
+    let newColor = rgbToHex(r, g, b);
+    elemento.style.backgroundColor = newColor;
+
+}
+
+function menuSimplificar(){
+    let body = document.querySelector("body");
+    body.style.position = "relative";
+    body.style.display = "flex";
+    body.style.flexDirection = "column";
+    body.style.justifyContent = "center";
+    body.style.alignItems = "center"; // Corregido: alignItem a alignItems
+    body.style.width = "100vw";
+    body.style.height = "100vh";
+    let menuPrincipal = document.querySelector(".container1");
+    menuPrincipal.style.opacity = "0.5";
+    menuPrincipal.style.position = "absolute";
+    menuPrincipal.style.zIndex = "1";
+    document.querySelector(".options").style.overflow = "hidden";
+    let menuSimplificacion = document.getElementById("menuSimplificacion");
+    menuSimplificacion.style.display = "flex";
+    menuSimplificacion.style.position = "relative";
+    menuSimplificacion.style.zIndex = "2";
+    menuSimplificacion.style.opacity = "1";
+    document.querySelector(".container2 .options").opacity = "1";
+    let flecha = document.getElementById("AtrasSimplificacion");
+    flecha.style.display = "block";
+    flecha.style.position = "absolute";
+    flecha.addEventListener("click",()=>{
+        menuPrincipal.style.opacity = "1";
+        menuPrincipal.style.position = "relative";
+        document.querySelector(".options").style.overflow = "scroll";
+        menuSimplificacion.style.display = "none";
+        body.removeAttribute("style");
+    })
+    function cambiarDeContenedor(ID){
+        document.querySelector('.contenedorGrande').style.display = 'flex'
+        menuPrincipal.style.display = "none";
+        menuSimplificacion.style.display = "none";
+        document.getElementById(ID.charAt(0).toLowerCase() + ID.slice(1)).style.display = "block";
+        console.log(ID.charAt(0).toLowerCase() + ID.slice(1));
+        menuPrincipal.style.opacity = "1";
+        menuPrincipal.style.position = "relative";
+        document.querySelector(".options").style.overflow = "scroll";
+        body.removeAttribute("style");
+        document.getElementById('Atras').style.display = 'block';
+        document.querySelector(`#${ID.charAt(0).toLowerCase() + ID.slice(1)} .converter input`).focus();
+    }
+    let $hijos = document.querySelectorAll("#menuSimplificacion .options .option");
+    let ids = [];
+    $hijos.forEach((hijo=>{
+        ids.push(hijo.id);
+    }))
+    console.log(ids);
+    ids.forEach((id=>{
+        document.getElementById(id).addEventListener('click', () =>{
+            cambiarDeContenedor(id);
+        })
+    }))
 }

@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
 }
+
+
 .contenedorGrande{
     display: none;
 }
@@ -19,9 +21,9 @@
 }
 
 .option img {
+    --tamanioP: 40px;
     width: 100%;
     height: 70%;
-    object-fit: cover;
 }
 
 .option p {
@@ -101,10 +103,6 @@ button:hover {
     text-align: center;
 }
 
-.grid-container  .dividendo {
-    /* background-color: lightblue; */
-}
-
 .grid-container  .divisor {
     /* background-color: lightgreen; */
     border-left: 2px solid black;
@@ -112,12 +110,7 @@ button:hover {
 }
 
 .grid-container .operaciones {
-    /* background-color: lightcoral; */
     text-align: left;
-}
-
-.grid-container .resultado {
-    /* background-color: lightyellow; */
 }
 
 .grid-container p{
@@ -175,6 +168,20 @@ button:hover {
         left: 5%;
         display: flex;
     }
+    .container2{
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        height: 90%;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        box-shadow: 0 0px 8px rgba(0, 0, 0, 1);
+        border-radius: 3%;
+    }
+    .container2 .options {
+        height: auto;
+    }
 }
 
 @media (max-width: 700px) {
@@ -203,4 +210,23 @@ button:hover {
         top:2%;
         left: 10px;
     }
+}
+
+table {
+    width: 30%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 3px solid black;
+    padding: 10px;
+    text-align: center;
+    width: 1%;
+    height: 1%;
+}
+
+td {
+    min-width: 50px;  /* Ancho mínimo para cada celda */
+    min-height: 50px; /* Alto mínimo para cada celda */
 }

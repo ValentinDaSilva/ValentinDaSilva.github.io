@@ -59,6 +59,30 @@
                 <img src="assets/fotos/restaBCDEx3.png" alt="Calcular Resta BCD Ex3">
                 <p>Resta BCD Ex3</p>
             </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="Simplificacion">
+                <img src="assets/fotos/simplificacion.png" alt="Simplificacion booleana">
+                <p>Simplificacion boleana</p>
+            </div>
+        </div>
+    </div>
+    <div class="container2" id="menuSimplificacion"style="display: none;">
+        <h1 class="animate__animated animate__fadeInDown">Elige una opcion</h1>
+        <div class="options">
+            <div class="flecha">
+                <img style="display:none"id="AtrasSimplificacion" onclick="goBackToMenu()" src="assets/fotos/flehcaHaciaAtras.png" alt="Flecha hacia atras" class="flechaHaciaAtras">
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="SumaDeProductos">
+                <img src="assets/fotos/sumaDeProductos.jpg" alt="Simplificacion booleana">
+                <p>Primer forma canonica</p>
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="SimplificacionBoleana">
+                <img src="assets/fotos/simplificacionBoleana.jpg" alt="Simplificacion booleana">
+                <p>Simplificacion Booleana</p>
+            </div>
+            <div class="option animate__animated animate__rotateIn animate__rotateIn" id="MapaKarnaugh">
+                <img src="assets/fotos/karnaugh.png" alt="Simplificacion booleana">
+                <p>Simplificacion Karnaugh</p>
+            </div>
         </div>
     </div>
     <div class="contenedorGrande" style="display: none;">
@@ -220,6 +244,53 @@
                 <button onclick="borrarCampos(`restaBCDEx31`,`restaBCDEx32`,'resultadoOutput12','resultadoOutput13')">Borrar</button>
                 <p id="resultadoOutput12"></p>
                 <p id="resultadoOutput13"></p>
+            </div>
+        </div>
+        <div class="container restaBCDEx3" style="display: none;" id="restaBCDEx3">
+            <h1>Restar dos numeros BCDN-Ex3</h1>
+            <div class="converter">
+                <h2>Ingresa el primer numero</h2>
+                <input type="text" id="restaBCDEx31" placeholder="Ingresa un número">
+                <h2>Ingresa el segundo numero</h2>
+                <input type="text" id="restaBCDEx32" placeholder="Ingresa un número">
+                <button onclick="restaBCDEx3()">Calcular</button>
+                <button onclick="borrarCampos(`restaBCDEx31`,`restaBCDEx32`,'resultadoOutput12','resultadoOutput13')">Borrar</button>
+                <p id="resultadoOutput12"></p>
+                <p id="resultadoOutput13"></p>
+            </div>
+        </div>
+        <div class="container sumaDeProductos" style="display: none;" id="sumaDeProductos">
+            <h1>Restar dos numeros BCDN-Ex3</h1>
+            <div class="converter">
+                <h2>Ingresa el primer numero</h2>
+                <input type="text" id="restaBCDEx31" placeholder="Ingresa un número">
+                <h2>Ingresa el segundo numero</h2>
+                <input type="text" id="restaBCDEx32" placeholder="Ingresa un número">
+                <button onclick="restaBCDEx3()">Calcular</button>
+                <button onclick="borrarCampos(`restaBCDEx31`,`restaBCDEx32`,'resultadoOutput12','resultadoOutput13')">Borrar</button>
+                <p id="resultadoOutput12"></p>
+                <p id="resultadoOutput13"></p>
+            </div>
+        </div>
+        <div class="container simplificacionBoleana" style="display: none;" id="simplificacionBoleana">
+            <h1>Restar dos numeros BCDN-Ex3</h1>
+            <div class="converter">
+                <h2>Ingresa el primer numero</h2>
+                <input type="text" id="restaBCDEx31" placeholder="Ingresa un número">
+                <h2>Ingresa el segundo numero</h2>
+                <input type="text" id="restaBCDEx32" placeholder="Ingresa un número">
+                <button onclick="restaBCDEx3()">Calcular</button>
+                <button onclick="borrarCampos(`restaBCDEx31`,`restaBCDEx32`,'resultadoOutput12','resultadoOutput13')">Borrar</button>
+                <p id="resultadoOutput12"></p>
+                <p id="resultadoOutput13"></p>
+            </div>
+        </div>
+        <div class="container mapaKarnaugh" style="display: none;" id="mapaKarnaugh">
+            <h1>Simplificacion con mapa de Karnaugh</h1>
+            <div class="converter">
+                <h2>Ingresa las variables</h2>
+                <input type="text" id="karnaugh1" placeholder="A,B,C | A,B,C,D">
+                <button onclick="construirTabla()">Generar Mapa</button>
             </div>
         </div>
     </div>

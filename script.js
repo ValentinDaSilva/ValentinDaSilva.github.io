@@ -111,3 +111,32 @@ function devolverCelda(posicionBinaria){
     }
     return document.getElementById("karnaugh").rows[fila].cells[columna];
 }
+
+// Definimos la función interna con async para que retorne una promesa automáticamente
+async function funcionInterna() {
+    // Simulamos una operación que tarda un poco en completarse
+    console.log("realizo una operacion");
+    await new Promise(resolve => setTimeout(resolve, 3000)); // Simulamos 3 segundos de espera
+    return "Operación interna completada";
+}
+
+// Definimos la función externa como async para poder usar await dentro de ella
+async function funcionExterna() {
+    console.log("Inicio de la función externa");
+
+    try {
+        // Esperamos a que la función interna termine usando await
+        const resultado = await funcionInterna();
+        console.log(resultado); // Esto se ejecutará cuando la función interna haya completado su operación
+        console.log("Continuando con la función externa");
+    } catch (error) {
+        // Manejo de errores si la función interna falla
+        console.error("Error en la función interna:", error);
+    }
+
+    console.log("Fin de la función externa");
+}
+
+// Llamamos a la función externa para iniciar el proceso
+funcionExterna();
+
