@@ -1,13 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
+    <title>Tabla de Verdad y Primera Forma Canónica</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .formulas {
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <table id="table-container"></table>
-    <script src="script.js"></script>
+    <h1>Tabla de Verdad y Primera Forma Canónica</h1>
+    <form id="variablesForm">
+        <label for="numVariables">Número de Variables:</label>
+        <input type="number" id="numVariables" name="numVariables" min="1" required>
+        <button type="submit">Generar Tabla</button>
+    </form>
+    <br>
+    <div id="tableContainer"></div>
+    <button id="generateCanonFormBtn" style="display: none;">Generar Primera Forma Canónica</button>
+    <div class="formulas" id="formulasContainer"></div>
+
+    <script>
+        document.getElementById('variablesForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const numVariables = parseInt(document.getElementById('numVariables').value);
+            generateTruthTable(numVariables);
+        });
+
+        function generateTruthTable(numVariables) {
+            const tableContainer = document.getElementById('tableContainer');
+            tableContainer.innerHTML = '';
+            const formulasContainer = document.getElementById('formulasContainer');
+            formulasContainer.innerHTML = '';
+            const generateCanonFormBtn = document.getElementById('generateCanonFormBtn');
+            generateCanonFormBtn.style.display = 'none';
+
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            // Crear encabezado de la tabla
+            const headerRow = document.createElement('tr');
+            for (let i = 0; i < numVariables; i++) {
+                const th = document.createElement('th');
+                th.textContent = `V${i + 1}`;
+                headerRow.appendChild(th);
+            }
+            const thResult = document.createElement('th');
+            thResult.textContent = 'Resultado';
+            headerRow.appendChild(thResult);
+            thead.appendChild(headerRow);
+
+            // Crear filas de la tabla
+            const numRows = Math.pow(2, numVariables);
+            const truthValues = [];
+            for (let i = 0; i < numRows; i++) {
+                const row = document.createElement('tr');
+                const values = [];
+                for (let j = numVariables - 1; j >= 0; j--) {
+                    const td = document.createElement('td');
+                    td.textContent = ((i >> j) & 1) ? 1 : 0;
+                    td.addEventListener('click', function() {
+                        switch(td.textContent) {
+                            case '0':
+                                td.textContent = '1';
+                                break;
+                            case '1':
+                                td.textContent = 'X';
+                                break;
+                            case 'X':
+                                td.textContent = '0';
+                                break;
+                            default:
+                                td.textContent = '0';
+                        }
+                    });
+                    row.appendChild(td);
+                    values.push(td.textContent);
+                }
+                const tdResult = document.createElement('td');
+                tdResult.textContent = '0'; // Inicialmente 0
+                row.appendChild(tdResult);
+                values.push(tdResult.textContent);
+                truthValues.push(values);
+                tbody.appendChild(row);
+            }
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            tableContainer.appendChild(table);
+
+            generateCanonFormBtn.style.display = 'block';
+            generateCanonFormBtn.addEventListener('click', function() {
+                generateCanonicalForm(numVariables, truthValues);
+            });
+        }
+
+        function generateCanonicalForm(numVariables, truthValues) {
+            const formulasContainer = document.getElementById('formulasContainer');
+            formulasContainer.innerHTML = '';
+
+            // Generar la primera forma canónica
+            const canonicalForms = [];
+            for (let i = 0; i < truthValues.length; i++) {
+                if (truthValues[i][numVariables] === '1') { // Si el resultado es '1'
+                    let term = [];
+                    for (let j = 0; j < numVariables; j++) {
+                        switch(truthValues[i][j]) {
+                            case '0':
+                                term.push(`~V${j + 1}`);
+                                break;
+                            case '1':
+                                term.push(`V${j + 1}`);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    if (term.length > 0) {
+                        canonicalForms.push(term.join(' ∧ '));
+                    }
+                }
+            }
+
+            // Mostrar la primera forma canónica
+            const formulasTitle = document.createElement('h2');
+            formulasTitle.textContent = 'Primera Forma Canónica:';
+            formulasContainer.appendChild(formulasTitle);
+
+            const ul = document.createElement('ul');
+            for (let i = 0; i < canonicalForms.length; i++) {
+                const li = document.createElement('li');
+                li.textContent = canonicalForms[i];
+                ul.appendChild(li);
+            }
+            formulasContainer.appendChild(ul);
+        }
+    </script>
 </body>
 </html>

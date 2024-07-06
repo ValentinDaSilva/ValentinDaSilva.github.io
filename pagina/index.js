@@ -27,6 +27,7 @@ document.addEventListener('keydown', function(event) {
         else if(document.getElementById("sumaBCDEx3").style.display == 'block') sumaBCDEx3();
         else if(document.getElementById("restaBCDEx3").style.display == 'block') restaBCDEx3();
         else if(document.getElementById("mapaKarnaugh").style.display == 'block') construirTabla();
+        else if(document.getElementById("sumaDeProductos").style.display == 'block') tablaDeVerdad();
     }
 });
 
@@ -1705,7 +1706,7 @@ function regla1Simplificacion(vector){
                     vector[i] = auxiliar.cadena1;
                     vector[j] = auxiliar.cadena2;
                     hiceAlgunaOperacion = auxiliar.hiceOperacion;
-                    console.log(i+1,j+1)
+                    //console.log(i+1,j+1)
                 }
             }
         }
@@ -1715,7 +1716,7 @@ function regla1Simplificacion(vector){
 
 function simplificarExpresion(expresion){
     let aux, contador = 0;
-    expresion = sumaDeProductosComoVector(expresion);
+    if(typeof expresion == "string") expresion = sumaDeProductosComoVector(expresion);
     do{
         aux = regla1Simplificacion(expresion);
         expresion = aux.vector;
@@ -1728,13 +1729,13 @@ function reglas(cadena1,cadena2){
     let hiceOperacion = false;
     let operacion = estaComplementamenteIncluido(cadena1,cadena2);
     if(operacion == 0){
-        C("El elemento esta completamente incluido en el otro: ",cadena1,cadena2);
+        //C("El elemento esta completamente incluido en el otro: ",cadena1,cadena2);
         cadena2 = "";
         hiceOperacion = true;
-        C("Conclusion: ",cadena1,cadena2);  
+        //C("Conclusion: ",cadena1,cadena2);  
     }else if(typeof operacion == "string"){
         hiceOperacion = true;
-        C("Solo difieren en 1 complemento: ",cadena1,cadena2);
+        //C("Solo difieren en 1 complemento: ",cadena1,cadena2);
         if(cantCaracteres(cadena1) >= cantCaracteres(cadena2)){
             if(cadena1.includes(operacion + "'")){
                 cadena1 = eliminarCaracter(cadena1,operacion + "'");
@@ -1754,7 +1755,7 @@ function reglas(cadena1,cadena2){
                 //console.log("entre aca 4",operacion)
             }
         }
-        C("Conclusion: ",cadena1,cadena2);   
+        //C("Conclusion: ",cadena1,cadena2);   
     }
     return {cadena1,cadena2,hiceOperacion};
 }
@@ -1950,7 +1951,26 @@ async function pintar(vector){
 
 
 async function grupos(expresion){
-    if(expresion === undefined) expresion = primerFormaCanonica();
+    if(expresion === undefined){
+        let hayX = false;
+        let tablaKarnaught = document.getElementById("karnaugh");
+        let filas = tablaKarnaught.rows;
+        for(let i = 1; i < filas.length; i++){
+            for(let j = 1; j < filas[0].cells.length; j++){
+                //console.log(filas[i].cells[j].innerHTML);
+                if(filas[i].cells[j].innerHTML == "X"){
+                    hayX = true;
+                    break;
+                }
+            }
+            if(hayX) break;
+        }
+        if(hayX){
+            tablaKarnaught = karnaughConX(tablaKarnaught);
+            document.getElementById("karnaugh").innerHTML = tablaKarnaught.innerHTML;
+        }
+        expresion = primerFormaCanonica();
+    } 
     if(typeof expresion == "string") expresion = sumaDeProductosComoVector(expresion);
     let comb = combinaciones(expresion,8);
     for(let elem of comb){
@@ -2018,6 +2038,14 @@ async function grupos(expresion){
             })
             if(unaLibre) await pintar(vector);
     }
+    let vector = simplificarExpresion(expresion);
+    let vectorFinal = [];
+    let elemento = document.createElement("p");
+    elemento.innerHTML = `f(${document.getElementById("karnaugh1").value}) = `;
+    for(let elemento of vector) if(elemento != "") vectorFinal.push(elemento);
+    //console.log(vectorFinal)
+    elemento.innerHTML += vectorFinal.join(" + ");
+    document.getElementById("pasos").appendChild(elemento);
 }
 
 function pasarALetras(numeros){
@@ -2055,7 +2083,7 @@ function devolverCelda(posicionBinaria){
     if(posicionBinaria.length == 3){
         fila = parseInt(posicionBinaria[0])+1;
         columna = posicionBinaria.slice(1);
-        console.log(columna)
+        //console.log(columna)
         switch(columna){
             case "00": columna = 1;break;
             case "01": columna = 2;break;
@@ -2119,8 +2147,10 @@ function tablaDeNxM(fila,columna){
                 td.style.cursor = "pointer";
                 td.addEventListener('click', function() {
                     // Alternar el valor entre 0 y 1 al hacer clic
-                    td.innerText = td.innerText === '0' ? '1' : '0';
-                    console.log(td.dataset.fila,td.dataset.columna)
+                    if(td.innerText == "0") td.innerText = "1";
+                    else if(td.innerText == "1") td.innerText = "X";
+                    else if(td.innerText == "X") td.innerText = "0";
+                     //console.log(td.dataset.fila,td.dataset.columna)
                 }); 
             } 
             tr.appendChild(td);
@@ -2131,7 +2161,7 @@ function tablaDeNxM(fila,columna){
 }
 
 function construirTabla(...variables){
-    console.log("vector: ",variables);
+    //console.log("vector: ",variables);
     if(variables == ""){
         variables = document.getElementById("karnaugh1").value.split(",");
     }
@@ -2167,9 +2197,9 @@ function primerFormaCanonica(){
         for(let j = 1; j < filas[0].cells.length; j++){
             let celda = filas[i].cells[j];
             if(celda.innerHTML == "1"){
-                console.log(i+1,j+1)
+                //console.log(i+1,j+1)
                 let posicion = filas[i].cells[0].innerHTML + filas[0].cells[j].innerHTML;
-                console.log(posicion)
+                //console.log(posicion)
                 vector.push(pasarALetras(posicion));
             }
         }
@@ -2241,7 +2271,7 @@ function menuSimplificar(){
         menuPrincipal.style.display = "none";
         menuSimplificacion.style.display = "none";
         document.getElementById(ID.charAt(0).toLowerCase() + ID.slice(1)).style.display = "block";
-        console.log(ID.charAt(0).toLowerCase() + ID.slice(1));
+        //console.log(ID.charAt(0).toLowerCase() + ID.slice(1));
         menuPrincipal.style.opacity = "1";
         menuPrincipal.style.position = "relative";
         document.querySelector(".options").style.overflow = "scroll";
@@ -2254,10 +2284,269 @@ function menuSimplificar(){
     $hijos.forEach((hijo=>{
         ids.push(hijo.id);
     }))
-    console.log(ids);
+    //console.log(ids);
     ids.forEach((id=>{
         document.getElementById(id).addEventListener('click', () =>{
             cambiarDeContenedor(id);
         })
     }))
+}
+
+function tablaDeVerdad(cantVariables){
+    if(cantVariables == undefined) cantVariables = document.getElementById("primeraFormaCanonica1").value;
+    //console.log(cantVariables)
+    let tabla = document.createElement("table");
+    const thead = document.createElement('thead');
+    const encabezado = document.createElement('tr');
+    const th = document.createElement('th');
+    th.setAttribute('colspan', cantVariables + 1);
+    th.textContent = 'Tabla de verdad';
+    encabezado.appendChild(th);
+    thead.appendChild(encabezado);
+    tabla.appendChild(thead);
+    tabla.id = "TablaDeVerdad";
+    for(let i = -1; i < Math.pow(2,cantVariables); i++){
+        let tr = document.createElement("tr");
+        if(i == -1){
+            for(let j = 0; j < cantVariables; j++){
+                let td = document.createElement("td");
+                td.innerHTML = "X"+`<sub>${cantVariables-j-1}</sub>`;
+                tr.appendChild(td);
+            }
+            let td = document.createElement("td");
+                td.innerHTML = "R";
+                tr.appendChild(td);
+            tabla.appendChild(tr);
+        }else{
+            let combinacionEnBinario = convertirDecimalAOtro(i.toString(),2);
+            while(combinacionEnBinario.length < cantVariables) combinacionEnBinario = "0"+combinacionEnBinario;
+            for(let j = 0; j < cantVariables; j++){
+                let td = document.createElement("td");
+                td.innerHTML = combinacionEnBinario[j];
+                tr.appendChild(td);
+            }
+            let td = document.createElement("td");
+            td.innerHTML = "0";
+            td.style.cursor = "pointer";
+            td.addEventListener("click",()=>{
+                if(td.innerHTML == "0") td.innerHTML = "1";
+                else if(td.innerHTML == "1") td.innerHTML = "X";
+                else if(td.innerHTML == "X") td.innerHTML = "0";
+            })
+            tr.appendChild(td);
+            tabla.appendChild(tr);
+        }
+    }
+    eliminarTodosLosHijos("pasos");
+    document.getElementById("pasos").style.display = "block";
+    document.getElementById("pasos").appendChild(tabla);
+    let boton = document.createElement("button");
+    boton.style.width = "200px";
+    boton.innerHTML = "Calcular primer forma canonica";
+    boton.setAttribute("onClick","tablaASumaDeProductos()");
+    document.getElementById("pasos").appendChild(boton);
+    return tabla;
+}
+
+function tablaASumaDeProductos(tabla){
+    if(tabla == undefined) tabla = document.getElementById("TablaDeVerdad");
+    let filas = tabla.rows;
+    let resultado = [];
+    let hayX = false;
+    for(let i = 2; i < filas.length;i++){
+        if(filas[i].cells[filas[2].cells .length - 1].innerHTML == "X"){
+            hayX = true;
+            break;
+        }
+    }
+    if(!hayX){
+        for(let i = 2; i < filas.length;i++){
+            let combinacion = "";
+            //console.log(filas[1].cells.length)
+            for(let j = 0; j < filas[1].cells.length - 1;j++){
+                combinacion+=filas[i].cells[j].innerHTML;
+            }
+            if(filas[i].cells[filas[i].cells.length - 1].innerHTML == "1"){
+                resultado.push(pasarALetras(combinacion));
+            }
+        }
+        if(document.getElementById("pasos").lastChild.innerHTML.includes("Suma de producto: "))document.getElementById("pasos").removeChild(document.getElementById("pasos").lastChild);
+        document.getElementById("pasos").appendChild(crearP("Suma de producto: "+resultado.join(" + ")));
+        return resultado.join(" + ");
+    }else{
+        formaMasEficiente(tabla);
+    }
+}
+
+function formaMasEficiente(tabla){
+    let llamadoDesdeOtraFuncion = true;
+    if(tabla == undefined){
+        tabla = document.getElementById("TablaDeVerdad");
+        llamadoDesdeOtraFuncion = false;
+    }
+    let filas = tabla.rows;
+    let indices = [];
+    let contadorX = 0;
+    let sumaDeProductosActual, tablaFinal;
+    for(let i = 2; i < filas.length; i++){
+        let resultado = filas[i].cells[filas[i].cells.length - 1].innerHTML;
+        if(resultado == "X") {
+            contadorX++;
+            indices.push(i);
+        }
+    }
+    for(let i = 0; i < Math.pow(2,indices.length);i++){
+        let numero = convertirDecimalAOtro(i.toString(),2);
+        let tablaAux = document.createElement("table");
+        tablaAux.innerHTML = tabla.innerHTML;
+        while(numero.length < indices.length) numero = "0"+numero;
+        let indiceIndices = 0;
+//        console.log(numero);
+        for(let i = 0; i < indices.length;i++){
+            tablaAux.rows[indices[i]].cells[tablaAux.rows[2].cells.length - 1].innerHTML = numero[i];
+        }
+        let suma = simplificarExpresion(tablaASumaDeProductos(tablaAux));
+        suma = eliminarCadenasVacias(suma).join("+");
+        console.log("suma: ",suma);
+        if(i == 0){
+            sumaDeProductosActual = suma;
+            tablaFinal = tablaAux;
+        }
+        else if(primerCadenaMasSimplificada(suma,sumaDeProductosActual)){
+            console.log(suma, "fue superior a ",sumaDeProductosActual);
+            sumaDeProductosActual = suma;
+            tablaFinal = tablaAux;
+        }else{
+            console.log(suma, "no fue superior a ",sumaDeProductosActual);
+        }
+    }
+    if(!llamadoDesdeOtraFuncion){
+        console.log("entre");
+        document.getElementById("TablaDeVerdad").innerHTML = tablaFinal.innerHTML;
+    }
+    tablaASumaDeProductos(tablaFinal);
+    console.log(tablaFinal)
+    return tablaFinal;   
+}
+
+function primerCadenaMasSimplificada(cadena1,cadena2){
+    let vector1 = sumaDeProductosComoVector(cadena1);
+    let vector2 = sumaDeProductosComoVector(cadena2);
+    if(vector1.length < vector2.length) return true;
+    else if(vector1.length > vector2.length) return false;
+    else{
+        //Cada uno cuenta en cuantos terminos les gano en menos terminos
+        let contadorVector1 = 0, contadorVector2 = 0;
+        for(let i = 0; i < vector1.length;i++){
+            //comparo termino por termino
+            console.log("vectores: ",vector1[i],vector2[i]);
+            if(cantCaracteres(vector1[i]) < cantCaracteres(vector2[i])){
+                contadorVector1++;
+                console.log("fue mejor 1")
+            }else{
+                contadorVector2++;
+                console.log("fue mejor 2")
+            }
+        }
+        if(contadorVector1 > contadorVector2) return true;
+        else return false;
+    }
+}
+
+function eliminarCadenasVacias(vector){
+    let resultado = [];
+    for(let elem of vector){
+        if(elem != "") resultado.push(elem);
+    }
+    return resultado;
+}
+
+function karnaughConX(tablaKarnaugh){
+    if(tablaKarnaugh == undefined) tablaKarnaugh = document.getElementById("karnaugh");
+    let filasKarnaugh = tablaKarnaugh.rows;
+    let valores = [];
+    console.log(filasKarnaugh)
+    if(filasKarnaugh.length == 5){
+        for(let j = 1; j < filasKarnaugh[0].cells.length;j++){
+            valores.push(filasKarnaugh[1].cells[j].innerHTML);
+        }
+        /
+        for(let j = 1; j < filasKarnaugh[0].cells.length;j++){
+            valores.push(filasKarnaugh[2].cells[j].innerHTML);
+        }
+        for(let j = 1; j < filasKarnaugh[0].cells.length;j++){
+            valores.push(filasKarnaugh[4].cells[j].innerHTML);
+        }
+        for(let j = 1; j < filasKarnaugh[0].cells.length;j++){
+            valores.push(filasKarnaugh[3].cells[j].innerHTML);
+        }
+        console.log("valores",valores);
+        let cantVariables = 4
+        let tabla = document.createElement("table");
+        const thead = document.createElement('thead');
+        const encabezado = document.createElement('tr');
+        const th = document.createElement('th');
+        th.setAttribute('colspan', cantVariables + 1);
+        th.textContent = 'Tabla de verdad';
+        encabezado.appendChild(th);
+        thead.appendChild(encabezado);
+        tabla.appendChild(thead);
+        let posicionValores = 0;
+        for(let i = -1; i < Math.pow(2,cantVariables); i++){
+            let tr = document.createElement("tr");
+            if(i == -1){
+                for(let j = 0; j < cantVariables; j++){
+                    let td = document.createElement("td");
+                    td.innerHTML = "X"+`<sub>${cantVariables-j-1}</sub>`;
+                    tr.appendChild(td);
+                }
+                let td = document.createElement("td");
+                    td.innerHTML = "R";
+                    tr.appendChild(td);
+                tabla.appendChild(tr);
+            }else{
+                let combinacionEnBinario = convertirDecimalAOtro(i.toString(),2);
+                while(combinacionEnBinario.length < cantVariables) combinacionEnBinario = "0"+combinacionEnBinario;
+                for(let j = 0; j < cantVariables; j++){
+                    let td = document.createElement("td");
+                    td.innerHTML = combinacionEnBinario[j];
+                    tr.appendChild(td);
+                }
+                let td = document.createElement("td");
+                td.innerHTML = valores[posicionValores];
+                posicionValores++;
+                td.style.cursor = "pointer";
+                td.addEventListener("click",()=>{
+                    if(td.innerHTML == "0") td.innerHTML = "1";
+                    else if(td.innerHTML == "1") td.innerHTML = "X";
+                    else if(td.innerHTML == "X") td.innerHTML = "0";
+                })
+                tr.appendChild(td);
+                tabla.appendChild(tr);
+            }
+        }
+        let tablaFinal = formaMasEficiente(tabla);
+        let filasTablaFinal = tablaFinal.rows;
+        let valoresTablaFinal = [];
+        for(let i = 2; i < 10;i++){
+            valoresTablaFinal.push(filasTablaFinal[i].cells[filasTablaFinal[2].cells.length - 1]);
+        }
+        console.log("llegue hasta aca",filasTablaFinal)
+        for(let i = 14; i < 18;i++){
+            console.log("a ver..",i,filasTablaFinal[i].cells[filasTablaFinal[2].cells.length - 1])
+            valoresTablaFinal.push(filasTablaFinal[i].cells[filasTablaFinal[2].cells.length - 1]);
+        }
+        for(let i = 10; i < 14;i++){
+            valoresTablaFinal.push(filasTablaFinal[i].cells[filasTablaFinal[2].cells.length - 1]);
+        }
+        let tablaKarnaughFilas = tablaKarnaugh.rows;
+        let valoresFinal = 0;
+        for(let i = 1; i < tablaKarnaughFilas.length;i++){
+            for(let j = 1; j < tablaKarnaughFilas[0].cells.length;j++,valoresFinal++){
+                tablaKarnaughFilas[i].cells[j].innerHTML = valoresTablaFinal[valoresFinal].innerHTML;
+            }
+        }
+        tablaKarnaugh.rows = tablaKarnaughFilas;
+    }
+    return tablaKarnaugh;
 }
