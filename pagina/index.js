@@ -1966,8 +1966,7 @@ async function grupos(expresion){
             if(hayX) break;
         }
         if(hayX){
-            tablaKarnaught = karnaughConX(tablaKarnaught);
-            document.getElementById("karnaugh").innerHTML = tablaKarnaught.innerHTML;
+            karnaughConX(tablaKarnaught);
         }
         expresion = primerFormaCanonica();
     } 
@@ -2041,6 +2040,9 @@ async function grupos(expresion){
     let vector = simplificarExpresion(expresion);
     let vectorFinal = [];
     let elemento = document.createElement("p");
+    if(document.getElementById("pasos").lastChild.innerHTML = "Suma"){
+        document.getElementById("pasos").removeChild(document.getElementById("pasos").lastChild);
+    }
     elemento.innerHTML = `f(${document.getElementById("karnaugh1").value}) = `;
     for(let elemento of vector) if(elemento != "") vectorFinal.push(elemento);
     //console.log(vectorFinal)
@@ -2407,25 +2409,24 @@ function formaMasEficiente(tabla){
         }
         let suma = simplificarExpresion(tablaASumaDeProductos(tablaAux));
         suma = eliminarCadenasVacias(suma).join("+");
-        console.log("suma: ",suma);
+        //console.log("suma: ",suma);
         if(i == 0){
             sumaDeProductosActual = suma;
             tablaFinal = tablaAux;
         }
         else if(primerCadenaMasSimplificada(suma,sumaDeProductosActual)){
-            console.log(suma, "fue superior a ",sumaDeProductosActual);
+            //console.log(suma, "fue superior a ",sumaDeProductosActual);
             sumaDeProductosActual = suma;
             tablaFinal = tablaAux;
         }else{
-            console.log(suma, "no fue superior a ",sumaDeProductosActual);
+            //console.log(suma, "no fue superior a ",sumaDeProductosActual);
         }
     }
     if(!llamadoDesdeOtraFuncion){
-        console.log("entre");
         document.getElementById("TablaDeVerdad").innerHTML = tablaFinal.innerHTML;
     }
     tablaASumaDeProductos(tablaFinal);
-    console.log(tablaFinal)
+    //console.log(tablaFinal)
     return tablaFinal;   
 }
 
@@ -2439,13 +2440,13 @@ function primerCadenaMasSimplificada(cadena1,cadena2){
         let contadorVector1 = 0, contadorVector2 = 0;
         for(let i = 0; i < vector1.length;i++){
             //comparo termino por termino
-            console.log("vectores: ",vector1[i],vector2[i]);
+            //console.log("vectores: ",vector1[i],vector2[i]);
             if(cantCaracteres(vector1[i]) < cantCaracteres(vector2[i])){
                 contadorVector1++;
-                console.log("fue mejor 1")
+                //console.log("fue mejor 1")
             }else{
                 contadorVector2++;
-                console.log("fue mejor 2")
+                //console.log("fue mejor 2")
             }
         }
         if(contadorVector1 > contadorVector2) return true;
@@ -2461,26 +2462,44 @@ function eliminarCadenasVacias(vector){
     return resultado;
 }
 
+function intercambiarPosiciones(vector, indice1, indice2) {
+    if (indice1 < 0 || indice1 >= vector.length || indice2 < 0 || indice2 >= vector.length) {
+        console.error('Índices fuera de rango');
+        return;
+    }
+
+    // Intercambio de elementos
+    const temp = vector[indice1];
+    vector[indice1] = vector[indice2];
+    vector[indice2] = temp;
+}
+
 function karnaughConX(tablaKarnaugh){
     if(tablaKarnaugh == undefined) tablaKarnaugh = document.getElementById("karnaugh");
     let filasKarnaugh = tablaKarnaugh.rows;
     let valores = [];
-    console.log(filasKarnaugh)
+    //console.log(filasKarnaugh)
     if(filasKarnaugh.length == 5){
         for(let j = 1; j < filasKarnaugh[0].cells.length;j++){
             valores.push(filasKarnaugh[1].cells[j].innerHTML);
         }
-        /
+        intercambiarPosiciones(valores,2,3);
+        //console.log("valores",valores);
         for(let j = 1; j < filasKarnaugh[0].cells.length;j++){
             valores.push(filasKarnaugh[2].cells[j].innerHTML);
         }
+        intercambiarPosiciones(valores,6,7);
+        //console.log("valores",valores);
         for(let j = 1; j < filasKarnaugh[0].cells.length;j++){
             valores.push(filasKarnaugh[4].cells[j].innerHTML);
         }
+        intercambiarPosiciones(valores,10,11);
+        //console.log("valores",valores);
         for(let j = 1; j < filasKarnaugh[0].cells.length;j++){
             valores.push(filasKarnaugh[3].cells[j].innerHTML);
         }
-        console.log("valores",valores);
+        intercambiarPosiciones(valores,14,15);
+        //console.log("valores",valores);
         let cantVariables = 4
         let tabla = document.createElement("table");
         const thead = document.createElement('thead');
@@ -2526,27 +2545,27 @@ function karnaughConX(tablaKarnaugh){
             }
         }
         let tablaFinal = formaMasEficiente(tabla);
-        let filasTablaFinal = tablaFinal.rows;
-        let valoresTablaFinal = [];
+        let vectorFinal = [];
         for(let i = 2; i < 10;i++){
-            valoresTablaFinal.push(filasTablaFinal[i].cells[filasTablaFinal[2].cells.length - 1]);
+            vectorFinal.push(tablaFinal.rows[i].cells[4].innerHTML);
+            //console.log(tablaFinal.rows[i])
         }
-        console.log("llegue hasta aca",filasTablaFinal)
+        intercambiarPosiciones(vectorFinal,2,3);
+        intercambiarPosiciones(vectorFinal,6,7);
         for(let i = 14; i < 18;i++){
-            console.log("a ver..",i,filasTablaFinal[i].cells[filasTablaFinal[2].cells.length - 1])
-            valoresTablaFinal.push(filasTablaFinal[i].cells[filasTablaFinal[2].cells.length - 1]);
+            vectorFinal.push(tablaFinal.rows[i].cells[4].innerHTML);
         }
+        intercambiarPosiciones(vectorFinal,10,11);
         for(let i = 10; i < 14;i++){
-            valoresTablaFinal.push(filasTablaFinal[i].cells[filasTablaFinal[2].cells.length - 1]);
+            vectorFinal.push(tablaFinal.rows[i].cells[4].innerHTML);
         }
-        let tablaKarnaughFilas = tablaKarnaugh.rows;
-        let valoresFinal = 0;
-        for(let i = 1; i < tablaKarnaughFilas.length;i++){
-            for(let j = 1; j < tablaKarnaughFilas[0].cells.length;j++,valoresFinal++){
-                tablaKarnaughFilas[i].cells[j].innerHTML = valoresTablaFinal[valoresFinal].innerHTML;
-            }
+        intercambiarPosiciones(vectorFinal,14,15);
+        let karnaugh = document.getElementById("karnaugh");
+        let indice = 0;
+        for(let i = 1; i <= 4;i++){
+            for(let j = 1; j <= 4;j++){
+                karnaugh.rows[i].cells[j].innerHTML = vectorFinal[indice++];
+            }   
         }
-        tablaKarnaugh.rows = tablaKarnaughFilas;
     }
-    return tablaKarnaugh;
 }
