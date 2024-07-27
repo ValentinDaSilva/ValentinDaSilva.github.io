@@ -124,6 +124,7 @@ button:hover {
 
 #pasos {
     margin-bottom: 50px;
+    white-space: pre-wrap;
 }
 
 

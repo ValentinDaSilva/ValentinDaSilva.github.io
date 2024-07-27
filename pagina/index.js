@@ -1,58 +1,60 @@
-document.getElementById('Conversion').addEventListener('click', () => showContainer('conversor'));
-document.getElementById('Johnson').addEventListener('click', () => showContainer('johnson'));
-document.getElementById('Gray').addEventListener('click', () => showContainer('gray'));
-document.getElementById('Suma').addEventListener('click', () => showContainer('suma'));
-document.getElementById('Resta').addEventListener('click', () => showContainer('resta'));
-document.getElementById('Multiplicacion').addEventListener('click', () => showContainer('multiplicacion'));
-document.getElementById('Division').addEventListener('click', () => showContainer('division'));
-document.getElementById('Hamming').addEventListener('click', () => showContainer('hamming'));
-document.getElementById('SumaBCDN').addEventListener('click', () => showContainer('sumaBCDN'));
-document.getElementById('RestaBCDN').addEventListener('click', () => showContainer('restaBCDN'));
-document.getElementById('SumaBCDEx3').addEventListener('click', () => showContainer('sumaBCDEx3'));
-document.getElementById('RestaBCDEx3').addEventListener('click', () => showContainer('restaBCDEx3'));
-document.getElementById('Simplificacion').addEventListener('click', () => menuSimplificar());
+document.addEventListener("DOMContentLoaded",()=>{
+    document.getElementById('Conversion').addEventListener('click', () => showContainer('conversor'));
+    document.getElementById('Johnson').addEventListener('click', () => showContainer('johnson'));
+    document.getElementById('Gray').addEventListener('click', () => showContainer('gray'));
+    document.getElementById('Suma').addEventListener('click', () => showContainer('suma'));
+    document.getElementById('Resta').addEventListener('click', () => showContainer('resta'));
+    document.getElementById('Multiplicacion').addEventListener('click', () => showContainer('multiplicacion'));
+    document.getElementById('Division').addEventListener('click', () => showContainer('division'));
+    document.getElementById('Hamming').addEventListener('click', () => showContainer('hamming'));
+    document.getElementById('SumaBCDN').addEventListener('click', () => showContainer('sumaBCDN'));
+    document.getElementById('RestaBCDN').addEventListener('click', () => showContainer('restaBCDN'));
+    document.getElementById('SumaBCDEx3').addEventListener('click', () => showContainer('sumaBCDEx3'));
+    document.getElementById('RestaBCDEx3').addEventListener('click', () => showContainer('restaBCDEx3'));
+    document.getElementById('Simplificacion').addEventListener('click', () => menuSimplificar());
 
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        if(document.getElementById("conversor").style.display == 'block') conversion();
-        else if(document.getElementById("johnson").style.display == 'block') codigoJohnson();
-        else if(document.getElementById("gray").style.display == 'block') codigoGray();
-        else if(document.getElementById("suma").style.display == 'block') sumaBinaria();
-        else if(document.getElementById("resta").style.display == 'block') restaBinaria();
-        else if(document.getElementById("multiplicacion").style.display == 'block') multiplicacionBinaria();
-        else if(document.getElementById("division").style.display == 'block') dividirDosNumeros();
-        else if(document.getElementById("hamming").style.display == 'block') calcularCodigoHamming();
-        else if(document.getElementById("sumaBCDN").style.display == 'block') sumaBCDN();
-        else if(document.getElementById("restaBCDN").style.display == 'block') restaBCDN();
-        else if(document.getElementById("sumaBCDEx3").style.display == 'block') sumaBCDEx3();
-        else if(document.getElementById("restaBCDEx3").style.display == 'block') restaBCDEx3();
-        else if(document.getElementById("mapaKarnaugh").style.display == 'block') construirTabla();
-        else if(document.getElementById("sumaDeProductos").style.display == 'block') tablaDeVerdad();
-    }
-});
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            if(document.getElementById("conversor").style.display == 'block') conversion();
+            else if(document.getElementById("johnson").style.display == 'block') codigoJohnson();
+            else if(document.getElementById("gray").style.display == 'block') codigoGray();
+            else if(document.getElementById("suma").style.display == 'block') sumaBinaria();
+            else if(document.getElementById("resta").style.display == 'block') restaBinaria();
+            else if(document.getElementById("multiplicacion").style.display == 'block') multiplicacionBinaria();
+            else if(document.getElementById("division").style.display == 'block') dividirDosNumeros();
+            else if(document.getElementById("hamming").style.display == 'block') calcularCodigoHamming();
+            else if(document.getElementById("sumaBCDN").style.display == 'block') sumaBCDN();
+            else if(document.getElementById("restaBCDN").style.display == 'block') restaBCDN();
+            else if(document.getElementById("sumaBCDEx3").style.display == 'block') sumaBCDEx3();
+            else if(document.getElementById("restaBCDEx3").style.display == 'block') restaBCDEx3();
+            else if(document.getElementById("mapaKarnaugh").style.display == 'block') construirTabla();
+            else if(document.getElementById("sumaDeProductos").style.display == 'block') tablaDeVerdad();
+            else if(document.getElementById("simplificacionBoleana").style.display == 'block') simplificarExpresion();
+        }
+    });
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById('jonhson1').value = "16";
-    document.getElementById('gray1').value = "16";
-    document.getElementById('numeroInput1').value = "1011110,101";
-    document.getElementById('numeroInput2').value = "110101,01";
-    document.getElementById('numeroResta1').value = "1100";
-    document.getElementById('numeroResta2').value = "1010";
-    document.getElementById('numeroMultiplicar1').value = "1010";
-    document.getElementById('numeroMultiplicar2').value = "111";
-    document.getElementById('numeroDividir1').value = "1010010.01";
-    document.getElementById('numeroDividir2').value = " 110.1";
-    document.getElementById('numeroHamming').value = "1010";
-    document.getElementById('sumaBCDN1').value = "1001 0100. 0011"; //94,3 + 44,5 
-    document.getElementById('sumaBCDN2').value = "0100 0100. 0101";
-    document.getElementById('restaBCDN1').value = "0100 1000"; // 48 - 98,2
-    document.getElementById('restaBCDN2').value = "1001 1000. 0010";
-    document.getElementById('sumaBCDEx31').value = "0111 1011"; // 48 + 98,2
-    document.getElementById('sumaBCDEx32').value = "1100 1011. 0100";
-    document.getElementById('restaBCDEx31').value = "0101 0110. 1010";
-    document.getElementById('restaBCDEx32').value = "0100 1100";
-    document.getElementById('karnaugh1').value = "A,B,C,D";
-});
+        document.getElementById('jonhson1').value = "16";
+        document.getElementById('gray1').value = "16";
+        document.getElementById('numeroInput1').value = "1011110,101";
+        document.getElementById('numeroInput2').value = "110101,01";
+        document.getElementById('numeroResta1').value = "1100";
+        document.getElementById('numeroResta2').value = "1010";
+        document.getElementById('numeroMultiplicar1').value = "1010";
+        document.getElementById('numeroMultiplicar2').value = "111";
+        document.getElementById('numeroDividir1').value = "1010010.01";
+        document.getElementById('numeroDividir2').value = " 110.1";
+        document.getElementById('numeroHamming').value = "1010";
+        document.getElementById('sumaBCDN1').value = "1001 0100. 0011"; //94,3 + 44,5 
+        document.getElementById('sumaBCDN2').value = "0100 0100. 0101";
+        document.getElementById('restaBCDN1').value = "1001 1000.1001"; // 48 - 98,2
+        document.getElementById('restaBCDN2').value = "0010 0000. 0111";
+        document.getElementById('sumaBCDEx31').value = "0111 1011"; // 48 + 98,2
+        document.getElementById('sumaBCDEx32').value = "1100 1011. 0100";
+        document.getElementById('restaBCDEx31').value = "0101 0110. 1010";
+        document.getElementById('restaBCDEx32').value = "0100 1100";
+        document.getElementById('karnaugh1').value = "A,B,C,D";
+        document.getElementById('simplificacion1').value = "(a'b'cd)+(a'b'cd)+(a'bc'd')+(a'bcd')+(ab'c'd')+(ab'cd')+(abc'd')+(abcd')";
+})
 
 
 function showContainer(containerId) {
@@ -1696,17 +1698,16 @@ function C(...Mensajes){
     console.log(...Mensajes);
 }
 
-function regla1Simplificacion(vector){
+function regla1Simplificacion(vector,llamadoDesdeInterfaz){
     let hiceAlgunaOperacion = false;
     for(let i = 0; i < vector.length; i++){
         for(let j = 0; j < vector.length; j++){
             if(i != j){
-                let auxiliar = reglas(vector[i],vector[j]);
+                let auxiliar = reglas(vector[i],vector[j],i,j,llamadoDesdeInterfaz);
                 if(auxiliar.hiceOperacion){
                     vector[i] = auxiliar.cadena1;
                     vector[j] = auxiliar.cadena2;
                     hiceAlgunaOperacion = auxiliar.hiceOperacion;
-                    //console.log(i+1,j+1)
                 }
             }
         }
@@ -1714,21 +1715,61 @@ function regla1Simplificacion(vector){
     return {vector,hiceAlgunaOperacion};
 }
 
+function versionImpresion(expresion){
+    let resultado = [];
+    if(typeof expresion != "string"){
+        for(let i = 0; i < expresion.length; i++){
+            if(expresion[i] != ""){
+                resultado.push(expresion[i]);
+            }else{
+                resultado.push(" 0 ");
+            }
+        }
+        resultado = resultado.join(" + ");
+    }
+    return resultado;
+}
+
 function simplificarExpresion(expresion){
+    let llamadoDesdeInterfaz = false;
+    if(expresion == undefined){
+        expresion = document.getElementById("simplificacion1").value;
+        llamadoDesdeInterfaz = true;
+        eliminarTodosLosHijos("pasos");
+    }
     let aux, contador = 0;
     if(typeof expresion == "string") expresion = sumaDeProductosComoVector(expresion);
     do{
-        aux = regla1Simplificacion(expresion);
+        if(llamadoDesdeInterfaz) document.getElementById("pasos").appendChild(crearP(versionImpresion(expresion)));
+        aux = regla1Simplificacion(expresion,llamadoDesdeInterfaz);
         expresion = aux.vector;
         contador++;
     }while(aux.hiceAlgunaOperacion);
+    if(llamadoDesdeInterfaz){
+        document.getElementById("pasos").lastChild.innerHTML = "Resultado: "+document.getElementById("pasos").lastChild.innerHTML;
+        document.getElementById("resultadoOutput14").innerHTML = "Resultado: ";
+        document.getElementById("resultadoOutput14").innerHTML += eliminarCadenasVacias(expresion).join(" + ");
+        document.getElementById("pasos").style.display = "block";
+    } 
+    
     return expresion;
 }
 
-function reglas(cadena1,cadena2){
+function reglas(cadena1,cadena2,posC1,posC2,llamadoDesdeInterfaz){
+    posC1++; posC2++;
     let hiceOperacion = false;
     let operacion = estaComplementamenteIncluido(cadena1,cadena2);
     if(operacion == 0){
+        if(llamadoDesdeInterfaz){
+            let elemento = document.createElement("p");
+            elemento.style.color = "black";
+            elemento.innerHTML = "      ";
+            elemento.innerHTML += `<span style="color:blue">(${posC1}) `;
+            elemento.innerHTML += `<span style="color:red">${cadena1}</span> && `
+            elemento.innerHTML += `<span style="color:blue">(${posC2}) `;
+            elemento.innerHTML += `<span style="color:red">${cadena2}</span> (R1)`
+            document.getElementById("pasos").appendChild(elemento);
+        }
         //C("El elemento esta completamente incluido en el otro: ",cadena1,cadena2);
         cadena2 = "";
         hiceOperacion = true;
@@ -1736,23 +1777,28 @@ function reglas(cadena1,cadena2){
     }else if(typeof operacion == "string"){
         hiceOperacion = true;
         //C("Solo difieren en 1 complemento: ",cadena1,cadena2);
+        if(llamadoDesdeInterfaz){
+            let elemento = document.createElement("p");
+            elemento.innerHTML = "      ";
+            elemento.innerHTML += `<span style="color:blue">(${posC1}) `;
+            elemento.innerHTML += `<span style="color:red">${cadena1}</span> && `
+            elemento.innerHTML += `<span style="color:blue">(${posC2}) `;
+            elemento.innerHTML += `<span style="color:red">${cadena2}</span> (R2)`
+            document.getElementById("pasos").appendChild(elemento);
+        }
         if(cantCaracteres(cadena1) >= cantCaracteres(cadena2)){
             if(cadena1.includes(operacion + "'")){
                 cadena1 = eliminarCaracter(cadena1,operacion + "'");
-                //console.log("Entre aca",operacion)
             } 
             else {
                 cadena1 = eliminarCaracter(cadena1,operacion);
-                //console.log("entre aca 2",operacion)
             }
         }else{
             if(cadena2.includes(operacion + "'")){
                 cadena2 = eliminarCaracter(cadena2,operacion + "'");
-                //console.log("Entre aca 3",operacion)
             } 
             else {
                 cadena2 = eliminarCaracter(cadena2,operacion);
-                //console.log("entre aca 4",operacion)
             }
         }
         //C("Conclusion: ",cadena1,cadena2);   
@@ -2444,9 +2490,13 @@ function primerCadenaMasSimplificada(cadena1,cadena2){
             if(cantCaracteres(vector1[i]) < cantCaracteres(vector2[i])){
                 contadorVector1++;
                 //console.log("fue mejor 1")
-            }else{
+            }else if(cantCaracteres(vector1[i]) > cantCaracteres(vector2[i])){
                 contadorVector2++;
                 //console.log("fue mejor 2")
+            }else{
+                if(contadorVector1 > contadorVector2) contadorVector1++;
+                else contadorVector2++;
+                //console.log("Son iguales",`${(contadorVector1 > contadorVector2)? "Sumo uno al mayor que es el v1":"Sumo uno al mayor que es el v2"}`);
             }
         }
         if(contadorVector1 > contadorVector2) return true;
@@ -2548,7 +2598,6 @@ function karnaughConX(tablaKarnaugh){
         let vectorFinal = [];
         for(let i = 2; i < 10;i++){
             vectorFinal.push(tablaFinal.rows[i].cells[4].innerHTML);
-            //console.log(tablaFinal.rows[i])
         }
         intercambiarPosiciones(vectorFinal,2,3);
         intercambiarPosiciones(vectorFinal,6,7);
@@ -2569,3 +2618,8 @@ function karnaughConX(tablaKarnaugh){
         }
     }
 }
+
+//Combinaciones
+/* 
+    0000,0010,0100(X),0110,1000,1010
+*/
