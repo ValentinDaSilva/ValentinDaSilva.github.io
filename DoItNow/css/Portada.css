@@ -1,0 +1,264 @@
+body, h1{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.portada {
+    width: 100%;
+    height: 100vh;
+    background-image: url("../assets/fotos/fondo.webp");
+    background-size: cover;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+@media (min-width: 1200px) {
+    .parteLogo{
+        /* background-color: blue; */
+        width: 100vw;
+        height: 40vh;
+    }
+    .logo{
+        margin-top: 10vh;
+        margin-left: 10vw;
+        width: 30vh;
+        height: 30vh;
+    }
+    .parteBotones{
+        width: 100vw;
+        height: 60vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .botones{
+        width: 80vw;
+        height: 40vh;
+        /* background-color: red; */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .boton{
+        width: calc(33% - 30px);
+        height: calc(33% - 30px);
+        margin: 10px;
+        min-width: 300px;
+        display: flex;
+        border: 3px solid #12E1B9;
+        border-right: 1px solid #12E1B9;
+        align-items: center;
+        justify-content: space-between;
+        color: #12e1b9;
+        font-family: 'Neue Machina';
+        font-weight: bold;
+        font-size: 1.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.161em;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    .botones .boton:hover{
+        background-color: #12E1B9;
+        color: white;
+        transition: all 0.5s;
+    }
+    .redes{
+        display: flex;
+        border: 3px solid transparent;
+        border-right: 1px solid transparent;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: Archivo;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.161em;
+        padding: 15px;
+        font-size: 1.3rem;
+    }
+    .redes:hover{
+        background-color: white;
+        border-radius: 50%;
+        transition: background-color 0.01s;
+        color: black;
+    }
+    .redes img {
+        width: 50px;
+        height: 50%;
+        margin-right: 10px;
+    }
+}
+/*
+Por ahora queda safable sin version tablet, usa la misma que la del celular
+@media (min-width: 801px) and (max-width: 1199px) {
+    .parteLogo{
+        background-color: blue;
+        width: 100vw;
+        height: 35vh;
+    }
+    .logo{
+        margin-top: 5vh;
+        margin-left: 10vw;
+        width: 30vh;
+        height: 30vh;
+    }
+    .parteBotones{
+        width: 100vw;
+        height: 65vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: green;
+    }
+    .botones{
+        width: 80vw;
+        height: 55vh;
+        background-color: red;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .boton{
+        width: calc(50% - 20px);
+        height: 8vh;
+        margin: 5px;
+        min-width: 300px;
+        display: flex;
+        border: 1px solid #12E1B9;
+        border-right: 0.5px solid #12E1B9;
+        align-items: center;
+        justify-content: space-between;
+        color: #12e1b9;
+        font-family: 'Neue Machina';
+        font-weight: bold;
+        font-size: 2.1vh;
+        text-transform: uppercase;
+        letter-spacing: 0.161em;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    .botones .boton:hover{
+        background-color: #12E1B9;
+        color: white;
+        transition: all 0.5s;
+    }
+    .redes{
+        text-align: center;
+        display: flex;
+        border: 1px solid transparent;
+        border-right: 0.5px solid transparent;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: Archivo;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.161em;
+        padding: 15px;
+    }
+    .redes:hover{
+        background-color: white;
+        border-radius: 50%;
+        transition: background-color 0.01s;
+        color: black;
+    }
+    .redes img {
+        width: 20px;
+        margin-right: 10px;
+    }
+    .boton img {
+        width: 20px;
+        height: 100px;
+        margin-right: 10px;
+    }
+}*/
+
+@media (max-width: 1199px){
+    .parteLogo{
+        /* background-color: blue; */
+        width: 100vw;
+        height: 20vh;
+        display: flex;
+        justify-content: center;
+    }
+    .logo{
+        position: static;
+        width: 15vh;
+        height: 15vh;
+        margin-top: 5vh;
+    }
+    .parteBotones{
+        width: 100vw;
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+        /* padding-top: 1vh; */
+        /* background-color: green; */
+    }
+    .botones{
+        width: 80vw;
+        height: 80vh;
+        /* background-color: red; */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .boton{
+        width: calc(50% - 20px);
+        height: 5vh;
+        margin: 5px;
+        min-width: 300px;
+        display: flex;
+        border: 1px solid #12E1B9;
+        border-right: 0.5px solid #12E1B9;
+        align-items: center;
+        justify-content: space-between;
+        color: #12e1b9;
+        font-family: 'Neue Machina';
+        font-weight: bold;
+        font-size: 2vh;
+        text-transform: uppercase;
+        letter-spacing: 0.161em;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    .botones .boton:hover{
+        background-color: #12E1B9;
+        color: white;
+        transition: all 0.5s;
+    }
+    .redes{
+        text-align: center;
+        display: flex;
+        border: 1px solid transparent;
+        border-right: 0.5px solid transparent;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: Archivo;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.161em;
+        padding: 15px;
+    }
+    .redes:hover{
+        background-color: white;
+        border-radius: 50%;
+        transition: background-color 0.01s;
+        color: black;
+    }
+    .redes img {
+        width: 20px;
+        /* height: 50%; */
+        margin-right: 10px;
+    }
+}
