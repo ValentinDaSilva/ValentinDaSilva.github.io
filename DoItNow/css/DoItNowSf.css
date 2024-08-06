@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khitan+Small+Script&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+body, h1{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+body::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento en navegadores Webkit */
+}
+
+.portada {
+    width: 100%;
+    height: auto;
+    background-image: url("../assets/fotos/fondo.webp");
+    background-size: cover;
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+.botones{
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    left: 10%;
+    justify-content: space-between;
+}
+
+.logo {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    left:10%;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+
+.portada .boton {
+    margin-bottom: 20px;
+    width: 350px;
+    height: 50px;
+    display: flex;
+    border: 3px solid #12E1B9;
+    border-right: 1px solid #12E1B9;
+    align-items: center;
+    justify-content: space-between;
+    color: #12e1b9;
+    font-family: 'Neue Machina';
+    font-weight: bold;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.161em;
+    padding: 15px;
+}
+
+.botones .boton:hover{
+    background-color: #12E1B9;
+    color: white;
+    transition: all 0.5s;
+}
+
+.redes:hover{
+    background-color: white;
+    border-radius: 50%;
+    transition: background-color 0.5s;
+    color: black;
+}
+
+.redes{
+    margin-bottom: 20px;
+    display: flex;
+    border: 3px solid transparent;
+    border-right: 1px solid transparent;
+    width: 350px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: Archivo;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.161em;
+    padding: 15px;
+    font-size: 1.3rem;
+}
+
+.redes img {
+    width: 50px;
+    height: 50%;
+    margin-right: 10px;
+}
+
+#whatsapp{
+    width: 40px;
+}
+
+@media (max-width:1450px){
+    .portada{
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .botones{
+        position: static;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+    .logo{
+        position: static;
+    }
+}
+
+/* Presentacion Para Computadora */
+@media (min-width:1400px){
+    .parteDerecha .fondoRecortado{
+        width:100%;
+        height:100%;
+        position:absolute;
+        clip-path: polygon(100% 0, 100% 100%, 21% 100%, 0 50%, 42% 5%);
+    }
+    .parteDerecha .fotoClaudia{
+        transform:translateX(15%) translateY(5%);
+        width:80%;
+        height:95%;
+        position:absolute;
+        clip-path: polygon(100% 0, 100% 100%, 21% 100%, 0 50%, 42% 5%);
+    }
+    .presentacion{
+        width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        background-color: #1B5C66;
+    }
+    
+    .presentacion .parteDerecha{
+        width: 50vw;
+        height: 100vh;
+        position: relative;
+    }
+    
+    .presentacion .parteIzquierda{
+        width: 50vw;
+        height: 100vh;
+        position: relative;
+        left: 0;
+        /* padding: 10px; */
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .parteIzquierda .saludo{
+        width: 100%;
+        height: 20vh;
+        /* background-color: red; */
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        overflow: auto;
+    }
+    
+    .parteIzquierda .saludo p{
+        font-size: 4rem;
+        height: auto;
+        margin: 0;
+        color: white;
+        font-family: "Lobster", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+    
+    .parteIzquierda .texto{
+        width: 100%;
+        height: 50vh;
+        /* background-color: blue; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+    
+    .parteIzquierda .texto p{
+        font-size: 1.6vw;
+        height: auto;
+        margin: 0;
+        text-align: center;
+        overflow:auto;
+        white-space: pre-wrap;
+        color: #12e1b9;
+        padding: 15px;
+        padding-top: 100px;
+        font-family: "Noto Serif Khitan Small Script", serif;
+        font-weight: 400;
+        font-style: normal;
+        line-height: 1.5;
+        overflow: hidden;
+    }
+    
+    .parteIzquierda .flecha{
+        width: 10vh;
+        height: 10vh;
+        background-color: #12e1b9;
+        animation: moveDown 0.8s infinite;
+    }
+    
+    .parteIzquierda .boton{
+        width: 100%;
+        height: 30vh;
+        /* background-color: azure; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #12e1b9;
+        font-family: "Noto Serif Khitan Small Script", serif;
+        font-weight: 800;
+        font-style: normal;
+        line-height: 1.5;
+    }
+    
+    .parteIzquierda .boton div{
+        width: 50%;
+        height: 50%;
+        border: 3px solid #12e1b9;
+        font-size: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        box-shadow: 0px 0px 10px black;
+    }    
+}
+/* Presentacion para Moviles */
+@media (max-width:1400px){
+    .presentacion{
+        display: none;
+    }
+    .presentacionCelular{
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: rgb(8,15,43);
+background: radial-gradient(circle, rgba(8,15,43,1) 2%, rgba(27,92,102,1) 98%);
+        color:#1b5c66;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        align-items: center;
+    }
+    .fotoClaudia{
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        position: absolute;
+        /* left: calc(50vw - 100px); */
+        top: 100px;
+        z-index: 10;
+    }
+    .ArcoClaudia{
+        width: 100px;
+        height: 100px;
+        position: relative;
+        top: 60px;
+        transform: translateX(-10px);
+        /* background-color: rgb(14, 13, 13); */
+        z-index:11;
+    }
+    .ArcoClaudia{
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        font-weight: 1000; /* Palabra clave */
+        font-family: "Courier New", Courier, monospace;
+    }
+    #textoClaudia span{
+        position: absolute;
+        height: 300px;
+        color: white;
+        width: auto;
+        text-align: center;
+    }
+}
+
+
+@media (min-width:1800px){
+    .portada .boton,.redes{
+        width: 450px;
+    }
+}
+
+@keyframes moveDown {
+    0% {
+        transform: translateY(50px);
+    }
+    50% {
+        transform: translateY(0px);
+    }
+    100% {
+        transform: translateY(50px);
+    }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Do It Now</title>
+        <link rel="shortcut icon" href="/assets/Fotos/Logo.ico">
+        <link rel="stylesheet" href="css/DoItNowSf.css">
+    </head>
+    <body>
+        <section class="portada">
+            <img class="logo" src="assets/fotos/logoSinFondo.png" alt="logoPortada">
+            <div class="botones">
+                <div class="boton">
+                    <div>BIONEUROEMCIÓN</div>
+                    <img src="assets/fotos/flecha.svg" alt="flecha" loading="lazy" style="width: 10px;height: 100%;transform:rotate(180deg);">
+                </div>
+                <div class="boton">
+                    <div>PÉNDULO HEBREO</div>
+                    <img src="assets/fotos/flecha.svg" alt="flecha" loading="lazy" style="width: 10px;height: 100%;transform:rotate(180deg);">
+                </div>
+                <div class="boton">
+                    <div>COACHING ONTOLOGICO</div>
+                    <img src="assets/fotos/flecha.svg" alt="flecha" loading="lazy" style="width: 10px;height: 100%;transform:rotate(180deg);">
+                </div>
+                <div class="boton">
+                    <div>MINDFULNESS</div>
+                    <img src="assets/fotos/flecha.svg" alt="flecha" loading="lazy" style="width: 10px;height: 100%;transform:rotate(180deg);">
+                </div>
+                <div class="boton">
+                    <div>HIPNOSIS</div>
+                    <img src="assets/fotos/flecha.svg" alt="flecha" loading="lazy" style="width: 10px;height: 100%;transform:rotate(180deg);">
+                </div>
+                <div class="boton">
+                    <div>COACHING DEPORTIVO</div>
+                    <img src="assets/fotos/flecha.svg" alt="flecha" loading="lazy" style="width: 10px;height: 100%;transform:rotate(180deg);">
+                </div>
+                <div class="redes" id="instagramContenedor">
+                    <img id="instagram" src="assets/fotos/instagram.svg">
+                    <div>@doitnow.coach.sf</div>
+                </div>
+                <div class="redes">
+                    <img id="whatsapp" src="assets/fotos/whatsapp.webp">
+                    <div>+54 342 4236021</div>
+                </div>
+                <div class="redes">
+                    <div>PRESENCIAL / ONLINE </div>
+                </div>
+            </div>
+        </section>
+        <section class="presentacion" style="overflow: hidden;">
+            <div class="parteIzquierda">
+                <div class="saludo">
+                    <p>Hola, Soy Claudia</p>
+                </div>
+                <div class="texto">
+                    <p>INSTRUCTORA DE MINDFULNESS Y COACH ONTOLÓGICO, TANTO PROFESIONAL COMO DEPORTIVO. TENGO POSGRADO EN PSICOLOGÍA DEPORTIVA EN LA UNIVERSIDAD AUSTRAL, DIPLOMADO Y UNA MAESTRÍA EN BIODESCODIFICACIÓN (PVK), EN HIPNOSIS Y EN PÉNDULO HEBREO. ACTUALMENTE, ESTOY CURSANDO UN POSGRADO EN BIOEMOCIÓN EN LA UNR. </p>
+                </div>
+                <div class="flecha" style="clip-path: polygon(71% 0, 70% 48%, 100% 48%, 52% 100%, 53% 100%, 0 49%, 30% 48%, 30% 0);"></div>
+                <div class="boton">
+                    <div>HABLEMOS</div>
+                </div>
+            </div>
+            <div class="parteDerecha">
+                <img src="assets/fotos/fondoRecortado.webp" class="fondoRecortado">
+                <img src="assets/fotos/claudia.webp" class="fotoClaudia">
+            </div>
+        </section>
+        <section class="presentacionCelular" style="overflow: hidden;">
+            <img src="assets/fotos/claudia.webp" class="fotoClaudia">
+            <h1 id="textoClaudia">TRABAJEMOS JUNTOS</h1>
+        </section>
+</body>
+<script>
+    let circle = document.getElementById("textoClaudia");
+    let circleArray = circle.textContent.split('');
+    circle.textContent = '';
+
+    for(let i = 0, arco = 280; i < circleArray.length; i++,arco+=10){
+        circle.innerHTML += `<span style="transform:rotate(${arco}deg)">${circleArray[i]}</span>`;
+        
+    }
+</script>
+</html>
