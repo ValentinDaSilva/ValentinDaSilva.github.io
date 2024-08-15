@@ -257,6 +257,8 @@
 
         // Eliminar registro del localStorage
         function deleteRecord(ejercicio, peso, semana) {
+            console.log([getExerciseName(ejercicio),peso,`Semana ${semana}`]);
+            enviarDatos([getExerciseName(ejercicio),peso,`Semana ${semana}`],"eliminarEjercicio");
             let records = JSON.parse(localStorage.getItem('registroPesos')) || [];
             records = records.filter(record => record.ejercicio !== ejercicio || record.peso !== peso || record.semana !== semana);
             localStorage.setItem('registroPesos', JSON.stringify(records));
@@ -292,12 +294,10 @@
             const semana = document.getElementById('semana').value;
 
             if (ejercicio && peso && semana) {
-                ejercicios.push(getExerciseName(ejercicio));
-                ejercicios.push(peso);
-                ejercicios.push(semana);
                 addRecordToTable(ejercicio, peso, semana);
                 saveRecord(ejercicio, peso, semana);
-                enviarDatos(ejercicios);
+                console.log([getExerciseName(ejercicio),peso,`Semana ${semana}`]);
+                enviarDatos([getExerciseName(ejercicio),peso,`Semana ${semana}`],"agregarEjercicio");
                 this.reset();
             }
         });
@@ -305,12 +305,12 @@
         // Cargar los registros cuando se abre la página
         window.addEventListener('load', loadRecords);
         
-        function enviarDatos(ejercicios){
+        function enviarDatos(ejercicios,funcion){
             
-                    const url = 'https://script.google.com/macros/s/AKfycbyURcXFvc7d-7HrmjdbS-n732PbG0e0Pv2eCRoNcY1C1X9dBsuRE2QWmOgSvaa2QXHP/exec'; // Cambia esta URL por la tuya
+                    const url = 'https://script.google.com/macros/s/AKfycbw0yE-hn2NSA7JAUSzNq1jW2IeOq7RpOzFmYkvSE0rHMY7GGiRfPx5ohcV8ZQsUGUdl/exec'; // Cambia esta URL por la tuya
                     
             var data = {
-                funcion: "agregarEjercicio",
+                funcion: funcion,
                 array: ejercicios
             }
             fetch(url, {
