@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +34,8 @@
             color: #333;
         }
 
-        input, select {
+        input,
+        select {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -60,11 +62,14 @@
             margin-top: 20px;
         }
 
-        table, th, td {
+        table,
+        th,
+        td {
             border: 1px solid #ddd;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: center;
         }
@@ -96,6 +101,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Registro de Pesos - Rutina Gym</h1>
     <div class="form-container">
@@ -160,10 +166,10 @@
             <!-- Aquí se mostrarán los registros guardados -->
         </tbody>
     </table>
-    <a href="https://drive.google.com/file/d/1YRZNtUl7F32ruFzwD6_i9IS8thw9YbV5/view?usp=sharing">Link Rutina</a>
+
     <script>
         // Filtrar ejercicios en la lista desplegable
-        document.getElementById('filterInput').addEventListener('input', function() {
+        document.getElementById('filterInput').addEventListener('input', function () {
             const filterValue = this.value.toLowerCase();
             const select = document.getElementById('exercise');
             const options = select.options;
@@ -255,7 +261,7 @@
             records = records.filter(record => record.ejercicio !== ejercicio || record.peso !== peso || record.semana !== semana);
             localStorage.setItem('registroPesos', JSON.stringify(records));
         }
-
+        var ejercicios = [];
         // Agregar registro a la tabla
         function addRecordToTable(ejercicio, peso, semana) {
             const tbody = document.querySelector('#registroPesos tbody');
@@ -267,9 +273,9 @@
                 <td>${semana}</td>
                 <td><button class="delete-btn">Eliminar</button></td>
             `;
-
+            
             // Agregar evento de eliminar
-            tr.querySelector('.delete-btn').addEventListener('click', function() {
+            tr.querySelector('.delete-btn').addEventListener('click', function () {
                 deleteRecord(ejercicio, peso, semana);
                 tr.remove();
             });
@@ -278,7 +284,7 @@
         }
 
         // Manejar el formulario
-        document.getElementById('exerciseForm').addEventListener('submit', function(event) {
+        document.getElementById('exerciseForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
             const ejercicio = document.getElementById('exercise').value;
@@ -286,14 +292,43 @@
             const semana = document.getElementById('semana').value;
 
             if (ejercicio && peso && semana) {
+                ejercicios.push(getExerciseName(ejercicio));
+                ejercicios.push(peso);
+                ejercicios.push(semana);
                 addRecordToTable(ejercicio, peso, semana);
                 saveRecord(ejercicio, peso, semana);
+                enviarDatos(ejercicios);
                 this.reset();
             }
         });
 
         // Cargar los registros cuando se abre la página
         window.addEventListener('load', loadRecords);
+        
+        function enviarDatos(ejercicios){
+            
+                    const url = 'https://script.google.com/macros/s/AKfycbyURcXFvc7d-7HrmjdbS-n732PbG0e0Pv2eCRoNcY1C1X9dBsuRE2QWmOgSvaa2QXHP/exec'; // Cambia esta URL por la tuya
+                    
+            var data = {
+                funcion: "agregarEjercicio",
+                array: ejercicios
+            }
+            fetch(url, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then((response) => {
+                console.log(response);
+            })
+                .catch(function (error) {
+                    console.error('Error al enviar datos:', error);
+                });
+        }
+
     </script>
 </body>
+
 </html>
