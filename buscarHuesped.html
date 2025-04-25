@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buscar Huésped</title>
+  <style>
+    body{
+        display: flex;
+        margin: 0;
+    }
+    .body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        transition: width 0.5s, height 0.5s;
+    }
+
+    .container {
+        width: 60%;
+        max-width: 500px;
+        background-color: #fff;
+        padding: 25px 30px;
+        border-radius: 8px;
+        box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+        margin: 50px;
+        position: relative;
+        left: 0;
+    }
+
+    h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    }
+
+    .form-group {
+    margin-bottom: 18px;
+    }
+
+    label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+    }
+
+    input[type="text"],
+    select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    }
+
+    button {
+    width: 100%;
+    background-color: #64443a;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    }
+
+    button:hover {
+    background-color: #49312a;
+    }
+    .resultado {
+    width: 60vw;
+    margin: 50px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow-y: auto;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+    border: 2px solid #6b493ed0;
+    position: relative;
+    }
+
+    .resultado h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    }
+
+    .resultado table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+
+    .resultado th,
+    .resultado td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    color: black;
+    text-align: center;
+    }
+
+    .resultado th {
+    background-color: #412c26;
+    font-weight: bold;
+    color: white;
+    }
+
+    .resultado tr:hover {
+    background-color: #f9f9f9;
+    }
+
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: -1;
+        opacity: 0.5;
+    }
+    .siguiente {
+        width: 30%;
+        background-color: #412c26;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
+
+  <div class="body">
+    <div class="container">
+        <h1>Buscar Huésped</h1>
+        <form>
+          <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" placeholder="Perez"/>
+          </div>
+          <div class="form-group">
+            <label for="nombres">Nombres:</label>
+            <input type="text" id="nombres" name="nombres" />
+          </div>
+          <div class="form-group">
+            <label for="tipoDocumento">Tipo de documento:</label>
+            <select id="tipoDocumento" name="tipoDocumento">
+              <option value="">Seleccione</option>
+              <option value="DNI">DNI</option>
+              <option value="LE">LE</option>
+              <option value="LC">LC</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="numeroDocumento">Número de documento:</label>
+            <input type="text" id="numeroDocumento" name="numeroDocumento" />
+          </div>
+          <div class="form-group">
+            <button type="submit">Buscar</button>
+          </div>
+        </form>
+      </div>
+  </div>
+  <div class="resultado" style="display: none;">
+    <h2>Resultados de la búsqueda</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Apellido</th>
+          <th>Nombres</th>
+          <th>Tipo de documento</th>
+          <th>Número de documento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filas de ejemplo -->
+        <tr>
+          <td>Pérez</td>
+          <td>Juan Carlos</td>
+          <td>DNI</td>
+          <td>12345678</td>
+        </tr>
+        <tr>
+          <td>Perez</td>
+          <td>María Elena</td>
+          <td>Pasaporte</td>
+          <td>AB123456</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="siguiente">Siguiente</div>
+  </div>
+  
+  <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+
+        const resultadosDiv = document.querySelector('.resultado');
+        const bodyDiv = document.querySelector('.body');
+        bodyDiv.style.width = '40vw';
+        resultadosDiv.style.display = 'block';
+
+
+
+    });
+    let filas = document.querySelectorAll("tr");
+        filas = Array.from(filas).slice(1);
+        filas.forEach((row,indice) => {
+          row.addEventListener("click", (e) => {
+            filas.forEach((r,indice2) => {if(indice!=indice2) r.style.backgroundColor = "white"});
+            if(filas[indice].style.backgroundColor !== "yellow") {
+              filas[indice].style.backgroundColor = "yellow";
+            } else {
+              filas[indice].style.backgroundColor = "white";
+              console.log("es amarillo")
+            }
+          });
+        });
+
+    const siguiente = document.querySelector('.siguiente');
+    siguiente.addEventListener('click', function() {
+        //Si hay alguna fila seleccionada me redirige a "modificarHuesped.html"
+        const selectedRow = filas.find(row => row.style.backgroundColor === "yellow");
+        if (selectedRow) {
+            window.location.href = 'modificarHuesped.html';
+        } else {
+            window.location.href = 'altaHuesped.html';
+        }
+    });
+  </script>
+</body>
+</html>

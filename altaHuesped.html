@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Alta de Huésped</title>
+  <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: -1;
+        opacity: 0.5;
+    }
+
+    .overlay {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    form {
+      background-color: #f4ece3;
+      border: 1px solid #49312a;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #49312a;
+      margin-bottom: 25px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #49312a;
+      font-weight: bold;
+    }
+
+    label.required::after {
+      content: "*";
+      color: red;
+      margin-left: 5px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #a1887f;
+      background-color: #fffaf4;
+    }
+
+    fieldset {
+        grid-column: span 2;
+        border-radius: 10px;
+        border: 1px solid #a1887f;
+        background-color: #f5f0eb;
+        padding: 20px;
+        margin-top: 15px;
+        max-width: 100%;
+        overflow: hidden;
+    }      
+
+    legend {
+      padding: 0 10px;
+      color: #6d4c41;
+      font-weight: bold;
+    }
+
+    .fieldset-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px 30px;
+        width: 100%;
+    }
+
+    button {
+      grid-column: span 2;
+      margin-top: 30px;
+      padding: 12px;
+      background-color: #49312a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #6d4c41;
+    }
+
+    .modal {
+      display: none;  
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .error{
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 50%;
+    }
+
+    .advertencia{
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .close-btn .error{
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+    <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
+    <div class="overlay">
+      <form id="altaHuesped" novalidate>
+        <h2>Dar Alta de Huésped</h2>
+        <div class="form-grid">
+          <div>
+            <label for="apellido" class="required">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" placeholder="Pérez" required>
+          </div>
+          <div>
+            <label for="nombres" class="required">Nombres:</label>
+            <input type="text" id="nombres" name="nombres" placeholder="Juan Carlos" required>
+          </div>
+      
+          <div>
+            <label for="tipoDocumento" class="required">Tipo de documento:</label>
+            <select id="tipoDocumento" name="tipoDocumento" required>
+              <option value="">Seleccione</option>
+              <option value="DNI">DNI</option>
+              <option value="LE">LE</option>
+              <option value="LC">LC</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+      
+          <div>
+            <label for="numeroDocumento" class="required">Número de documento:</label>
+            <input type="text" id="numeroDocumento" name="numeroDocumento" placeholder="12345678" required>
+          </div>
+      
+          <div>
+            <label for="cuit">CUIT (opcional):</label>
+            <input type="text" id="cuit" name="cuit" placeholder="20-12345678-9">
+          </div>      
+      
+          <div>
+            <label for="fechaNacimiento" class="required">Fecha de nacimiento:</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+          </div>
+      
+          <div>
+            <label for="caracteristica" class="required">Teléfono:</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="tel" id="caracteristica" name="caracteristica" placeholder="Ej: 342" required>
+              <input type="tel" id="telefonoNumero" name="telefonoNumero" placeholder="Ej: 5986867" required>
+            </div>
+          </div>
+      
+          <div>
+            <label for="email">Email (opcional):</label>
+            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com">
+          </div>
+      
+          <div>
+            <label for="ocupacion" class="required">Ocupación:</label>
+            <input type="text" id="ocupacion" name="ocupacion" placeholder="Ingeniero, Estudiante, etc." required>
+          </div>
+      
+          <div>
+            <label for="nacionalidad" class="required">Nacionalidad:</label>
+            <select id="nacionalidad" name="nacionalidad" required>
+                <option value=""></option>
+            </select>
+        </div>
+      
+          <fieldset class="full-width">
+            <legend>Dirección</legend>
+            <div class="fieldset-grid">
+              <div>
+                <label for="calle" class="required">Calle:</label>
+                <input type="text" id="calle" name="calle" placeholder="Primera Junta" required>
+              </div>
+              <div>
+                <label for="numeroCalle" class="required">Número:</label>
+                <input type="text" id="numeroCalle" name="numero" placeholder="2457" required>
+              </div>
+              <div>
+                <label for="departamento">Departamento: (opcional)</label>
+                <input type="text" id="departamento" name="departamento" placeholder="B">
+              </div>
+              <div>
+                <label for="piso">Piso: (opcional)</label>
+                <input type="text" id="piso" name="piso" placeholder="3">
+              </div>
+              <div>
+                <label for="codigoPostal" class="required">Código Postal:</label>
+                <input type="text" id="codigoPostal" name="codigoPostal" placeholder="1000" required>
+              </div>
+              <div>
+                <label for="localidad" class="required">Localidad:</label>
+                <input type="text" id="localidad" name="localidad" placeholder="Santa Fe" required>
+              </div>
+              <div>
+                <label for="provincia" class="required">Provincia:</label>
+                <input type="text" id="provincia" name="provincia" placeholder="Santa Fe" required>
+              </div>
+              <div>
+                <label for="pais" class="required">País:</label>
+                <input type="text" id="pais" name="pais" placeholder="Argentina" required>
+              </div>
+            </div>
+          </fieldset>
+      
+          <button type="submit">Guardar</button>
+        </div>
+      </form>
+      
+  </div>
+
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content error">
+      <h2 style="text-align: center; color: #d32f2f; font-size: 24px; margin-top: 10px;">ERROR</h2>
+      <img src="assets/image/Error.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-message" style="text-align: center; margin-top: 20px;">Por favor, completa todos los campos requeridos.</p>
+      <button id="ok-button" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">OK</button>
+    </div>
+  </div>
+  <div id="modalAdvertencia" class="modal" style="display: none;">
+    <div class="modal-content advertencia">
+      <h2 style="text-align: center; color: #00e1f0; font-size: 24px; margin-top: 10px;">ADVERTENCIA</h2>
+      <img src="assets/image/Advertencia.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-messageAdvertencia" style="text-align: center; margin-top: 20px;">El numero de documento ya existe</p>
+      <div class="advertenciaBotones" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+        <button id="AdvertenciaBoton1" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">ACEPTAR</button>
+        <button id="AdvertenciaBoton2" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #2fd345; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">CORREGIR</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function mensajeError(mensaje) {
+      const modal = document.getElementById('modal');
+      const errorMessage = document.getElementById('error-message');
+      
+      errorMessage.textContent = mensaje;
+      
+      modal.style.display = "flex";
+      
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
+
+    function verificarCUIT(CUITS) {
+      if(CUITS == undefined) CUITS = ["20123456789", "20345678901", "20987654321"];
+      const input = document.getElementById("cuit").value.trim();
+      if (input !== "") {
+        if(CUITS.includes(input)) {
+          advertencia("¡CUIDADO! El tipo y número de documento ya existen en el sistema","ACEPTAR","CORREGIR");
+        }
+      }
+    }
+
+    function advertencia(mensaje,boton1,boton2) {
+      if(mensaje == undefined) mensaje = "Mensaje de Advertencia";
+      if(boton1 == undefined) boton1 = "ACEPTAR";
+      if(boton2 == undefined) boton2 = "CANCELAR";
+      const modal = document.getElementById('modalAdvertencia');
+      const errorMessage = document.getElementById('error-messageAdvertencia');
+      
+      errorMessage.textContent = mensaje;
+    const botonAceptar = document.getElementById("AdvertenciaBoton1");
+    const botonCorregir = document.getElementById("AdvertenciaBoton2");
+    
+    botonAceptar.textContent = boton1;
+    botonCorregir.textContent = boton2;
+      modal.style.display = "flex";
+    }
+
+    document.getElementById("altaHuesped").addEventListener("submit", function(event) {
+      const form = event.target;
+      let camposInvalidos = [];
+  
+      const camposRequeridos = [
+        "apellido",
+        "nombres",
+        "tipoDocumento",
+        "numeroDocumento",
+        "fechaNacimiento",
+        "ocupacion",
+        "nacionalidad",
+        "caracteristica",      // Código de área
+        "telefonoNumero",      // Número de teléfono (antes "celular")
+        "calle",
+        "numeroCalle",         // Antes "numero"
+        "codigoPostal",
+        "localidad",
+        "provincia",
+        "pais"
+      ];
+
+  
+      camposRequeridos.forEach(id => {
+        document.getElementById(id).style.border = "";
+      });
+  
+      camposRequeridos.forEach(id => {
+        const campo = document.getElementById(id);
+        if (!campo.value.trim()) {
+          campo.style.border = "2px solid #ff4646";
+          camposInvalidos.push(id);
+        }
+      });
+      event.preventDefault();
+      if (camposInvalidos.length > 0) {
+        
+        mensajeError("Por favor, completa todos los campos que tienen un asterisco (*)");
+      }
+
+      verificarCUIT();
+    });
+
+    
+    let botones = document.querySelectorAll(".boton");
+    botones.forEach(boton => {
+        boton.addEventListener("click", function() {
+            document.querySelectorAll(".modal").forEach(modal => {
+                modal.style.display = "none";
+            });
+        });
+    });
+    
+  </script>
+    <script>
+      const paises = [
+          "Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argelia",
+          "Argentina", "Armenia", "Australia", "Austria", "Azerbaiyán", "Bahamas", "Bangladés", "Barbados", "Baréin",
+          "Bélgica", "Belice", "Benín", "Bielorrusia", "Birmania", "Bolivia", "Bosnia y Herzegovina", "Botsuana",
+          "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", "Bután", "Cabo Verde", "Camboya", "Camerún", "Canadá",
+          "Catar", "Chad", "Chile", "China", "Chipre", "Ciudad del Vaticano", "Colombia", "Comoras", "Corea del Norte",
+          "Corea del Sur", "Costa de Marfil", "Costa Rica", "Croacia", "Cuba", "Dinamarca", "Dominica", "Ecuador", "Egipto",
+          "El Salvador", "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos",
+          "Estonia", "Esuatini", "Etiopía", "Filipinas", "Finlandia", "Fiyi", "Francia", "Gabón", "Gambia", "Georgia",
+          "Ghana", "Granada", "Grecia", "Guatemala", "Guinea", "Guinea-Bisáu", "Guinea Ecuatorial", "Guyana", "Haití",
+          "Honduras", "Hungría", "India", "Indonesia", "Irak", "Irán", "Irlanda", "Islandia", "Islas Marshall", "Islas Salomón",
+          "Israel", "Italia", "Jamaica", "Japón", "Jordania", "Kazajistán", "Kenia", "Kirguistán", "Kiribati", "Kuwait",
+          "Laos", "Lesoto", "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania", "Luxemburgo", "Macedonia del Norte",
+          "Madagascar", "Malasia", "Malaui", "Maldivas", "Malí", "Malta", "Marruecos", "Mauricio", "Mauritania", "México",
+          "Micronesia", "Moldavia", "Mónaco", "Mongolia", "Montenegro", "Mozambique", "Namibia", "Nauru", "Nepal", "Nicaragua",
+          "Níger", "Nigeria", "Noruega", "Nueva Zelanda", "Omán", "Países Bajos", "Pakistán", "Palaos", "Panamá", "Papúa Nueva Guinea",
+          "Paraguay", "Perú", "Polonia", "Portugal", "Reino Unido", "República Centroafricana", "República Checa", "República del Congo",
+          "República Democrática del Congo", "República Dominicana", "Ruanda", "Rumanía", "Rusia", "Samoa", "San Cristóbal y Nieves",
+          "San Marino", "San Vicente y las Granadinas", "Santa Lucía", "Santo Tomé y Príncipe", "Senegal", "Serbia", "Seychelles",
+          "Sierra Leona", "Singapur", "Siria", "Somalia", "Sri Lanka", "Sudáfrica", "Sudán", "Sudán del Sur", "Suecia", "Suiza",
+          "Surinam", "Tailandia", "Tanzania", "Tayikistán", "Timor Oriental", "Togo", "Tonga", "Trinidad y Tobago", "Túnez",
+          "Turkmenistán", "Turquía", "Tuvalu", "Ucrania", "Uganda", "Uruguay", "Uzbekistán", "Vanuatu", "Venezuela", "Vietnam",
+          "Yemen", "Yibuti", "Zambia", "Zimbabue", "Palestina"
+      ];
+    
+      const select = document.getElementById("nacionalidad");
+      
+    
+      function cargarPaises(lista) {
+          select.innerHTML = "<option value=''>Seleccione una opcion</option>"; // Limpiar opciones actuales
+          lista.forEach(pais => {
+              const option = document.createElement("option");
+              option.value = pais;
+              option.textContent = pais;
+              select.appendChild(option);
+          });
+      }
+    
+      
+    
+      // Cargar todos los países al inicio
+      cargarPaises(paises);
+      
+  </script>
+</body>
+</html>

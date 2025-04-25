@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Premier</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            position: relative;
+            overflow: hidden
+
+        }
+
+        .fondo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            position: relative;
+            top: 0;
+            z-index: -1;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+        .btnMenu {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6C3B2A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 2.5px;
+            font-family: 'Playfair Display', serif;
+            width: 20vw;
+        }
+
+        .btnMenu:hover {
+            background-color: #8B4513;
+        }
+        .opciones{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #6C3B2A;
+        }
+        .opcion {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            border: 2px solid #49312a;
+            background-color: rgba(255, 255, 255, 0.836);
+        }
+
+        .opcion img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .opcion h2 {
+            font-size: 16px;
+            color: #6C3B2A;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <img class="fondo" src="assets/image/portada.png" alt="">
+    <button class="btnMenu" onclick="document.getElementById('opciones').scrollIntoView({ behavior: 'smooth' })">
+        Menu Principal
+    </button>
+    <div class="opciones" id="opciones">
+        <div class="opcion" onclick="window.location.href='altaHuesped.html'">
+            <img src="assets/image/altaHuesped.png" alt="altaDeHuesped">
+            <h2>Alta Huesped</h2>            
+        </div>
+        <div class="opcion" onclick="window.location.href='buscarHuesped.html'">
+            <img src="assets/image/buscarHuesped.png" alt="busquedaDeHuesped" style="transform: scale(1.5);">
+            <h2>Busqueda Huesped</h2>            
+        </div>
+    </div>
+</body>
+</html>
