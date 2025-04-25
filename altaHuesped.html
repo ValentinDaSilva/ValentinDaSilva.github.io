@@ -328,7 +328,7 @@
       const input = document.getElementById("cuit").value.trim();
       if (input !== "") {
         if(CUITS.includes(input)) {
-          advertencia("¡CUIDADO! El tipo y número de documento ya existen en el sistema","ACEPTAR","CORREGIR");
+          advertencia("¡CUIDADO! El tipo y número de documento ya existen en el sistema","CORREGIR","ACEPTAR");
         }
       }
     }
@@ -401,7 +401,30 @@
             });
         });
     });
-    
+    function completar() {
+      document.getElementById("apellido").value = "González";
+      document.getElementById("nombres").value = "María Fernanda";
+      document.getElementById("tipoDocumento").value = "DNI";
+      document.getElementById("numeroDocumento").value = "12345678";
+      document.getElementById("cuit").value = "20-12345678-9";
+      document.getElementById("fechaNacimiento").value = "1990-05-15";
+      document.getElementById("caracteristica").value = "11";
+      document.getElementById("telefonoNumero").value = "5551234";
+      document.getElementById("email").value = "maria.gonzalez@example.com";
+      document.getElementById("ocupacion").value = "Abogada";
+      document.getElementById("nacionalidad").value = "Argentina";
+      document.getElementById("calle").value = "Av. Siempre Viva";
+      document.getElementById("numeroCalle").value = "742";
+      document.getElementById("departamento").value = "A";
+      document.getElementById("piso").value = "3";
+      document.getElementById("codigoPostal").value = "1001";
+      document.getElementById("localidad").value = "Buenos Aires";
+      document.getElementById("provincia").value = "Buenos Aires";
+      document.getElementById("pais").value = "Argentina";
+    }
+
+    // Llamar a la función para rellenar el formulario automáticamente
+    completar();
   </script>
     <script>
       const paises = [
