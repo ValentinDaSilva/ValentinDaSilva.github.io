@@ -297,6 +297,10 @@
 
     const siguienteButton = document.querySelector('.siguiente');
     siguienteButton.addEventListener('click', function() {
+        if (habitacionesSeleccionadas.length === 0) {
+            mensajeError("Por favor, seleccione al menos una habitación.");
+            return;
+        }
         const desdeFecha = checkinInput.value;
         const hastaFecha = checkoutInput.value;
         
@@ -329,6 +333,7 @@
             document.body.classList.remove('opaco');
         });
         nuevoSiguienteButton.addEventListener('click', function() {
+            console.log("hice click aca");
             resultadoCopia.innerHTML = '';
             resultadoCopia.style.display = 'flex';
             resultadoCopia.style.flexDirection = 'column';
@@ -375,10 +380,15 @@
                   document.getElementById('telefono').focus();
                   return;
                 }
-                mensajeCorrecto(`Reserva realizada con éxito para <br>"${nombre} ${apellido}".`);
-                resultadoCopia.remove();
-                aplicarEstilosCeldas();
-                habitacionesSeleccionadas = [];
+                mensajeCorrecto(`Reserva realizada con éxito para <br>"${nombre} ${apellido}".<br>Presione cualquier tecla para continuar.`);
+                document.addEventListener('keydown', function() {
+                  resultadoCopia.remove();
+                  aplicarEstilosCeldas();
+                  habitacionesSeleccionadas = [];
+                  document.body.classList.remove('opaco');
+                });
+                
+                
             });
             resultadoCopia.appendChild(confirmarButton);
             
@@ -423,6 +433,10 @@
       successMessage.innerHTML = mensaje;
       
       modal.style.display = "flex";
+      window.onkeydown = function() {
+        modal.style.display = "none";
+      };
+
     }
   </script>
 </body>

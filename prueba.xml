@@ -1,0 +1,30 @@
+<Factura>
+    <Encabezado>
+      <Numero>0001-00001234</Numero>
+      <Fecha>2025-04-25</Fecha>
+      <Cliente>
+        <Nombre>Juan Pérez</Nombre>
+        <CUIT>20-12345678-9</CUIT>
+      </Cliente>
+    </Encabezado>
+    <Items>
+      <Item>
+        <Descripcion>Producto A</Descripcion>
+        <Cantidad>2</Cantidad>
+        <PrecioUnitario>150.00</PrecioUnitario>
+        <Total>300.00</Total>
+      </Item>
+      <Item>
+        <Descripcion>Servicio B</Descripcion>
+        <Cantidad>1</Cantidad>
+        <PrecioUnitario>500.00</PrecioUnitario>
+        <Total>500.00</Total>
+      </Item>
+    </Items>
+    <Totales>
+      <Subtotal>800.00</Subtotal>
+      <IVA>168.00</IVA>
+      <TotalFinal>968.00</TotalFinal>
+    </Totales>
+  </Factura>
+  
