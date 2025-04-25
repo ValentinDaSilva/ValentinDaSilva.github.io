@@ -265,7 +265,13 @@
           mensajeError("No se puede cambiar el estado de la columna porque no todas las celdas están libres.");
           return;
         }
-        habitacionesSeleccionadas.push(header.textContent.trim());
+        const habitacion = header.textContent.trim();
+        const index = habitacionesSeleccionadas.indexOf(habitacion);
+        if (index === -1) {
+          habitacionesSeleccionadas.push(habitacion);
+        } else {
+          habitacionesSeleccionadas.splice(index, 1);
+        }
         celdasColumna.forEach(celda => {
           if(celda.style.backgroundColor == 'yellow'){
             switch (celda.textContent.trim().toLowerCase()) {
