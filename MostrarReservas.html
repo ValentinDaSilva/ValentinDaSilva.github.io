@@ -33,11 +33,11 @@
           <tr>
             <th>Fecha \ Habitación</th>
             <th>IND-101</th>
-            <th>IND-101</th>
+            <th>IND-102</th>
             <th>DOB-201</th>
-            <th>DOB-201</th>
+            <th>DOB-202</th>
             <th>SUITE-301</th>
-            <th>SUITE-301</th>
+            <th>SUITE-303</th>
           </tr>
         </thead>
         <tbody>
@@ -327,6 +327,62 @@
             aplicarEstilosCeldas();
             habitacionesSeleccionadas = [];
             document.body.classList.remove('opaco');
+        });
+        nuevoSiguienteButton.addEventListener('click', function() {
+            resultadoCopia.innerHTML = '';
+            resultadoCopia.style.display = 'flex';
+            resultadoCopia.style.flexDirection = 'column';
+            resultadoCopia.style.alignItems = 'center';
+            // resultadoCopia.style.justifyContent = 'center';
+            const nuevoTitulo = document.createElement('h2');
+            nuevoTitulo.textContent = "Datos del huesped";
+            resultadoCopia.appendChild(nuevoTitulo);
+            const formularioHuesped = document.createElement('form');
+            formularioHuesped.style.width = '100%';
+            formularioHuesped.innerHTML = `
+              <div style="text-align: center;width:100%;">
+              <label for="nombre" style="display: block; margin-bottom: 5px;">Nombre:</label>
+              <input type="text" id="nombre" name="nombre" required style="width: 50%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
+              
+              <label for="apellido" style="display: block; margin-bottom: 5px;">Apellido:</label>
+              <input type="text" id="apellido" name="apellido" required style="width: 50%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
+              
+              <label for="telefono" style="display: block; margin-bottom: 5px;">Teléfono:</label>
+              <input type="tel" id="telefono" name="telefono" required style="width: 50%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+            `;
+            const confirmarButton = document.createElement('button');
+            confirmarButton.type = "submit";
+            confirmarButton.textContent = "Enviar";
+            confirmarButton.style.cssText = "background-color: #6d4c41; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; position: absolute; bottom: 15px;";
+            confirmarButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                const nombre = document.getElementById('nombre').value;
+                const apellido = document.getElementById('apellido').value;
+                const telefono = document.getElementById('telefono').value;
+                if (!nombre) {
+                  mensajeError("Por favor, complete el campo 'Nombre'.");
+                  document.getElementById('nombre').focus();
+                  return;
+                }
+                if (!apellido) {
+                  mensajeError("Por favor, complete el campo 'Apellido'.");
+                  document.getElementById('apellido').focus();
+                  return;
+                }
+                if (!telefono) {
+                  mensajeError("Por favor, complete el campo 'Teléfono'.");
+                  document.getElementById('telefono').focus();
+                  return;
+                }
+                mensajeCorrecto(`Reserva realizada con éxito para <br>"${nombre} ${apellido}".`);
+                resultadoCopia.remove();
+                aplicarEstilosCeldas();
+                habitacionesSeleccionadas = [];
+            });
+            resultadoCopia.appendChild(confirmarButton);
+            
+            resultadoCopia.appendChild(formularioHuesped);
         });
         resultadoCopia.appendChild(nuevoCancelarButton);
         resultadoCopia.appendChild(nuevoSiguienteButton);
