@@ -324,7 +324,7 @@
     }
 
     function verificarCUIT(CUITS) {
-      if(CUITS == undefined) CUITS = ["20123456789", "20345678901", "20987654321"];
+      if(CUITS == undefined) CUITS = ["20-12345678-9", "20-34567890-1", "20-98765432-1"];
       const input = document.getElementById("cuit").value.trim();
       if (input !== "") {
         if(CUITS.includes(input)) {
@@ -406,7 +406,7 @@
       document.getElementById("nombres").value = "María Fernanda";
       document.getElementById("tipoDocumento").value = "DNI";
       document.getElementById("numeroDocumento").value = "12345678";
-      document.getElementById("cuit").value = "20-12345678-9";
+      document.getElementById("cuit").value = "20-98765432-1";
       document.getElementById("fechaNacimiento").value = "1990-05-15";
       document.getElementById("caracteristica").value = "11";
       document.getElementById("telefonoNumero").value = "5551234";
