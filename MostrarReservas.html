@@ -266,11 +266,11 @@
           return;
         }
         const habitacion = header.textContent.trim();
-        const index = habitacionesSeleccionadas.indexOf(habitacion);
-        if (index === -1) {
+        let index2 = habitacionesSeleccionadas.indexOf(habitacion);
+        if (index2 === -1) {
           habitacionesSeleccionadas.push(habitacion);
         } else {
-          habitacionesSeleccionadas.splice(index, 1);
+          habitacionesSeleccionadas.splice(index2, 1);
         }
         celdasColumna.forEach(celda => {
           if(celda.style.backgroundColor == 'yellow'){
