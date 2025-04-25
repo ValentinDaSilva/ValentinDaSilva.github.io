@@ -15,6 +15,24 @@
     background-position: center;
     height: 100vh;
     padding-left: 50px;
+    position: relative;
+  }
+
+  .opaco::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.616);
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .background > * {
+    position: relative;
+    z-index: 2;
   }
   
   .booking-form {
@@ -23,6 +41,7 @@
     border-radius: 8px;
     width: 250px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(-10px);
   }
   
   .booking-form h2 {
@@ -70,3 +89,110 @@
     background-color: #333;
   }
   
+  .modal {
+    display: none;  
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .error{
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .resultado {
+    width: 60vw;
+    height: 80vh;
+    margin: 50px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+    border: 2px solid #6b493ed0;
+    position: absolute;
+    top: 50px;
+    left: 300px;
+    padding: 20px;
+    z-index: 2;
+    }
+
+    .resultado h2 {
+    text-align: center;
+    color: #333;
+    height: 10%;
+    margin: 0;
+    }
+
+    .resultado table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+
+    .resultado th,
+    .resultado td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    color: black;
+    text-align: center;
+    }
+
+    .resultado th {
+    background-color: #412c26;
+    font-weight: bold;
+    color: white;
+    }
+
+    .resultado tr:hover {
+    background-color: #f9f9f9;
+    }
+
+    .tabla-scroll {
+      overflow: auto;
+      border: 1px solid #ccc;
+      height: 80%;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: max-content;
+      min-width: 100%;
+    }
+
+    .siguiente {
+      width: 30%;
+      background-color: #412c26;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+      position: relative;
+      left: calc(70% - 10px);;
+      bottom: 0;
+      margin: 10px;
+  }
+
+  .correcto{
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }

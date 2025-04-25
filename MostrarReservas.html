@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hotel Booking</title>
+  <title>Hotel Premier</title>
   <link rel="stylesheet" href="css/MostrarReservas.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 </head>
 <body>
   <div class="background">
     <div class="booking-form">
       <h2 style="text-align: center;">Habitaciones Disponibles</h2>
-      <form>
+      <form novalidate>
         <label for="checkin">Desde fecha</label>
         <input type="date" id="checkin" name="checkin" required>
 
@@ -19,6 +23,351 @@
         <button type="submit">Buscar</button>
       </form>
     </div>
+    
   </div>
+  <div class="resultado animate__animated animate__fadeIn" style="display: none;">
+    <h2>Resultados de la búsqueda</h2>
+    <div class="tabla-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha \ Habitación</th>
+            <th>IND-101</th>
+            <th>IND-101</th>
+            <th>DOB-201</th>
+            <th>DOB-201</th>
+            <th>SUITE-301</th>
+            <th>SUITE-301</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>25/04/2025</td>
+            <td class="libre">Libre</td>
+            <td class="reservada">Libre</td>
+            <td class="ocupada">Ocupada</td>
+            <td class="libre">Libre</td>
+            <td class="reservada">Reservada</td>
+            <td class="ocupada">Ocupada</td>
+          </tr>
+          <tr>
+            <td>26/04/2025</td>
+            <td class="ocupada">Ocupada</td>
+            <td class="reservada">Libre</td>
+            <td class="ocupada">Ocupada</td>
+            <td class="ocupada">Ocupada</td>
+            <td class="reservada">Reservada</td>
+            <td class="ocupada">Ocupada</td>
+          </tr>
+          <tr>
+            <td>27/04/2025</td>
+            <td class="ocupada">Ocupada</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="ocupada">Ocupada</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+          </tr>
+          <tr>
+            <td>28/04/2025</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+          </tr>
+          <tr>
+            <td>29/04/2025</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+          </tr>
+          <tr>
+            <td>30/04/2025</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+          </tr>
+          <tr>
+            <td>31/04/2025</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+          </tr>
+          <tr>
+            <td>01/05/2025</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+          </tr>
+          <tr>
+            <td>02/05/2025</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+          </tr>
+          <tr>
+            <td>03/05/2025</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+            <td class="fuera-servicio">Fuera de Servicio</td>
+            <td class="libre">Libre</td>
+            <td class="libre">Libre</td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </div>
+    <div class="siguiente">Reservar</div>
+  </div>
+  
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content error">
+      <h2 style="text-align: center; color: #d32f2f; font-size: 24px; margin-top: 10px;">ERROR</h2>
+      <img src="assets/image/Error.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-message" style="text-align: center; margin-top: 20px;">Por favor, completa todos los campos requeridos.</p>
+      <button id="ok-button" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">OK</button>
+    </div>
+  </div>
+  <div id="modalCorrecto" class="modal" style="display: none;">
+    <div class="modal-content correcto">
+      <h2 style="text-align: center; color: #2fd345; font-size: 24px; margin-top: 10px;">EXITO</h2>
+      <img src="assets/image/Correcto.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-messageCorrecto" style="text-align: center; margin-top: 20px;">Accion ejecutada con exito</p>
+    </div>
+  </div>
+  <script>
+    function mensajeError(mensaje) {
+      const modal = document.getElementById('modal');
+      const errorMessage = document.getElementById('error-message');
+      
+      errorMessage.textContent = mensaje;
+      
+      modal.style.display = "flex";
+      
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+
+      const okButton = document.getElementById('ok-button');
+      okButton.onclick = function() {
+        modal.style.display = "none";
+      };
+    }
+
+    const checkinInput = document.getElementById('checkin');
+    const checkoutInput = document.getElementById('checkout');
+
+    [checkinInput, checkoutInput].forEach(input => {
+      input.addEventListener('blur', function(event) {
+      event.preventDefault();
+      if (!event.target.value) {
+        const fieldName = event.target.id === 'checkin' ? 'Desde fecha' : 'Hasta fecha';
+        mensajeError(`Por favor, ingrese una fecha válida en "${fieldName}".`);
+        event.target.focus();
+      }
+      
+      });
+    });
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); 
+      const checkinInput = document.getElementById('checkin');
+      const checkoutInput = document.getElementById('checkout');
+
+      if (!checkinInput.value) {
+        mensajeError('Por favor, ingrese una fecha válida en "Desde fecha".');
+        checkinInput.focus();
+        return;
+      }
+
+      if (!checkoutInput.value) {
+        mensajeError('Por favor, ingrese una fecha válida en "Hasta fecha".');
+        checkoutInput.focus();
+        return;
+      }
+
+      if (new Date(checkinInput.value) >= new Date(checkoutInput.value)) {
+        mensajeError('La fecha de salida debe ser posterior a la fecha de entrada.');
+        checkinInput.value = '';
+        checkoutInput.value = '';
+        checkinInput.focus();
+        return;
+      }
+      document.body.classList.add('opaco');
+      const resultadoDiv = document.querySelector('.resultado');
+      resultadoDiv.style.display = 'block';
+    });
+      
+    function aplicarEstilosCeldas() {
+      const celdas = document.querySelectorAll('td');
+      celdas.forEach(celda => {
+      switch (celda.textContent.trim().toLowerCase()) {
+        case 'libre':
+        celda.style.backgroundColor = '#c3e6cb';
+        celda.style.color = '#155724';
+        break;
+        case 'ocupada':
+        celda.style.backgroundColor = '#f5c6cb';
+        celda.style.color = '#721c24';
+        break;
+        case 'reservada':
+        celda.style.backgroundColor = '#ffeeba';
+        celda.style.color = '#856404';
+        break;
+        case 'fuera de servicio':
+        celda.style.backgroundColor = '#c6c8ca';
+        celda.style.color = '#383d41';
+        break;
+      }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', aplicarEstilosCeldas);
+    function obtenerCeldasColumna(index) {
+      const filas = document.querySelectorAll('tbody tr');
+      const celdasColumna = [];
+      filas.forEach(fila => {
+      const celda = fila.cells[index];
+      if (celda) {
+        celdasColumna.push(celda);
+      }
+      });
+      return celdasColumna;
+    }
+    let habitacionesSeleccionadas = [];
+    document.querySelectorAll('th').forEach((header, index) => {
+      header.addEventListener('click', () => {
+        
+        const celdasColumna = obtenerCeldasColumna(index);
+        const todasLibres = celdasColumna.every(celda => celda.textContent.trim().toLowerCase() === 'libre');
+        if (!todasLibres) {
+          mensajeError("No se puede cambiar el estado de la columna porque no todas las celdas están libres.");
+          return;
+        }
+        habitacionesSeleccionadas.push(header.textContent.trim());
+        celdasColumna.forEach(celda => {
+          if(celda.style.backgroundColor == 'yellow'){
+            switch (celda.textContent.trim().toLowerCase()) {
+                case 'libre':
+                celda.style.backgroundColor = '#c3e6cb';
+                celda.style.color = '#155724';
+                break;
+                case 'ocupada':
+                celda.style.backgroundColor = '#f5c6cb';
+                celda.style.color = '#721c24';
+                break;
+                case 'reservada':
+                celda.style.backgroundColor = '#ffeeba';
+                celda.style.color = '#856404';
+                break;
+                case 'fuera de servicio':
+                celda.style.backgroundColor = '#c6c8ca';
+                celda.style.color = '#383d41';
+                break;
+              }
+          }
+          else{
+            celda.style.backgroundColor = 'yellow';
+            celda.style.color = 'black';
+          }
+        });
+      });
+    });
+
+    const siguienteButton = document.querySelector('.siguiente');
+    siguienteButton.addEventListener('click', function() {
+        const desdeFecha = checkinInput.value;
+        const hastaFecha = checkoutInput.value;
+        
+        const fechaSeleccionada1 = new Date(desdeFecha);
+        const fechaSeleccionada2 = new Date(hastaFecha);
+
+        const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado','Domingo' ];
+        const diaSemanaImput1 = dias[fechaSeleccionada1.getDay()];
+        const diaSemanaImput2 = dias[fechaSeleccionada2.getDay()];
+        
+        const titulo = "Horarios por reservar:"
+        const resultadoDiv = document.querySelector('.resultado');
+        const resultadoCopia = resultadoDiv.cloneNode(true);
+        resultadoDiv.style.display = 'none';
+        document.body.appendChild(resultadoCopia);
+
+        resultadoCopia.querySelector('.tabla-scroll').remove();
+        resultadoCopia.querySelector('.siguiente').remove();
+        resultadoCopia.querySelector('h2').textContent = `${titulo}`;
+
+        resultadoCopia.style.display = 'block';
+        const nuevoSiguienteButton = siguienteButton.cloneNode(true);
+        nuevoSiguienteButton.textContent = "Aceptar";
+        const nuevoCancelarButton = siguienteButton.cloneNode(true);
+        nuevoCancelarButton.textContent = "Rechazar";
+        nuevoCancelarButton.addEventListener('click', function() {
+            resultadoCopia.remove();
+            aplicarEstilosCeldas();
+            habitacionesSeleccionadas = [];
+            document.body.classList.remove('opaco');
+        });
+        resultadoCopia.appendChild(nuevoCancelarButton);
+        resultadoCopia.appendChild(nuevoSiguienteButton);
+
+        habitacionesSeleccionadas.forEach((habitacion) => {
+            const habitacionDiv = document.createElement('div');
+            habitacionDiv.style.textAlign = 'center';
+            habitacionDiv.style.border = '2px solid black';
+            habitacionDiv.style.padding = '10px';
+            habitacionDiv.innerHTML = `
+          <p>Habitación: <strong>${habitacion}</strong></p>
+          <p>Desde fecha: <strong>${diaSemanaImput1}, ${desdeFecha}</strong></p>
+          <p>Hasta fecha: <strong>${diaSemanaImput2}, ${hastaFecha}</strong></p>
+            `;
+            resultadoCopia.insertBefore(habitacionDiv, nuevoCancelarButton);
+        });
+        nuevoSiguienteButton.style.position = 'absolute';
+        nuevoSiguienteButton.style.left = 'calc(70% - 20px)';
+        nuevoSiguienteButton.style.bottom = '0';
+        nuevoCancelarButton.style.position = 'absolute';
+        nuevoCancelarButton.style.left = 'calc(70% - 20px - 30% - 10px)';
+        nuevoCancelarButton.style.bottom = '0';
+        const buscarButton = document.querySelector('button[type="submit"]');
+        buscarButton.addEventListener('click', function() {
+            resultadoCopia.remove();
+            resultadoDiv.style.display = 'block';
+            aplicarEstilosCeldas();
+            habitacionesSeleccionadas = [];
+        });
+    });
+
+    function mensajeCorrecto(mensaje) {
+      if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
+      
+      const modal = document.getElementById('modalCorrecto');
+      const successMessage = document.getElementById('error-messageCorrecto');
+      
+      successMessage.innerHTML = mensaje;
+      
+      modal.style.display = "flex";
+    }
+  </script>
 </body>
 </html>
