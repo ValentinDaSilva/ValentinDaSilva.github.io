@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generar Factura</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      margin: 0;
+      justify-content: center;
+      align-items: center;
+    }
+    .body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      transition: width 0.5s, height 0.5s;
+    }
+    .container {
+      width: 50%;
+      /* max-width: 500px; */
+      background-color: #f7f2e8;
+      padding: 25px 30px;
+      border-radius: 20px;
+      box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+      margin: 50px;
+      position: relative;
+      left: 0;
+      text-align: center;
+    }
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #4b372e;
+      font-size: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+      width: 60%;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #4b372e;
+    }
+    input[type="text"],
+    input[type="time"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      background-color: #412c26;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #2e1d18;
+    }
+    .bg-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .error {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .hidden {
+      display: none;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      /* margin-bottom: 20px; */
+      background-color: #fff;
+      /* border-radius: 10px; */
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      font-size: 16px;
+      color: #4b372e;
+    }
+    th {
+      background-color: #412c26;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f5f5f5;
+    }
+    tr:hover {
+      background-color: #ddd;
+      cursor: pointer;
+    }
+    .tercero {
+      background-color: #f7e7c3;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    .tercero input {
+      width: 50%;
+      margin-top: 10px;
+    }
+    .bottom-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .bottom-buttons button {
+      width: 48%;
+    }
+    .tercero h3, .titulo{
+        margin-top: 0;
+    }
+    #seleccionarResponsable {
+      height: 80vh;
+    }
+    .tabla-scroll {
+      overflow: auto;
+      border: 1px solid #ccc;
+      height: 35%;
+    }
+    .pregunta {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .preguntaBotones {
+      display: flex;
+      justify-content: space-around;
+    }	
+
+    .required::after {
+      content: " *";
+      color: #ffffff00;
+    }
+  </style>
+</head>
+
+<body>
+
+  <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
+
+  <div class="body">
+    <div class="container">
+
+      <!-- Pantalla 1 -->
+      <div id="generarFactura">
+        <h1>Generar Factura</h1>
+        <form id="facturaForm">
+          <div class="form-group">
+              <label class="required" for="habitacion">Número de habitación:</label>
+              <input type="text" id="habitacion" name="habitacion" placeholder=""/>
+          </div>
+          <div class="form-group">
+              <label class="required" for="horaSalida">Hora de salida:</label>
+              <input type="time" id="horaSalida" name="horaSalida" placeholder="hh:mm"/>
+          </div>
+          <div class="form-group">
+            <button type="submit">Siguiente</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Pantalla 2 -->
+      <div id="seleccionarResponsable" class="hidden">
+        <h2 class="titulo">Seleccionar Responsable de Pago</h2>
+        <div class="tabla-scroll">
+            <table>
+                <thead>
+                  <tr>
+                    <th>Apellido</th>
+                    <th>Nombres</th>
+                    <th>Edad</th>
+                    <th>Documento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>García</td><td>Nicolás Alejandro</td><td>17</td><td>99999999</td></tr>
+                  <tr><td>Pérez</td><td>Juan José</td><td>20</td><td>99999999</td></tr>
+                  <tr><td>Rodríguez</td><td>Raúl Armando</td><td>42</td><td>99999999</td></tr>
+                  <tr><td>Pereyra</td><td>Lorena</td><td>35</td><td>99999999</td></tr>
+                  <tr><td>Walker</td><td>Paloma</td><td>16</td><td>99999999</td></tr>
+                </tbody>
+              </table>
+        </div>
+
+        <div class="tercero">
+          <h3>Pago por Tercero</h3>
+          <label for="cuit">Número de CUIT:</label>
+          <input type="text" id="cuit" name="cuit" placeholder=""/>
+        </div>
+
+        <div class="bottom-buttons">
+          <button type="button" onclick="volverFactura()">Volver</button>
+          <button type="button">Aceptar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content error">
+      <h2 style="text-align: center; color: #d32f2f; font-size: 24px; margin-top: 10px;">ERROR</h2>
+      <img src="assets/image/Error.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-message" style="text-align: center; margin-top: 20px;">Por favor, completa todos los campos requeridos.</p>
+      <button id="ok-button" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">OK</button>
+    </div>
+  </div>
+  <div id="modalPregunta" class="modal" style="display: none;">
+    <div class="modal-content pregunta">
+      <h2 style="text-align: center; color: #00e1f0; font-size: 24px; margin-top: 10px;">PREGUNTA</h2>
+      <img src="assets/image/Pregunta.png" alt="icono de pregunta" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-messagePregunta" style="text-align: center; margin-top: 20px;">El numero de documento ya existe</p>
+      <div class="preguntaBotones" style="display: flex; justify-content: space-around;">
+        <button id="PreguntaBoton1" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">ACEPTAR</button>
+        <button id="PreguntaBoton2" style="display: block; padding: 10px 20px; background-color: #2fd345; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-left: 10px;" class="boton">CORREGIR</button>
+      </div>
+    </div>
+  </div>
+<script>
+    function mensajeError(mensaje) {
+        const modal = document.getElementById("modal");
+        const errorMessage = document.getElementById("error-message");
+        errorMessage.textContent = mensaje;
+        modal.style.display = "flex";
+
+        const okButton = document.getElementById("ok-button");
+        okButton.addEventListener("click", () => {
+            modal.style.display = "none";
+        }, { once: true });
+    }
+
+    function pregunta(mensaje, boton1, boton2) {
+      if (mensaje == undefined) mensaje = "Mensaje de Pregunta";
+      if (boton1 == undefined) boton1 = "ACEPTAR";
+      if (boton2 == undefined) boton2 = "CANCELAR";
+      const modal = document.getElementById('modalPregunta');
+      const errorMessage = document.getElementById('error-messagePregunta');
+      
+      errorMessage.textContent = mensaje;
+      const botonAceptar = document.getElementById("PreguntaBoton1");
+      const botonCorregir = document.getElementById("PreguntaBoton2");
+      
+      botonAceptar.textContent = boton1;
+      botonCorregir.textContent = boton2;
+      modal.style.display = "flex";
+
+        botonAceptar.addEventListener("click", () => {
+            modal.style.display = "none";
+        }, { once: true });
+
+        botonCorregir.addEventListener("click", () => {
+            modal.style.display = "none";
+        }, { once: true });
+    }
+
+    function cambiarPantalla() {
+                document.getElementById('generarFactura').classList.add('hidden');
+                document.getElementById('seleccionarResponsable').classList.remove('hidden');
+            }
+
+    document.getElementById("facturaForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const habitacion = document.getElementById("habitacion").value.trim();
+        const horaSalida = document.getElementById("horaSalida").value.trim();
+
+        if (!habitacion || !horaSalida) {
+            mensajeError("Por favor, completa todos los campos requeridos.");
+            if (!habitacion) {
+                document.getElementById("habitacion").style.border = "2px solid red";
+            } else {
+                document.getElementById("habitacion").style.border = "";
+            }
+            if (!horaSalida) {
+                document.getElementById("horaSalida").style.border = "2px solid red";
+            } else {
+                document.getElementById("horaSalida").style.border = "";
+            }
+        } else {
+            document.getElementById("habitacion").style.border = "";
+            document.getElementById("horaSalida").style.border = "";
+
+            cambiarPantalla()
+        }
+    });
+
+    function volverFactura() {
+        document.getElementById('seleccionarResponsable').classList.add('hidden');
+        document.getElementById('generarFactura').classList.remove('hidden');
+    }
+    // cambiarPantalla()
+    document.querySelectorAll("#seleccionarResponsable tbody tr").forEach(row => {
+        row.addEventListener("click", () => {
+            const edad = parseInt(row.children[2].textContent, 10);
+            if (edad >= 18) {
+                if (row.style.backgroundColor === "yellow") {
+                    row.style.backgroundColor = "white";
+                } else {
+                    document.querySelectorAll("#seleccionarResponsable tbody tr").forEach(r => r.style.backgroundColor = "white");
+                    row.style.backgroundColor = "yellow";
+                }
+            } else {
+                mensajeError("El responsable de pago debe ser mayor de edad.");
+            }
+        });
+    });
+    document.querySelector(".bottom-buttons button[type='button']:nth-child(2)").addEventListener("click", () => {
+        const cuit = document.getElementById("cuit").value.trim();
+        const selectedRow = Array.from(document.querySelectorAll("#seleccionarResponsable tbody tr"))
+            .find(row => row.style.backgroundColor === "yellow");
+
+        if (!selectedRow && !cuit) {
+            window.location.href = "darAltaResponsableDePago.html";
+        } else if (cuit) {
+            const razonSocial = "Empresa XYZ S.A.";
+            pregunta(`¿Desea asignar la factura a la razón social ${razonSocial}?`, "Cancelar", "Aceptar");
+        }
+    });
+</script>
+
+</body>
+</html>
