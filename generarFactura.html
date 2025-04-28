@@ -122,21 +122,8 @@
     .hidden {
       display: none;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      /* margin-bottom: 20px; */
-      background-color: #fff;
-      /* border-radius: 10px; */
-      overflow: hidden;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-      font-size: 16px;
-      color: #4b372e;
-    }
+
+
     th {
       background-color: #412c26;
       color: white;
@@ -172,11 +159,6 @@
     #seleccionarResponsable {
       height: 80vh;
     }
-    .tabla-scroll {
-      overflow: auto;
-      border: 1px solid #ccc;
-      height: 35%;
-    }
     .pregunta {
       background-color: #fff;
       padding: 20px;
@@ -198,6 +180,62 @@
       content: " *";
       color: #ffffff00;
     }
+         .tabla-scroll {
+            width: 100%;
+            height: 150px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            z-index: 1;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #6C3B2A;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            background-color: #6C3B2A;
+            color: white;
+            z-index: 2;
+        }
+        /* Scrollbar personalizado */
+      .tabla-scroll::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .tabla-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .tabla-scroll::-webkit-scrollbar-thumb {
+        background-color: rgba(65, 44, 38, 0.5); /* Color medio transparente */
+        border-radius: 4px;
+      }
   </style>
 </head>
 
@@ -240,11 +278,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr><td>García</td><td>Nicolás Alejandro</td><td>17</td><td>99999999</td></tr>
-                  <tr><td>Pérez</td><td>Juan José</td><td>20</td><td>99999999</td></tr>
-                  <tr><td>Rodríguez</td><td>Raúl Armando</td><td>42</td><td>99999999</td></tr>
-                  <tr><td>Pereyra</td><td>Lorena</td><td>35</td><td>99999999</td></tr>
-                  <tr><td>Walker</td><td>Paloma</td><td>16</td><td>99999999</td></tr>
+                    <tr><td>García</td><td>Nicolás Alejandro</td><td>17</td><td>45678901</td></tr>
+                    <tr><td>Pérez</td><td>Juan José</td><td>20</td><td>23456789</td></tr>
+                    <tr><td>Rodríguez</td><td>Raúl Armando</td><td>42</td><td>34567890</td></tr>
+                    <tr><td>Pereyra</td><td>Lorena</td><td>35</td><td>56789012</td></tr>
+                    <tr><td>Walker</td><td>Paloma</td><td>16</td><td>67890123</td></tr>
+                  <tr><td>Martínez</td><td>Carla Andrea</td><td>28</td><td>12345678</td></tr>
+                  <tr><td>Gómez</td><td>Lucas Emanuel</td><td>33</td><td>87654321</td></tr>
+                  <tr><td>Fernández</td><td>María Belén</td><td>45</td><td>11223344</td></tr>
+                  <tr><td>Lopez</td><td>Jorge Alberto</td><td>50</td><td>44332211</td></tr>
+                  
                 </tbody>
               </table>
         </div>
