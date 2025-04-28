@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Premier</title>
+  <link rel="stylesheet" href="css/MostrarReservas.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <style>
+    .advertencia {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+        height: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    .container {
+        width: 30vw;
+        max-width: 500px;
+        background-color: #fff;
+        padding: 25px 30px;
+        border-radius: 8px;
+        box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+        margin: 50px;
+        position: relative;
+        left: 0;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        background-color: #64443a;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #49312a;
+    }
+
+    .background {
+        position: absolute;
+        width: 100vw;
+        top: 0;
+    }
+
+    .resultadoBusqueda {
+        width: 50vw;
+        margin: 50px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow-y: auto;
+        box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+        border: 2px solid #6b493ed0;
+        position: absolute;
+        top: 0;
+        left: 40vw;
+        z-index: 2;
+    }
+
+    .resultadoBusqueda h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .resultadoBusqueda{
+        text-align: center;
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .resultadoBusqueda table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .resultadoBusqueda th,
+    .resultadoBusqueda td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+        color: black;
+        text-align: center;
+    }
+
+    .resultadoBusqueda th {
+        background-color: #412c26;
+        font-weight: bold;
+        color: white;
+    }
+
+    .resultadoBusqueda tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .siguienteBusqueda {
+        width: 30%;
+        background-color: #412c26;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        position: relative;
+        right: 0;
+        left: calc(100% - 30% - 20px);
+        margin: 20px;
+        margin-bottom: 0;
+    }
+
+    .subtitulo{
+        margin: 5px;
+        color: grey;
+        margin-bottom: 20px;
+    }
+    .pregunta {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .preguntaBotones {
+      display: block;
+      justify-content: space-around;
+    }
+    .preguntaBotones button {
+        padding: 10px 20px; 
+        background-color: #00e1f0; 
+        color: white; 
+        border: none; 
+        border-radius: 5px; 
+        cursor: pointer; 
+        font-size: 16px; 
+        margin-left: 10px;
+    }
+    .advertenciaBotones > .boton{
+      width: auto;
+      background-color: #006da0 !important;
+    }
+</style>
+</head>
+<body>
+  <div class="background">
+    <div class="booking-form">
+      <h2 style="text-align: center;">Ocupar Habitaciones</h2>
+      <form novalidate>
+        <label for="checkin">Desde fecha</label>
+        <input type="date" id="checkin" name="checkin" required>
+
+        <label for="checkout">Hasta fecha</label>
+        <input type="date" id="checkout" name="checkout" required>
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+    
+  </div>
+  <div class="resultado animate__animated animate__fadeIn" style="display: none;">
+    <h2>Resultados de la búsqueda</h2>
+    <div class="tabla-scroll">
+    <table>
+      <thead>
+        <tr>
+        <th>Fecha \ Habitación</th>
+        <th>IND-101</th>
+        <th>IND-102</th>
+        <th>DOB-201</th>
+        <th>DOB-202</th>
+        <th>SUITE-301</th>
+        <th>SUITE-303</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td class="resultado1">25/04/2025</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="reservada resultado1">Libre</td>
+        <td class="ocupada resultado1">Ocupada</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="reservada resultado1">Reservada</td>
+        <td class="ocupada resultado1">Ocupada</td>
+        </tr>
+        <tr>
+        <td class="resultado1">26/04/2025</td>
+        <td class="ocupada resultado1">Ocupada</td>
+        <td class="reservada resultado1">Libre</td>
+        <td class="ocupada resultado1">Ocupada</td>
+        <td class="ocupada resultado1">Ocupada</td>
+        <td class="reservada resultado1">Reservada</td>
+        <td class="ocupada resultado1">Ocupada</td>
+        </tr>
+        <tr>
+        <td class="resultado1">27/04/2025</td>
+        <td class="ocupada resultado1">Ocupada</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="ocupada resultado1">Ocupada</td>
+        <td class="libre resultado1">Reservada</td>
+        <td class="libre resultado1">Libre</td>
+        </tr>
+        <tr>
+        <td class="resultado1">28/04/2025</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Reservada</td>
+        <td class="libre resultado1">Libre</td>
+        </tr>
+        <tr>
+        <td class="resultado1">29/04/2025</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Reservada</td>
+        <td class="libre resultado1">Libre</td>
+        </tr>
+        <tr>
+        <td class="resultado1">30/04/2025</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Reservada</td>
+        <td class="libre resultado1">Libre</td>
+        </tr>
+        <tr>
+        <td class="resultado1">31/04/2025</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Reservada</td>
+        <td class="libre resultado1">Libre</td>
+        </tr>
+        <tr>
+        <td class="resultado1">01/05/2025</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Reservada</td>
+        <td class="libre resultado1">Libre</td>
+        </tr>
+        <tr>
+        <td class="resultado1">02/05/2025</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Reservada</td>
+        <td class="libre resultado1">Libre</td>
+        </tr>
+        <tr>
+        <td class="resultado1">03/05/2025</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="libre resultado1">Libre</td>
+        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
+        <td class="libre resultado1">Reservada</td>
+        <td class="libre resultado1">Libre</td>
+        </tr>
+      </tbody>
+    </table>
+      
+    </div>
+    <div class="siguiente">Ocupar</div>
+  </div>
+  
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content error">
+      <h2 style="text-align: center; color: #d32f2f; font-size: 24px; margin-top: 10px;">ERROR</h2>
+      <img src="assets/image/Error.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-message" style="text-align: center; margin-top: 20px;">Por favor, completa todos los campos requeridos.</p>
+      <button id="ok-button" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">OK</button>
+    </div>
+  </div>
+  <div id="modalCorrecto" class="modal" style="display: none;">
+    <div class="modal-content correcto">
+      <h2 style="text-align: center; color: #2fd345; font-size: 24px; margin-top: 10px;">EXITO</h2>
+      <img src="assets/image/Correcto.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-messageCorrecto" style="text-align: center; margin-top: 20px;">Accion ejecutada con exito</p>
+    </div>
+  </div>
+  <div id="modalAdvertencia" class="modal" style="display: none;">
+    <div class="modal-content advertencia">
+      <h2 style="text-align: center; color: #006da0; font-size: 24px; margin-top: 10px;">ADVERTENCIA</h2>
+      <img src="assets/image/Advertencia.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-messageAdvertencia" style="text-align: center; margin-top: 20px;">El numero de documento ya existe</p>
+      <div class="advertenciaBotones" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+        <button id="AdvertenciaBoton1" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #00e1f0; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">ACEPTAR</button>
+        <button id="AdvertenciaBoton2" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #00e1f0; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">CORREGIR</button>
+      </div>
+    </div>
+  </div>
+  <div id="modalPregunta" class="modal" style="display: none;">
+    <div class="modal-content pregunta">
+      <h2 style="text-align: center; color: #00e1f0; font-size: 24px; margin-top: 10px;">PREGUNTA</h2>
+      <img src="assets/image/Pregunta.png" alt="icono de pregunta" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-messagePregunta" style="text-align: center; margin-top: 20px;">¿Que desea hacer?</p>
+      <div class="preguntaBotones" style="display: flex; justify-content: space-around;">
+        <button id="PreguntaBoton1" class="boton boton-aceptar">ACEPTAR</button>
+        <button id="PreguntaBoton2" class="boton boton-corregir">CORREGIR</button>
+        <button id="PreguntaBoton3" class="boton boton-corregir">CORREGIR</button>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="display: none;">
+    <h1>Buscar Huésped</h1>
+    <form>
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" placeholder="Perez"/>
+      </div>
+      <div class="form-group">
+        <label for="nombres">Nombres:</label>
+        <input type="text" id="nombres" name="nombres" />
+      </div>
+      <div class="form-group">
+        <label for="tipoDocumento">Tipo de documento:</label>
+        <select id="tipoDocumento" name="tipoDocumento">
+          <option value="">Seleccione</option>
+          <option value="DNI">DNI</option>
+          <option value="LE">LE</option>
+          <option value="LC">LC</option>
+          <option value="Pasaporte">Pasaporte</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="numeroDocumento">Número de documento:</label>
+        <input type="text" id="numeroDocumento" name="numeroDocumento" />
+      </div>
+      <div class="form-group">
+        <button type="submit">Buscar</button>
+      </div>
+    </form>
+  </div>
+  <div class="resultadoBusqueda" style="display: none;">
+    <h2>Resultados de la búsqueda</h2>
+    <p class="subtitulo">(Seleccione un huésped)</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Nombres</th>
+                <th>Tipo de documento</th>
+                <th>Número de documento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Pérez</td>
+                <td>Juan Carlos</td>
+                <td>DNI</td>
+                <td>12345678</td>
+            </tr>
+            <tr>
+                <td>Perez</td>
+                <td>María Elena</td>
+                <td>Pasaporte</td>
+                <td>AB123456</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="siguienteBusqueda">Aceptar</div>
+    </div>
+  <script>
+    function mensajeError(mensaje) {
+      const modal = document.getElementById('modal');
+      const errorMessage = document.getElementById('error-message');
+      
+      errorMessage.innerHTML = mensaje;
+      
+      modal.style.display = "flex";
+      
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+
+      const okButton = document.getElementById('ok-button');
+      okButton.onclick = function() {
+        modal.style.display = "none";
+      };
+    }
+
+    function mensajeCorrecto(mensaje) {
+      if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
+      
+      const modal = document.getElementById('modalCorrecto');
+      const successMessage = document.getElementById('error-messageCorrecto');
+      
+      successMessage.innerHTML = mensaje;
+      
+      modal.style.display = "flex";
+      window.onkeydown = function() {
+        modal.style.display = "none";
+      };
+
+    }
+
+    function advertencia(mensaje,boton1,boton2) {
+      if(mensaje == undefined) mensaje = "Mensaje de Advertencia";
+      if(boton1 == undefined) boton1 = "ACEPTAR";
+      if(boton2 == undefined) boton2 = "CANCELAR";
+      const modal = document.getElementById('modalAdvertencia');
+      const errorMessage = document.getElementById('error-messageAdvertencia');
+      
+      errorMessage.innerHTML = mensaje;
+      const botonAceptar = document.getElementById("AdvertenciaBoton1");
+      const botonCorregir = document.getElementById("AdvertenciaBoton2");
+      
+      botonAceptar.innerHTML = boton1;
+      botonCorregir.innerHTML = boton2;
+      modal.style.display = "flex";
+
+      const botones = document.querySelectorAll('#AdvertenciaBoton1, #AdvertenciaBoton2');
+      botones.forEach(boton => {
+        boton.onclick = function() {
+            modal.style.display = "none";
+        };
+      });
+    }
+
+    const checkinInput = document.getElementById('checkin');
+    const checkoutInput = document.getElementById('checkout');
+
+    [checkinInput, checkoutInput].forEach(input => {
+      input.addEventListener('blur', function(event) {
+      event.preventDefault();
+      if (!event.target.value) {
+        const fieldName = event.target.id === 'checkin' ? 'Desde fecha' : 'Hasta fecha';
+        mensajeError(`Por favor, ingrese una fecha válida en "${fieldName}".`);
+        event.target.focus();
+      }
+      
+      });
+    });
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); 
+      const checkinInput = document.getElementById('checkin');
+      const checkoutInput = document.getElementById('checkout');
+
+      if (!checkinInput.value) {
+        mensajeError('Por favor, ingrese una fecha válida en "Desde fecha".');
+        checkinInput.focus();
+        return;
+      }
+
+      if (!checkoutInput.value) {
+        mensajeError('Por favor, ingrese una fecha válida en "Hasta fecha".');
+        checkoutInput.focus();
+        return;
+      }
+
+      if (new Date(checkinInput.value) >= new Date(checkoutInput.value)) {
+        mensajeError('La fecha de salida debe ser posterior a la fecha de entrada.');
+        checkinInput.value = '';
+        checkoutInput.value = '';
+        checkinInput.focus();
+        return;
+      }
+      document.body.classList.add('opaco');
+      const resultadoDiv = document.querySelector('.resultado');
+      resultadoDiv.style.display = 'block';
+    });
+      
+    function aplicarEstilosCeldas() {
+      const celdas = document.querySelectorAll('td');
+      celdas.forEach(celda => {
+      switch (celda.textContent.trim().toLowerCase()) {
+        case 'libre':
+        celda.style.backgroundColor = '#c3e6cb';
+        celda.style.color = '#155724';
+        break;
+        case 'ocupada':
+        celda.style.backgroundColor = '#f5c6cb';
+        celda.style.color = '#721c24';
+        break;
+        case 'reservada':
+        celda.style.backgroundColor = '#ffeeba';
+        celda.style.color = '#856404';
+        break;
+        case 'fuera de servicio':
+        celda.style.backgroundColor = '#c6c8ca';
+        celda.style.color = '#383d41';
+        break;
+      }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', aplicarEstilosCeldas);
+    function obtenerCeldasColumna(index) {
+      const filas = document.querySelectorAll('tbody tr');
+      const celdasColumna = [];
+      filas.forEach(fila => {
+      const celda = fila.cells[index];
+      if (celda && celda.classList.contains('resultado1')) {
+        celdasColumna.push(celda);
+      }
+      });
+      return celdasColumna;
+    }
+    let habitacionesSeleccionadas = [];
+    document.querySelectorAll('th').forEach((header, index) => {
+      header.addEventListener('click', () => {
+        
+        const celdasColumna = obtenerCeldasColumna(index);
+        
+        const allLibre = celdasColumna.every(celda => celda.textContent.trim().toLowerCase() === 'libre');
+        const allReservada = celdasColumna.every(celda => celda.textContent.trim().toLowerCase() === 'reservada');
+
+        if (!allLibre && !allReservada) {
+            mensajeError("No se puede continuar. Todas las celdas de la columna deben ser 'Libre' o 'Reservada'.");
+            return;
+        }
+
+        const habitacion = header.textContent.trim();
+
+
+        const esReservada = celdasColumna.some(celda => celda.textContent.trim().toLowerCase() === 'reservada');
+        let cancelar = false;
+        if (esReservada && !habitacionesSeleccionadas.includes(habitacion)) {
+          const checkinDate = document.getElementById('checkin').value;
+          const checkoutDate = document.getElementById('checkout').value;
+
+          advertencia(
+            `La habitación ${habitacion} está reservada por:<br> Juan Pérez<br>Desde Fecha: ${checkinDate} <br>Hasta Fecha:  ${checkoutDate}.`,
+            "OCUPAR IGUAL",
+            "VOLVER"
+          );
+          
+          const botones = document.querySelectorAll('#AdvertenciaBoton1, #AdvertenciaBoton2');
+          botones.forEach(boton => {
+            boton.addEventListener("click",() =>{
+              modal.style.display = "none";
+              if (boton.textContent.trim().toUpperCase() === "OCUPAR IGUAL") {
+                habitacionesSeleccionadas = seleccionarHabitacion(habitacionesSeleccionadas, habitacion);
+              }
+            });
+          });
+        }else{
+            habitacionesSeleccionadas = seleccionarHabitacion(habitacionesSeleccionadas,habitacion);
+        }
+        siguienteButton.addEventListener('click', () => {
+          if (habitacionesSeleccionadas.length === 0) {
+            mensajeError("Por favor, seleccione al menos una habitación antes de continuar.");
+            return;
+          }
+          mensajeCorrecto(`Habitaciones seleccionadas: ${habitacionesSeleccionadas.join(', ')}<br><br>PORFAVOR, PRESIONE CUALQUIER TECLA PARA CONTINUAR`);
+          document.querySelector('.resultado').style.display = 'none';
+            document.querySelector('.container').style.display = 'block';
+            document.querySelector('.container').style.zIndex = '2';
+            document.querySelector('.booking-form').style.display = 'none';
+        });
+        function seleccionarHabitacion(habitacionesSeleccionadas,habitacion) {
+            console.log(habitacion);
+            let index2 = habitacionesSeleccionadas.indexOf(habitacion);
+            if (index2 === -1) {
+                habitacionesSeleccionadas.push(habitacion);
+            } else {
+                habitacionesSeleccionadas.splice(index2, 1);
+            }
+            celdasColumna.forEach(celda => {
+            if(celda.style.backgroundColor == 'yellow'){
+                switch (celda.textContent.trim().toLowerCase()) {
+                    case 'libre':
+                    celda.style.backgroundColor = '#c3e6cb';
+                    celda.style.color = '#155724';
+                    break;
+                    case 'ocupada':
+                    celda.style.backgroundColor = '#f5c6cb';
+                    celda.style.color = '#721c24';
+                    break;
+                    case 'reservada':
+                    celda.style.backgroundColor = '#ffeeba';
+                    celda.style.color = '#856404';
+                    break;
+                    case 'fuera de servicio':
+                    celda.style.backgroundColor = '#c6c8ca';
+                    celda.style.color = '#383d41';
+                    break;
+                }
+            }
+            else{
+                celda.style.backgroundColor = 'yellow';
+                celda.style.color = 'black';
+            }
+            });
+            return habitacionesSeleccionadas;
+        }
+      });
+    });
+
+    const siguienteButton = document.querySelector('.siguiente');
+    siguienteButton.addEventListener('click', () => {
+      
+    });
+
+   //Aca empieza la parte de buscar huespedes
+    const formBuscar = document.querySelector('.container form');
+    const resultadoDiv = document.querySelector('.resultadoBusqueda');
+    const bodyDiv = document.querySelector('.body');
+    formBuscar.addEventListener('submit', function(event) {
+      event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+      const apellidoInput = document.getElementById('apellido');
+      const nombresInput = document.getElementById('nombres');
+      const tipoDocumentoInput = document.getElementById('tipoDocumento');
+      const numeroDocumentoInput = document.getElementById('numeroDocumento');
+
+      resultadoDiv.style.display = 'block';
+    });
+
+    const filasHuespedes = document.querySelectorAll('.resultadoBusqueda tbody tr');
+    let huespedesSeleccionados = [];
+    filasHuespedes.forEach(fila => {
+        fila.addEventListener('click', (e) => {
+            huespedesSeleccionados.push(fila);
+            if (fila.style.backgroundColor === 'yellow') {
+                fila.style.backgroundColor = '';
+                fila.style.color = '';
+            } else {
+                fila.style.backgroundColor = 'yellow';
+                fila.style.color = 'black';
+            }
+        });
+    });
+
+    const siguienteBusquedaButton = document.querySelector('.siguienteBusqueda');
+    siguienteBusquedaButton.addEventListener('click', () => {
+        if (huespedesSeleccionados.length === 0) {
+            mensajeError("Por favor, seleccione al menos un huésped antes de continuar.");
+            return;
+        }
+        else{
+            pregunta("¿Que desea hacer?","Seguir Cargando","Cargar otra habitacion","Salir")
+            PreguntaBoton2.addEventListener('click', () => {
+                const huespedes = huespedesSeleccionados.map(fila => {
+                    const celdas = fila.querySelectorAll('td');
+                    return `${celdas[0].textContent} ${celdas[1].textContent} (${celdas[2].textContent}: ${celdas[3].textContent})`;
+                }).join('<br>');
+                mensajeCorrecto(`Ya cargaste la habitación: ${habitacionesSeleccionadas[0]}<br><br>Huéspedes cargados:<br>${huespedes}<br><br>PORFAVOR, PRESIONE CUALQUIER TECLA PARA CONTINUAR`);
+                window.addEventListener('keydown', () => {
+                    location.reload();
+                }, { once: true });
+            });
+            PreguntaBoton3.addEventListener('click', () => {
+                location.reload();
+            });
+        }
+    });
+
+    function pregunta(mensaje, boton1, boton2,boton3) {
+      if (mensaje == undefined) mensaje = "Mensaje de Pregunta";
+      if (boton1 == undefined) boton1 = "ACEPTAR";
+      if (boton2 == undefined) boton2 = "CANCELAR";
+      if (boton3 == undefined) boton2 = "OTRO";
+      const modal = document.getElementById('modalPregunta');
+      const errorMessage = document.getElementById('error-messagePregunta');
+      
+      errorMessage.textContent = mensaje;
+      const PreguntaBoton1 = document.getElementById("PreguntaBoton1");
+      const PreguntaBoton2 = document.getElementById("PreguntaBoton2");
+      const PreguntaBoton3 = document.getElementById("PreguntaBoton3");
+      
+      PreguntaBoton1.textContent = boton1;
+      PreguntaBoton2.textContent = boton2;
+      PreguntaBoton3.textContent = boton3;
+
+      modal.style.display = "flex";
+
+        const botones = document.querySelectorAll('#PreguntaBoton1, #PreguntaBoton2, #PreguntaBoton3');
+        botones.forEach(boton => {
+            boton.onclick = function() {
+                modal.style.display = "none";
+            };
+        });
+    }
+  </script>
+</body>
+</html>
