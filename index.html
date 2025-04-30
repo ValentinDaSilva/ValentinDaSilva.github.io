@@ -108,5 +108,12 @@
             <h2>Ocupar Habitacion</h2>
         </div>
     </div>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                document.getElementById('opciones').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
 </body>
 </html>
