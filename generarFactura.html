@@ -287,7 +287,6 @@
                   <tr><td>Gómez</td><td>Lucas Emanuel</td><td>33</td><td>87654321</td></tr>
                   <tr><td>Fernández</td><td>María Belén</td><td>45</td><td>11223344</td></tr>
                   <tr><td>Lopez</td><td>Jorge Alberto</td><td>50</td><td>44332211</td></tr>
-                  
                 </tbody>
               </table>
         </div>
@@ -425,6 +424,13 @@
             const razonSocial = "Empresa XYZ S.A.";
             pregunta(`¿Desea asignar la factura a la razón social ${razonSocial}?`, "Cancelar", "Aceptar");
         }
+    });
+
+    document.getElementById("cuit").addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        document.querySelector(".bottom-buttons button[type='button']:nth-child(2)").click();
+      }
     });
 </script>
 
