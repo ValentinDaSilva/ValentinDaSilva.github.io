@@ -11,6 +11,7 @@
   />
 </head>
 <body>
+  <a href="javascript:history.back()" style="position: absolute; bottom: 20px; left: 20px; text-decoration: none; font-size: 24px; color: #64443a; z-index: 2;">&#8592; Volver</a>
   <div class="background">
     <div class="booking-form">
       <h2 style="text-align: center;">Habitaciones Disponibles</h2>
@@ -363,13 +364,13 @@
             formularioHuesped.style.width = '100%';
             formularioHuesped.innerHTML = `
               <div style="text-align: center;width:100%;">
-              <label for="nombre" style="display: block; margin-bottom: 5px;">Nombre:</label>
+              <label class="required" for="nombre" style="display: block; margin-bottom: 5px;">Nombre:</label>
               <input type="text" id="nombre" name="nombre" required style="width: 50%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
               
-              <label for="apellido" style="display: block; margin-bottom: 5px;">Apellido:</label>
+              <label class="required" for="apellido" style="display: block; margin-bottom: 5px;">Apellido:</label>
               <input type="text" id="apellido" name="apellido" required style="width: 50%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
               
-              <label for="telefono" style="display: block; margin-bottom: 5px;">Teléfono:</label>
+              <label class="required" for="telefono" style="display: block; margin-bottom: 5px;">Teléfono:</label>
               <input type="tel" id="telefono" name="telefono" required style="width: 50%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
               </div>
             `;
@@ -382,19 +383,16 @@
                 const nombre = document.getElementById('nombre').value;
                 const apellido = document.getElementById('apellido').value;
                 const telefono = document.getElementById('telefono').value;
-                if (!nombre) {
-                  mensajeError("Por favor, complete el campo 'Nombre'.");
-                  document.getElementById('nombre').focus();
-                  return;
-                }
-                if (!apellido) {
-                  mensajeError("Por favor, complete el campo 'Apellido'.");
-                  document.getElementById('apellido').focus();
-                  return;
-                }
-                if (!telefono) {
-                  mensajeError("Por favor, complete el campo 'Teléfono'.");
-                  document.getElementById('telefono').focus();
+                const inputs = [document.getElementById('nombre'), document.getElementById('apellido'), document.getElementById('telefono')];
+                inputs.forEach(input => {
+                  if (!input.value) {
+                  input.style.border = '2px solid red';
+                  } else {
+                  input.style.border = '1px solid #ccc';
+                  }
+                });
+                if (inputs.some(input => !input.value)) {
+                  mensajeError("Por favor, complete todos los campos requeridos.");
                   return;
                 }
                 mensajeCorrecto(`Reserva realizada con éxito para <br>"${nombre} ${apellido}".<br>Presione cualquier tecla para continuar.`);

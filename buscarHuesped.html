@@ -141,11 +141,16 @@
         bottom: 0;
         margin: 20px;
     }
+    label.required::after {
+      content: "*";
+      color: red;
+      margin-left: 5px;
+    }
   </style>
 </head>
 <body>
   <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
-
+  <a href="javascript:history.back()" style="position: absolute; top: 20px; left: 20px; text-decoration: none; font-size: 24px; color: #64443a; z-index: 2;">&#8592; Volver</a>
   <div class="body">
     <div class="container">
         <h1>Buscar Huésped</h1>

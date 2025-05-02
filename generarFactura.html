@@ -345,7 +345,7 @@
 <body>
 
   <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
-
+  <a href="javascript:history.back()" style="position: absolute; top: 20px; left: 20px; text-decoration: none; font-size: 24px; color: #64443a; z-index: 2;">&#8592; Volver</a>
   <div class="body">
     <div class="container">
 
@@ -515,7 +515,7 @@
     }
 
     function cambiarPantalla() {
-                document.querySelector(".container").style.display = "flex";
+                document.querySelector(".container").style.display = "block";
                 document.getElementById('generarFactura').classList.add('hidden');
                 document.getElementById('resumenFactura').classList.add('hidden');
                 document.getElementById('seleccionarResponsable').classList.remove('hidden');
