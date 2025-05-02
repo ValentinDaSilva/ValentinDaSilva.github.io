@@ -236,7 +236,110 @@
         background-color: rgba(65, 44, 38, 0.5); /* Color medio transparente */
         border-radius: 4px;
       }
-  </style>
+
+      .factura-box {
+        background-color: #fff;
+        border-radius: 15px;
+        padding: 20px 25px;
+        text-align: left;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        color: #412c26;
+        height: 80vh;
+        max-height: 80vh;
+        overflow: hidden;
+        width: 60vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .titulo{
+        height: 10%;
+        overflow: hidden;
+        /* background-color: #d32f2f; */
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        margin: 0;
+      }
+      .titulo h1{
+        margin: 0;
+        border-bottom: 2px solid #412c26;
+
+      }
+      .nombreHusped h3{
+        margin: 5px;
+        overflow: hidden;
+        /* background-color: #2fd345; */
+      }
+      .factura{
+        max-height: 80%;
+        height: 80%;
+        /* overflow-y: scroll; */
+        padding: 5px;
+        overflow: hidden;
+      }
+      .bottom-buttons{
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        /* background-color: rgb(145, 145, 255); */
+        height: 10%;
+        overflow: hidden;
+        margin: 0;
+      }
+      .bottom-buttons > *{
+        /* background-color: red; */
+      }
+      .bottom-buttons button{
+          margin:0;
+          margin: 5px;
+          margin-bottom: 0;
+          margin-top: 0;
+          width: 100%;
+      }
+      .consumos{
+        height: 50%;
+        max-height: 50%;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+      }
+      .iva{
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        margin: 0;
+        height: 10%;
+        max-height: 10%;
+      }
+      .tipoFactura{
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+      }
+      .itemLista{
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+      }
+      .itemLista label,.itemLista p{
+        margin:0 ;
+      }
+      .tipoFactura > *{
+        display: flex;
+        justify-content: center;
+      }
+      .listaConsumos{
+        width: 70%;
+        align-self: end;
+      }
+      .total-box{
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: rgb(250, 171, 0);
+        }
+   </style>
 </head>
 
 <body>
@@ -279,7 +382,7 @@
                 </thead>
                 <tbody>
                     <tr><td>García</td><td>Nicolás Alejandro</td><td>17</td><td>45678901</td></tr>
-                    <tr><td>Pérez</td><td>Juan José</td><td>20</td><td>23456789</td></tr>
+                    <tr><td>Pérez</td><td>Juan Perez</td><td>20</td><td>23456789</td></tr>
                     <tr><td>Rodríguez</td><td>Raúl Armando</td><td>42</td><td>34567890</td></tr>
                     <tr><td>Pereyra</td><td>Lorena</td><td>35</td><td>56789012</td></tr>
                     <tr><td>Walker</td><td>Paloma</td><td>16</td><td>67890123</td></tr>
@@ -299,12 +402,61 @@
 
         <div class="bottom-buttons">
           <button type="button" onclick="volverFactura()">Volver</button>
-          <button type="button">Aceptar</button>
+          <button type="button" onclick="facturar()">Aceptar</button>
         </div>
       </div>
 
     </div>
+      <!-- Pantalla 3 - Facturación Final -->
+<div id="resumenFactura" class="hidden">
+  <div class="factura-box">
+    <div class="titulo">
+      <h1>Facturacion</h1>
+    </div>
+    <div class="factura">
+      <div class="nombreHusped">
+        <h3 class=""><strong>JUAN PEREZ</strong></h3>
+      </div>
+      <div class="valorEstadia">
+        <p>✔️ Valor de Estadia: $23410 ×3 Noches</p>
+      </div>
+      
+
+      <div class="consumos">
+        <p><strong>Consumos de la Habitación:</strong></p>
+        <div class="listaConsumos">
+          <div class="itemLista">
+            <label><input type="checkbox" disabled /> Servicio de Comida: </label><p>$15000</p>
+          </div>
+          <div class="itemLista">
+            <label><input type="checkbox" disabled /> Uso de Teléfono: </label><p>$500</p>
+          </div>
+          <div class="itemLista">
+            <label><input type="checkbox" disabled /> Consumo Nevera: </label><p>$500</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="iva">
+        <strong>✔️ IVA (21%):</strong>
+        <strong>$3360</strong>
+      </div>
+      <div class="tipoFactura">
+          <strong>Tipo de Factura: B</strong>
+          <div class="total-box">
+            Monto Total: $19360
+          </div>
+      </div>
+    </div>
+    <div class="bottom-buttons">
+      <button type="button" onclick="cambiarPantalla()">Volver</button>
+      <button type="button" onclick="window.open('assets/image/facturaCortada.jpg', '_blank')">Vista Previa</button>
+      <button type="button">Aceptar</button>
+    </div>
   </div>
+</div>
+  </div>
+
 
   <div id="modal" class="modal" style="display: none;">
     <div class="modal-content error">
@@ -363,7 +515,9 @@
     }
 
     function cambiarPantalla() {
+                document.querySelector(".container").style.display = "flex";
                 document.getElementById('generarFactura').classList.add('hidden');
+                document.getElementById('resumenFactura').classList.add('hidden');
                 document.getElementById('seleccionarResponsable').classList.remove('hidden');
             }
 
@@ -432,7 +586,24 @@
         document.querySelector(".bottom-buttons button[type='button']:nth-child(2)").click();
       }
     });
+    let $ = (id, atributo, valor) => {
+        let elemento = document.querySelector(id);
+        if (atributo && valor) {
+            console.log("Elemento: ", elemento);
+            if (atributo in elemento.style) {
+                elemento.style[atributo] = valor;
+            } else {
+                elemento.setAttribute(atributo, valor);
+            }
+        }
+        return elemento;
+    };
+
+    function facturar() {
+      document.querySelector(".container").style.display = "none";document.querySelector("#resumenFactura").classList.remove("hidden")
+    }
 </script>
+<script src="js/general.js"></script>
 
 </body>
 </html>
