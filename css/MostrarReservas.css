@@ -202,3 +202,52 @@
     color: red;
     margin-left: 5px;
   }
+
+  .libre{
+    background-color: rgb(145, 190, 153);
+  }
+
+  .ocupada{
+    background-color: rgb(215, 148, 163);
+  }
+
+  .reservada{
+    background-color: rgb(215, 198, 126);
+  }
+
+  .fuera-servicio{ 
+    background-color: rgb(148, 150, 152);
+  }
+
+      .color-box{
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+      } 
+      .color-libre{
+        background-color: rgb(195, 230, 203);
+        border: 1px solid #155724;
+      }
+      .color-ocupada{
+        background-color: rgb(245, 198, 203);
+        border: 1px solid #721c24;
+      }
+      .color-reservada{
+        background-color: rgb(255, 238, 186);
+        border: 1px solid #856404;
+      }
+      .color-fuera-servicio{
+        background-color: rgb(198, 200, 202);
+        border: 1px solid #383d41;
+      }
+      .leyenda-item{
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .leyenda {
+        padding: 10px;
+      }
+      .leyenda > *{
+        margin-bottom: 10px;
+      }
