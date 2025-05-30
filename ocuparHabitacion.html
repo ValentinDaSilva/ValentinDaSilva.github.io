@@ -10,18 +10,19 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
   />
   <style>
-    .advertencia {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 400px;
-        text-align: center;
-        height: 60%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+    .advertencia{
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
+
     .container {
         width: 30vw;
         max-width: 500px;
@@ -173,7 +174,7 @@
     .preguntaBotones button {
         padding: 10px 20px; 
         background-color: #00e1f0; 
-        color: white; 
+        color: black; 
         border: none; 
         border-radius: 5px; 
         cursor: pointer; 
@@ -182,7 +183,7 @@
     }
     .advertenciaBotones > .boton{
       width: auto;
-      background-color: #006da0 !important;
+      /* background-color: #006da0 !important; */
     }
 </style>
 </head>
@@ -203,113 +204,121 @@
     
   </div>
   <div class="resultado animate__animated animate__fadeIn" style="display: none;">
+    <img src="assets/image/Pregunta.png" alt="" style="position: absolute; top: 5px; right: 15px; width: 50px; height: 50px;" class="iconoInformacion">
     <h2>Resultados de la búsqueda</h2>
-    <div class="tabla-scroll">
-    <table>
-      <thead>
-        <tr>
-        <th>Fecha \ Habitación</th>
-        <th>IND-101</th>
-        <th>IND-102</th>
-        <th>DOB-201</th>
-        <th>DOB-202</th>
-        <th>SUITE-301</th>
-        <th>SUITE-303</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-        <td class="resultado1">25/04/2025</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="reservada resultado1">Libre</td>
-        <td class="ocupada resultado1">Ocupada</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="reservada resultado1">Reservada</td>
-        <td class="ocupada resultado1">Ocupada</td>
-        </tr>
-        <tr>
-        <td class="resultado1">26/04/2025</td>
-        <td class="ocupada resultado1">Ocupada</td>
-        <td class="reservada resultado1">Libre</td>
-        <td class="ocupada resultado1">Ocupada</td>
-        <td class="ocupada resultado1">Ocupada</td>
-        <td class="reservada resultado1">Reservada</td>
-        <td class="ocupada resultado1">Ocupada</td>
-        </tr>
-        <tr>
-        <td class="resultado1">27/04/2025</td>
-        <td class="ocupada resultado1">Ocupada</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="ocupada resultado1">Ocupada</td>
-        <td class="libre resultado1">Reservada</td>
-        <td class="libre resultado1">Libre</td>
-        </tr>
-        <tr>
-        <td class="resultado1">28/04/2025</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Reservada</td>
-        <td class="libre resultado1">Libre</td>
-        </tr>
-        <tr>
-        <td class="resultado1">29/04/2025</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Reservada</td>
-        <td class="libre resultado1">Libre</td>
-        </tr>
-        <tr>
-        <td class="resultado1">30/04/2025</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Reservada</td>
-        <td class="libre resultado1">Libre</td>
-        </tr>
-        <tr>
-        <td class="resultado1">31/04/2025</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Reservada</td>
-        <td class="libre resultado1">Libre</td>
-        </tr>
-        <tr>
-        <td class="resultado1">01/05/2025</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Reservada</td>
-        <td class="libre resultado1">Libre</td>
-        </tr>
-        <tr>
-        <td class="resultado1">02/05/2025</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Reservada</td>
-        <td class="libre resultado1">Libre</td>
-        </tr>
-        <tr>
-        <td class="resultado1">03/05/2025</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="libre resultado1">Libre</td>
-        <td class="fuera-servicio resultado1">Fuera de Servicio</td>
-        <td class="libre resultado1">Reservada</td>
-        <td class="libre resultado1">Libre</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- <div class="leyenda">
+      <h3>Estados:</h3>
+      <div class="leyenda-item"><div class="color-box color-libre"></div> Libre</div>
+      <div class="leyenda-item"><div class="color-box color-ocupada"></div> Ocupada</div>
+      <div class="leyenda-item"><div class="color-box color-reservada"></div> Reservada</div>
+      <div class="leyenda-item"><div class="color-box color-fuera-servicio"></div> Fuera de Servicio</div>
+    </div> -->
+    <div class="tabla-scroll" style="position: relative;">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha \ Habitación</th>
+            <th>IND-101</th>
+            <th>IND-102</th>
+            <th>DOB-201</th>
+            <th>DOB-202</th>
+            <th>SUITE-301</th>
+            <th>SUITE-303</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td>25/04/2025</td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="ocupada resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="ocupada resultado1"></td>
+            </tr>
+            <tr>
+            <td>26/04/2025</td>
+            <td class="ocupada resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="ocupada resultado1"></td>
+            <td class="ocupada resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="ocupada resultado1"></td>
+            </tr>
+            <tr>
+            <td>27/04/2025</td>
+            <td class="ocupada resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="ocupada resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="libre resultado1"></td>
+            </tr>
+            <tr>
+            <td>28/04/2025</td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="libre resultado1"></td>
+            </tr>
+            <tr>
+            <td>29/04/2025</td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="libre resultado1"></td>
+            </tr>
+            <tr>
+            <td>30/04/2025</td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="libre resultado1"></td>
+            </tr>
+            <tr>
+            <td>31/04/2025</td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="libre resultado1"></td>
+            </tr>
+            <tr>
+            <td>01/05/2025</td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="libre resultado1"></td>
+            </tr>
+            <tr>
+            <td>02/05/2025</td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="libre resultado1"></td>
+            </tr>
+            <tr>
+            <td>03/05/2025</td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="libre resultado1"></td>
+            <td class="fuera-servicio resultado1"></td>
+            <td class="reservada resultado1"></td>
+            <td class="libre resultado1"></td>
+            </tr>
+        </tbody>
+      </table>
       
     </div>
     <div class="siguiente">Ocupar</div>
@@ -320,7 +329,7 @@
       <h2 style="text-align: center; color: #d32f2f; font-size: 24px; margin-top: 10px;">ERROR</h2>
       <img src="assets/image/Error.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
       <p id="error-message" style="text-align: center; margin-top: 20px;">Por favor, completa todos los campos requeridos.</p>
-      <button id="ok-button" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">OK</button>
+      <button id="ok-button" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">OK👍</button>
     </div>
   </div>
   <div id="modalCorrecto" class="modal" style="display: none;">
@@ -332,12 +341,12 @@
   </div>
   <div id="modalAdvertencia" class="modal" style="display: none;">
     <div class="modal-content advertencia">
-      <h2 style="text-align: center; color: #006da0; font-size: 24px; margin-top: 10px;">ADVERTENCIA</h2>
-      <img src="assets/image/Advertencia.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <h2 style="text-align: center; color: #ffb300; font-size: 24px; margin-top: 10px;">ADVERTENCIA</h2>
+      <img src="assets/image/Advertencia.png" alt="icono de advertencia" style="height: 30%; display: block; margin: 0 auto;">
       <p id="error-messageAdvertencia" style="text-align: center; margin-top: 20px;">El numero de documento ya existe</p>
       <div class="advertenciaBotones" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
-        <button id="AdvertenciaBoton1" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #00e1f0; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">ACEPTAR</button>
-        <button id="AdvertenciaBoton2" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #00e1f0; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">CORREGIR</button>
+      <button id="AdvertenciaBoton1" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #ffeb3b; color: #222; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">ACEPTAR</button>
+      <button id="AdvertenciaBoton2" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #ffeb3b; color: #222; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">CORREGIR</button>
       </div>
     </div>
   </div>
@@ -561,9 +570,8 @@
         
         const celdasColumna = obtenerCeldasColumna(index);
         
-        const allLibre = celdasColumna.every(celda => celda.textContent.trim().toLowerCase() === 'libre');
-        const allReservada = celdasColumna.every(celda => celda.textContent.trim().toLowerCase() === 'reservada');
-
+        const allLibre = celdasColumna.every(celda => celda.classList.contains('libre'));
+        const allReservada = celdasColumna.every(celda => celda.classList.contains('reservada'));
         if (!allLibre && !allReservada) {
             mensajeError("No se puede continuar. Todas las celdas de la columna deben ser 'Libre' o 'Reservada'.");
             return;
@@ -572,7 +580,7 @@
         const habitacion = header.textContent.trim();
 
 
-        const esReservada = celdasColumna.some(celda => celda.textContent.trim().toLowerCase() === 'reservada');
+        const esReservada = celdasColumna.some(celda => celda.classList.contains('reservada'));
         let cancelar = false;
         if (esReservada && !habitacionesSeleccionadas.includes(habitacion)) {
           const checkinDate = document.getElementById('checkin').value;
@@ -615,32 +623,16 @@
             } else {
                 habitacionesSeleccionadas.splice(index2, 1);
             }
-            celdasColumna.forEach(celda => {
-            if(celda.style.backgroundColor == 'yellow'){
-                switch (celda.textContent.trim().toLowerCase()) {
-                    case 'libre':
-                    celda.style.backgroundColor = '#c3e6cb';
-                    celda.style.color = '#155724';
-                    break;
-                    case 'ocupada':
-                    celda.style.backgroundColor = '#f5c6cb';
-                    celda.style.color = '#721c24';
-                    break;
-                    case 'reservada':
-                    celda.style.backgroundColor = '#ffeeba';
-                    celda.style.color = '#856404';
-                    break;
-                    case 'fuera de servicio':
-                    celda.style.backgroundColor = '#c6c8ca';
-                    celda.style.color = '#383d41';
-                    break;
-                }
-            }
-            else{
-                celda.style.backgroundColor = 'yellow';
-                celda.style.color = 'black';
-            }
-            });
+           celdasColumna.forEach(celda => {
+          console.log(celda);
+          if (celda.style.backgroundColor === 'yellow' && celda.classList.contains('libre')) {
+            celda.style.backgroundColor = 'rgb(145, 190, 153)';
+          }else if(celda.style.backgroundColor === 'yellow' && celda.classList.contains('reservada')){
+            celda.style.backgroundColor = 'rgb(255, 235, 179)';
+          }else{
+            celda.style.backgroundColor = 'yellow';
+          }
+        });
             return habitacionesSeleccionadas;
         }
       });
@@ -687,7 +679,7 @@
             return;
         }
         else{
-            pregunta("¿Que desea hacer?","Seguir Cargando","Cargar otra habitacion","Salir")
+            pregunta("¿Qué desea hacer?","Seguir Cargando 🔄","Cargar otra habitación 🏠","Salir 🚪")
             PreguntaBoton2.addEventListener('click', () => {
                 const huespedes = huespedesSeleccionados.map(fila => {
                     const celdas = fila.querySelectorAll('td');
@@ -730,6 +722,18 @@
             };
         });
     }
+
+    
+        function completarYEnviarFormulario() {
+          // Valores ficticios
+          const checkin = document.getElementById('checkin');
+          const checkout = document.getElementById('checkout');
+          // Ejemplo: del 2025-04-25 al 2025-04-28
+          checkin.value = '2025-04-25';
+          checkout.value = '2025-04-28';
+          // Forzar envío del formulario
+          document.querySelector('form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+        }
   </script>
 </body>
 </html>

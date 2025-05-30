@@ -236,6 +236,11 @@
         background-color: rgb(255, 238, 186);
         border: 1px solid #856404;
       }
+      
+      .color-seleccionada{
+        background-color: yellow;
+        border: 1px solid #856404;
+      }
       .color-fuera-servicio{
         background-color: rgb(198, 200, 202);
         border: 1px solid #383d41;

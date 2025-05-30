@@ -53,7 +53,7 @@
           <tr>
             <td>25/04/2025</td>
             <td class="libre"></td>
-            <td class="reservada"></td>
+            <td class="libre"></td>
             <td class="ocupada"></td>
             <td class="libre"></td>
             <td class="reservada"></td>
@@ -62,7 +62,7 @@
           <tr>
             <td>26/04/2025</td>
             <td class="ocupada"></td>
-            <td class="reservada"></td>
+            <td class="libre"></td>
             <td class="ocupada"></td>
             <td class="ocupada"></td>
             <td class="reservada"></td>
@@ -152,7 +152,7 @@
       <h2 style="text-align: center; color: #d32f2f; font-size: 24px; margin-top: 10px;">ERROR</h2>
       <img src="assets/image/Error.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
       <p id="error-message" style="text-align: center; margin-top: 20px;">Por favor, completa todos los campos requeridos.</p>
-      <button id="ok-button" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">OK</button>
+      <button id="ok-button" style="display: block; margin: 20px auto 0; padding: 10px 20px; background-color: #d32f2f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;" class="boton">OK👍</button>
     </div>
   </div>
   <div id="modalCorrecto" class="modal" style="display: none;">
@@ -280,7 +280,7 @@
       header.addEventListener('click', () => {
         
         const celdasColumna = obtenerCeldasColumna(index);
-        const todasLibres = celdasColumna.every(celda => celda.textContent.trim().toLowerCase() === 'libre');
+        const todasLibres = celdasColumna.every(celda => celda.classList.contains('libre'));
         if (!todasLibres) {
           mensajeError("No se puede cambiar el estado de la habitacion porque no todos los horarios estan libres");
           return;
@@ -292,30 +292,13 @@
         } else {
           habitacionesSeleccionadas.splice(index2, 1);
         }
+        
         celdasColumna.forEach(celda => {
-          if(celda.style.backgroundColor == 'yellow'){
-            switch (celda.textContent.trim().toLowerCase()) {
-                case 'libre':
-                celda.style.backgroundColor = '#c3e6cb';
-                celda.style.color = '#155724';
-                break;
-                case 'ocupada':
-                celda.style.backgroundColor = '#f5c6cb';
-                celda.style.color = '#721c24';
-                break;
-                case 'reservada':
-                celda.style.backgroundColor = '#ffeeba';
-                celda.style.color = '#856404';
-                break;
-                case 'fuera de servicio':
-                celda.style.backgroundColor = '#c6c8ca';
-                celda.style.color = '#383d41';
-                break;
-              }
-          }
-          else{
-            celda.style.backgroundColor = 'yellow';
-            celda.style.color = 'black';
+          console.log(celda);
+          if (celda.style.backgroundColor === 'yellow') {
+            celda.style.backgroundColor = 'rgb(145, 190, 153)';
+          } else {
+              celda.style.backgroundColor = 'yellow';
           }
         });
       });
@@ -336,8 +319,9 @@
         const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado','Domingo' ];
         const diaSemanaImput1 = dias[fechaSeleccionada1.getDay()];
         const diaSemanaImput2 = dias[fechaSeleccionada2.getDay()];
-        
+        console.log(diaSemanaImput1, diaSemanaImput2);
         const titulo = "Horarios por reservar:"
+
         const resultadoDiv = document.querySelector('.resultado');
         const resultadoCopia = resultadoDiv.cloneNode(true);
         resultadoDiv.style.display = 'none';
@@ -427,7 +411,7 @@
             habitacionDiv.style.padding = '10px';
             habitacionDiv.innerHTML = `
           <p>Habitación: <strong>${habitacion}</strong></p>
-          <p>Desde fecha: <strong>${diaSemanaImput1}, ${desdeFecha}</strong></p>
+          <p>Desde fecha: <strong>${diaSemanaImput1}, ${desdeFecha}</strong> 10:00</p>
           <p>Hasta fecha: <strong>${diaSemanaImput2}, ${hastaFecha}</strong></p>
             `;
             resultadoCopia.insertBefore(habitacionDiv, nuevoCancelarButton);
@@ -477,11 +461,15 @@
           <div class="leyenda-item"><div class="color-box color-libre"></div> Libre</div>
           <div class="leyenda-item"><div class="color-box color-ocupada"></div> Ocupada</div>
           <div class="leyenda-item"><div class="color-box color-reservada"></div> Reservada</div>
+
+          <div class="leyenda-item"><div class="color-box color-seleccionada"></div> Seleccionada</div>
           <div class="leyenda-item"><div class="color-box color-fuera-servicio"></div> Fuera de Servicio</div></fieldset>
           <fieldset style="padding:20px; border-radius:10px"><h3 style="">Nomenclatura: Tipo Habitacion - Numero Habitacion</h3>
             <p class="tipoHabitacion"><span style="font-size: 18px; margin-right: 5px;">&#8594;</span>IND: Individual</p>
-          <p class="tipoHabitacion"><span style="font-size: 18px; margin-right: 5px;">&#8594;</span>DOB: Doble</p>
-          <p class="tipoHabitacion"><span style="font-size: 18px; margin-right: 5px;">&#8594;</span>SUITE: Suite</p></fieldset>
+          <p class="tipoHabitacion"><span style="font-size: 18px; margin-right: 5px;">&#8594;</span>DOBE: Doble Estandar</p>
+          <p class="tipoHabitacion"><span style="font-size: 18px; margin-right: 5px;">&#8594;</span>DOBS: Doble Superior</p>
+          <p class="tipoHabitacion"><span style="font-size: 18px; margin-right: 5px;">&#8594;</span>FAM: Family Plan</p>
+          <p class="tipoHabitacion"><span style="font-size: 18px; margin-right: 5px;">&#8594;</span>SUITE: Suite Doble</p></fieldset>
           <fieldset style="padding:20px; border-radius:10px"><h3 style="">Seleccionar Habitacion</h3>
           <p><span style="display:inline-block;width:12px;height:12px;background:rgb(255, 72, 72); border:2px solid black; border-radius:50%;margin-right:6px;vertical-align:middle;"></span>Para seleccionar una habitación, haga clic en el encabezado de la columna correspondiente. Las habitaciones seleccionadas se resaltarán en amarillo.</p></fieldset>
         `;

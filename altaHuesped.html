@@ -107,7 +107,6 @@
 
     button {
       grid-column: span 2;
-      margin-top: 30px;
       padding: 12px;
       background-color: #49312a;
       color: white;
@@ -174,6 +173,46 @@
       text-decoration: none;
       cursor: pointer;
     }
+
+    
+    .pregunta {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .preguntaBotones {
+      display: block;
+      justify-content: space-around;
+    }
+    .preguntaBotones button {
+        padding: 10px 20px; 
+        background-color: #00e1f0; 
+        color: white; 
+        border: none; 
+        border-radius: 5px; 
+        cursor: pointer; 
+        font-size: 16px; 
+        margin-left: 10px;
+    }
+    .correcto{
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   </style>
 </head>
 <body>
@@ -282,8 +321,8 @@
             </div>
           </fieldset>
       
-          <button type="submit">Siguiente</button>
-          <button type="submit">Cancelar</button>
+          <button type="submit" class="btnSiguiente">Siguiente</button>
+          <button type="submit" class="btnCancelar">Cancelar</button>
         </div>
       </form>
       
@@ -308,8 +347,39 @@
       </div>
     </div>
   </div>
-  
+   <div id="modalPregunta" class="modal" style="display: none;">
+    <div class="modal-content pregunta">
+      <h2 style="text-align: center; color: #00e1f0; font-size: 24px; margin-top: 10px;">PREGUNTA</h2>
+      <img src="assets/image/Pregunta.png" alt="icono de pregunta" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-messagePregunta" style="text-align: center; margin-top: 20px;">El numero de documento ya existe</p>
+      <div class="preguntaBotones" style="display: flex; justify-content: space-around;">
+        <button id="PreguntaBoton1" style="display: block; padding: 10px 20px; background-color: #00e1f0; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-left: 10px;" class="boton">CORREGIR</button>
+        <button id="PreguntaBoton2" style="display: block; padding: 10px 20px; background-color: #00e1f0; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-left: 10px;" class="boton">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+  <div id="modalCorrecto" class="modal" style="display: none;">
+    <div class="modal-content correcto">
+      <h2 style="text-align: center; color: #2fd345; font-size: 24px; margin-top: 10px;">EXITO</h2>
+      <img src="assets/image/Correcto.png" alt="icono de error" style="height: 30%; display: block; margin: 0 auto;">
+      <p id="error-messageCorrecto" style="text-align: center; margin-top: 20px;">Accion ejecutada con exito</p>
+    </div>
+  </div>
   <script>
+    function mensajeCorrecto(mensaje) {
+      if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
+      
+      const modal = document.getElementById('modalCorrecto');
+      const successMessage = document.getElementById('error-messageCorrecto');
+      
+      successMessage.innerHTML = mensaje;
+      
+      modal.style.display = "flex";
+      window.onkeydown = function() {
+        modal.style.display = "none";
+      };
+
+    }
     function mensajeError(mensaje) {
       const modal = document.getElementById('modal');
       const errorMessage = document.getElementById('error-message');
@@ -331,8 +401,10 @@
       if (input !== "") {
         if(CUITS.includes(input)) {
           advertencia("¡CUIDADO! El tipo y número de documento ya existen en el sistema","CORREGIR ✏️ ","ACEPTAR ✅ ");
+          return true;
         }
       }
+      return false;
     }
 
     function advertencia(mensaje,boton1,boton2) {
@@ -389,9 +461,20 @@
       if (camposInvalidos.length > 0) {
         
         mensajeError("Por favor, completa todos los campos que tienen un asterisco (*)");
-      }
-
-      verificarCUIT();
+        return;
+      }else if(verificarCUIT()){
+        return;
+      }else {
+        const nombres = document.getElementById("nombres").value.trim();
+        const apellido = document.getElementById("apellido").value.trim();
+        pregunta(
+          `El huésped\n${nombres} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
+          "SI ✅",
+          "NO ❌",
+          function() { mensajeCorrecto("Huésped cargado correctamente <br> <br>Presione cualquier tecla para continuar..."); },
+          undefined
+        );
+        }
     });
 
     
@@ -423,6 +506,34 @@
       document.getElementById("localidad").value = "Buenos Aires";
       document.getElementById("provincia").value = "Buenos Aires";
       document.getElementById("pais").value = "Argentina";
+    }
+
+    function pregunta(mensaje, boton1, boton2, funcionBoton1, funcionBoton2) {
+      if (mensaje == undefined) mensaje = "Mensaje de Pregunta";
+      if (boton1 == undefined) boton1 = "ACEPTAR";
+      if (boton2 == undefined) boton2 = "CANCELAR";
+      const modal = document.getElementById('modalPregunta');
+      const errorMessage = document.getElementById('error-messagePregunta');
+      
+      errorMessage.textContent = mensaje;
+      const btn1 = document.getElementById("PreguntaBoton1");
+      const btn2 = document.getElementById("PreguntaBoton2");
+      
+      btn1.textContent = boton1;
+      btn2.textContent = boton2;
+      modal.style.display = "flex";
+
+        if (typeof funcionBoton1 === "function") {
+          btn1.addEventListener("click", () => {
+            funcionBoton1();
+          }, { once: true });
+        }
+
+        if (typeof funcionBoton2 === "function") {
+          btn2.addEventListener("click", () => {
+            funcionBoton2();
+          }, { once: true });
+        }
     }
   </script>
     <script>
