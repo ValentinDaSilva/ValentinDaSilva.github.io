@@ -221,4 +221,165 @@
 <!-- Pantalla 1: Calendario -->
 <div class="pantalla">
   <div class="cabecera">
-    <h2>Registro Mensual Sacada
+    <h2>Registro Mensual Sacadas de Basura</h2>
+  </div>
+  <div class="contenido-flex" id="loader-container">
+    <div id="loader">
+      <div class="spinner"></div>
+      <div>Cargando...</div>
+    </div>
+    <div id="calendario"></div>
+  </div>
+</div>
+
+<!-- Pantalla 2: Botones -->
+<div class="pantalla-botones">
+  <h1>Registrar Sacada de Basura</h1>
+  <div class="botones">
+    <button onclick="registrar('Valentín')">Valentín</button>
+    <button onclick="registrar('Joaquin')">Joaquin</button>
+  </div>
+  <div id="resultado"></div>
+  <div id="leyenda">
+    <div><span class="color-cuadro color-valentin"></span> Valentín</div>
+    <div><span class="color-cuadro color-hermano"></span> Joaquin</div>
+    <div><span class="color-cuadro" style="background:#eee; border:1px solid #ccc;"></span> Sin registro</div>
+  </div>
+</div>
+
+<script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbzf73Uc2xKzFe8BQ4ZkqlHAqxL6mt6OZHtOZIPMLhTWOoIvI5GRhRCQYN9Ozs1DtRwU/exec";
+
+  function crearCalendario(registros) {
+    const calendario = document.getElementById('calendario');
+    calendario.innerHTML = '';
+
+    const hoy = new Date();
+    const anio = hoy.getFullYear();
+    const mes = hoy.getMonth();
+    const primerDiaMes = new Date(anio, mes, 1);
+    const ultimoDiaMes = new Date(anio, mes + 1, 0);
+    const diasMes = ultimoDiaMes.getDate();
+    const primerDiaSemana = primerDiaMes.getDay();
+
+    const nombresDias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    for (let i = 0; i < 7; i++) {
+      const nombreDia = document.createElement('div');
+      nombreDia.classList.add('dia', 'inactivo');
+      nombreDia.textContent = nombresDias[i];
+      calendario.appendChild(nombreDia);
+    }
+
+    for (let i = 0; i < primerDiaSemana; i++) {
+      const celdaVacia = document.createElement('div');
+      celdaVacia.classList.add('dia', 'inactivo');
+      calendario.appendChild(celdaVacia);
+    }
+
+    const mapaRegistros = {};
+    registros.forEach(({ fecha, nombre }) => {
+      const fechaSolo = fecha.split("T")[0];
+      mapaRegistros[fechaSolo] = nombre;
+    });
+
+    for (let dia = 1; dia <= diasMes; dia++) {
+      const fechaStr = `${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+      const celda = document.createElement('div');
+      celda.classList.add('dia');
+
+      const quien = mapaRegistros[fechaStr];
+      if (quien === 'Valentín') {
+        celda.classList.add('ocupado-valentin');
+      } else if (quien === 'Joaquin') {
+        celda.classList.add('ocupado-hermano');
+      } else {
+        celda.classList.add('sin-registro');
+      }
+
+      const fechaActual = new Date();
+      const esHoy = (fechaActual.toDateString() === new Date(anio, mes, dia).toDateString());
+      const numeroHTML = `<div${esHoy ? ' class="hoy"' : ''}>${dia}</div>`;
+      celda.innerHTML = `${numeroHTML}<div class="etiqueta">${quien ? quien : ''}</div>`;
+      calendario.appendChild(celda);
+    }
+
+    calendario.classList.add('visible');
+  }
+
+  function registrar(nombre) {
+    const fecha = new Date().toISOString().slice(0, 10);
+    const payload = { accion: "registrar", nombre, fecha };
+
+    const loader = document.getElementById('loader');
+    const calendario = document.getElementById('calendario');
+    loader.style.display = 'flex';
+    calendario.classList.remove('visible');
+    calendario.style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      obtenerRegistros();
+    });
+
+    document.getElementById('resultado').innerText = `Registrado (sin confirmar): ${nombre} el ${fecha}`;
+  }
+
+  function obtenerRegistros() {
+    const loader = document.getElementById('loader');
+    const calendario = document.getElementById('calendario');
+    loader.style.display = 'flex';
+    calendario.classList.remove('visible');
+    calendario.style.display = 'none';
+
+    fetch(`${scriptURL}?accion=leer`)
+      .then(res => res.json())
+      .then(registros => {
+        crearCalendario(registros);
+      })
+      .catch(() => {
+        calendario.innerHTML = '<p style="text-align:center;">No se pudo cargar el historial.</p>';
+      })
+      .finally(() => {
+        loader.style.display = 'none';
+        calendario.style.display = 'grid';
+      });
+  }
+
+  obtenerRegistros();
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!sessionStorage.getItem("nombreUsuario")) {
+      Swal.fire({
+        title: '¿Quién sos?',
+        input: 'select',
+        inputLabel: 'Seleccioná tu nombre',
+        inputOptions: {
+          'Valentín': 'Valentín',
+          'Joaquin': 'Joaquin',
+          'Claudia': 'Claudia',
+          'Javier': 'Javier'
+        },
+        inputPlaceholder: 'Seleccioná tu nombre',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: 'Guardar',
+        inputValidator: (value) => {
+          if (!value) return 'Tenés que elegir un nombre';
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          sessionStorage.setItem("nombreUsuario", result.value);
+        }
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
