@@ -1,0 +1,103 @@
+const express = require("express");
+const cors = require("cors");
+const fs = require("fs");
+const { exec, spawn } = require("child_process");
+const { randomUUID } = require("crypto");
+const path = require("path");
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.post("/compile", (req, res) => {
+  const { code, input } = req.body;
+  const id = randomUUID();
+  const cppPath = `temp_${id}.cpp`;
+  const binPath = `temp_${id}`;
+  const MAX_OUTPUT_LENGTH = 100 * 1024; // 100 KB
+
+  fs.writeFileSync(cppPath, code);
+
+  exec(`g++ ${cppPath} -o ${binPath}`, (compileErr, stdout, stderr) => {
+    if (compileErr) {
+      const humanizado = humanizarErrores(stderr);
+      limpiarArchivos(cppPath, binPath);
+      return res.json({
+        output: `${humanizado}\n\nMensaje original del compilador:\n${stderr}`
+      });
+    }
+
+    const proceso = spawn(`./${binPath}`);
+    let output = "";
+    let error = "";
+    let outputTruncado = false;
+    let finalizadoPorTimeout = false;
+
+    // Enviar input si hay
+    if (input) proceso.stdin.write(input);
+    proceso.stdin.end();
+
+    // Capturar salida con límite
+    proceso.stdout.on("data", data => {
+      if (output.length < MAX_OUTPUT_LENGTH) {
+        output += data.toString();
+        if (output.length >= MAX_OUTPUT_LENGTH) {
+          outputTruncado = true;
+        }
+      }
+    });
+
+    proceso.stderr.on("data", data => {
+      error += data.toString();
+    });
+
+    // Timeout: 5 segundos
+    const timeout = setTimeout(() => {
+      finalizadoPorTimeout = true;
+      proceso.kill("SIGTERM");
+    }, 5000);
+
+    proceso.on("close", code => {
+      clearTimeout(timeout);
+      limpiarArchivos(cppPath, binPath);
+
+      let resultado = error || output;
+      if (outputTruncado) resultado += "\n\n⚠️ Salida truncada (más de 100 KB)";
+      if (finalizadoPorTimeout) resultado += "\n\n⏱️ Proceso detenido por exceder el tiempo límite (5s)";
+
+      res.json({ output: resultado });
+    });
+
+    proceso.on("error", err => {
+      clearTimeout(timeout);
+      limpiarArchivos(cppPath, binPath);
+      res.json({ output: `❌ Error al ejecutar: ${err.message}` });
+    });
+  });
+});
+
+function limpiarArchivos(...archs) {
+  for (const file of archs) {
+    fs.unlink(file, err => {}); // Ignora errores silenciosamente
+  }
+}
+
+function humanizarErrores(stderr) {
+  const errores = [];
+
+  if (/expected.*;/.test(stderr)) {
+    const match = stderr.match(/(\d+):\d+: error: expected .+?;/);
+    if (match) errores.push(`🚫 Te falta un punto y coma en la línea ${match[1]}.`);
+  }
+
+  if (/was not declared in this scope/.test(stderr)) {
+    const match = stderr.match(/‘(.+?)’ was not declared in this scope/);
+    if (match) errores.push(`🔍 La variable o función '${match[1]}' no está declarada.`);
+  }
+
+  return errores.length ? errores.join("\n") : "❗ Error de compilación.";
+}
+
+app.listen(3000, () => {
+  console.log("Servidor escuchando en puerto 3000");
+});
