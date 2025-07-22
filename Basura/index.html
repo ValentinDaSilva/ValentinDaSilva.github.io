@@ -12,10 +12,7 @@
       font-family: Arial, sans-serif;
       scroll-behavior: smooth;
     }
-
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     .pantalla {
       min-height: 100dvh;
@@ -30,6 +27,7 @@
       max-height: 15vh;
       overflow: auto;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
     }
@@ -37,6 +35,12 @@
     .cabecera h2 {
       margin: 0;
       font-size: 150%;
+    }
+
+    #proximoTurno {
+      margin-top: 10px;
+      font-size: 120%;
+      font-weight: bold;
     }
 
     .contenido-flex {
@@ -170,13 +174,8 @@
       border: 1px solid #aaa;
     }
 
-    .color-valentin {
-      background-color: #a0d468;
-    }
-
-    .color-hermano {
-      background-color: #4a89dc;
-    }
+    .color-valentin { background-color: #a0d468; }
+    .color-hermano { background-color: #4a89dc; }
 
     .hoy {
       color: red;
@@ -188,27 +187,18 @@
       background-color: rgba(0, 0, 0, 0.4) !important;
     }
 
-    /* Media Query para móviles */
     @media (max-width: 600px) {
-      .cabecera h2 {
-        font-size: 120%;
-      }
-
+      .cabecera h2 { font-size: 120%; }
       .dia {
         padding: 10px 4px;
         min-height: 50px;
         font-size: 14px;
       }
-
-      .etiqueta {
-        font-size: 11px;
-      }
-
+      .etiqueta { font-size: 11px; }
       button {
         font-size: 16px;
         padding: 10px 20px;
       }
-
       #leyenda {
         gap: 10px;
         font-size: 13px;
@@ -222,6 +212,7 @@
 <div class="pantalla">
   <div class="cabecera">
     <h2>Registro Mensual Sacadas de Basura</h2>
+    <div id="proximoTurno"></div>
   </div>
   <div class="contenido-flex" id="loader-container">
     <div id="loader">
@@ -303,11 +294,27 @@
       calendario.appendChild(celda);
     }
 
+    // Mostrar a quién le toca hoy
+    const fechasOrdenadas = Object.keys(mapaRegistros).sort().reverse();
+    const ultimoDia = fechasOrdenadas.find(f => mapaRegistros[f]);
+    const ultimoNombre = mapaRegistros[ultimoDia];
+    let siguiente;
+
+    if (ultimoNombre === "Valentín") {
+      siguiente = "Joaquin";
+    } else if (ultimoNombre === "Joaquin") {
+      siguiente = "Valentín";
+    } else {
+      siguiente = "No hay datos aún";
+    }
+
+    document.getElementById("proximoTurno").textContent = `Hoy le toca a: ${siguiente}`;
     calendario.classList.add('visible');
   }
 
-  function registrar(nombre) {
-    const fecha = new Date().toISOString().slice(0, 10);
+    function registrar(nombre) {
+    const fecha = new Date().toLocaleDateString('sv-SE'); // ← corregido a horario local
+
     const payload = { accion: "registrar", nombre, fecha };
 
     const loader = document.getElementById('loader');
@@ -353,6 +360,7 @@
   }
 
   obtenerRegistros();
+
   document.addEventListener("DOMContentLoaded", () => {
     if (!sessionStorage.getItem("nombreUsuario")) {
       Swal.fire({
