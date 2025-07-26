@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <title>Registro Basura - Calendario</title>
+  <title>Registro General de Tareas</title>
   <style>
     html, body {
       margin: 0;
@@ -12,10 +12,11 @@
       font-family: Arial, sans-serif;
       scroll-behavior: smooth;
     }
+
     * { box-sizing: border-box; }
 
     .pantalla {
-      min-height: 100dvh;
+      height: 100vh;
       display: flex;
       flex-direction: column;
     }
@@ -24,10 +25,10 @@
       padding: 20px;
       text-align: center;
       flex-shrink: 0;
+      height: 15vh;
       max-height: 15vh;
       overflow: auto;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
     }
@@ -37,19 +38,12 @@
       font-size: 150%;
     }
 
-    #proximoTurno {
-      margin-top: 10px;
-      font-size: 120%;
-      font-weight: bold;
-    }
-
     .contenido-flex {
       flex: 1;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       padding: 20px;
-      width: 100%;
       position: relative;
     }
 
@@ -72,6 +66,12 @@
 
     @keyframes spin {
       to { transform: rotate(360deg); }
+    }
+
+    #tipoSelect {
+      font-size: 16px;
+      margin-bottom: 15px;
+      padding: 5px 10px;
     }
 
     #calendario {
@@ -110,7 +110,7 @@
       color: #2f4f13;
     }
 
-    .ocupado-hermano {
+    .ocupado-joaquin {
       background-color: #4a89dc;
       color: white;
     }
@@ -125,7 +125,7 @@
     }
 
     .pantalla-botones {
-      min-height: 100dvh;
+      height: 100vh;
       padding: 20px;
       display: flex;
       flex-direction: column;
@@ -136,17 +136,13 @@
     .botones {
       text-align: center;
       margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
     }
 
     button {
       padding: 12px 25px;
+      margin: 0 10px;
       font-size: 18px;
       cursor: pointer;
-      width: 100%;
-      max-width: 300px;
     }
 
     #resultado {
@@ -159,7 +155,6 @@
     #leyenda {
       margin-top: 20px;
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
       font-size: 14px;
@@ -174,8 +169,13 @@
       border: 1px solid #aaa;
     }
 
-    .color-valentin { background-color: #a0d468; }
-    .color-hermano { background-color: #4a89dc; }
+    .color-valentin {
+      background-color: #a0d468;
+    }
+
+    .color-joaquin {
+      background-color: #4a89dc;
+    }
 
     .hoy {
       color: red;
@@ -186,35 +186,15 @@
       backdrop-filter: blur(6px);
       background-color: rgba(0, 0, 0, 0.4) !important;
     }
-
-    @media (max-width: 600px) {
-      .cabecera h2 { font-size: 120%; }
-      .dia {
-        padding: 10px 4px;
-        min-height: 50px;
-        font-size: 14px;
-      }
-      .etiqueta { font-size: 11px; }
-      button {
-        font-size: 16px;
-        padding: 10px 20px;
-      }
-      #leyenda {
-        gap: 10px;
-        font-size: 13px;
-      }
-    }
   </style>
 </head>
 <body>
 
-<!-- Pantalla 1: Calendario -->
 <div class="pantalla">
   <div class="cabecera">
-    <h2>Registro Mensual Sacadas de Basura</h2>
-    <div id="proximoTurno"></div>
+    <h2>Registro General de Tareas</h2>
   </div>
-  <div class="contenido-flex" id="loader-container">
+  <div class="contenido-flex">
     <div id="loader">
       <div class="spinner"></div>
       <div>Cargando...</div>
@@ -223,9 +203,8 @@
   </div>
 </div>
 
-<!-- Pantalla 2: Botones -->
 <div class="pantalla-botones">
-  <h1>Registrar Sacada de Basura</h1>
+  <h1>Registrar Tarea</h1>
   <div class="botones">
     <button onclick="registrar('Valentín')">Valentín</button>
     <button onclick="registrar('Joaquin')">Joaquin</button>
@@ -233,13 +212,19 @@
   <div id="resultado"></div>
   <div id="leyenda">
     <div><span class="color-cuadro color-valentin"></span> Valentín</div>
-    <div><span class="color-cuadro color-hermano"></span> Joaquin</div>
+    <div><span class="color-cuadro color-joaquin"></span> Joaquin</div>
     <div><span class="color-cuadro" style="background:#eee; border:1px solid #ccc;"></span> Sin registro</div>
   </div>
+  <div style="text-align:center; margin:50px">
+      <label for="tipoSelect">Tipo:</label>
+      <select id="tipoSelect" onchange="filtrarPorTipo()"></select>
+    </div>
 </div>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbzUdEMlv_z-64ZBDzQwPcnV9TvUjvzDvkYewhqEb02g8FL_xEUhkEStbQ4m6_USRyE/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwWux0yFiouO3KU8OH8PCedfJAV4qZsg1J3FGqCyTj9SzlZ4DgwFFOt2eXxG-rNGYrz/exec";
+  let todosLosRegistros = [];
+  let tipoSeleccionado = "Basura";
 
   function crearCalendario(registros) {
     const calendario = document.getElementById('calendario');
@@ -282,7 +267,7 @@
       if (quien === 'Valentín') {
         celda.classList.add('ocupado-valentin');
       } else if (quien === 'Joaquin') {
-        celda.classList.add('ocupado-hermano');
+        celda.classList.add('ocupado-joaquin');
       } else {
         celda.classList.add('sin-registro');
       }
@@ -294,48 +279,30 @@
       calendario.appendChild(celda);
     }
 
-    // Mostrar a quién le toca hoy
-    const fechasOrdenadas = Object.keys(mapaRegistros).sort().reverse();
-    const ultimoDia = fechasOrdenadas.find(f => mapaRegistros[f]);
-    const ultimoNombre = mapaRegistros[ultimoDia];
-    let siguiente;
-
-    if (ultimoNombre === "Valentín") {
-      siguiente = "Joaquin";
-    } else if (ultimoNombre === "Joaquin") {
-      siguiente = "Valentín";
-    } else {
-      siguiente = "No hay datos aún";
-    }
-
-    document.getElementById("proximoTurno").textContent = `Hoy le toca a: ${siguiente}`;
     calendario.classList.add('visible');
   }
 
-    function registrar(nombre) {
-    const fecha = new Date().toLocaleDateString('sv-SE'); // ← corregido a horario local
-
-    const payload = { accion: "registrar", nombre, fecha };
+  function registrar(nombre) {
+    const fecha = new Date().toISOString().slice(0, 10);
+    const tipo = tipoSeleccionado;
+    const payload = { accion: "registrar", nombre, fecha, tipo };
 
     const loader = document.getElementById('loader');
     const calendario = document.getElementById('calendario');
     loader.style.display = 'flex';
     calendario.classList.remove('visible');
     calendario.style.display = 'none';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
     fetch(scriptURL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
-    }).then(() => {
-      obtenerRegistros();
-    });
+    }).then(() => obtenerRegistros());
 
-    document.getElementById('resultado').innerText = `Registrado (sin confirmar): ${nombre} el ${fecha}`;
+    document.getElementById('resultado').innerText = `Registrado (sin confirmar): ${nombre} - ${tipo} - ${fecha}`;
   }
 
   function obtenerRegistros() {
@@ -348,7 +315,19 @@
     fetch(`${scriptURL}?accion=leer`)
       .then(res => res.json())
       .then(registros => {
-        crearCalendario(registros);
+        todosLosRegistros = registros;
+        const tiposUnicos = [...new Set(registros.map(r => r.tipo))];
+        console.log(tiposUnicos)
+        const select = document.getElementById("tipoSelect");
+        select.innerHTML = "";
+        tiposUnicos.forEach(tipo => {
+          const opt = document.createElement("option");
+          opt.value = tipo;
+          opt.textContent = tipo;
+          if (tipo === tipoSeleccionado) opt.selected = true;
+          select.appendChild(opt);
+        });
+        filtrarPorTipo();
       })
       .catch(() => {
         calendario.innerHTML = '<p style="text-align:center;">No se pudo cargar el historial.</p>';
@@ -359,7 +338,12 @@
       });
   }
 
-  obtenerRegistros();
+  function filtrarPorTipo() {
+    const select = document.getElementById("tipoSelect");
+    tipoSeleccionado = select.value;
+    const filtrados = todosLosRegistros.filter(r => r.tipo === tipoSeleccionado);
+    crearCalendario(filtrados);
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
     if (!sessionStorage.getItem("nombreUsuario")) {
@@ -386,6 +370,8 @@
         }
       });
     }
+
+    obtenerRegistros();
   });
 </script>
 
