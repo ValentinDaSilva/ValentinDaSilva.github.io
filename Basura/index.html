@@ -219,6 +219,14 @@
       <label for="tipoSelect">Tipo:</label>
       <select id="tipoSelect" onchange="filtrarPorTipo()"></select>
     </div>
+  <div id="nuevoTipoContainer" style="margin-top: 10px; text-align: center;">
+  <button onclick="mostrarInputNuevoTipo()">➕ Agregar Tipo</button>
+  <div id="inputNuevoTipo" style="margin-top: 10px; display: none;  align-items: end;">
+    <input type="text" id="nuevoTipoTexto" placeholder="Nuevo tipo..." style="height: 30px; margin: 20px;" />
+    <button onclick="guardarNuevoTipo()" style="padding: 10px; font-size: 12px; height: 30px; margin: 20px; display: flex; align-items: center; ">Guardar</button>
+  </div>
+</div>
+
 </div>
 
 <script>
@@ -302,7 +310,7 @@
       body: JSON.stringify(payload)
     }).then(() => obtenerRegistros());
 
-    document.getElementById('resultado').innerText = `Registrado (sin confirmar): ${nombre} - ${tipo} - ${fecha}`;
+    document.getElementById('resultado').innerText = `Nuevo Registro: ${nombre} - ${tipo} - ${fecha}`;
   }
 
   function obtenerRegistros() {
@@ -373,6 +381,43 @@
 
     obtenerRegistros();
   });
+
+  function mostrarInputNuevoTipo() {
+  document.getElementById("inputNuevoTipo").style.display = "flex";
+}
+
+function guardarNuevoTipo() {
+  const input = document.getElementById("nuevoTipoTexto");
+  const nuevoTipo = input.value.trim();
+
+  if (!nuevoTipo) {
+    Swal.fire('Error', 'El tipo no puede estar vacío', 'error');
+    return;
+  }
+
+  const select = document.getElementById("tipoSelect");
+  const yaExiste = Array.from(select.options).some(opt => opt.value === nuevoTipo);
+
+  if (yaExiste) {
+    Swal.fire('Ya existe', 'Ese tipo ya está en la lista', 'info');
+    return;
+  }
+
+  const opt = document.createElement("option");
+  opt.value = nuevoTipo;
+  opt.textContent = nuevoTipo;
+  opt.selected = true;
+
+  select.appendChild(opt);
+  tipoSeleccionado = nuevoTipo;
+
+  input.value = "";
+  document.getElementById("inputNuevoTipo").style.display = "none";
+
+  // Crear calendario vacío para el nuevo tipo
+  filtrarPorTipo();
+}
+
 </script>
 
 </body>
