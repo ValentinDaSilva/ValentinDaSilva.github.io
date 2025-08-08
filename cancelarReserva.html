@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Premier - Cancelar Reserva</title>
+  <link rel="stylesheet" href="css/MostrarReservas.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <style>
+    .cancel-container {
+      width: 100vw;
+      height: 100vh;
+      background-image: url('assets/image/fondoAltaHuesped.webp');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      padding: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 30px;
+    }
+
+    .search-form {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 12px;
+      width: 400px;
+      flex-shrink: 0;
+      box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .search-form h1 {
+      color: #64443a;
+      margin-bottom: 25px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+      text-transform: uppercase;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #64443a;
+    }
+
+    .form-group input.error {
+      border-color: #d32f2f;
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .search-btn {
+      width: 100%;
+      background-color: #64443a;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-btn:hover {
+      background-color: #49312a;
+    }
+
+    .results-container {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 12px;
+      flex: 1;
+      box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+      display: none;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .results-container h2 {
+      color: #64443a;
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .results-table th {
+      background-color: #412c26;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .results-table td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .results-table tr:hover {
+      background-color: #f9f9f9;
+      cursor: pointer;
+    }
+
+    .results-table tr.selected {
+      background-color: #e3f2fd;
+      border-left: 4px solid #64443a;
+    }
+
+    .checkbox-cell {
+      width: 40px;
+      text-align: center;
+    }
+
+    .checkbox-cell input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn-aceptar {
+      background-color: #2fd345;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-aceptar:hover {
+      background-color: #28a745;
+    }
+
+    .btn-cancelar {
+      background-color: #d32f2f;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-cancelar:hover {
+      background-color: #c62828;
+    }
+
+    .back-to-home {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      text-decoration: none;
+      font-size: 24px;
+      color: #64443a;
+      z-index: 2;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-to-home:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .modal {
+      display: none;  
+      position: fixed;
+      z-index: 3;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      color: #ffb300;
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    .modal-content img {
+      height: 30%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .modal-content p {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .modal-content button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      background-color: #ffb300;
+      color: #222;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .modal-content.success h2 {
+      color: #2fd345;
+    }
+
+    .modal-content.success button {
+      background-color: #2fd345;
+      color: white;
+    }
+
+    .no-results {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-to-home">&#8592; Volver</a>
+  
+  <div class="cancel-container">
+    <div class="search-form animate__animated animate__fadeIn">
+      <h1>Cancelar Reserva</h1>
+      
+      <form id="searchForm" novalidate>
+        <div class="form-group">
+          <label for="apellido">Apellido:</label>
+          <input 
+            type="text" 
+            id="apellido" 
+            name="apellido" 
+            placeholder="Ingrese apellido"
+            maxlength="50"
+            required
+          />
+          <div class="error-message" id="apellido-error">El campo apellido no puede estar vacío</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="nombres">Nombres:</label>
+          <input 
+            type="text" 
+            id="nombres" 
+            name="nombres" 
+            placeholder="Ingrese nombres"
+            maxlength="50"
+          />
+        </div>
+        
+        <button type="submit" class="search-btn">BUSCAR</button>
+      </form>
+    </div>
+
+    <div class="results-container animate__animated animate__fadeIn" id="resultsContainer">
+      <h2>Reservas encontradas</h2>
+      <table class="results-table" id="resultsTable">
+        <thead>
+          <tr>
+            <th class="checkbox-cell">Seleccionar</th>
+            <th>Apellido</th>
+            <th>Nombres</th>
+            <th>Número de Habitación</th>
+            <th>Tipo de Habitación</th>
+            <th>Fecha Inicial</th>
+            <th>Fecha Final</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <!-- Los resultados se cargarán dinámicamente -->
+        </tbody>
+      </table>
+      
+      <div class="action-buttons">
+        <button class="btn-aceptar" id="btnAceptar" disabled>ACEPTAR</button>
+        <button class="btn-cancelar" id="btnCancelar">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div id="modalError" class="modal">
+    <div class="modal-content">
+      <h2>ERROR</h2>
+      <img src="assets/image/Error.png" alt="icono de error">
+      <p id="error-message">El campo apellido no puede estar vacío</p>
+      <button onclick="cerrarModalError()">OK👍</button>
+    </div>
+  </div>
+
+  <!-- Modal de No Resultados -->
+  <div id="modalNoResultados" class="modal">
+    <div class="modal-content">
+      <h2>ADVERTENCIA</h2>
+      <img src="assets/image/Advertencia.png" alt="icono de advertencia">
+      <p>No existen reservas para los criterios de búsqueda</p>
+      <button onclick="cerrarModalNoResultados()">OK👍</button>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación -->
+  <div id="modalConfirmacion" class="modal">
+    <div class="modal-content">
+      <h2>CONFIRMACIÓN</h2>
+      <img src="assets/image/Pregunta.png" alt="icono de pregunta">
+      <p>¿Está seguro que desea cancelar las reservas seleccionadas?</p>
+      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+        <button onclick="confirmarCancelacion()" style="background-color: #2fd345; color: white;">ACEPTAR</button>
+        <button onclick="cancelarOperacion()" style="background-color: #d32f2f; color: white;">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Éxito -->
+  <div id="modalExito" class="modal">
+    <div class="modal-content success">
+      <h2>ÉXITO</h2>
+      <img src="assets/image/Correcto.png" alt="icono de éxito">
+      <p>Reservas cancelada/s PRESIONE UNA TECLA PARA CONTINUAR...</p>
+    </div>
+  </div>
+
+  <script src="JS/general.js"></script>
+  <script>
+    // Datos de ejemplo para simular la base de datos
+    const reservas = [
+      { 
+        apellido: 'PÉREZ', 
+        nombres: 'JUAN CARLOS', 
+        numeroHabitacion: 'IND-101', 
+        tipoHabitacion: 'INDIVIDUAL', 
+        fechaInicial: '2025-04-25', 
+        fechaFinal: '2025-04-28' 
+      },
+      { 
+        apellido: 'PÉREZ', 
+        nombres: 'MARÍA ELENA', 
+        numeroHabitacion: 'DOB-201', 
+        tipoHabitacion: 'DOBLE', 
+        fechaInicial: '2025-04-26', 
+        fechaFinal: '2025-04-30' 
+      },
+      { 
+        apellido: 'GARCÍA', 
+        nombres: 'CARLOS ALBERTO', 
+        numeroHabitacion: 'SUITE-301', 
+        tipoHabitacion: 'SUITE', 
+        fechaInicial: '2025-04-27', 
+        fechaFinal: '2025-05-02' 
+      },
+      { 
+        apellido: 'LÓPEZ', 
+        nombres: 'ANA MARÍA', 
+        numeroHabitacion: 'IND-102', 
+        tipoHabitacion: 'INDIVIDUAL', 
+        fechaInicial: '2025-04-28', 
+        fechaFinal: '2025-05-01' 
+      },
+      { 
+        apellido: 'RODRÍGUEZ', 
+        nombres: 'LUIS MIGUEL', 
+        numeroHabitacion: 'DOB-202', 
+        tipoHabitacion: 'DOBLE', 
+        fechaInicial: '2025-04-29', 
+        fechaFinal: '2025-05-03' 
+      }
+    ];
+
+    let reservasFiltradas = [];
+    let reservasSeleccionadas = [];
+
+    // Función para convertir a mayúsculas automáticamente
+    function convertirAMayusculas(input) {
+      input.value = input.value.toUpperCase();
+    }
+
+    // Función para mostrar error de campo
+    function mostrarError(campo, mensaje) {
+      const input = document.getElementById(campo);
+      const errorDiv = document.getElementById(campo + '-error');
+      
+      input.classList.add('error');
+      errorDiv.textContent = mensaje;
+      errorDiv.style.display = 'block';
+      input.focus();
+    }
+
+    // Función para limpiar errores
+    function limpiarErrores() {
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+      });
+      document.querySelectorAll('input').forEach(input => {
+        input.classList.remove('error');
+      });
+    }
+
+    // Función para buscar reservas
+    function buscarReservas() {
+      const apellido = document.getElementById('apellido').value.trim().toUpperCase();
+      const nombres = document.getElementById('nombres').value.trim().toUpperCase();
+
+      // Validar que el apellido no esté vacío
+      if (!apellido) {
+        mostrarError('apellido', 'El campo apellido no puede estar vacío');
+        return;
+      }
+
+      limpiarErrores();
+
+      // Filtrar resultados con criterio "empieza con"
+      reservasFiltradas = reservas.filter(reserva => {
+        const cumpleApellido = reserva.apellido.startsWith(apellido);
+        const cumpleNombres = !nombres || reserva.nombres.startsWith(nombres);
+        
+        return cumpleApellido && cumpleNombres;
+      });
+
+      mostrarResultados();
+    }
+
+    // Función para mostrar resultados
+    function mostrarResultados() {
+      const resultsContainer = document.getElementById('resultsContainer');
+      const resultsBody = document.getElementById('resultsBody');
+
+      if (reservasFiltradas.length === 0) {
+        // No hay resultados - mostrar modal
+        document.getElementById('modalNoResultados').style.display = 'flex';
+        return;
+      }
+
+      // Mostrar contenedor de resultados
+      resultsContainer.style.display = 'block';
+
+      // Limpiar tabla
+      resultsBody.innerHTML = '';
+
+      // Agregar filas
+      reservasFiltradas.forEach((reserva, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="checkbox-cell">
+            <input type="checkbox" id="check_${index}" onchange="toggleSeleccion(${index})">
+          </td>
+          <td>${reserva.apellido}</td>
+          <td>${reserva.nombres}</td>
+          <td>${reserva.numeroHabitacion}</td>
+          <td>${reserva.tipoHabitacion}</td>
+          <td>${formatearFecha(reserva.fechaInicial)}</td>
+          <td>${formatearFecha(reserva.fechaFinal)}</td>
+        `;
+        
+        resultsBody.appendChild(row);
+      });
+
+      // Habilitar botón aceptar si hay selecciones
+      actualizarBotonAceptar();
+    }
+
+    // Función para formatear fecha
+    function formatearFecha(fecha) {
+      const [year, month, day] = fecha.split('-');
+      return `${day}/${month}/${year}`;
+    }
+
+    // Función para alternar selección de reserva
+    function toggleSeleccion(index) {
+      const checkbox = document.getElementById(`check_${index}`);
+      const reserva = reservasFiltradas[index];
+      
+      if (checkbox.checked) {
+        reservasSeleccionadas.push(reserva);
+      } else {
+        const indice = reservasSeleccionadas.findIndex(r => 
+          r.numeroHabitacion === reserva.numeroHabitacion && 
+          r.fechaInicial === reserva.fechaInicial
+        );
+        if (indice !== -1) {
+          reservasSeleccionadas.splice(indice, 1);
+        }
+      }
+      
+      actualizarBotonAceptar();
+    }
+
+    // Función para actualizar estado del botón aceptar
+    function actualizarBotonAceptar() {
+      const btnAceptar = document.getElementById('btnAceptar');
+      btnAceptar.disabled = reservasSeleccionadas.length === 0;
+    }
+
+    // Función para mostrar modal de confirmación
+    function mostrarConfirmacion() {
+      if (reservasSeleccionadas.length === 0) {
+        alert('Por favor, seleccione al menos una reserva para cancelar.');
+        return;
+      }
+      
+      document.getElementById('modalConfirmacion').style.display = 'flex';
+    }
+
+    // Función para confirmar cancelación
+    function confirmarCancelacion() {
+      document.getElementById('modalConfirmacion').style.display = 'none';
+      
+      // Simular cancelación de reservas
+      // En un caso real, aquí se actualizaría la base de datos
+      
+      // Mostrar modal de éxito
+      document.getElementById('modalExito').style.display = 'flex';
+      
+      // Configurar para cerrar con cualquier tecla
+      document.addEventListener('keydown', function(event) {
+        document.getElementById('modalExito').style.display = 'none';
+        // Redirigir al menú principal
+        window.location.href = 'index.html';
+      }, { once: true });
+    }
+
+    // Función para cancelar operación
+    function cancelarOperacion() {
+      document.getElementById('modalConfirmacion').style.display = 'none';
+      // Deseleccionar todas las reservas
+      reservasSeleccionadas = [];
+      document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      actualizarBotonAceptar();
+    }
+
+    // Función para cerrar modal de error
+    function cerrarModalError() {
+      document.getElementById('modalError').style.display = 'none';
+      document.getElementById('apellido').focus();
+    }
+
+    // Función para cerrar modal de no resultados
+    function cerrarModalNoResultados() {
+      document.getElementById('modalNoResultados').style.display = 'none';
+      document.getElementById('apellido').focus();
+    }
+
+    // Configurar Shift+Tab para retroceder campos
+    document.addEventListener('keydown', function(event) {
+      if (event.shiftKey && event.key === 'Tab') {
+        event.preventDefault();
+        const inputs = document.querySelectorAll('input');
+        const activeElement = document.activeElement;
+        let currentIndex = -1;
+        
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i] === activeElement) {
+            currentIndex = i;
+            break;
+          }
+        }
+        
+        if (currentIndex > 0) {
+          inputs[currentIndex - 1].focus();
+        } else {
+          inputs[inputs.length - 1].focus();
+        }
+      }
+    });
+
+    // Configurar conversión automática a mayúsculas
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputs = document.querySelectorAll('input[type="text"]');
+      inputs.forEach(input => {
+        input.addEventListener('input', function() {
+          convertirAMayusculas(this);
+        });
+      });
+    });
+
+    // Configurar formulario de búsqueda
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      buscarReservas();
+    });
+
+    // Configurar botones
+    document.getElementById('btnAceptar').addEventListener('click', mostrarConfirmacion);
+    document.getElementById('btnCancelar').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
+
+    // Configurar Enter para botones
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        const activeElement = document.activeElement;
+        if (activeElement.tagName === 'BUTTON' && !activeElement.disabled) {
+          activeElement.click();
+        }
+      }
+    });
+
+    // Cerrar modales al hacer clic fuera de ellos
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+
+    // Cerrar modales con la tecla Escape
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+          if (modal.style.display === 'flex') {
+            modal.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html> 

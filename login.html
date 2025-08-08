@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Premier - Autenticar Usuario</title>
+  <link rel="stylesheet" href="css/MostrarReservas.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <style>
+    .login-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url('assets/image/fondoAltaHuesped.webp');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .login-form {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 40px 35px;
+      border-radius: 12px;
+      width: 350px;
+      max-width: 90%;
+      box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .login-form h1 {
+      color: #64443a;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #64443a;
+    }
+
+    .login-btn {
+      width: 100%;
+      background-color: #64443a;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .login-btn:hover {
+      background-color: #49312a;
+    }
+
+    .forgot-password {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .forgot-password a {
+      color: #64443a;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+
+    .back-to-home {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      text-decoration: none;
+      font-size: 24px;
+      color: #64443a;
+      z-index: 2;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-to-home:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 14px;
+      margin-top: 5px;
+      text-align: left;
+      display: none;
+    }
+
+    .success-message {
+      color: #2fd345;
+      font-size: 14px;
+      margin-top: 5px;
+      text-align: left;
+      display: none;
+    }
+
+    .modal {
+      display: none;  
+      position: fixed;
+      z-index: 3;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      color: #d32f2f;
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    .modal-content img {
+      height: 30%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .modal-content p {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .modal-content button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      background-color: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .modal-content.correcto h2 {
+      color: #2fd345;
+    }
+
+    .modal-content.correcto button {
+      background-color: #2fd345;
+    }
+
+
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-to-home">&#8592; Volver</a>
+  
+  <div class="login-container">
+    <div class="login-form animate__animated animate__fadeIn">
+      <h1>Autenticar Usuario</h1>
+      
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="username">Nombre:</label>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            placeholder="Ingrese su nombre"
+            required
+          />
+          <div class="error-message" id="username-error"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Contraseña:</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Ingrese su contraseña"
+            required
+          />
+          <div class="error-message" id="password-error"></div>
+        </div>
+        
+        <button type="submit" class="login-btn">Autenticar</button>
+      </form>
+      
+      <div class="forgot-password">
+        <a href="#" onclick="mostrarMensaje('Función en desarrollo')">¿Olvidaste tu contraseña?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div id="modalError" class="modal">
+    <div class="modal-content">
+      <h2>ERROR</h2>
+      <img src="assets/image/Error.png" alt="icono de error">
+      <p id="error-message">El usuario o la contraseña no son válidos</p>
+      <button>OK👍</button>
+    </div>
+  </div>
+
+  <!-- Modal de Éxito -->
+  <div id="modalSuccess" class="modal">
+    <div class="modal-content correcto">
+      <h2>ÉXITO</h2>
+      <img src="assets/image/Correcto.png" alt="icono de éxito">
+      <p>Inicio de sesión exitoso.</p>
+      <button onclick="redirigirAlMenu()">CONTINUAR</button>
+    </div>
+  </div>
+
+  <script>
+    // Función para validar contraseña (validación básica)
+    function validarContraseña(password) {
+      // Solo verificar que no esté vacía
+      if (!password || password.trim() === '') {
+        return "La contraseña es requerida";
+      }
+      
+      return null; // Contraseña válida
+    }
+
+    // Función para blanquear campos
+    function blanquearCampos() {
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('username').focus();
+    }
+
+    // Función para mostrar modal de error
+    function mostrarModalError(mensaje) {
+      document.getElementById('error-message').textContent = mensaje;
+      document.getElementById('modalError').style.display = 'flex';
+    }
+
+    // Función para mostrar modal de éxito
+    function mostrarModalSuccess() {
+      document.getElementById('modalSuccess').style.display = 'flex';
+    }
+
+    // Función para cerrar modal de error y blanquear campos
+    function cerrarModalError() {
+      document.getElementById('modalError').style.display = 'none';
+      blanquearCampos();
+    }
+
+    // Función para redirigir al menú principal
+    function redirigirAlMenu() {
+      window.location.href = 'index.html';
+    }
+
+    // Configurar Shift+Tab para retroceder campos
+    document.addEventListener('keydown', function(event) {
+      if (event.shiftKey && event.key === 'Tab') {
+        event.preventDefault();
+        const inputs = document.querySelectorAll('input');
+        const activeElement = document.activeElement;
+        let currentIndex = -1;
+        
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i] === activeElement) {
+            currentIndex = i;
+            break;
+          }
+        }
+        
+        if (currentIndex > 0) {
+          inputs[currentIndex - 1].focus();
+        } else {
+          inputs[inputs.length - 1].focus();
+        }
+      }
+    });
+
+    // Validación del formulario según el caso de uso
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      
+      // Limpiar mensajes de error anteriores
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+        el.textContent = '';
+      });
+      
+      let hasErrors = false;
+      
+      // Validar nombre (debe ser visible)
+      if (!username) {
+        document.getElementById('username-error').textContent = 'El nombre es requerido';
+        document.getElementById('username-error').style.display = 'block';
+        hasErrors = true;
+      }
+      
+      // Validar contraseña según especificaciones del CU
+      if (!password) {
+        document.getElementById('password-error').textContent = 'La contraseña es requerida';
+        document.getElementById('password-error').style.display = 'block';
+        hasErrors = true;
+      } else {
+        const errorContraseña = validarContraseña(password);
+        if (errorContraseña) {
+          document.getElementById('password-error').textContent = errorContraseña;
+          document.getElementById('password-error').style.display = 'block';
+          hasErrors = true;
+        }
+      }
+      
+      if (hasErrors) {
+        return;
+      }
+      
+      // Simular validación de credenciales
+      // En un caso real, aquí se haría una petición al servidor
+      if (username === 'admin' && password === 'admin123') {
+        mostrarModalSuccess();
+      } else {
+        mostrarModalError('El usuario o la contraseña no son válidos');
+      }
+    });
+
+    // Cerrar modales al hacer clic fuera de ellos
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          if (modal.id === 'modalError') {
+            cerrarModalError();
+          } else {
+            modal.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    // Cerrar modales con la tecla Escape
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+          if (modal.style.display === 'flex') {
+            if (modal.id === 'modalError') {
+              cerrarModalError();
+            } else {
+              modal.style.display = 'none';
+            }
+          }
+        });
+      }
+    });
+
+    // Configurar el botón OK del modal de error
+    document.addEventListener('DOMContentLoaded', function() {
+      const okButton = document.querySelector('#modalError button');
+      if (okButton) {
+        okButton.onclick = cerrarModalError;
+      }
+    });
+  </script>
+</body>
+</html> 

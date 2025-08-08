@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Premier - Buscar Responsable de Pago</title>
+  <link rel="stylesheet" href="css/MostrarReservas.css"/>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <style>
+         .search-container {
+       width: 100vw;
+       height: 100vh;
+       background-image: url('assets/image/fondoAltaHuesped.webp');
+       background-size: cover;
+       background-position: center;
+       position: relative;
+       padding: 50px;
+       display: flex;
+       justify-content: space-between;
+       align-items: flex-start;
+       gap: 30px;
+     }
+
+     .search-form {
+       background-color: rgba(255, 255, 255, 0.95);
+       padding: 30px;
+       border-radius: 12px;
+       width: 400px;
+       flex-shrink: 0;
+       box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+     }
+
+    .search-form h1 {
+      color: #64443a;
+      margin-bottom: 25px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+      text-transform: uppercase;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #64443a;
+    }
+
+    .search-btn {
+      width: 100%;
+      background-color: #64443a;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-btn:hover {
+      background-color: #49312a;
+    }
+
+         .results-container {
+       background-color: rgba(255, 255, 255, 0.95);
+       padding: 30px;
+       border-radius: 12px;
+       flex: 1;
+       box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+       display: none;
+       max-height: 80vh;
+       overflow-y: auto;
+     }
+
+    .results-container h2 {
+      color: #64443a;
+      margin-bottom: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .results-table th {
+      background-color: #412c26;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .results-table th:hover {
+      background-color: #64443a;
+    }
+
+    .results-table th.sortable::after {
+      content: ' ↕';
+      font-size: 12px;
+    }
+
+    .results-table th.sorted-asc::after {
+      content: ' ↑';
+      color: #2fd345;
+    }
+
+    .results-table th.sorted-desc::after {
+      content: ' ↓';
+      color: #2fd345;
+    }
+
+    .results-table td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .results-table tr:hover {
+      background-color: #f9f9f9;
+      cursor: pointer;
+    }
+
+    .results-table tr.selected {
+      background-color: #e3f2fd;
+      border-left: 4px solid #64443a;
+    }
+
+    .next-btn {
+      background-color: #64443a;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      float: right;
+    }
+
+    .next-btn:hover {
+      background-color: #49312a;
+    }
+
+    .next-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .back-to-home {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      text-decoration: none;
+      font-size: 24px;
+      color: #64443a;
+      z-index: 2;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-to-home:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .modal {
+      display: none;  
+      position: fixed;
+      z-index: 3;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      height: 60%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      color: #ffb300;
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    .modal-content img {
+      height: 30%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .modal-content p {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .modal-content button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      background-color: #ffb300;
+      color: #222;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .no-results {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-to-home">&#8592; Volver</a>
+  
+  <div class="search-container">
+    <div class="search-form animate__animated animate__fadeIn">
+      <h1>Buscar Responsable de Pago</h1>
+      
+      <form id="searchForm" novalidate>
+        <div class="form-group">
+          <label for="razonSocial">Razón Social:</label>
+          <input 
+            type="text" 
+            id="razonSocial" 
+            name="razonSocial" 
+            placeholder="Ingrese razón social"
+            maxlength="100"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="cuit">CUIT:</label>
+          <input 
+            type="text" 
+            id="cuit" 
+            name="cuit" 
+            placeholder="XX-XXXXXXXX-X"
+            maxlength="13"
+            pattern="[0-9]{2}-[0-9]{8}-[0-9]"
+          />
+        </div>
+        
+        <button type="submit" class="search-btn">SIGUIENTE</button>
+      </form>
+    </div>
+
+    <div class="results-container animate__animated animate__fadeIn" id="resultsContainer">
+      <h2>Resultados de la búsqueda</h2>
+      <table class="results-table" id="resultsTable">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="razonSocial">Razón Social</th>
+            <th class="sortable" data-sort="cuit">CUIT</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <!-- Los resultados se cargarán dinámicamente -->
+        </tbody>
+      </table>
+      
+      <button class="next-btn" id="nextBtn" disabled>SIGUIENTE</button>
+    </div>
+  </div>
+
+  <!-- Modal de Advertencia -->
+  <div id="modalAdvertencia" class="modal">
+    <div class="modal-content">
+      <h2>ADVERTENCIA</h2>
+      <img src="assets/image/Advertencia.png" alt="icono de advertencia">
+      <p id="advertencia-message">No se encontraron resultados para la búsqueda.</p>
+      <button onclick="cerrarModal()">OK👍</button>
+    </div>
+  </div>
+
+  <script src="JS/general.js"></script>
+  <script>
+    // Datos de ejemplo para simular la base de datos
+    const responsablesPago = [
+      { razonSocial: 'EMPRESA ABC S.A.', cuit: '20-12345678-9' },
+      { razonSocial: 'COMERCIAL XYZ LTDA.', cuit: '30-98765432-1' },
+      { razonSocial: 'HOTEL PREMIER S.A.', cuit: '20-11111111-2' },
+      { razonSocial: 'RESTAURANTE EL BUEN SABOR', cuit: '30-22222222-3' },
+      { razonSocial: 'TRANSPORTE RÁPIDO S.R.L.', cuit: '20-33333333-4' },
+      { razonSocial: 'CONSTRUCCIONES DEL NORTE', cuit: '30-44444444-5' },
+      { razonSocial: 'TECNOLOGÍA AVANZADA S.A.', cuit: '20-55555555-6' },
+      { razonSocial: 'SERVICIOS INTEGRALES LTDA.', cuit: '30-66666666-7' }
+    ];
+
+    let resultadosFiltrados = [];
+    let filaSeleccionada = null;
+    let ordenActual = { columna: null, direccion: 'asc' };
+
+    // Función para convertir a mayúsculas automáticamente
+    function convertirAMayusculas(input) {
+      input.value = input.value.toUpperCase();
+    }
+
+         // Función para buscar responsables de pago
+     function buscarResponsables() {
+       const razonSocial = document.getElementById('razonSocial').value.trim().toUpperCase();
+       const cuit = document.getElementById('cuit').value.trim();
+
+       // Filtrar resultados
+       resultadosFiltrados = responsablesPago.filter(responsable => {
+         const cumpleRazonSocial = !razonSocial || 
+           responsable.razonSocial.startsWith(razonSocial);
+         const cumpleCuit = !cuit || 
+           responsable.cuit.startsWith(cuit);
+         
+         return cumpleRazonSocial && cumpleCuit;
+       });
+
+       mostrarResultados();
+     }
+
+    // Función para mostrar resultados
+    function mostrarResultados() {
+      const resultsContainer = document.getElementById('resultsContainer');
+      const resultsBody = document.getElementById('resultsBody');
+      const nextBtn = document.getElementById('nextBtn');
+
+      if (resultadosFiltrados.length === 0) {
+        // No hay resultados - mostrar modal de advertencia
+        mostrarModalAdvertencia('No se encontraron responsables de pago con los criterios especificados. Se procederá a dar de alta un nuevo responsable.');
+        return;
+      }
+
+             // Mostrar contenedor de resultados
+       resultsContainer.style.display = 'block';
+
+      // Limpiar tabla
+      resultsBody.innerHTML = '';
+
+      // Agregar filas
+      resultadosFiltrados.forEach((responsable, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${responsable.razonSocial}</td>
+          <td>${responsable.cuit}</td>
+        `;
+        
+        row.addEventListener('click', () => seleccionarFila(row, index));
+        row.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            seleccionarFila(row, index);
+          }
+        });
+        
+        resultsBody.appendChild(row);
+      });
+
+      // Habilitar ordenamiento
+      configurarOrdenamiento();
+    }
+
+    // Función para seleccionar una fila
+    function seleccionarFila(row, index) {
+      // Deseleccionar fila anterior
+      if (filaSeleccionada) {
+        filaSeleccionada.classList.remove('selected');
+      }
+
+      // Seleccionar nueva fila
+      row.classList.add('selected');
+      filaSeleccionada = row;
+
+      // Habilitar botón siguiente
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    // Función para configurar ordenamiento
+    function configurarOrdenamiento() {
+      const headers = document.querySelectorAll('.sortable');
+      
+      headers.forEach(header => {
+        header.addEventListener('click', () => {
+          const columna = header.dataset.sort;
+          
+          if (ordenActual.columna === columna) {
+            ordenActual.direccion = ordenActual.direccion === 'asc' ? 'desc' : 'asc';
+          } else {
+            ordenActual.columna = columna;
+            ordenActual.direccion = 'asc';
+          }
+
+          ordenarResultados(columna, ordenActual.direccion);
+          actualizarIndicadoresOrdenamiento();
+        });
+      });
+    }
+
+    // Función para ordenar resultados
+    function ordenarResultados(columna, direccion) {
+      resultadosFiltrados.sort((a, b) => {
+        let valorA = a[columna];
+        let valorB = b[columna];
+
+        if (direccion === 'desc') {
+          [valorA, valorB] = [valorB, valorA];
+        }
+
+        return valorA.localeCompare(valorB);
+      });
+
+      // Recrear tabla con datos ordenados
+      const resultsBody = document.getElementById('resultsBody');
+      resultsBody.innerHTML = '';
+
+      resultadosFiltrados.forEach((responsable, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${responsable.razonSocial}</td>
+          <td>${responsable.cuit}</td>
+        `;
+        
+        row.addEventListener('click', () => seleccionarFila(row, index));
+        resultsBody.appendChild(row);
+      });
+    }
+
+    // Función para actualizar indicadores de ordenamiento
+    function actualizarIndicadoresOrdenamiento() {
+      const headers = document.querySelectorAll('.sortable');
+      
+      headers.forEach(header => {
+        header.classList.remove('sorted-asc', 'sorted-desc');
+        
+        if (header.dataset.sort === ordenActual.columna) {
+          header.classList.add(ordenActual.direccion === 'asc' ? 'sorted-asc' : 'sorted-desc');
+        }
+      });
+    }
+
+    // Función para mostrar modal de advertencia
+    function mostrarModalAdvertencia(mensaje) {
+      document.getElementById('advertencia-message').textContent = mensaje;
+      document.getElementById('modalAdvertencia').style.display = 'flex';
+    }
+
+    // Función para cerrar modal
+    function cerrarModal() {
+      document.getElementById('modalAdvertencia').style.display = 'none';
+      // Redirigir a dar alta de responsable de pago
+      window.location.href = 'altaResponsablePago.html';
+    }
+
+    // Función para continuar con el responsable seleccionado
+    function continuarConResponsable() {
+      if (!filaSeleccionada) {
+        alert('Por favor, seleccione un responsable de pago de la lista.');
+        return;
+      }
+
+      // Aquí se pasaría a modificar responsable de pago
+      // Por ahora, mostrar mensaje de éxito
+      alert('Responsable de pago seleccionado. Procediendo a modificar datos...');
+      // Redirigir a modificar responsable de pago
+      window.location.href = 'modificarResponsablePago.html';
+    }
+
+    // Configurar Shift+Tab para retroceder campos
+    document.addEventListener('keydown', function(event) {
+      if (event.shiftKey && event.key === 'Tab') {
+        event.preventDefault();
+        const inputs = document.querySelectorAll('input');
+        const activeElement = document.activeElement;
+        let currentIndex = -1;
+        
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i] === activeElement) {
+            currentIndex = i;
+            break;
+          }
+        }
+        
+        if (currentIndex > 0) {
+          inputs[currentIndex - 1].focus();
+        } else {
+          inputs[inputs.length - 1].focus();
+        }
+      }
+    });
+
+    // Configurar conversión automática a mayúsculas
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputs = document.querySelectorAll('input[type="text"]');
+      inputs.forEach(input => {
+        input.addEventListener('input', function() {
+          convertirAMayusculas(this);
+        });
+      });
+    });
+
+    // Configurar formulario de búsqueda
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      buscarResponsables();
+    });
+
+    // Configurar botón siguiente
+    document.getElementById('nextBtn').addEventListener('click', continuarConResponsable);
+
+    // Configurar Enter para botones
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        const activeElement = document.activeElement;
+        if (activeElement.tagName === 'BUTTON' && !activeElement.disabled) {
+          activeElement.click();
+        }
+      }
+    });
+
+    // Cerrar modales al hacer clic fuera de ellos
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+
+    // Cerrar modales con la tecla Escape
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+          if (modal.style.display === 'flex') {
+            modal.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html> 

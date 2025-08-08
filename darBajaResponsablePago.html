@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dar de Baja Responsable de Pago</title>
+  <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: -1;
+        opacity: 0.5;
+    }
+
+    .overlay {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .modal {
+      display: flex;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #f4ece3;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-content.advertencia {
+      border: 3px solid #ff9800;
+    }
+
+    .modal-content.error {
+      border: 3px solid #d32f2f;
+    }
+
+    .modal-content.success {
+      border: 3px solid #4caf50;
+    }
+
+    .modal-content img {
+      width: 80px;
+      height: 80px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .modal-content h2 {
+      color: #ff9800;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .modal-content.error h2 {
+      color: #d32f2f;
+    }
+
+    .modal-content.success h2 {
+      color: #4caf50;
+    }
+
+    .modal-content p {
+      margin-bottom: 30px;
+      line-height: 1.6;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .modal-buttons button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-eliminar {
+      background-color: #d32f2f;
+      color: white;
+    }
+
+    .btn-eliminar:hover {
+      background-color: #b71c1c;
+    }
+
+    .btn-cancelar {
+      background-color: #6d4c41;
+      color: white;
+    }
+
+    .btn-cancelar:hover {
+      background-color: #5d4037;
+    }
+
+    .btn-ok {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .btn-ok:hover {
+      background-color: #388e3c;
+    }
+
+    .volver {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      text-decoration: none;
+      font-size: 24px;
+      color: #64443a;
+      z-index: 2;
+    }
+
+    .datos-responsable {
+      background-color: #f5f0eb;
+      border: 1px solid #a1887f;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .datos-responsable h3 {
+      color: #6d4c41;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .datos-responsable p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .datos-responsable strong {
+      color: #49312a;
+    }
+  </style>
+</head>
+<body>
+  <a href="javascript:history.back()" class="volver">&#8592; Volver</a>
+  
+  <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo" class="bg-image">
+  
+  <div class="overlay">
+    <!-- Modal de Confirmación de Eliminación (sin facturas) -->
+    <div id="modalConfirmarEliminacion" class="modal">
+      <div class="modal-content advertencia">
+        <h2>Confirmar Eliminación</h2>
+        <img src="assets/image/Advertencia.png" alt="Advertencia">
+        
+        <div class="datos-responsable">
+          <h3>Datos del Responsable de Pago</h3>
+          <p><strong>Razón Social:</strong> <span id="razonSocialDisplay">EMPRESA EJEMPLO S.A.</span></p>
+          <p><strong>CUIT:</strong> <span id="cuitDisplay">20-12345678-9</span></p>
+          <p><strong>Teléfono:</strong> <span id="telefonoDisplay">011-1234-5678</span></p>
+          <p><strong>Dirección:</strong> <span id="direccionDisplay">AVENIDA CORRIENTES 1234, PISO 5, DEPTO A, CP 1043, CIUDAD AUTONOMA BUENOS AIRES, BUENOS AIRES, ARGENTINA</span></p>
+        </div>
+        
+        <p>Los datos de <strong id="razonSocialEliminar">razón social</strong>, <strong id="cuitEliminar">CUIT</strong> serán eliminados del sistema</p>
+        
+        <div class="modal-buttons">
+          <button class="btn-eliminar" onclick="confirmarEliminacion()">ELIMINAR</button>
+          <button class="btn-cancelar" onclick="cancelarEliminacion()">CANCELAR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Error (con facturas) -->
+    <div id="modalErrorFacturas" class="modal" style="display: none;">
+      <div class="modal-content error">
+        <h2>No se puede eliminar</h2>
+        <img src="assets/image/Error.png" alt="Error">
+        <p>La firma no puede ser eliminada pues ya se le ha confeccionado una factura en el Hotel en alguna oportunidad.</p>
+        <p><strong>PRESIONE CUALQUIER TECLA PARA CONTINUAR...</strong></p>
+      </div>
+    </div>
+
+    <!-- Modal de Éxito -->
+    <div id="modalExito" class="modal" style="display: none;">
+      <div class="modal-content success">
+        <h2>Eliminación Exitosa</h2>
+        <img src="assets/image/Correcto.png" alt="Éxito">
+        <p>Los datos de <strong id="razonSocialExito">razón social</strong>, <strong id="cuitExito">CUIT</strong> han sido eliminados del sistema.</p>
+        <p><strong>PRESIONE CUALQUIER TECLA PARA CONTINUAR...</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Variables globales
+    let datosResponsable = {};
+    let tieneFacturas = false;
+
+    // Función para obtener parámetros de la URL
+    function obtenerParametrosURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        razonSocial: urlParams.get('razonSocial') || 'EMPRESA EJEMPLO S.A.',
+        cuit: urlParams.get('cuit') || '20-12345678-9',
+        telefono: urlParams.get('telefono') || '011-1234-5678',
+        direccion: urlParams.get('direccion') || 'AVENIDA CORRIENTES 1234, PISO 5, DEPTO A, CP 1043, CIUDAD AUTONOMA BUENOS AIRES, BUENOS AIRES, ARGENTINA'
+      };
+    }
+
+    // Función para verificar si tiene facturas
+    function verificarFacturas(cuit) {
+      // Simulación de verificación en base de datos
+      // En un sistema real, esto sería una llamada al servidor
+      const cuitConFacturas = ['30-98765432-1', '40-11111111-1'];
+      return cuitConFacturas.includes(cuit);
+    }
+
+    // Función para cargar datos del responsable
+    function cargarDatosResponsable() {
+      datosResponsable = obtenerParametrosURL();
+      
+      // Actualizar elementos en el DOM
+      document.getElementById('razonSocialDisplay').textContent = datosResponsable.razonSocial;
+      document.getElementById('cuitDisplay').textContent = datosResponsable.cuit;
+      document.getElementById('telefonoDisplay').textContent = datosResponsable.telefono;
+      document.getElementById('direccionDisplay').textContent = datosResponsable.direccion;
+      
+      document.getElementById('razonSocialEliminar').textContent = datosResponsable.razonSocial;
+      document.getElementById('cuitEliminar').textContent = datosResponsable.cuit;
+      
+      document.getElementById('razonSocialExito').textContent = datosResponsable.razonSocial;
+      document.getElementById('cuitExito').textContent = datosResponsable.cuit;
+    }
+
+    // Función para mostrar modal de confirmación
+    function mostrarConfirmacionEliminacion() {
+      document.getElementById('modalConfirmarEliminacion').style.display = 'flex';
+    }
+
+    // Función para mostrar modal de error (con facturas)
+    function mostrarErrorFacturas() {
+      document.getElementById('modalErrorFacturas').style.display = 'flex';
+    }
+
+    // Función para mostrar modal de éxito
+    function mostrarExito() {
+      document.getElementById('modalExito').style.display = 'flex';
+    }
+
+    // Función para confirmar eliminación
+    function confirmarEliminacion() {
+      document.getElementById('modalConfirmarEliminacion').style.display = 'none';
+      mostrarExito();
+      
+      // Ocultar después de 2 segundos y redirigir al index
+      setTimeout(() => {
+        document.getElementById('modalExito').style.display = 'none';
+        window.location.href = 'index.html';
+      }, 2000);
+    }
+
+    // Función para cancelar eliminación
+    function cancelarEliminacion() {
+      document.getElementById('modalConfirmarEliminacion').style.display = 'none';
+      window.location.href = 'index.html';
+    }
+
+    // Función para manejar teclas
+    function manejarTeclas(e) {
+      if (document.getElementById('modalErrorFacturas').style.display === 'flex') {
+        document.getElementById('modalErrorFacturas').style.display = 'none';
+        window.location.href = 'index.html';
+      } else if (document.getElementById('modalExito').style.display === 'flex') {
+        document.getElementById('modalExito').style.display = 'none';
+        window.location.href = 'index.html';
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cargar datos del responsable
+      cargarDatosResponsable();
+      
+      // Verificar si tiene facturas
+      tieneFacturas = verificarFacturas(datosResponsable.cuit);
+      
+      if (tieneFacturas) {
+        // Si tiene facturas, mostrar error
+        mostrarErrorFacturas();
+      } else {
+        // Si no tiene facturas, mostrar confirmación
+        mostrarConfirmacionEliminacion();
+      }
+      
+      // Manejar teclas para cerrar modales
+      document.addEventListener('keydown', manejarTeclas);
+      
+      // Manejar Enter en botones
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const activeElement = document.activeElement;
+          if (activeElement.tagName === 'BUTTON') {
+            activeElement.click();
+          }
+        }
+      });
+    });
+
+    // Cerrar modales al hacer clic fuera de ellos
+    window.addEventListener('click', function(e) {
+      const modales = document.querySelectorAll('.modal');
+      modales.forEach(modal => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+          window.location.href = 'index.html';
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

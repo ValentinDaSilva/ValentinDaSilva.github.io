@@ -1,123 +1,507 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Premier</title>
+    <title>Hotel Premier - Sistema de Gestión</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body, html {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
             height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .hero-section {
             position: relative;
-            overflow: hidden
-
-        }
-
-        .fondo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            position: relative;
-            top: 0;
-            z-index: -1;
-        }
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
-
-        .btnMenu {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background-color: #6C3B2A;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 2.5px;
-            font-family: 'Playfair Display', serif;
-            width: 20vw;
-        }
-
-        .btnMenu:hover {
-            background-color: #8B4513;
-        }
-        .opciones{
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #6C3B2A;
-        }
-        .opcion {
-            width: 150px;
-            height: 150px;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(100, 68, 58, 0.8) 0%, rgba(73, 49, 42, 0.9) 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin: 10px;
             text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/image/portada.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -1;
+            filter: brightness(0.7);
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
             font-family: 'Playfair Display', serif;
-            border: 2px solid #49312a;
-            background-color: rgba(255, 255, 255, 0.836);
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease-out;
         }
 
-        .opcion img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            margin-bottom: 10px;
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s both;
         }
 
-        .opcion h2 {
-            font-size: 16px;
-            color: #6C3B2A;
-            margin: 0;
+        .cta-button {
+            background: linear-gradient(135deg, #64443a 0%, #49312a 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out 0.6s both;
         }
 
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #8B4513 0%, #64443a 100%);
+        }
+
+        .menu-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 80px 20px;
+        }
+
+        .menu-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .menu-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .menu-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #64443a;
+            margin-bottom: 1rem;
+        }
+
+        .menu-subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .menu-category {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .menu-category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #64443a;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #64443a 0%, #49312a 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .category-icon img {
+            width: 30px;
+            height: 30px;
+            filter: brightness(0) invert(1);
+        }
+
+        .category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #64443a;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #495057;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: #64443a;
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(100, 68, 58, 0.3);
+        }
+
+        .menu-item img {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            filter: brightness(0) saturate(100%) invert(40%) sepia(20%) saturate(2000%) hue-rotate(340deg) brightness(0.8) contrast(1);
+        }
+
+        .menu-item:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        .menu-item-text {
+            flex: 1;
+        }
+
+        .menu-item-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .menu-item-description {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .menu-title {
+                font-size: 2rem;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .menu-category {
+                padding: 20px;
+            }
+        }
+
+        .floating-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: rgba(100, 68, 58, 0.9);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button:hover {
+            background: rgba(139, 69, 19, 0.9);
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
-    <img class="fondo" src="assets/image/portada.png" alt="">
-    <button class="btnMenu" onclick="document.getElementById('opciones').scrollIntoView({ behavior: 'smooth' })">
-        Menu Principal
-    </button>
-    <div class="opciones" id="opciones">
-        <div class="opcion" onclick="window.location.href='altaHuesped.html'">
-            <img src="assets/image/altaHuesped.png" alt="altaDeHuesped">
-            <h2>Alta Huesped</h2>            
-        </div>
-        <div class="opcion" onclick="window.location.href='buscarHuesped.html'">
-            <img src="assets/image/buscarHuesped.png" alt="busquedaDeHuesped" style="transform: scale(1.5);">
-            <h2>Busqueda Huesped</h2>            
-        </div>
-        <div class="opcion" onclick="window.location.href='MostrarReservas.html'">
-            <img src="assets/image/MostrarReservas.png" alt="MostrarReservas">
-            <h2>Realizar Reservas</h2>            
-        </div>
-        <div class="opcion" onclick="window.location.href='generarFactura.html'">
-            <img src="assets/image/factura.png" alt="GenerarFactura">
-            <h2>Generar Factura</h2>            
-        </div>
-        <div class="opcion" onclick="window.location.href='ocuparHabitacion.html'">
-            <img src="assets/image/ocuparHabitacion.png" alt="OcuparHabitacion">
-            <h2>Ocupar Habitacion</h2>
-        </div>
-        <div class="opcion" onclick="window.location.href='listarIngresos.html'">
-            <img src="assets/image/listarIngresos.png" alt="Listar Ingresos">
-            <h2>Listar Ingresos</h2>
-        </div>
+    <div class="floating-nav">
+        <button class="nav-button" onclick="window.location.href='login.html'">
+            🔐 Iniciar Sesión
+        </button>
     </div>
+
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title animate__animated animate__fadeInDown">Hotel Premier</h1>
+            <p class="hero-subtitle animate__animated animate__fadeInUp">Sistema de Gestión Integral</p>
+            <button class="cta-button animate__animated animate__fadeInUp" onclick="document.getElementById('menu-section').scrollIntoView({ behavior: 'smooth' })">
+                Explorar Funcionalidades
+            </button>
+        </div>
+        <div class="scroll-indicator">
+            ↓ Desliza para ver el menú completo ↓
+        </div>
+    </section>
+
+    <section class="menu-section" id="menu-section">
+        <div class="menu-container">
+            <div class="menu-header">
+                <h2 class="menu-title">Panel de Control</h2>
+                <p class="menu-subtitle">Accede a todas las funcionalidades del sistema de gestión del Hotel Premier</p>
+            </div>
+
+            <div class="menu-grid">
+                <!-- Gestión de Huéspedes -->
+                <div class="menu-category animate__animated animate__fadeInUp">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <img src="assets/image/altaHuesped.png" alt="Huéspedes">
+                        </div>
+                        <h3 class="category-title">Gestión de Huéspedes</h3>
+                    </div>
+                    <div class="menu-items">
+                        <a href="altaHuesped.html" class="menu-item">
+                            <img src="assets/image/altaHuesped.png" alt="Alta">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Alta de Huésped</div>
+                                <div class="menu-item-description">Registrar nuevos huéspedes en el sistema</div>
+                            </div>
+                        </a>
+                        <a href="buscarHuesped.html" class="menu-item">
+                            <img src="assets/image/buscarHuesped.png" alt="Búsqueda">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Buscar Huésped</div>
+                                <div class="menu-item-description">Consultar y modificar datos de huéspedes</div>
+                            </div>
+                        </a>
+                        <a href="modificarHuesped.html" class="menu-item">
+                            <img src="assets/image/buscarHuesped.png" alt="Modificar">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Modificar Huésped</div>
+                                <div class="menu-item-description">Actualizar información de huéspedes</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Gestión de Reservas -->
+                <div class="menu-category animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <img src="assets/image/MostrarReservas.png" alt="Reservas">
+                        </div>
+                        <h3 class="category-title">Gestión de Reservas</h3>
+                    </div>
+                    <div class="menu-items">
+                        <a href="MostrarReservas.html" class="menu-item">
+                            <img src="assets/image/MostrarReservas.png" alt="Reservas">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Realizar Reservas</div>
+                                <div class="menu-item-description">Crear nuevas reservas de habitaciones</div>
+                            </div>
+                        </a>
+                        <a href="cancelarReserva.html" class="menu-item">
+                            <img src="assets/image/MostrarReservas.png" alt="Cancelar">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Cancelar Reservas</div>
+                                <div class="menu-item-description">Gestionar cancelaciones de reservas</div>
+                            </div>
+                        </a>
+                        <a href="ocuparHabitacion.html" class="menu-item">
+                            <img src="assets/image/ocuparHabitacion.png" alt="Ocupar">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Ocupar Habitación</div>
+                                <div class="menu-item-description">Registrar ocupación de habitaciones</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Gestión Financiera -->
+                <div class="menu-category animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <img src="assets/image/factura.png" alt="Financiero">
+                        </div>
+                        <h3 class="category-title">Gestión Financiera</h3>
+                    </div>
+                    <div class="menu-items">
+                        <a href="generarFactura.html" class="menu-item">
+                            <img src="assets/image/factura.png" alt="Factura">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Generar Factura</div>
+                                <div class="menu-item-description">Crear facturas para servicios</div>
+                            </div>
+                        </a>
+                        <a href="listarIngresos.html" class="menu-item">
+                            <img src="assets/image/listarIngresos.png" alt="Ingresos">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Listar Ingresos</div>
+                                <div class="menu-item-description">Ver historial de ingresos y ocupaciones</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Gestión de Responsables de Pago -->
+                <div class="menu-category animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                    <div class="category-header">
+                        <div class="category-icon">
+                            <img src="assets/image/factura.png" alt="Responsables">
+                        </div>
+                        <h3 class="category-title">Responsables de Pago</h3>
+                    </div>
+                    <div class="menu-items">
+                        <a href="altaResponsablePago.html" class="menu-item">
+                            <img src="assets/image/factura.png" alt="Alta">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Alta Responsable</div>
+                                <div class="menu-item-description">Registrar nuevos responsables de pago</div>
+                            </div>
+                        </a>
+                        <a href="buscarResponsablePago.html" class="menu-item">
+                            <img src="assets/image/factura.png" alt="Buscar">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Buscar Responsable</div>
+                                <div class="menu-item-description">Consultar responsables de pago</div>
+                            </div>
+                        </a>
+                        <a href="modificarResponsablePago.html" class="menu-item">
+                            <img src="assets/image/factura.png" alt="Modificar">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Modificar Responsable</div>
+                                <div class="menu-item-description">Actualizar datos de responsables</div>
+                            </div>
+                        </a>
+                        <a href="darBajaResponsablePago.html" class="menu-item">
+                            <img src="assets/image/factura.png" alt="Baja">
+                            <div class="menu-item-text">
+                                <div class="menu-item-title">Dar Baja Responsable</div>
+                                <div class="menu-item-description">Eliminar responsables del sistema</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </section>
+
     <script>
+        // Navegación con teclado
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Enter' || event.key === 'ArrowDown') {
-            document.getElementById('opciones').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('menu-section').scrollIntoView({ behavior: 'smooth' });
             }
+        });
+
+        // Animaciones al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observar elementos del menú
+        document.querySelectorAll('.menu-category').forEach(category => {
+            category.style.opacity = '0';
+            category.style.transform = 'translateY(30px)';
+            category.style.transition = 'all 0.6s ease';
+            observer.observe(category);
+        });
+
+        // Efecto hover mejorado para elementos del menú
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(8px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0) scale(1)';
+            });
         });
     </script>
 </body>
