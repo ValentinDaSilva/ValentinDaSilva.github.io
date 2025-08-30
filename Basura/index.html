@@ -31,11 +31,18 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      gap: 15px;
     }
 
     .cabecera h2 {
       margin: 0;
       font-size: 150%;
+    }
+
+    .flecha {
+      font-size: 24px;
+      cursor: pointer;
+      user-select: none;
     }
 
     .contenido-flex {
@@ -192,7 +199,9 @@
 
 <div class="pantalla">
   <div class="cabecera">
-    <h2>Registro General de Tareas</h2>
+    <span class="flecha" onclick="mesAnterior()">⬅️</span>
+    <h2 id="tituloMes">Registro General de Tareas</h2>
+    <span class="flecha" onclick="mesSiguiente()">➡️</span>
   </div>
   <div class="contenido-flex">
     <div id="loader">
@@ -234,17 +243,23 @@
   let todosLosRegistros = [];
   let tipoSeleccionado = "Basura";
 
-  function crearCalendario(registros) {
+  let mesActual = new Date().getMonth();
+  let anioActual = new Date().getFullYear();
+
+  const mesHoy = new Date().getMonth();
+  const anioHoy = new Date().getFullYear();
+
+  function crearCalendario(registros, anio, mes) {
     const calendario = document.getElementById('calendario');
     calendario.innerHTML = '';
 
-    const hoy = new Date();
-    const anio = hoy.getFullYear();
-    const mes = hoy.getMonth();
     const primerDiaMes = new Date(anio, mes, 1);
     const ultimoDiaMes = new Date(anio, mes + 1, 0);
     const diasMes = ultimoDiaMes.getDate();
     const primerDiaSemana = primerDiaMes.getDay();
+
+    document.getElementById("tituloMes").textContent = 
+      `${primerDiaMes.toLocaleString('es-ES', { month: 'long' })} ${anio}`;
 
     const nombresDias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     for (let i = 0; i < 7; i++) {
@@ -280,8 +295,8 @@
         celda.classList.add('sin-registro');
       }
 
-      const fechaActual = new Date();
-      const esHoy = (fechaActual.toDateString() === new Date(anio, mes, dia).toDateString());
+      const hoy = new Date();
+      const esHoy = (hoy.toDateString() === new Date(anio, mes, dia).toDateString());
       const numeroHTML = `<div${esHoy ? ' class="hoy"' : ''}>${dia}</div>`;
       celda.innerHTML = `${numeroHTML}<div class="etiqueta">${quien ? quien : ''}</div>`;
       calendario.appendChild(celda);
@@ -290,8 +305,29 @@
     calendario.classList.add('visible');
   }
 
+  function mesAnterior() {
+    mesActual--;
+    if (mesActual < 0) {
+      mesActual = 11;
+      anioActual--;
+    }
+    filtrarPorTipo();
+  }
+
+  function mesSiguiente() {
+    if (anioActual < anioHoy || (anioActual === anioHoy && mesActual < mesHoy)) {
+      mesActual++;
+      if (mesActual > 11) {
+        mesActual = 0;
+        anioActual++;
+      }
+      filtrarPorTipo();
+    }
+  }
+
   function registrar(nombre) {
-    const fecha = new Date().toISOString().slice(0, 10);
+    const ahora = new Date();
+    const fecha = `${ahora.getFullYear()}-${String(ahora.getMonth()+1).padStart(2,'0')}-${String(ahora.getDate()).padStart(2,'0')}`;
     const tipo = tipoSeleccionado;
     const payload = { accion: "registrar", nombre, fecha, tipo };
 
@@ -325,7 +361,6 @@
       .then(registros => {
         todosLosRegistros = registros;
         const tiposUnicos = [...new Set(registros.map(r => r.tipo))];
-        console.log(tiposUnicos)
         const select = document.getElementById("tipoSelect");
         select.innerHTML = "";
         tiposUnicos.forEach(tipo => {
@@ -350,7 +385,7 @@
     const select = document.getElementById("tipoSelect");
     tipoSeleccionado = select.value;
     const filtrados = todosLosRegistros.filter(r => r.tipo === tipoSeleccionado);
-    crearCalendario(filtrados);
+    crearCalendario(filtrados, anioActual, mesActual);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -383,41 +418,39 @@
   });
 
   function mostrarInputNuevoTipo() {
-  document.getElementById("inputNuevoTipo").style.display = "flex";
-}
-
-function guardarNuevoTipo() {
-  const input = document.getElementById("nuevoTipoTexto");
-  const nuevoTipo = input.value.trim();
-
-  if (!nuevoTipo) {
-    Swal.fire('Error', 'El tipo no puede estar vacío', 'error');
-    return;
+    document.getElementById("inputNuevoTipo").style.display = "flex";
   }
 
-  const select = document.getElementById("tipoSelect");
-  const yaExiste = Array.from(select.options).some(opt => opt.value === nuevoTipo);
+  function guardarNuevoTipo() {
+    const input = document.getElementById("nuevoTipoTexto");
+    const nuevoTipo = input.value.trim();
 
-  if (yaExiste) {
-    Swal.fire('Ya existe', 'Ese tipo ya está en la lista', 'info');
-    return;
+    if (!nuevoTipo) {
+      Swal.fire('Error', 'El tipo no puede estar vacío', 'error');
+      return;
+    }
+
+    const select = document.getElementById("tipoSelect");
+    const yaExiste = Array.from(select.options).some(opt => opt.value === nuevoTipo);
+
+    if (yaExiste) {
+      Swal.fire('Ya existe', 'Ese tipo ya está en la lista', 'info');
+      return;
+    }
+
+    const opt = document.createElement("option");
+    opt.value = nuevoTipo;
+    opt.textContent = nuevoTipo;
+    opt.selected = true;
+
+    select.appendChild(opt);
+    tipoSeleccionado = nuevoTipo;
+
+    input.value = "";
+    document.getElementById("inputNuevoTipo").style.display = "none";
+
+    filtrarPorTipo();
   }
-
-  const opt = document.createElement("option");
-  opt.value = nuevoTipo;
-  opt.textContent = nuevoTipo;
-  opt.selected = true;
-
-  select.appendChild(opt);
-  tipoSeleccionado = nuevoTipo;
-
-  input.value = "";
-  document.getElementById("inputNuevoTipo").style.display = "none";
-
-  // Crear calendario vacío para el nuevo tipo
-  filtrarPorTipo();
-}
-
 </script>
 
 </body>
