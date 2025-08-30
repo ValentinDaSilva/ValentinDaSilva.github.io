@@ -239,7 +239,7 @@
 </div>
 
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbwWux0yFiouO3KU8OH8PCedfJAV4qZsg1J3FGqCyTj9SzlZ4DgwFFOt2eXxG-rNGYrz/exec";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbx-0cGI7_Uy5MkxHGGInuNHapzIYwjr6tkoRB31z5pPaTS--2WRm6fyWNV6-OyMx5Pm/exec";
   let todosLosRegistros = [];
   let tipoSeleccionado = "Basura";
 
@@ -324,12 +324,12 @@
       filtrarPorTipo();
     }
   }
-
+  
   function registrar(nombre) {
     const ahora = new Date();
     const fecha = `${ahora.getFullYear()}-${String(ahora.getMonth()+1).padStart(2,'0')}-${String(ahora.getDate()).padStart(2,'0')}`;
     const tipo = tipoSeleccionado;
-    const payload = { accion: "registrar", nombre, fecha, tipo };
+    const payload = { accion: "registrar", nombre, fecha, tipo , enviarCorreos};
 
     const loader = document.getElementById('loader');
     const calendario = document.getElementById('calendario');
@@ -451,6 +451,7 @@
 
     filtrarPorTipo();
   }
+  let enviarCorreos = true;
 </script>
 
 </body>
