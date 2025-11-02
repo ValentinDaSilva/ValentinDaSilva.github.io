@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buscar Huésped</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario.css">
+  <link rel="stylesheet" href="CSS/resultados.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+  <link rel="stylesheet" href="CSS/errores.css">
+</head>
+<body>
+  <img src="/assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="imagen-fondo">
+  <a href="javascript:history.back()" class="enlace-volver">&#8592; Volver</a>
+  
+  <div class="contenedor-principal">
+    <div class="contenedor-formulario">
+        <h1 class="titulo-busqueda">Buscar Huésped</h1>
+        <form>
+          <div class="grupo-campo contenedor-campo">
+            <label for="apellido" class="etiqueta-campo">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" placeholder="Perez"/>
+          </div>
+          <div class="grupo-campo contenedor-campo">
+            <label for="nombres" class="etiqueta-campo">Nombres:</label>
+            <input type="text" id="nombres" name="nombres" placeholder="Juan Carlos"/>
+          </div>
+          <div class="grupo-campo contenedor-campo">
+            <label for="tipoDocumento" class="etiqueta-campo">Tipo de documento:</label>
+            <select id="tipoDocumento" name="tipoDocumento">
+              <option value="">Seleccione</option>
+              <option value="DNI">DNI</option>
+              <option value="LE">LE</option>
+              <option value="LC">LC</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="grupo-campo contenedor-campo">
+            <label for="numeroDocumento" class="etiqueta-campo">Número de documento:</label>
+            <input type="text" id="numeroDocumento" name="numeroDocumento" placeholder="12345678"/>
+          </div>
+          <div class="grupo-campo">
+            <button type="submit" class="boton-buscar">Buscar</button>
+          </div>
+        </form>
+    </div>
+  </div>
+  
+  <div class="contenedor-resultados" style="display: none;">
+    <h2 class="titulo-resultados">Resultados de la búsqueda</h2>
+    <div class="contenedor-tabla">
+      <table class="tabla-resultados">
+        <thead>
+          <tr>
+            <th>Apellido</th>
+            <th>Nombres</th>
+            <th>Tipo de documento</th>
+            <th>Número de documento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Las filas se generan dinámicamente desde JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    <div class="boton-siguiente">Siguiente</div>
+  </div>
+
+  <!-- Scripts modulares -->
+  <script src="JS/modales.js"></script>
+  <script src="JS/datos-huespedes.js"></script>
+  <script src="JS/validaciones-campos.js"></script>
+  <script src="JS/tabla-resultados.js"></script>
+  <script src="JS/busqueda.js"></script>
+</body>
+</html>

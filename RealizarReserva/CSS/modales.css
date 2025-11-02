@@ -1,0 +1,189 @@
+/* Estilos para los modales */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.contenido-modal-error {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.titulo-error {
+  text-align: center;
+  color: #d32f2f;
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.imagen-modal {
+  height: 30%;
+  display: block;
+  margin: 0 auto;
+}
+
+.mensaje-modal {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.boton-ok {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.boton-ok:hover {
+  background-color: #b71c1c;
+}
+
+.contenido-modal-correcto {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.titulo-correcto {
+  text-align: center;
+  color: #2fd345;
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.contenido-modal-advertencia {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.titulo-advertencia {
+  text-align: center;
+  color: #00e1f0;
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.botones-advertencia {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.boton-advertencia {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.boton-advertencia-aceptar {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.boton-advertencia-aceptar:hover {
+  background-color: #b71c1c;
+}
+
+.boton-advertencia-corregir {
+  background-color: #2fd345;
+  color: white;
+}
+
+.boton-advertencia-corregir:hover {
+  background-color: #28c038;
+}
+
+/* Estilos para el contenedor de confirmación de reserva */
+
+.contenedor-confirmacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formulario-datos-huesped {
+  width: 100%;
+}
+
+.contenedor-campo-huesped {
+  text-align: center;
+  width: 100%;
+}
+
+.campo-huesped {
+  width: 50%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.boton-confirmar {
+  background-color: #6d4c41;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+  bottom: 15px;
+}
+
+.boton-confirmar:hover {
+  background-color: #8d6e63;
+}
+
+.boton-aceptar-reserva {
+  position: absolute;
+  left: calc(70% - 20px);
+  bottom: 0;
+}
+
+.boton-rechazar-reserva {
+  position: absolute;
+  left: calc(70% - 20px - 30% - 10px);
+  bottom: 0;
+}
+
+.contenedor-habitacion-reserva {
+  text-align: center;
+  border: 2px solid black;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+

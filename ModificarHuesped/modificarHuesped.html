@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Modificar Huésped</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario.css">
+  <link rel="stylesheet" href="CSS/modal.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+  <link rel="stylesheet" href="CSS/errores.css">
+</head>
+<body>
+    <img src="/assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="imagen-fondo">
+    <a href="javascript:history.back()" class="enlace-volver">&#8592; Volver</a>
+    
+    <div class="superposicion">
+      <form id="formularioModificarHuesped" class="formulario-modificar" novalidate>
+        <h2 class="titulo-formulario">Modificar Huésped</h2>
+        <div class="cuadricula-formulario">
+          <div class="contenedor-campo">
+            <label for="apellido" class="etiqueta-campo requerido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required>
+          </div>
+          <div class="contenedor-campo">
+            <label for="nombres" class="etiqueta-campo requerido">Nombres:</label>
+            <input type="text" id="nombres" name="nombres" required>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="tipoDocumento" class="etiqueta-campo requerido">Tipo de documento:</label>
+            <select id="tipoDocumento" name="tipoDocumento" required>
+              <option value="">Seleccione</option>
+              <option value="DNI">DNI</option>
+              <option value="LE">LE</option>
+              <option value="LC">LC</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="numeroDocumento" class="etiqueta-campo requerido">Número de documento:</label>
+            <input type="text" id="numeroDocumento" name="numeroDocumento" required>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="cuit" class="etiqueta-campo">CUIT (opcional):</label>
+            <input type="text" id="cuit" name="cuit">
+          </div>      
+      
+          <div class="contenedor-campo">
+            <label for="fechaNacimiento" class="etiqueta-campo requerido">Fecha de nacimiento:</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+          </div>
+      
+          <div>
+            <label for="caracteristica" class="etiqueta-campo requerido">Teléfono:</label>
+            <div class="contenedor-telefono">
+              <div class="contenedor-campo">
+                <input type="tel" id="caracteristica" name="caracteristica" placeholder="Ej: 342" required>
+              </div>
+              <div class="contenedor-campo">
+                <input type="tel" id="celular" name="celular" placeholder="Ej: 5986867" required>
+              </div>
+            </div>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="email" class="etiqueta-campo">Email (opcional):</label>
+            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com">
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="ocupacion" class="etiqueta-campo requerido">Ocupación:</label>
+            <input type="text" id="ocupacion" name="ocupacion" placeholder="Ingeniero, Estudiante, etc." required>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="nacionalidad" class="etiqueta-campo requerido">Nacionalidad:</label>
+            <select id="nacionalidad" name="nacionalidad" required>
+                <option value=""></option>
+            </select>
+          </div>
+      
+          <fieldset class="ancho-completo grupo-direccion">
+            <legend class="leyenda-grupo">Dirección</legend>
+            <div class="cuadricula-direccion">
+              <div class="contenedor-campo">
+                <label for="calle" class="etiqueta-campo requerido">Calle:</label>
+                <input type="text" id="calle" name="calle" placeholder="Primera Junta" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="numero" class="etiqueta-campo requerido">Número:</label>
+                <input type="text" id="numero" name="numero" placeholder="2457" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="departamento" class="etiqueta-campo">Departamento: (opcional)</label>
+                <input type="text" id="departamento" name="departamento" placeholder="B">
+              </div>
+              <div class="contenedor-campo">
+                <label for="piso" class="etiqueta-campo">Piso: (opcional)</label>
+                <input type="text" id="piso" name="piso" placeholder="3">
+              </div>
+              <div class="contenedor-campo">
+                <label for="codigoPostal" class="etiqueta-campo requerido">Código Postal:</label>
+                <input type="text" id="codigoPostal" name="codigoPostal" placeholder="1000" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="localidad" class="etiqueta-campo requerido">Localidad:</label>
+                <input type="text" id="localidad" name="localidad" placeholder="Santa Fe" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="provincia" class="etiqueta-campo requerido">Provincia:</label>
+                <input type="text" id="provincia" name="provincia" placeholder="Santa Fe" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="pais" class="etiqueta-campo requerido">País:</label>
+                <input type="text" id="pais" name="pais" placeholder="Argentina" required>
+              </div>
+            </div>
+          </fieldset>
+      
+          <button type="submit" class="boton-guardar">Guardar</button>
+          <button type="button" class="boton-borrar">Borrar</button>
+          <button type="button" class="boton-cancelar">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal de Error -->
+    <div id="modalError" class="modal" style="display: none;">
+      <div class="contenido-modal contenedor-error">
+        <h2 class="titulo-error">ERROR</h2>
+        <img src="/assets/image/Error.png" alt="icono de error" class="imagen-modal">
+        <p id="mensaje-error" class="mensaje-modal">Por favor, completa todos los campos requeridos.</p>
+        <button id="boton-error-ok" class="boton-general boton-error">OK👍</button>
+      </div>
+    </div>
+
+    <!-- Modal de Advertencia -->
+    <div id="modalAdvertencia" class="modal" style="display: none;">
+      <div class="contenido-modal contenedor-advertencia">
+        <h2 class="titulo-advertencia">ADVERTENCIA</h2>
+        <img src="/assets/image/Advertencia.png" alt="icono de advertencia" class="imagen-modal">
+        <p id="mensaje-advertencia" class="mensaje-modal">El numero de documento ya existe</p>
+        <div class="botones-advertencia">
+          <button id="boton-advertencia-aceptar" class="boton-general boton-advertencia">ACEPTAR</button>
+          <button id="boton-advertencia-corregir" class="boton-general boton-advertencia">CORREGIR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Pregunta -->
+    <div id="modalPregunta" class="modal" style="display: none;">
+      <div class="contenido-modal contenedor-pregunta">
+        <h2 class="titulo-pregunta">PREGUNTA</h2>
+        <img src="/assets/image/Pregunta.png" alt="icono de pregunta" class="imagen-modal">
+        <p id="mensaje-pregunta" class="mensaje-modal">El numero de documento ya existe</p>
+        <div class="botones-pregunta">
+          <button id="boton-pregunta-1" class="boton-general boton-pregunta">CORREGIR</button>
+          <button id="boton-pregunta-2" class="boton-general boton-pregunta">CANCELAR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Correcto -->
+    <div id="modalCorrecto" class="modal" style="display: none;">
+      <div class="contenido-modal contenedor-correcto">
+        <h2 class="titulo-correcto">EXITO</h2>
+        <img src="/assets/image/Correcto.png" alt="icono de exito" class="imagen-modal">
+        <p id="mensaje-correcto" class="mensaje-modal">Accion ejecutada con exito</p>
+      </div>
+    </div>
+
+    <!-- Scripts modulares -->
+    <script src="JS/carga-datos.js"></script>
+    <script src="JS/paises.js"></script>
+    <script src="JS/modales.js"></script>
+    <script src="JS/validaciones-campos.js"></script>
+    <script src="JS/validacion.js"></script>
+</body>
+</html>

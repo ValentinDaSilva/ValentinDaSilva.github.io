@@ -1,0 +1,73 @@
+/* Estilos de la tabla de resultados */
+
+.contenedor-resultados {
+    width: 60vw;
+    max-width: 60vw;
+    margin: 50px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+    border: 2px solid #6b493ed0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 600px;
+    min-height: 600px; /* Altura mínima inicial */
+    height: 600px; /* Altura fija inicial */
+}
+
+.titulo-resultados {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.contenedor-tabla {
+    overflow-y: auto;
+    flex: 1;
+    max-height: calc(60vh - 7%); /* Altura máxima menos espacio para título y botón */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.tabla-resultados {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.tabla-resultados thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #412c26;
+}
+
+.tabla-resultados th,
+.tabla-resultados td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    color: black;
+}
+
+.tabla-resultados th {
+    background-color: #412c26;
+    font-weight: bold;
+    color: white;
+}
+
+.tabla-resultados tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tabla-resultados tr:hover {
+    background-color: #f9f9f9;
+}
+
+.fila-seleccionada {
+    background-color: yellow !important;
+}
+

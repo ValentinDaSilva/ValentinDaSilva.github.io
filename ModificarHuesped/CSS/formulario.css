@@ -1,0 +1,86 @@
+/* Estilos del formulario */
+.formulario-modificar {
+    background-color: #f4ece3;
+    border: 1px solid #49312a;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.titulo-formulario {
+    text-align: center;
+    color: #49312a;
+    margin-bottom: 25px;
+}
+
+.cuadricula-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.ancho-completo {
+    grid-column: span 2;
+}
+
+.etiqueta-campo {
+    display: block;
+    margin-bottom: 5px;
+    color: #49312a;
+    font-weight: bold;
+}
+
+.etiqueta-campo.requerido::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #a1887f;
+    background-color: #fffaf4;
+}
+
+.grupo-direccion {
+    grid-column: span 2;
+    border-radius: 10px;
+    border: 1px solid #a1887f;
+    background-color: #f5f0eb;
+    padding: 20px;
+    margin-top: 15px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.leyenda-grupo {
+    padding: 0 10px;
+    color: #6d4c41;
+    font-weight: bold;
+}
+
+.cuadricula-direccion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px 30px;
+    width: 100%;
+}
+
+.contenedor-telefono {
+    display: flex;
+    gap: 10px;
+}
+
+.contenedor-telefono .contenedor-campo {
+    flex: 1;
+}
+
+.contenedor-telefono .contenedor-campo input {
+    width: 100%;
+}
+

@@ -1,0 +1,232 @@
+{
+    "reservas": [
+      {
+        "numeroHabitacion": 101,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-30",
+        "responsable": "Perez, Juan",
+        "telefono": "3421111111"
+      },
+      {
+        "numeroHabitacion": 102,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-10",
+        "responsable": "Lopez, Marta",
+        "telefono": "3422222222"
+      },
+      {
+        "numeroHabitacion": 104,
+        "desde": "2025-11-15",
+        "hasta": "2025-11-30",
+        "responsable": "Gomez, Pedro",
+        "telefono": "3423333333"
+      },
+      {
+        "numeroHabitacion": 105,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-30",
+        "responsable": "Diaz, Laura",
+        "telefono": "3424444444"
+      },
+      {
+        "numeroHabitacion": 107,
+        "desde": "2025-11-08",
+        "hasta": "2025-11-17",
+        "responsable": "Suarez, Martin",
+        "telefono": "3425555555"
+      },
+      {
+        "numeroHabitacion": 108,
+        "desde": "2025-11-10",
+        "hasta": "2025-11-20",
+        "responsable": "Rodriguez, Ana",
+        "telefono": "3426666666"
+      },
+      {
+        "numeroHabitacion": 109,
+        "desde": "2025-11-22",
+        "hasta": "2025-11-30",
+        "responsable": "Fernandez, Pablo",
+        "telefono": "3427777777"
+      },
+  
+      {
+        "numeroHabitacion": 201,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-30",
+        "responsable": "Torres, Lucia",
+        "telefono": "3428888888"
+      },
+      {
+        "numeroHabitacion": 202,
+        "desde": "2025-11-15",
+        "hasta": "2025-11-22",
+        "responsable": "Sanchez, Diego",
+        "telefono": "3429999999"
+      },
+      {
+        "numeroHabitacion": 204,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-12",
+        "responsable": "Medina, Carla",
+        "telefono": "3410000000"
+      },
+      {
+        "numeroHabitacion": 205,
+        "desde": "2025-11-20",
+        "hasta": "2025-11-30",
+        "responsable": "Ruiz, Tomas",
+        "telefono": "3411111111"
+      },
+      {
+        "numeroHabitacion": 206,
+        "desde": "2025-11-08",
+        "hasta": "2025-11-30",
+        "responsable": "Gutierrez, Sofia",
+        "telefono": "3412222222"
+      },
+      {
+        "numeroHabitacion": 208,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-17",
+        "responsable": "Benitez, Alberto",
+        "telefono": "3413333333"
+      },
+      {
+        "numeroHabitacion": 209,
+        "desde": "2025-11-26",
+        "hasta": "2025-11-30",
+        "responsable": "Navarro, Julieta",
+        "telefono": "3414444444"
+      },
+      {
+        "numeroHabitacion": 210,
+        "desde": "2025-11-10",
+        "hasta": "2025-11-15",
+        "responsable": "Rojas, Dario",
+        "telefono": "3415555555"
+      },
+      {
+        "numeroHabitacion": 211,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-30",
+        "responsable": "Molina, Alberto",
+        "telefono": "3416666666"
+      },
+      {
+        "numeroHabitacion": 212,
+        "desde": "2025-11-13",
+        "hasta": "2025-11-30",
+        "responsable": "Paez, Daniela",
+        "telefono": "3417777777"
+      },
+      {
+        "numeroHabitacion": 213,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-18",
+        "responsable": "Vega, Hugo",
+        "telefono": "3418888888"
+      },
+      {
+        "numeroHabitacion": 215,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-10",
+        "responsable": "Ayala, Leo",
+        "telefono": "3419999999"
+      },
+  
+      {
+        "numeroHabitacion": 302,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-10",
+        "responsable": "Quiroga, Raul",
+        "telefono": "3431111111"
+      },
+      {
+        "numeroHabitacion": 303,
+        "desde": "2025-11-15",
+        "hasta": "2025-11-22",
+        "responsable": "Campos, Brenda",
+        "telefono": "3432222222"
+      },
+      {
+        "numeroHabitacion": 304,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-30",
+        "responsable": "Ibarra, Flavia",
+        "telefono": "3433333333"
+      },
+      {
+        "numeroHabitacion": 306,
+        "desde": "2025-11-25",
+        "hasta": "2025-11-30",
+        "responsable": "Soto, Nicolas",
+        "telefono": "3434444444"
+      },
+      {
+        "numeroHabitacion": 307,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-30",
+        "responsable": "Mercado, Javier",
+        "telefono": "3435555555"
+      },
+      {
+        "numeroHabitacion": 308,
+        "desde": "2025-11-11",
+        "hasta": "2025-11-20",
+        "responsable": "Cordero, Tomas",
+        "telefono": "3436666666"
+      },
+  
+      {
+        "numeroHabitacion": 402,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-30",
+        "responsable": "Zarate, Ezequiel",
+        "telefono": "3437777777"
+      },
+      {
+        "numeroHabitacion": 403,
+        "desde": "2025-11-10",
+        "hasta": "2025-11-20",
+        "responsable": "Barrios, Lucia",
+        "telefono": "3438888888"
+      },
+      {
+        "numeroHabitacion": 404,
+        "desde": "2025-11-21",
+        "hasta": "2025-11-30",
+        "responsable": "Kruger, Elisa",
+        "telefono": "3439999999"
+      },
+      {
+        "numeroHabitacion": 405,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-12",
+        "responsable": "Ojeda, Matias",
+        "telefono": "3440000000"
+      },
+      {
+        "numeroHabitacion": 406,
+        "desde": "2025-11-14",
+        "hasta": "2025-11-25",
+        "responsable": "Estrada, Noelia",
+        "telefono": "3441111111"
+      },
+      {
+        "numeroHabitacion": 407,
+        "desde": "2025-11-03",
+        "hasta": "2025-11-30",
+        "responsable": "Silva, Ariel",
+        "telefono": "3442222222"
+      },
+      {
+        "numeroHabitacion": 409,
+        "desde": "2025-11-24",
+        "hasta": "2025-11-30",
+        "responsable": "Roldan, Jorge",
+        "telefono": "3443333333"
+      }
+    ]
+  }
+  

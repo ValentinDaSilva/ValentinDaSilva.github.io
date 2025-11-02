@@ -1,0 +1,98 @@
+/* Estilos de botones */
+.boton-general {
+    padding: 10px 20px;
+    background-color: #00e1f0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.boton-enviar {
+    grid-column: span 2;
+    padding: 12px;
+    background-color: #49312a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-enviar:hover {
+    background-color: #6d4c41;
+}
+
+.boton-cancelar {
+    grid-column: span 2;
+    padding: 12px;
+    background-color: #6d4c41;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-cancelar:hover {
+    background-color: #49312a;
+}
+
+.boton-error {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.boton-advertencia {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #ffeb3b;
+    color: #222;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.boton-pregunta {
+    display: block;
+    padding: 10px 20px;
+    background-color: #00e1f0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.campo-invalido {
+    border: 2px solid #ff4646 !important;
+}
+
+.enlace-volver {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 24px;
+    color: #64443a;
+    z-index: 2;
+}
+
+.enlace-volver:hover {
+    color: #49312a;
+}
+

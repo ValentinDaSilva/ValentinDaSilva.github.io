@@ -1,0 +1,34 @@
+/* Estilos de imagen de fondo y overlay */
+.imagen-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.superposicion {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.enlace-volver {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 24px;
+    color: #64443a;
+    z-index: 2;
+}
+
+.enlace-volver:hover {
+    color: #49312a;
+}
+
