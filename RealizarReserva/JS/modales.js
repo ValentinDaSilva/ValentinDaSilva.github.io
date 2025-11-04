@@ -38,15 +38,23 @@ function mensajeCorrecto(mensaje) {
   if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
   
   const modal = document.getElementById('modal-correcto');
-  const mensajeCorrecto = document.getElementById('mensaje-correcto');
+  const mensajeCorrectoElement = document.getElementById('mensaje-correcto');
   
-  if (!modal || !mensajeCorrecto) {
+  if (!modal) {
     console.error('Modal de correcto no encontrado');
     return;
   }
   
-  mensajeCorrecto.innerHTML = mensaje;
+  if (!mensajeCorrectoElement) {
+    console.error('Elemento mensaje-correcto no encontrado');
+    return;
+  }
+  
+  mensajeCorrectoElement.innerHTML = mensaje;
   modal.style.display = "flex";
+  
+  // Asegurar que el modal esté visible
+  modal.style.zIndex = "9999";
   
   window.onkeydown = function() {
     modal.style.display = "none";

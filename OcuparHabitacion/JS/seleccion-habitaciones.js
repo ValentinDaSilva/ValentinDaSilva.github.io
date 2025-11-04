@@ -88,8 +88,8 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
   if (!numeroHabitacion) return;
 
   // Obtener todas las fechas del rango seleccionado en el formulario
-  const fechaDesdeForm = document.getElementById('fecha-desde').value;
-  const fechaHastaForm = document.getElementById('fecha-hasta').value;
+  const fechaDesdeForm = document.getElementById('checkin').value;
+  const fechaHastaForm = document.getElementById('checkout').value;
   const todasLasFechas = generarArrayFechas(fechaDesdeForm, fechaHastaForm);
 
   // Verificar que el rango seleccionado está dentro del rango del formulario
@@ -98,46 +98,39 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
     return;
   }
 
-  // Verificar que todas las celdas en el rango estén libres
+  // Verificar que todas las celdas en el rango estén libres o reservadas
   const fechasRango = generarArrayFechas(fechaDesde, fechaHasta);
   const todasLibres = fechasRango.every(fecha => {
     return !estaHabitacionReservada(numeroHabitacion, fecha);
   });
 
+  // Si hay días reservados, mostrar advertencia
   if (!todasLibres) {
-    mensajeError("No se puede seleccionar el rango porque hay días reservados");
-    return;
+    const checkinDate = document.getElementById('checkin').value;
+    const checkoutDate = document.getElementById('checkout').value;
+    
+    advertencia(
+      `La habitación ${habitacion} está reservada en algunas fechas del rango seleccionado.<br>Desde Fecha: ${checkinDate} <br>Hasta Fecha: ${checkoutDate}.`,
+      "OCUPAR IGUAL",
+      "VOLVER"
+    ).then(boton => {
+      if (boton !== "OCUPAR IGUAL") {
+        return; // Cancelar selección si no se acepta
+      }
+      // Si se acepta, continuar con la selección
+    });
+    
+    // Por ahora, permitir la selección aunque haya reservas
+    // El usuario puede decidir si quiere continuar
   }
 
-  // Buscar si ya existe una selección para esta habitación (para excluirla de la validación)
+  // Buscar si ya existe una selección para esta habitación
   const indiceExistente = habitacionesSeleccionadas.findIndex(
     h => h.habitacion === habitacion
   );
 
-  // VALIDACIÓN: Verificar que todas las habitaciones seleccionadas tengan las mismas fechas
-  // (excluyendo la selección actual de esta habitación si existe)
-  const otrasSelecciones = indiceExistente !== -1 
-    ? habitacionesSeleccionadas.filter((_, index) => index !== indiceExistente)
-    : habitacionesSeleccionadas;
-  
-  if (otrasSelecciones.length > 0) {
-    // Obtener las fechas de referencia de la primera habitación seleccionada (que no sea esta)
-    const primeraSeleccion = otrasSelecciones[0];
-    const fechaDesdeReferencia = primeraSeleccion.fechaDesde;
-    const fechaHastaReferencia = primeraSeleccion.fechaHasta;
-
-    // Verificar que las fechas coincidan exactamente
-    if (compararFechas(fechaDesde, fechaDesdeReferencia) !== 0 || 
-        compararFechas(fechaHasta, fechaHastaReferencia) !== 0) {
-      mensajeError(`Todas las habitaciones deben tener las mismas fechas de inicio y fin.\n` +
-                   `Las fechas seleccionadas son: ${fechaDesdeReferencia} a ${fechaHastaReferencia}.\n` +
-                   `Intenta seleccionar: ${fechaDesde} a ${fechaHasta}`);
-      return;
-    }
-  }
-
-  // Si existe una selección previa para esta habitación, eliminarla
   if (indiceExistente !== -1) {
+    // Eliminar selección anterior
     deseleccionarRangoHabitacion(habitacion);
   }
 
@@ -154,10 +147,14 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
       const celda = document.querySelector(
         `.tabla-habitaciones td[data-numero-habitacion="${numeroHabitacion}"][data-fecha="${fecha}"]`
       );
-      if (celda && celda.getAttribute('data-estado-original') === 'libre') {
-        celda.style.backgroundColor = 'yellow';
-        celda.classList.add('estado-seleccionada');
-        celda.classList.remove('estado-libre');
+      if (celda) {
+        const estadoOriginal = celda.getAttribute('data-estado-original');
+        // Permitir seleccionar tanto libres como reservadas para ocupar
+        if (estadoOriginal === 'libre' || estadoOriginal === 'reservada') {
+          celda.style.backgroundColor = 'yellow';
+          celda.classList.add('estado-seleccionada');
+          celda.classList.remove('estado-libre', 'estado-reservada');
+        }
       }
     }
   });
@@ -197,8 +194,9 @@ function deseleccionarRangoHabitacion(habitacion) {
  * @param {HTMLElement} celda - Celda clickeada
  */
 function manejarClickCelda(celda) {
-  // Ignorar celdas de fecha o reservadas
-  if (celda.getAttribute('data-estado-original') === 'reservada') {
+  // Ignorar celdas de fecha o fuera de servicio
+  const estadoOriginal = celda.getAttribute('data-estado-original');
+  if (estadoOriginal === 'fuera-servicio' || estadoOriginal === 'ocupada') {
     return;
   }
 
@@ -322,7 +320,8 @@ function inicializarSeleccionHabitaciones() {
     });
 
     // Cursor pointer para indicar que es clickeable
-    if (celda.getAttribute('data-estado-original') !== 'reservada') {
+    const estadoOriginal = celda.getAttribute('data-estado-original');
+    if (estadoOriginal !== 'fuera-servicio' && estadoOriginal !== 'ocupada') {
       celda.style.cursor = 'pointer';
     }
   });

@@ -3,7 +3,7 @@
 .modal {
   display: none;
   position: fixed;
-  z-index: 3;
+  z-index: 9999;
   left: 0;
   top: 0;
   width: 100%;
@@ -135,37 +135,151 @@
   align-items: center;
 }
 
+/* Estilo para el título del formulario de huésped */
+.titulo-formulario-huesped,
+.formulario-datos-huesped + h2,
+.contenedor-confirmacion h2 {
+  color: #49312a;
+  font-size: 28px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* Estilos mejorados para el formulario de datos del huésped */
 .formulario-datos-huesped {
   width: 100%;
+  max-width: 800px;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  margin: 20px auto;
+}
+
+.cuadricula-formulario-huesped {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  margin-bottom: 30px;
 }
 
 .contenedor-campo-huesped {
-  text-align: center;
+  position: relative;
   width: 100%;
 }
 
-.campo-huesped {
-  width: 50%;
-  padding: 8px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.contenedor-campo-huesped label {
+  display: block;
+  margin-bottom: 8px;
+  color: #49312a;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: left;
+}
+
+.contenedor-campo-huesped .campo-huesped {
+  width: 100%;
+  padding: 12px 40px 12px 15px;
+  border: 2px solid #a1887f;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fffaf4;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.contenedor-campo-huesped .campo-huesped:focus {
+  border-color: #6d4c41;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.1);
+}
+
+.contenedor-campo-huesped .campo-huesped.campo-valido {
+  border-color: #2fd345;
+  background-color: #f0fff4;
+}
+
+.contenedor-campo-huesped .campo-huesped.campo-valido:focus {
+  box-shadow: 0 0 0 3px rgba(47, 211, 69, 0.1);
+}
+
+.contenedor-campo-huesped .campo-huesped.campo-invalido {
+  border-color: #d32f2f;
+  background-color: #fff5f5;
+}
+
+.contenedor-campo-huesped .campo-huesped.campo-invalido:focus {
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+.contenedor-campo-huesped .campo-huesped::placeholder {
+  color: #a1887f;
+  opacity: 0.7;
+}
+
+.mensaje-error {
+  display: block;
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: left;
+  min-height: 18px;
+  font-weight: 500;
+}
+
+.icono-validacion {
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  font-size: 18px;
+  font-weight: bold;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.icono-validacion-exito {
+  color: #2fd345;
+}
+
+.icono-validacion-error {
+  color: #d32f2f;
 }
 
 .boton-confirmar {
-  background-color: #6d4c41;
+  background: linear-gradient(135deg, #6d4c41 0%, #8d6e63 100%);
   color: white;
-  padding: 10px 20px;
+  padding: 14px 40px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  position: absolute;
-  bottom: 15px;
+  font-weight: 600;
+  width: 100%;
+  max-width: 300px;
+  /*margin: 20px auto 0;*/
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(109, 76, 65, 0.3);
 }
 
 .boton-confirmar:hover {
-  background-color: #8d6e63;
+  background: linear-gradient(135deg, #8d6e63 0%, #6d4c41 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(109, 76, 65, 0.4);
+}
+
+.boton-confirmar:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(109, 76, 65, 0.3);
+}
+
+.boton-confirmar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .boton-aceptar-reserva {
