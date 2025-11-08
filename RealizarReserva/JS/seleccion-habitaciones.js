@@ -114,28 +114,6 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
     h => h.habitacion === habitacion
   );
 
-  // VALIDACIÓN: Verificar que todas las habitaciones seleccionadas tengan las mismas fechas
-  // (excluyendo la selección actual de esta habitación si existe)
-  const otrasSelecciones = indiceExistente !== -1 
-    ? habitacionesSeleccionadas.filter((_, index) => index !== indiceExistente)
-    : habitacionesSeleccionadas;
-  
-  if (otrasSelecciones.length > 0) {
-    // Obtener las fechas de referencia de la primera habitación seleccionada (que no sea esta)
-    const primeraSeleccion = otrasSelecciones[0];
-    const fechaDesdeReferencia = primeraSeleccion.fechaDesde;
-    const fechaHastaReferencia = primeraSeleccion.fechaHasta;
-
-    // Verificar que las fechas coincidan exactamente
-    if (compararFechas(fechaDesde, fechaDesdeReferencia) !== 0 || 
-        compararFechas(fechaHasta, fechaHastaReferencia) !== 0) {
-      mensajeError(`Todas las habitaciones deben tener las mismas fechas de inicio y fin.\n` +
-                   `Las fechas seleccionadas son: ${fechaDesdeReferencia} a ${fechaHastaReferencia}.\n` +
-                   `Intenta seleccionar: ${fechaDesde} a ${fechaHasta}`);
-      return;
-    }
-  }
-
   // Si existe una selección previa para esta habitación, eliminarla
   if (indiceExistente !== -1) {
     deseleccionarRangoHabitacion(habitacion);

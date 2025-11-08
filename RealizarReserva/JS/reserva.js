@@ -166,9 +166,8 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
       const titular = new Persona(nombre, apellido, telefono);
 
       // Convertir las habitaciones seleccionadas a objetos Habitacion usando los datos ya cargados
-      const habitacionesReserva = [];
-      let fechaInicioMinima = null;
-      let fechaFinMaxima = null;
+      // Mantener las fechas individuales de cada habitación
+      const habitacionesConFechas = [];
 
       for (const seleccion of habitacionesSeleccionadas) {
         // Obtener el número de habitación desde el formato "TIPO-NUMERO"
@@ -191,68 +190,69 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
           EstadoHabitacion.DISPONIBLE
         );
         
-        habitacionesReserva.push(habitacion);
-
-        // Determinar fecha mínima y máxima de todas las selecciones
-        if (!fechaInicioMinima || compararFechas(seleccion.fechaDesde, fechaInicioMinima) < 0) {
-          fechaInicioMinima = seleccion.fechaDesde;
-        }
-        if (!fechaFinMaxima || compararFechas(seleccion.fechaHasta, fechaFinMaxima) > 0) {
-          fechaFinMaxima = seleccion.fechaHasta;
-        }
+        // Guardar la habitación con sus fechas específicas
+        habitacionesConFechas.push({
+          habitacion: habitacion,
+          fechaDesde: seleccion.fechaDesde,
+          fechaHasta: seleccion.fechaHasta
+        });
       }
 
-      if (habitacionesReserva.length === 0) {
+      if (habitacionesConFechas.length === 0) {
         mensajeError("Error: No se pudieron procesar las habitaciones seleccionadas.");
         return;
       }
 
-      // Crear UNA sola reserva con todas las habitaciones seleccionadas
-      const reserva = await gestorReserva.crearReserva(
-        fechaInicioMinima,
-        fechaFinMaxima,
-        titular,
-        habitacionesReserva // Todas las habitaciones en una única reserva
-      );
+      // Calcular fechas mínimas y máximas para crear la reserva de dominio
+      // (aunque cada habitación mantendrá sus propias fechas en el JSON)
+      let fechaInicioMinima = habitacionesConFechas[0].fechaDesde;
+      let fechaFinMaxima = habitacionesConFechas[0].fechaHasta;
+
+      habitacionesConFechas.forEach(item => {
+        if (compararFechas(item.fechaDesde, fechaInicioMinima) < 0) {
+          fechaInicioMinima = item.fechaDesde;
+        }
+        if (compararFechas(item.fechaHasta, fechaFinMaxima) > 0) {
+          fechaFinMaxima = item.fechaHasta;
+        }
+      });
+
+      // Preparar la reserva para mostrar el JSON antes de guardar
+      // Obtener el siguiente ID (accediendo al método privado)
+      const siguienteId = await gestorReserva._obtenerSiguienteId();
+      
+      // Crear la reserva de dominio temporalmente (usa fechas mín/máx para el dominio)
+      const habitacionesReserva = habitacionesConFechas.map(item => item.habitacion);
+      const reserva = new Reserva(siguienteId, fechaInicioMinima, fechaFinMaxima, titular, EstadoReserva.PENDIENTE);
+      reserva.habitaciones = habitacionesReserva;
+
+      // Convertir a DTO (accediendo al método privado)
+      const reservaDTO = gestorReserva._convertirReservaADTO(reserva);
+
+      // Convertir al formato JSON que se enviará a la base de datos
+      // Pasar las fechas individuales de cada habitación
+      const jsonParaBD = convertirReservaDTOAJSONConFechasIndividuales(habitacionesConFechas, reservaDTO);
+
+      // Mostrar el JSON en pantalla antes de guardar
+      // Pasar una función callback para mostrar el modal de éxito cuando se cierre el JSON
+      mostrarJSONReservaEnPantalla(jsonParaBD, reservaDTO, function() {
+        // Esta función se ejecutará cuando el usuario cierre el JSON
+        mostrarModalExitoReserva(nombre, apellido, contenedor);
+      });
+
+      // Guardar la reserva en la base de datos usando las fechas individuales
+      await guardarReservaConFechasIndividuales(jsonParaBD);
+      
+      // Actualizar el siguiente ID en el gestor para mantener consistencia
+      // (el método _obtenerSiguienteId ya lo incrementó, así que está bien)
 
       console.log(`Reserva creada exitosamente con ${habitacionesReserva.length} habitación(es)`); // Debug
 
-      // Ocultar el contenedor del formulario antes de mostrar el modal de éxito
+      // Ocultar el contenedor del formulario
       contenedor.style.display = 'none';
       
-      // Pequeño delay para asegurar que el DOM se actualice
-      setTimeout(() => {
-        console.log('Llamando a mensajeCorrecto'); // Debug
-        mensajeCorrecto(`Reserva realizada con éxito para <br>"${nombre} ${apellido}".<br>Presione cualquier tecla para continuar.`);
-        
-        // Verificar que el modal se mostró
-        setTimeout(() => {
-          const modalCorrecto = document.getElementById('modal-correcto');
-          console.log('Estado del modal después de mostrar:', modalCorrecto ? modalCorrecto.style.display : 'modal no encontrado'); // Debug
-          if (modalCorrecto && modalCorrecto.style.display !== 'flex') {
-            console.error('El modal no se mostró correctamente, intentando mostrar manualmente');
-            modalCorrecto.style.display = 'flex';
-            modalCorrecto.style.zIndex = '9999';
-          }
-        }, 100);
-      }, 50);
-      
-      document.addEventListener('keydown', function limpiarReserva() {
-        // Cerrar el modal primero
-        const modalCorrecto = document.getElementById('modal-correcto');
-        if (modalCorrecto) {
-          modalCorrecto.style.display = 'none';
-        }
-        
-        contenedor.remove();
-        aplicarEstilosCeldas();
-        limpiarHabitacionesSeleccionadas();
-        const fondoReserva = document.querySelector('.fondo-reserva');
-        if (fondoReserva) {
-          fondoReserva.classList.remove('opaco');
-        }
-        document.removeEventListener('keydown', limpiarReserva);
-      }, { once: true });
+      // Esta función se moverá a mostrarModalExitoReserva
+      // para que el listener se agregue solo cuando se muestre el modal de éxito
 
     } catch (error) {
       console.error('Error al crear la reserva:', error);
@@ -373,6 +373,52 @@ function validarCampo(input, tipoCampo) {
   }
   
   return esValido;
+}
+
+/**
+ * Muestra el modal de éxito después de cerrar el JSON
+ * @param {string} nombre - Nombre del titular
+ * @param {string} apellido - Apellido del titular
+ * @param {HTMLElement} contenedor - Contenedor del formulario a remover
+ */
+function mostrarModalExitoReserva(nombre, apellido, contenedor) {
+  console.log('Llamando a mensajeCorrecto'); // Debug
+  mensajeCorrecto(`Reserva realizada con éxito para <br>"${nombre} ${apellido}".<br>Presione cualquier tecla para continuar.`);
+  
+  // Verificar que el modal se mostró
+  setTimeout(() => {
+    const modalCorrecto = document.getElementById('modal-correcto');
+    console.log('Estado del modal después de mostrar:', modalCorrecto ? modalCorrecto.style.display : 'modal no encontrado'); // Debug
+    if (modalCorrecto && modalCorrecto.style.display !== 'flex') {
+      console.error('El modal no se mostró correctamente, intentando mostrar manualmente');
+      modalCorrecto.style.display = 'flex';
+      modalCorrecto.style.zIndex = '9999';
+    }
+  }, 100);
+  
+  // Agregar listener para cerrar cuando se presione cualquier tecla
+  document.addEventListener('keydown', function limpiarReserva() {
+    // Cerrar el modal primero
+    const modalCorrecto = document.getElementById('modal-correcto');
+    if (modalCorrecto) {
+      modalCorrecto.style.display = 'none';
+    }
+    
+    // Cerrar el contenedor JSON si está abierto (por si acaso)
+    const contenedorJSON = document.getElementById('contenedor-json-reserva');
+    if (contenedorJSON) {
+      contenedorJSON.style.display = 'none';
+    }
+    
+    contenedor.remove();
+    aplicarEstilosCeldas();
+    limpiarHabitacionesSeleccionadas();
+    const fondoReserva = document.querySelector('.fondo-reserva');
+    if (fondoReserva) {
+      fondoReserva.classList.remove('opaco');
+    }
+    document.removeEventListener('keydown', limpiarReserva);
+  }, { once: true });
 }
 
 /**

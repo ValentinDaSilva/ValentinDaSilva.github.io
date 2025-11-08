@@ -34,11 +34,12 @@ function mensajeError(mensaje) {
     
     modal.style.display = "flex";
     
+    // Cerrar al hacer clic fuera del modal
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    };
 }
 
 /**
@@ -119,10 +120,79 @@ function inicializarBotonesModal() {
     });
 }
 
+/**
+ * Verifica si algún modal está abierto/visible
+ * @returns {boolean} - true si hay algún modal abierto, false en caso contrario
+ */
+function hayModalAbierto() {
+    const modales = [
+        document.getElementById('modalError'),
+        document.getElementById('modalCorrecto'),
+        document.getElementById('modalAdvertencia'),
+        document.getElementById('modalPregunta'),
+        document.getElementById('contenedor-json') // También considerar el contenedor JSON como modal
+    ];
+    
+    return modales.some(modal => {
+        return modal && modal.style.display !== 'none' && modal.style.display !== '';
+    });
+}
+
+/**
+ * Inicializa el listener para la tecla Enter en los modales
+ */
+function inicializarEnterModalError() {
+    // Listener único para manejar Enter en los modales
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            // Verificar modal de error
+            const modalError = document.getElementById('modalError');
+            if (modalError && modalError.style.display === 'flex') {
+                event.preventDefault();
+                event.stopPropagation(); // Prevenir que el evento se propague
+                // Simular clic en el botón OK
+                const botonOK = document.getElementById('boton-error-ok');
+                if (botonOK) {
+                    botonOK.click();
+                } else {
+                    modalError.style.display = 'none';
+                }
+                return;
+            }
+            
+            // Verificar modal de éxito
+            const modalCorrecto = document.getElementById('modalCorrecto');
+            if (modalCorrecto && modalCorrecto.style.display === 'flex') {
+                event.preventDefault();
+                event.stopPropagation(); // Prevenir que el evento se propague
+                modalCorrecto.style.display = 'none';
+                return;
+            }
+            
+            // Si hay algún modal o contenedor JSON abierto, prevenir el comportamiento por defecto
+            // para que no se envíe el formulario
+            if (hayModalAbierto()) {
+                event.preventDefault();
+                event.stopPropagation();
+                // Si es el contenedor JSON, no hacer nada más (solo prevenir el submit)
+                const contenedorJSON = document.getElementById('contenedor-json');
+                if (contenedorJSON && contenedorJSON.style.display !== 'none' && contenedorJSON.style.display !== '') {
+                    return; // El contenedor JSON se cierra con su propio botón
+                }
+                return;
+            }
+        }
+    }, true); // Usar capture phase para interceptar antes que otros listeners
+}
+
 // Inicializar cuando el DOM esté listo
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inicializarBotonesModal);
+    document.addEventListener('DOMContentLoaded', function() {
+        inicializarBotonesModal();
+        inicializarEnterModalError();
+    });
 } else {
     inicializarBotonesModal();
+    inicializarEnterModalError();
 }
 
