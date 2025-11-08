@@ -160,7 +160,7 @@ function validarCUIT(valor) {
         return { valido: true, mensaje: '' }; // CUIT es opcional
     }
     if (!esCUITValido(valor.trim())) {
-        return { valido: false, mensaje: 'El CUIT debe tener el formato XX-XXXXXXX-X o XX-XXXXXXXX-X' };
+        return { valido: false, mensaje: 'El CUIT debe tener el formato XX-XXXXXXX-X' };
     }
     return { valido: true, mensaje: '' };
 }
