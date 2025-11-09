@@ -54,19 +54,6 @@ class HuespedDTO extends PersonaDTO {
   get email() { return this._email; } set email(v) { this._email = v; }
 }
 
-class AcompanianteDTO extends PersonaDTO {
-  constructor(nombre, apellido, fechaNacimiento, tipoDocumento, nroDocumento) {
-    super(nombre, apellido);
-    this._fechaNacimiento = fechaNacimiento;
-    this._tipoDocumento = tipoDocumento;
-    this._nroDocumento = nroDocumento;
-  }
-
-  get fechaNacimiento() { return this._fechaNacimiento; } set fechaNacimiento(v) { this._fechaNacimiento = v; }
-  get tipoDocumento() { return this._tipoDocumento; } set tipoDocumento(v) { this._tipoDocumento = v; }
-  get nroDocumento() { return this._nroDocumento; } set nroDocumento(v) { this._nroDocumento = v; }
-}
-
 class HabitacionDTO {
   constructor(numero, tipo, categoria, costoPorNoche, estadoHabitacion) {
     this._numero = numero;

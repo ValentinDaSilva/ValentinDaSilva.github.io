@@ -268,7 +268,7 @@
   </style>
 </head>
 <body>
-  <a href="javascript:history.back()" class="volver">&#8592; Volver</a>
+  <a href="javascript:volverPaginaAnterior()" class="volver">&#8592; Volver</a>
   
   <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo" class="bg-image">
   
@@ -435,7 +435,7 @@
     function confirmarCancelacion() {
       cerrarModal('modalCancelar');
       // Aquí se podría redirigir a otra página o limpiar el formulario
-      window.history.back();
+      volverPaginaAnterior();
     }
 
     // Función para mostrar éxito
@@ -446,7 +446,7 @@
       // Ocultar después de 2 segundos
       setTimeout(() => {
         cerrarModal('modalExito');
-        window.history.back();
+        volverPaginaAnterior();
       }, 2000);
     }
 
@@ -582,5 +582,8 @@
       });
     });
   </script>
+  <!-- Validación de sesión (debe ir primero) -->
+  <script src="Login/JS/validar-sesion.js"></script>
+  <script src="Login/JS/navegacion-volver.js"></script>
 </body>
 </html> 

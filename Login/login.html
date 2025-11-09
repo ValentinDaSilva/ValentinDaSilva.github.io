@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Premier - Autenticar Usuario</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario.css">
+  <link rel="stylesheet" href="CSS/modal.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+  <link rel="stylesheet" href="CSS/errores.css">
+  <link rel="stylesheet" href="CSS/enlace-volver.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body>
+  <a href="../index.html" class="enlace-volver">&#8592; Volver</a>
+  
+  <div class="contenedor-login">
+    <div class="formulario-login animate__animated animate__fadeIn">
+      <h1 class="titulo-formulario-login">Autenticar Usuario</h1>
+      
+      <form id="formulario-login" novalidate>
+        <div class="contenedor-campo-formulario">
+          <label for="campo-nombre-usuario" class="etiqueta-campo-formulario">Nombre:</label>
+          <input 
+            type="text" 
+            id="campo-nombre-usuario" 
+            name="nombreUsuario" 
+            class="campo-input-formulario"
+            placeholder="Ingrese su nombre"
+            required
+          />
+        </div>
+        
+        <div class="contenedor-campo-formulario">
+          <label for="campo-contraseña" class="etiqueta-campo-formulario">Contraseña:</label>
+          <input 
+            type="password" 
+            id="campo-contraseña" 
+            name="contraseña" 
+            class="campo-input-formulario"
+            placeholder="Ingrese su contraseña"
+            required
+          />
+        </div>
+        
+        <button type="submit" class="boton-autenticar">Autenticar</button>
+      </form>
+      
+      <div class="contenedor-olvido-contraseña">
+        <a href="#" onclick="mostrarMensaje('Función en desarrollo')" class="enlace-olvido-contraseña">¿Olvidaste tu contraseña?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div id="modal-error" class="modal">
+    <div class="contenido-modal">
+      <h2 class="titulo-modal titulo-modal-error">ERROR</h2>
+      <img src="/assets/image/Error.png" alt="icono de error" class="imagen-modal">
+      <p id="mensaje-error-modal" class="mensaje-modal">El usuario o la contraseña no son válidos</p>
+      <button id="boton-error-ok" class="boton-modal boton-modal-error">OK👍</button>
+    </div>
+  </div>
+
+  <!-- Modal de Éxito -->
+  <div id="modal-exito" class="modal">
+    <div class="contenido-modal-exito">
+      <h2 class="titulo-modal titulo-modal-exito">ÉXITO</h2>
+      <img src="/assets/image/Correcto.png" alt="icono de éxito" class="imagen-modal">
+      <p class="mensaje-modal">Inicio de sesión exitoso.</p>
+      <button id="boton-exito-continuar" class="boton-modal boton-modal-exito">CONTINUAR</button>
+    </div>
+  </div>
+
+  <!-- Scripts modulares -->
+  <script src="JS/utilidades.js"></script>
+  <script src="JS/validaciones-campos.js"></script>
+  <script src="JS/datos-usuarios.js"></script>
+  <script src="JS/modales.js"></script>
+  <script src="JS/autenticacion.js"></script>
+</body>
+</html>

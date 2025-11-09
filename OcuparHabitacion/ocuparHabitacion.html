@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
 <body>
-  <a href="javascript:history.back()" class="enlace-volver">&#8592; Volver</a>
+  <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
   
   <div class="background fondo-reserva">
     <div class="booking-form formulario-busqueda">
@@ -163,6 +163,10 @@
   </div>
 
   <!-- Scripts modulares -->
+  <!-- Validación de sesión (debe ir primero) -->
+  <script src="../Login/JS/validar-sesion.js"></script>
+  <!-- Navegación volver (debe ir después de validar-sesion) -->
+  <script src="../Login/JS/navegacion-volver.js"></script>
   <script src="JS/modales.js"></script>
   <script src="JS/datos-habitaciones.js"></script>
   <script src="JS/datos-huespedes.js"></script>
@@ -172,8 +176,11 @@
   <script src="JS/generar-tabla.js"></script>
   <script src="JS/seleccion-habitaciones.js"></script>
   <script src="JS/leyenda.js"></script>
-  <script src="JS/ocupar-habitacion.js"></script>
   <script src="JS/buscar-huesped.js"></script>
   <script src="/JS/general.js"></script>
+  <!-- Scripts con módulos ES6 -->
+  <script type="module" src="JS/mostrar-json-estadia.js"></script>
+  <script type="module" src="JS/conversor-datos.js"></script>
+  <script type="module" src="JS/ocupar-habitacion.js"></script>
 </body>
 </html>

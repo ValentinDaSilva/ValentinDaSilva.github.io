@@ -1,0 +1,33 @@
+/* Estilos de mensajes de error */
+.mensaje-error {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: left;
+    display: none;
+}
+
+.mensaje-error.mostrar {
+    display: block;
+}
+
+.mensaje-exito {
+    color: #2fd345;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: left;
+    display: none;
+}
+
+.mensaje-exito.mostrar {
+    display: block;
+}
+
+.campo-invalido {
+    border-color: #d32f2f !important;
+}
+
+.campo-valido {
+    border-color: #2fd345 !important;
+}
+

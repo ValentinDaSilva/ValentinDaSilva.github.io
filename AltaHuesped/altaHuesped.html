@@ -14,7 +14,7 @@
 </head>
 <body>
     <img src="/assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="imagen-fondo">
-    <a href="../index.html" class="enlace-volver">&#8592; Volver</a>
+    <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
     
     <div class="superposicion">
       <form id="altaHuesped" class="formulario-alta" novalidate>
@@ -175,14 +175,18 @@
     </div>
 
     <!-- Scripts modulares -->
+    <!-- Validación de sesión (debe ir primero) -->
+    <script src="../Login/JS/validar-sesion.js"></script>
+    <!-- Navegación volver (debe ir después de validar-sesion) -->
+    <script src="../Login/JS/navegacion-volver.js"></script>
     <!-- Clases de dominio y DTO -->
-    <script src="../Clases/Dominio/dominio.js"></script>
+    <script type="module" src="../Clases/Dominio/dominio.js"></script>
     <script src="../Clases/DTO/dto.js"></script>
     <!-- Scripts del formulario -->
     <script src="JS/paises.js"></script>
     <script src="JS/modales.js"></script>
     <script src="JS/validaciones-campos.js"></script>
-    <script src="JS/gestor-huesped.js"></script>
+    <script type="module" src="JS/gestor-huesped.js"></script>
     <script src="JS/validacion.js"></script>
     <script src="JS/utilidades.js"></script>
     <script src="../JS/general.js"></script>

@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
 <body>
-  <a href="javascript:history.back()" class="enlace-volver">&#8592; Volver</a>
+  <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
   
   <div class="fondo-reserva">
     <div class="formulario-busqueda">
@@ -93,8 +93,12 @@
   </div>
 
   <!-- Scripts modulares -->
+  <!-- Validación de sesión (debe ir primero) -->
+  <script src="../Login/JS/validar-sesion.js"></script>
+  <!-- Navegación volver (debe ir después de validar-sesion) -->
+  <script src="../Login/JS/navegacion-volver.js"></script>
   <script src="/Clases/DTO/dto.js"></script>
-  <script src="/Clases/Dominio/dominio.js"></script>
+  <script type="module" src="/Clases/Dominio/dominio.js"></script>
   <script src="JS/modales.js"></script>
   <script src="JS/datos-habitaciones.js"></script>
   <script src="JS/validaciones-campos.js"></script>
@@ -104,7 +108,7 @@
   <script src="JS/seleccion-habitaciones.js"></script>
   <script src="JS/leyenda.js"></script>
   <script src="JS/mostrar-json-reserva.js"></script>
-  <script src="JS/reserva.js"></script>
+  <script type="module" src="JS/reserva.js"></script>
   <script src="/JS/general.js"></script>
 </body>
 </html>

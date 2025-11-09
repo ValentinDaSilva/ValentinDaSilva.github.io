@@ -1,0 +1,63 @@
+/* Estilos del formulario de login */
+.formulario-login {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px 35px;
+    border-radius: 12px;
+    width: 350px;
+    max-width: 90%;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.titulo-formulario-login {
+    color: #64443a;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.contenedor-campo-formulario {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.etiqueta-campo-formulario {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+.campo-input-formulario {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.campo-input-formulario:focus {
+    outline: none;
+    border-color: #64443a;
+}
+
+.contenedor-olvido-contraseña {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.enlace-olvido-contraseña {
+    color: #64443a;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.enlace-olvido-contraseña:hover {
+    text-decoration: underline;
+}
+

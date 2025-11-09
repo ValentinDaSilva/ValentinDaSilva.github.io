@@ -161,40 +161,55 @@ async function inicializarBusquedaHuesped() {
     const siguienteBusquedaButton = document.querySelector('.siguienteBusqueda');
     if (siguienteBusquedaButton) {
         siguienteBusquedaButton.addEventListener('click', function() {
-            if (huespedesSeleccionados.length === 0) {
-                mensajeError("Por favor, seleccione al menos un huésped antes de continuar.");
-                return;
-            }
-            
-            const habitacionesSeleccionadas = obtenerHabitacionesSeleccionadas();
-            if (habitacionesSeleccionadas.length === 0) {
-                mensajeError("Por favor, seleccione al menos una habitación.");
-                return;
-            }
-
             const datosHuespedes = obtenerDatosHuespedesSeleccionados();
             
-            pregunta(
-                "¿Qué desea hacer?",
-                "Seguir Cargando 🔄",
-                "Cargar otra habitación 🏠",
-                "Salir 🚪"
-            ).then(boton => {
-                if (boton === "Cargar otra habitación 🏠") {
-                    const nombresHuespedes = datosHuespedes.map(h => 
-                        `${h.apellido} ${h.nombres} (${h.tipoDocumento}: ${h.numeroDocumento})`
-                    ).join('<br>');
-                    
-                    mensajeCorrecto(`Ya cargaste la habitación: ${habitacionesSeleccionadas[0].habitacion}<br><br>Huéspedes cargados:<br>${nombresHuespedes}<br><br>PORFAVOR, PRESIONE CUALQUIER TECLA PARA CONTINUAR`);
-                    
-                    window.addEventListener('keydown', () => {
-                        location.reload();
-                    }, { once: true });
-                } else if (boton === "Salir 🚪") {
-                    location.reload();
+            // Verificar si estamos buscando el titular o acompañantes
+            const container = document.querySelector('.container');
+            const titulo = container ? container.querySelector('h1') : null;
+            const esTitular = titulo && titulo.textContent.includes('Titular');
+            
+            if (esTitular) {
+                // Si se busca el titular, debe seleccionarse exactamente uno
+                if (datosHuespedes.length === 0) {
+                    mensajeError("Por favor, seleccione un huésped como titular.");
+                    return;
                 }
-                // Si es "Seguir Cargando", no hacer nada, permitir seguir
-            });
+                
+                if (datosHuespedes.length > 1) {
+                    mensajeError("Por favor, seleccione solo un huésped como titular.");
+                    return;
+                }
+                
+                // Ocultar el contenedor de resultados
+                const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
+                if (resultadoBusqueda) {
+                    resultadoBusqueda.style.display = 'none';
+                }
+                
+                // Llamar a la función para manejar la selección del titular
+                if (typeof window.manejarSeleccionTitular === 'function') {
+                    window.manejarSeleccionTitular(datosHuespedes[0]);
+                } else {
+                    console.error('Función manejarSeleccionTitular no está disponible');
+                    mensajeError("Error: No se pudo procesar la selección del titular.");
+                }
+            } else {
+                // Si se buscan acompañantes, pueden seleccionarse varios o ninguno (son opcionales)
+                // Ocultar el contenedor de resultados
+                const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
+                if (resultadoBusqueda) {
+                    resultadoBusqueda.style.display = 'none';
+                }
+                
+                // Llamar a la función para manejar la selección de acompañantes
+                // Si no se seleccionaron, pasar un array vacío
+                if (typeof window.manejarSeleccionAcompaniantes === 'function') {
+                    window.manejarSeleccionAcompaniantes(datosHuespedes.length > 0 ? datosHuespedes : []);
+                } else {
+                    console.error('Función manejarSeleccionAcompaniantes no está disponible');
+                    mensajeError("Error: No se pudo procesar la selección de acompañantes.");
+                }
+            }
         });
     }
 }

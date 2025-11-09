@@ -345,7 +345,7 @@
 <body>
 
   <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
-  <a href="javascript:history.back()" style="position: absolute; top: 20px; left: 20px; text-decoration: none; font-size: 24px; color: #64443a; z-index: 2;">&#8592; Volver</a>
+  <a href="javascript:volverPaginaAnterior()" style="position: absolute; top: 20px; left: 20px; text-decoration: none; font-size: 24px; color: #64443a; z-index: 2;">&#8592; Volver</a>
   <div class="body">
     <div class="container">
 
@@ -603,6 +603,9 @@
       document.querySelector(".container").style.display = "none";document.querySelector("#resumenFactura").classList.remove("hidden")
     }
 </script>
+<!-- Validación de sesión (debe ir primero) -->
+<script src="Login/JS/validar-sesion.js"></script>
+<script src="Login/JS/navegacion-volver.js"></script>
 <script src="JS/general.js"></script>
 
 </body>

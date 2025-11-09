@@ -1,0 +1,261 @@
+import Reserva from "./Reserva.js";
+import EstadoReserva from "./EstadoReserva.js";
+import Persona from "./Persona.js";
+import Huesped from "./Huesped.js";
+import Habitacion from "./Habitacion.js";
+import EstadoHabitacion from "./EstadoHabitacion.js";
+// ReservaDTO se importa desde el archivo dto.js que se carga antes en los HTML
+
+class GestorReserva {
+  constructor() { 
+    this.reservas = [];
+    this._rutaBD = '/Datos/reservas.json';
+    this._siguienteId = null; // Cache para el siguiente ID
+  }
+
+  /**
+   * Obtiene el siguiente ID disponible leyendo desde BD si es necesario
+   * @returns {Promise<number>} - El siguiente ID disponible
+   */
+  async _obtenerSiguienteId() {
+    if (this._siguienteId === null) {
+      const reservasExistentes = await this._leerReservasDesdeBD();
+      // El ID se genera basado en la cantidad de reservas existentes
+      // En un sistema real, debería buscar el máximo ID
+      this._siguienteId = reservasExistentes.length + 1;
+    }
+    const id = this._siguienteId;
+    this._siguienteId++; // Incrementar para la siguiente reserva
+    return id;
+  }
+
+  /**
+   * Convierte una Reserva de dominio a ReservaDTO
+   * @param {Reserva} reserva - Objeto Reserva de dominio
+   * @returns {ReservaDTO} - Objeto ReservaDTO
+   */
+  _convertirReservaADTO(reserva) {
+    // Convertir el titular a un objeto simple si es un Huesped o Persona
+    let titularDTO = null;
+    if (reserva.titular) {
+      if (reserva.titular instanceof Huesped || reserva.titular instanceof Persona) {
+        titularDTO = {
+          nombre: reserva.titular.nombre,
+          apellido: reserva.titular.apellido,
+          telefono: reserva.titular.telefono
+        };
+      } else {
+        titularDTO = reserva.titular;
+      }
+    }
+
+    // Convertir habitaciones a objetos simples
+    const habitacionesDTO = reserva.habitaciones.map(hab => {
+      if (hab instanceof Habitacion) {
+        return {
+          numero: hab.numero,
+          tipo: hab.tipo,
+          categoria: hab.categoria,
+          costoPorNoche: hab.costoPorNoche,
+          estadoHabitacion: hab.estadoHabitacion
+        };
+      }
+      return hab;
+    });
+
+    return new ReservaDTO(
+      reserva.id,
+      reserva.fechaInicio.toISOString().split('T')[0], // Formato YYYY-MM-DD
+      reserva.fechaFin.toISOString().split('T')[0],
+      titularDTO,
+      reserva.estado,
+      habitacionesDTO
+    );
+  }
+
+  /**
+   * Convierte un ReservaDTO a Reserva de dominio
+   * @param {ReservaDTO} reservaDTO - Objeto ReservaDTO
+   * @returns {Reserva} - Objeto Reserva de dominio
+   */
+  _convertirDTOAReserva(reservaDTO) {
+    // Convertir el titular DTO a Persona o Huesped
+    let titular = null;
+    if (reservaDTO.titular) {
+      // Si el titular tiene más campos, crear un Huesped completo
+      if (reservaDTO.titular.tipoDocumento) {
+        // Crear un Huesped sin dirección (las reservas no tienen dirección completa)
+        // Si se necesita la dirección, se debe buscar el huésped completo desde la BD
+        titular = new Huesped(
+          reservaDTO.titular.nombre,
+          reservaDTO.titular.apellido,
+          reservaDTO.titular.tipoDocumento,
+          reservaDTO.titular.nroDocumento,
+          reservaDTO.titular.fechaNacimiento || '2000-01-01',
+          reservaDTO.titular.ocupacion || '',
+          reservaDTO.titular.nacionalidad || '',
+          reservaDTO.titular.cuit || '',
+          reservaDTO.titular.email || '',
+          null, // dirección - no disponible en reservas
+          reservaDTO.titular.condicionIVA || null
+        );
+        titular.telefono = reservaDTO.titular.telefono || '';
+      } else {
+        // Crear una Persona básica solo con nombre, apellido y teléfono
+        titular = new Persona(
+          reservaDTO.titular.nombre,
+          reservaDTO.titular.apellido,
+          reservaDTO.titular.telefono || ''
+        );
+      }
+    }
+
+    // Convertir habitaciones DTO a Habitacion
+    const habitaciones = reservaDTO.habitaciones.map(habDTO => {
+      if (habDTO instanceof Habitacion) {
+        return habDTO;
+      }
+      return new Habitacion(
+        habDTO.numero,
+        habDTO.tipo,
+        habDTO.categoria || '',
+        habDTO.costoPorNoche,
+        habDTO.estadoHabitacion || EstadoHabitacion.DISPONIBLE
+      );
+    });
+
+    const reserva = new Reserva(
+      reservaDTO.id,
+      reservaDTO.fechaInicio,
+      reservaDTO.fechaFin,
+      titular,
+      reservaDTO.estado
+    );
+    reserva.habitaciones = habitaciones;
+    return reserva;
+  }
+
+  /**
+   * Lee las reservas desde el archivo JSON (base de datos)
+   * @returns {Promise<Array>} - Array de objetos ReservaDTO
+   */
+  async _leerReservasDesdeBD() {
+    try {
+      const respuesta = await fetch(this._rutaBD);
+      if (!respuesta.ok) {
+        throw new Error(`Error al leer reservas: ${respuesta.status}`);
+      }
+      const datos = await respuesta.json();
+      return datos.reservas || [];
+    } catch (error) {
+      console.error('Error al leer reservas desde BD:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Guarda una reserva en el archivo JSON (base de datos)
+   * @param {ReservaDTO} reservaDTO - Objeto ReservaDTO a guardar
+   * @returns {Promise<void>}
+   */
+  async _guardarReservaEnBD(reservaDTO) {
+    try {
+      // Leer todas las reservas existentes
+      const reservasExistentes = await this._leerReservasDesdeBD();
+      
+      // Convertir el formato nuevo al formato antiguo del JSON para compatibilidad
+      // Si hay múltiples habitaciones, crear una entrada por cada habitación
+      const reservasFormatoJSON = [];
+      
+      if (reservaDTO.habitaciones && reservaDTO.habitaciones.length > 0) {
+        // Crear una entrada por cada habitación
+        reservaDTO.habitaciones.forEach(habitacion => {
+          reservasFormatoJSON.push({
+            numeroHabitacion: habitacion.numero,
+            desde: reservaDTO.fechaInicio,
+            hasta: reservaDTO.fechaFin,
+            responsable: reservaDTO.titular 
+              ? `${reservaDTO.titular.apellido || ''}, ${reservaDTO.titular.nombre || ''}`.trim()
+              : '',
+            telefono: reservaDTO.titular ? reservaDTO.titular.telefono || '' : ''
+          });
+        });
+      } else {
+        // Si no hay habitaciones, crear una entrada básica
+        reservasFormatoJSON.push({
+          numeroHabitacion: null,
+          desde: reservaDTO.fechaInicio,
+          hasta: reservaDTO.fechaFin,
+          responsable: reservaDTO.titular 
+            ? `${reservaDTO.titular.apellido || ''}, ${reservaDTO.titular.nombre || ''}`.trim()
+            : '',
+          telefono: reservaDTO.titular ? reservaDTO.titular.telefono || '' : ''
+        });
+      }
+
+      // Agregar las nuevas reservas
+      reservasExistentes.push(...reservasFormatoJSON);
+
+      // Guardar en el archivo JSON
+      // Nota: En un entorno real, esto se haría con una llamada al servidor
+      // Por ahora, solo simulamos el guardado
+      console.log('=== FORMATO FINAL PARA JSON ===');
+      console.log('Entradas a agregar al JSON (una por cada habitación):', reservasFormatoJSON);
+      console.log('Total de entradas:', reservasFormatoJSON.length);
+      console.log('==============================');
+      
+      // TODO: Implementar guardado real cuando se tenga acceso al servidor
+      // Por ahora, solo se simula el guardado
+      
+    } catch (error) {
+      console.error('Error al guardar reserva en BD:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Crea una nueva reserva y la guarda en la base de datos
+   * @param {Date|string} fechaInicio - Fecha de inicio de la reserva
+   * @param {Date|string} fechaFin - Fecha de fin de la reserva
+   * @param {Persona|Huesped|Object} titular - Persona o Huésped titular de la reserva
+   * @param {Array<Habitacion>} habitaciones - Array de habitaciones reservadas
+   * @returns {Promise<Reserva>} - La reserva creada
+   */
+  async crearReserva(fechaInicio, fechaFin, titular, habitaciones = []) {
+    // Obtener el siguiente ID disponible
+    const siguienteId = await this._obtenerSiguienteId();
+
+    // Crear la reserva de dominio
+    const reserva = new Reserva(siguienteId, fechaInicio, fechaFin, titular, EstadoReserva.PENDIENTE);
+    reserva.habitaciones = habitaciones || [];
+
+    // Convertir a DTO
+    const reservaDTO = this._convertirReservaADTO(reserva);
+
+    // Mostrar en consola lo que se está por pasar a la base de datos
+    console.log('=== DATOS A GUARDAR EN BASE DE DATOS ===');
+    console.log('ReservaDTO completo:', reservaDTO);
+    console.log('Detalles de la reserva:', reservaDTO);
+    console.log('Detalles de la reserva:', JSON.stringify(reservaDTO));
+    
+    console.log('=========================================');
+
+    // Guardar en BD
+    await this._guardarReservaEnBD(reservaDTO);
+
+    return reserva;
+  }
+
+  cancelarReserva(id) {
+    const r = this.reservas.find(res => res.id === id);
+    if (r) r.estado = EstadoReserva.CANCELADA;
+  }
+
+  verHabitacionesAsociadas(id) {
+    const r = this.reservas.find(res => res.id === id);
+    return r ? r.habitaciones : [];
+  }
+}
+
+export default GestorReserva;
+

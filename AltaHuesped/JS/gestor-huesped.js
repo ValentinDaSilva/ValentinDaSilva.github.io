@@ -3,13 +3,15 @@
  * Usa clases de dominio y DTOs para trabajar con la base de datos
  */
 
+import { GestorHuesped, Huesped, Direccion } from "../../Clases/Dominio/dominio.js";
+
 /**
  * Clase que extiende GestorHuesped para manejar el alta de huéspedes desde el formulario
  */
 class GestorAltaHuesped extends GestorHuesped {
     constructor() {
         super();
-        this._rutaBD = '/huespedes.json';
+        this._rutaBD = '/Datos/huspedes.json';
     }
 
     /**
@@ -52,9 +54,12 @@ class GestorAltaHuesped extends GestorHuesped {
      * @returns {Huesped} - Objeto Huesped de dominio
      */
     crearHuespedDominio(datos) {
-        // Nota: condicionIVA no está en el formulario, se establece como null o vacío
+        // Nota: condicionIVA no está en el formulario, se establece como null
         // En un sistema real, esto podría determinarse automáticamente o pedirse al usuario
         const condicionIVA = null; // O se podría calcular basándose en el CUIT si existe
+
+        // Crear la dirección primero
+        const direccion = this.crearDireccionDominio(datos);
 
         const huesped = new Huesped(
             datos.nombres,
@@ -62,11 +67,12 @@ class GestorAltaHuesped extends GestorHuesped {
             datos.tipoDocumento,
             datos.numeroDocumento,
             datos.fechaNacimiento,
-            condicionIVA,
             datos.ocupacion,
             datos.nacionalidad,
-            datos.cuit,
-            datos.email
+            datos.cuit || '',
+            datos.email || '',
+            direccion,
+            condicionIVA
         );
 
         // Establecer el teléfono (heredado de Persona)
@@ -84,11 +90,12 @@ class GestorAltaHuesped extends GestorHuesped {
         const direccion = new Direccion(
             datos.calle,
             datos.numeroCalle,
-            datos.piso,
-            datos.departamento,
+            datos.piso || '',
+            datos.departamento || '',
             datos.localidad,
             datos.provincia,
-            datos.codigoPostal
+            datos.codigoPostal,
+            datos.pais
         );
 
         return direccion;
@@ -125,8 +132,8 @@ class GestorAltaHuesped extends GestorHuesped {
         const direccionDTO = new DireccionDTO(
             direccion.calle,
             direccion.numero,
-            direccion.piso,
-            direccion.departamento,
+            direccion.piso || '',
+            direccion.departamento || '',
             direccion.localidad,
             direccion.provincia,
             direccion.codigoPostal
@@ -287,7 +294,8 @@ class GestorAltaHuesped extends GestorHuesped {
 
             // 2. Crear objetos de dominio
             const huespedDominio = this.crearHuespedDominio(datosFormulario);
-            const direccionDominio = this.crearDireccionDominio(datosFormulario);
+            // La dirección ya está incluida en el huésped, no es necesario crearla por separado
+            const direccionDominio = huespedDominio.direccion;
             
             console.log('Huesped de dominio creado:', huespedDominio);
             console.log('Direccion de dominio creada:', direccionDominio);
@@ -356,4 +364,7 @@ class GestorAltaHuesped extends GestorHuesped {
 
 // Crear una instancia global del gestor
 const gestorAltaHuesped = new GestorAltaHuesped();
+
+// Exportar para uso global
+window.gestorAltaHuesped = gestorAltaHuesped;
 

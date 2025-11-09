@@ -9,7 +9,7 @@ let reservas = [];
  */
 async function cargarHabitaciones() {
   try {
-    const respuesta = await fetch('/habitaciones.json');
+    const respuesta = await fetch('/Datos/habitaciones.json');
     const datos = await respuesta.json();
     habitaciones = datos.habitaciones || [];
   } catch (error) {
@@ -25,7 +25,7 @@ async function cargarHabitaciones() {
  */
 async function cargarReservas() {
   try {
-    const respuesta = await fetch('/reservas.json');
+    const respuesta = await fetch('/Datos/reservas.json');
     const datos = await respuesta.json();
     reservas = datos.reservas || [];
   } catch (error) {

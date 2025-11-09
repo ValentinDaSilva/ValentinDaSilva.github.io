@@ -262,7 +262,7 @@
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-to-home">&#8592; Volver</a>
+  <a href="javascript:volverPaginaAnterior()" class="back-to-home">&#8592; Volver</a>
   
   <div class="search-container">
     <div class="search-form animate__animated animate__fadeIn">
@@ -584,5 +584,8 @@
       }
     });
   </script>
+  <!-- Validación de sesión (debe ir primero) -->
+  <script src="Login/JS/validar-sesion.js"></script>
+  <script src="Login/JS/navegacion-volver.js"></script>
 </body>
 </html> 

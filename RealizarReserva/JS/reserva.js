@@ -1,5 +1,14 @@
 /* Gestión del flujo principal de reserva */
 
+import { 
+  Persona, 
+  Habitacion, 
+  Reserva, 
+  EstadoHabitacion, 
+  EstadoReserva, 
+  GestorReserva 
+} from "../../Clases/Dominio/dominio.js";
+
 /**
  * Crea el formulario de datos del huésped
  * @param {HTMLElement} contenedor - Contenedor donde se insertará el formulario
@@ -132,25 +141,6 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
     }
 
     try {
-      // Verificar que las clases estén disponibles
-      if (typeof Persona === 'undefined') {
-        console.error('Clase Persona no está disponible');
-        mensajeError("Error: Las clases del sistema no están cargadas. Por favor, recargue la página.");
-        return;
-      }
-
-      if (typeof Habitacion === 'undefined') {
-        console.error('Clase Habitacion no está disponible');
-        mensajeError("Error: Las clases del sistema no están cargadas. Por favor, recargue la página.");
-        return;
-      }
-
-      if (typeof GestorReserva === 'undefined') {
-        console.error('Clase GestorReserva no está disponible');
-        mensajeError("Error: Las clases del sistema no están cargadas. Por favor, recargue la página.");
-        return;
-      }
-
       // Crear el gestor de reserva
       const gestorReserva = new GestorReserva();
 

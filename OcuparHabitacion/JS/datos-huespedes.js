@@ -8,7 +8,7 @@ let datosHuespedes = [];
  */
 async function cargarHuespedes() {
     try {
-        const respuesta = await fetch('/huspedes.json');
+        const respuesta = await fetch('/Datos/huspedes.json');
         if (!respuesta.ok) {
             throw new Error(`Error al cargar los datos: ${respuesta.status}`);
         }

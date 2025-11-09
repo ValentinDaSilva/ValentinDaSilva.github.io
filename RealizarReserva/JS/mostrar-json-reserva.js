@@ -73,7 +73,7 @@ function convertirReservaDTOAJSON(reservaDTO) {
 async function guardarReservaConFechasIndividuales(nuevasReservas) {
     try {
         // Leer todas las reservas existentes
-        const respuesta = await fetch('/reservas.json');
+        const respuesta = await fetch('/Datos/reservas.json');
         let reservasExistentes = [];
         
         if (respuesta.ok) {
