@@ -1,0 +1,90 @@
+/* Estilos para los botones de acción */
+
+.contenedor-botones {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.boton-aceptar {
+  background-color: #2fd345;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-aceptar:hover:not(:disabled) {
+  background-color: #28a745;
+}
+
+.boton-aceptar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.boton-cancelar {
+  background-color: #d32f2f;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-cancelar:hover {
+  background-color: #c62828;
+}
+
+.boton-modal-aceptar {
+  background-color: #2fd345;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.boton-modal-aceptar:hover {
+  background-color: #28a745;
+}
+
+.boton-modal-cancelar {
+  background-color: #d32f2f;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.boton-modal-cancelar:hover {
+  background-color: #c62828;
+}
+
+.boton-continuar {
+  background-color: #64443a;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-continuar:hover {
+  background-color: #49312a;
+}
+

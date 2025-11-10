@@ -1,0 +1,76 @@
+/* Estilos para el formulario de búsqueda */
+
+.formulario-busqueda {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  flex-shrink: 0;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+}
+
+.titulo-formulario {
+  color: #64443a;
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.grupo-formulario {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.etiqueta-campo {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+}
+
+.campo-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+  text-transform: uppercase;
+}
+
+.campo-input:focus {
+  outline: none;
+  border-color: #64443a;
+}
+
+.campo-input.campo-error {
+  border-color: #d32f2f;
+}
+
+.mensaje-error {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}
+
+.boton-buscar {
+  width: 100%;
+  background-color: #64443a;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-buscar:hover {
+  background-color: #49312a;
+}
+

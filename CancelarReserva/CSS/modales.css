@@ -1,0 +1,109 @@
+/* Estilos para los modales */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.contenido-modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contenido-modal h2 {
+  text-align: center;
+  color: #ffb300;
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.contenido-modal img {
+  height: 30%;
+  display: block;
+  margin: 0 auto;
+}
+
+.contenido-modal p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.contenido-modal button {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  background-color: #ffb300;
+  color: #222;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.contenido-modal.exito h2 {
+  color: #2fd345;
+}
+
+.contenido-modal.exito button {
+  background-color: #2fd345;
+  color: white;
+}
+
+.contenido-modal-error h2 {
+  color: #d32f2f;
+}
+
+.contenido-modal-error button {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.contenido-modal-advertencia h2 {
+  color: #ffb300;
+}
+
+.contenido-modal-confirmacion h2 {
+  color: #00e1f0;
+}
+
+.contenido-modal-confirmacion .boton-modal-aceptar {
+  background-color: #00e1f0;
+  color: white;
+}
+
+.contenido-modal-confirmacion .boton-modal-aceptar:hover {
+  background-color: #00b8cc;
+}
+
+.contenido-modal-confirmacion .boton-modal-cancelar {
+  background-color: #00e1f0;
+  color: white;
+}
+
+.contenido-modal-confirmacion .boton-modal-cancelar:hover {
+  background-color: #00b8cc;
+}
+
+.contenedor-botones-modal {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+

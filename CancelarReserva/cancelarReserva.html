@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Premier - Cancelar Reserva</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario-busqueda.css">
+  <link rel="stylesheet" href="CSS/tabla-resultados.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+  <link rel="stylesheet" href="CSS/enlace-volver.css">
+  <link rel="stylesheet" href="CSS/modales.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body>
+  <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
+  
+  <div class="contenedor-cancelar">
+    <div class="formulario-busqueda animate__animated animate__fadeIn">
+      <h1 class="titulo-formulario">Cancelar Reserva</h1>
+      
+      <form id="formulario-busqueda" novalidate>
+        <div class="grupo-formulario">
+          <label for="apellido" class="etiqueta-campo">Apellido:</label>
+          <input 
+            type="text" 
+            id="apellido" 
+            name="apellido" 
+            class="campo-input"
+            placeholder="Ingrese apellido"
+            maxlength="50"
+            required
+          />
+          <div class="mensaje-error" id="apellido-error">El campo apellido no puede estar vacío</div>
+        </div>
+        
+        <div class="grupo-formulario">
+          <label for="nombres" class="etiqueta-campo">Nombres:</label>
+          <input 
+            type="text" 
+            id="nombres" 
+            name="nombres" 
+            class="campo-input"
+            placeholder="Ingrese nombres"
+            maxlength="50"
+          />
+        </div>
+        
+        <button type="submit" class="boton-buscar">BUSCAR</button>
+      </form>
+    </div>
+
+    <div class="contenedor-resultados animate__animated animate__fadeIn" id="contenedor-resultados">
+      <h2 class="titulo-resultados">Reservas encontradas</h2>
+      <table class="tabla-resultados" id="tabla-resultados">
+        <thead>
+          <tr>
+            <th class="celda-checkbox">Seleccionar</th>
+            <th>Apellido</th>
+            <th>Nombres</th>
+            <th>Número de Habitación</th>
+            <th>Tipo de Habitación</th>
+            <th>Fecha Inicial</th>
+            <th>Fecha Final</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpo-tabla">
+          <!-- Los resultados se cargarán dinámicamente -->
+        </tbody>
+      </table>
+      
+      <div class="contenedor-botones">
+        <button class="boton-continuar" id="boton-continuar">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div id="modal-error" class="modal">
+    <div class="contenido-modal contenido-modal-error">
+      <h2>ERROR</h2>
+      <img src="/assets/image/Error.png" alt="icono de error">
+      <p id="mensaje-error">El campo apellido no puede estar vacío</p>
+      <button onclick="cerrarModalError()">OK👍</button>
+    </div>
+  </div>
+
+  <!-- Modal de No Resultados -->
+  <div id="modal-no-resultados" class="modal">
+    <div class="contenido-modal contenido-modal-advertencia">
+      <h2>ADVERTENCIA</h2>
+      <img src="/assets/image/Advertencia.png" alt="icono de advertencia">
+      <p>No existen reservas para los criterios de búsqueda</p>
+      <button onclick="cerrarModalNoResultados()">OK👍</button>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación -->
+  <div id="modal-confirmacion" class="modal">
+    <div class="contenido-modal contenido-modal-confirmacion">
+      <h2>CONFIRMACIÓN</h2>
+      <img src="/assets/image/Pregunta.png" alt="icono de pregunta">
+      <p>¿Está seguro que desea cancelar las reservas seleccionadas?</p>
+      <div class="contenedor-botones-modal">
+        <button onclick="confirmarCancelacion()" class="boton-modal-aceptar">ACEPTAR</button>
+        <button onclick="cancelarOperacion()" class="boton-modal-cancelar">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Éxito -->
+  <div id="modal-exito" class="modal">
+    <div class="contenido-modal exito">
+      <h2>ÉXITO</h2>
+      <img src="/assets/image/Correcto.png" alt="icono de éxito">
+      <p>Reservas cancelada/s PRESIONE UNA TECLA PARA CONTINUAR...</p>
+    </div>
+  </div>
+
+  <!-- Scripts modulares -->
+  <!-- Validación de sesión (debe ir primero) -->
+  <script src="../Login/JS/validar-sesion.js"></script>
+  <!-- Navegación volver (debe ir después de validar-sesion) -->
+  <script src="../Login/JS/navegacion-volver.js"></script>
+  <!-- Funciones de utilidad general -->
+  <script src="../JS/general.js"></script>
+  <!-- Módulos de datos -->
+  <script src="JS/datos-reservas.js"></script>
+  <!-- Módulos de validación -->
+  <script src="JS/validaciones.js"></script>
+  <!-- Módulos de búsqueda y resultados -->
+  <script src="JS/busqueda-reservas.js"></script>
+  <script src="JS/tabla-resultados.js"></script>
+  <!-- Módulos de selección -->
+  <script src="JS/seleccion-reservas.js"></script>
+  <!-- Módulos de modales -->
+  <script src="JS/modales.js"></script>
+  <!-- Módulo de mostrar JSON -->
+  <script src="JS/mostrar-json-cancelacion.js"></script>
+  <!-- Módulo de eventos -->
+  <script src="JS/eventos.js"></script>
+</body>
+</html>

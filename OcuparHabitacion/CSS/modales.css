@@ -30,9 +30,12 @@
 }
 
 .imagen-modal {
-  height: 30%;
+  max-height: 80px;
+  width: auto;
+  height: auto;
   display: block;
-  margin: 0 auto;
+  margin: 10px auto;
+  object-fit: contain;
 }
 
 .mensaje-modal {
@@ -83,11 +86,15 @@
   width: 80%;
   max-width: 400px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .titulo-advertencia {
   text-align: center;
-  color: #00e1f0;
+  color: yellow;
   font-size: 24px;
   margin-top: 10px;
 }
@@ -110,8 +117,9 @@
 }
 
 .boton-advertencia-aceptar {
-  background-color: #d32f2f;
-  color: white;
+  background-color: yellow;
+  color: black;
+  margin: 5px 5px;
 }
 
 .boton-advertencia-aceptar:hover {
@@ -119,8 +127,10 @@
 }
 
 .boton-advertencia-corregir {
-  background-color: #2fd345;
-  color: white;
+  background-color: yellow;
+  color: black;
+  
+  margin: 5px 5px;
 }
 
 .boton-advertencia-corregir:hover {

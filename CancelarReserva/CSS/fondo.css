@@ -1,0 +1,16 @@
+/* Estilos para el fondo de la página */
+
+.contenedor-cancelar {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/assets/image/fondoAltaHuesped.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+}
+
