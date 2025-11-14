@@ -1,0 +1,52 @@
+/* Estilos de botones */
+
+button {
+  width: 100%;
+  background-color: #412c26;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #2e1d18;
+}
+
+.bottom-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  height: 10%;
+  overflow: hidden;
+  margin: 0;
+  gap: 10px;
+}
+
+.bottom-buttons button {
+  margin: 0;
+  width: 100%;
+}
+
+.boton {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#ok-button {
+  background-color: #d32f2f;
+}
+
+#ok-exito-button {
+  background-color: #4caf50;
+}
+

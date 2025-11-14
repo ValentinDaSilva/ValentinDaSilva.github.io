@@ -1,0 +1,53 @@
+/* Estilos base y reset */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  transition: width 0.5s, height 0.5s;
+}
+
+h1, h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #4b372e;
+  font-size: 24px;
+}
+
+.hidden {
+  display: none;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.titulo {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4b372e;
+}
+

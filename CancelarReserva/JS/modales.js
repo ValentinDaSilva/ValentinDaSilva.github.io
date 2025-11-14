@@ -72,14 +72,65 @@ async function confirmarCancelacion() {
     modalConfirmacion.style.display = 'none';
   }
   
-  // Obtener las reservas seleccionadas en formato JSON
-  const reservasAEliminar = reservasSeleccionadas.map(reserva => ({
-    numeroHabitacion: reserva.numeroHabitacion,
-    desde: reserva.desde,
-    hasta: reserva.hasta,
-    responsable: reserva.responsable,
-    telefono: reserva.telefono
-  }));
+  // Obtener las reservas seleccionadas en formato JSON con todos los datos de Reserva
+  const reservasAEliminar = reservasSeleccionadas.map(reserva => {
+    // Extraer nombre y apellido del campo responsable (formato: "Apellido, Nombre")
+    let nombre = '';
+    let apellido = '';
+    if (reserva.responsable) {
+      const partes = reserva.responsable.split(',');
+      apellido = partes[0] ? partes[0].trim() : '';
+      nombre = partes[1] ? partes[1].trim() : '';
+    }
+
+    // Determinar tipo de habitación según el número (misma lógica que tabla-resultados.js)
+    let tipoHabitacion = null;
+    if (reserva.numeroHabitacion) {
+      if (reserva.numeroHabitacion >= 101 && reserva.numeroHabitacion <= 115) tipoHabitacion = 'IND';
+      else if (reserva.numeroHabitacion >= 201 && reserva.numeroHabitacion <= 215) tipoHabitacion = 'DOBE';
+      else if (reserva.numeroHabitacion >= 302 && reserva.numeroHabitacion <= 308) tipoHabitacion = 'FAM';
+      else if (reserva.numeroHabitacion >= 402 && reserva.numeroHabitacion <= 409) tipoHabitacion = 'SUITE';
+    }
+
+    // Construir el objeto titular completo
+    const titularCompleto = {
+      nombre: nombre,
+      apellido: apellido,
+      telefono: reserva.telefono || '',
+      tipoDocumento: reserva.titular?.tipoDocumento || null,
+      nroDocumento: reserva.titular?.nroDocumento || null,
+      fechaNacimiento: reserva.titular?.fechaNacimiento || null,
+      condicionIVA: reserva.titular?.condicionIVA || null,
+      ocupacion: reserva.titular?.ocupacion || null,
+      nacionalidad: reserva.titular?.nacionalidad || null,
+      cuit: reserva.titular?.cuit || null,
+      email: reserva.titular?.email || null
+    };
+
+    // Construir el array de habitaciones completo
+    const habitacionesCompletas = [{
+      numero: reserva.numeroHabitacion,
+      tipo: reserva.habitacion?.tipo || tipoHabitacion || null,
+      categoria: reserva.habitacion?.categoria || reserva.categoria || '',
+      costoPorNoche: reserva.habitacion?.costoPorNoche || reserva.costoPorNoche || null,
+      estadoHabitacion: reserva.habitacion?.estadoHabitacion || reserva.estadoHabitacion || null
+    }];
+
+    return {
+      id: reserva.id || null,
+      fechaInicio: reserva.desde,
+      fechaFin: reserva.hasta,
+      titular: titularCompleto,
+      estado: reserva.estado || null,
+      habitaciones: habitacionesCompletas,
+      // Mantener campos legacy para compatibilidad
+      numeroHabitacion: reserva.numeroHabitacion,
+      desde: reserva.desde,
+      hasta: reserva.hasta,
+      responsable: reserva.responsable,
+      telefono: reserva.telefono
+    };
+  });
   
   // Mostrar el JSON en pantalla antes de "eliminar"
   // Pasar una función callback para mostrar el modal de éxito cuando se cierre el JSON

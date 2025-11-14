@@ -1,5 +1,5 @@
 import Habitacion from "./Habitacion.js";
-import EstadoHabitacion from "./EstadoHabitacion.js";
+import { EstadoHabitacion } from "./Enums.js";
 // HabitacionDTO se importa desde el archivo dto.js que se carga antes en los HTML
 
 class GestorHabitacion {

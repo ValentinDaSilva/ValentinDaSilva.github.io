@@ -1,0 +1,129 @@
+/* Estilos de la caja de factura (pantalla 3) */
+
+.factura-box {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 20px 25px;
+  text-align: left;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #412c26;
+  height: 80vh;
+  max-height: 80vh;
+  overflow: hidden;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.titulo {
+  height: 10%;
+  overflow: hidden;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.titulo h1 {
+  margin: 0;
+  border-bottom: 2px solid #412c26;
+}
+
+.nombreHusped h3 {
+  margin: 5px;
+  overflow: hidden;
+}
+
+.factura {
+  max-height: 80%;
+  height: 80%;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.consumos {
+  height: 50%;
+  max-height: 50%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.listaConsumos {
+  width: 70%;
+  align-self: end;
+}
+
+.itemLista {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.itemLista label,
+.itemLista p {
+  margin: 0;
+}
+
+.recargoCheckout {
+  padding: 10px;
+  margin: 10px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.recargoCheckout p {
+  margin: 5px 0;
+}
+
+.recargoInfo {
+  padding: 5px 0;
+}
+
+.recargoInfo p {
+  margin: 5px 0;
+  color: #412c26;
+}
+
+.nuevaOcupacion {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 5px;
+}
+
+.nuevaOcupacion p {
+  margin: 0;
+  color: #856404;
+}
+
+.iva {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 0;
+  height: 10%;
+  max-height: 10%;
+}
+
+.tipoFactura {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.tipoFactura > * {
+  display: flex;
+  justify-content: center;
+}
+
+.total-box {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: rgb(250, 171, 0);
+}
+
+

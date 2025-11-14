@@ -107,17 +107,25 @@ class GestorAltaHuesped extends GestorHuesped {
      * @returns {HuespedDTO} - Objeto HuespedDTO
      */
     crearHuespedDTO(huesped) {
+        // Convertir dirección a DTO si existe
+        let direccionDTO = null;
+        if (huesped.direccion) {
+            direccionDTO = this.crearDireccionDTO(huesped.direccion);
+        }
+
         const huespedDTO = new HuespedDTO(
             huesped.nombre,
             huesped.apellido,
+            huesped.telefono,
             huesped.tipoDocumento,
             huesped.nroDocumento,
             huesped.fechaNacimiento.toISOString().split('T')[0], // Formato YYYY-MM-DD
-            huesped.condicionIVA,
             huesped.ocupacion,
             huesped.nacionalidad,
             huesped.cuit,
-            huesped.email
+            huesped.email,
+            direccionDTO,
+            huesped.condicionIVA
         );
 
         return huespedDTO;
@@ -136,7 +144,8 @@ class GestorAltaHuesped extends GestorHuesped {
             direccion.departamento || '',
             direccion.localidad,
             direccion.provincia,
-            direccion.codigoPostal
+            direccion.codigoPostal,
+            direccion.pais
         );
 
         return direccionDTO;
@@ -308,7 +317,8 @@ class GestorAltaHuesped extends GestorHuesped {
 
             // 4. Crear DTOs
             const huespedDTO = this.crearHuespedDTO(huespedDominio);
-            const direccionDTO = this.crearDireccionDTO(direccionDominio);
+            // La dirección ya está incluida en el HuespedDTO
+            const direccionDTO = huespedDTO.direccion;
             
             console.log('HuespedDTO creado:', huespedDTO);
             console.log('DireccionDTO creado:', direccionDTO);

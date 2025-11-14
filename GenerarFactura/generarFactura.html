@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generar Factura - Hotel Premier</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario-factura.css">
+  <link rel="stylesheet" href="CSS/tabla-responsable.css">
+  <link rel="stylesheet" href="CSS/factura-box.css">
+  <link rel="stylesheet" href="CSS/modales.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+</head>
+<body>
+  <img src="../assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
+  <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
+  
+  <div class="body">
+    <div class="container">
+      <!-- Pantalla 1: Formulario de factura -->
+      <div id="generarFactura">
+        <h1>Generar Factura</h1>
+        <form id="facturaForm">
+          <div class="form-group">
+            <label class="required" for="habitacion">Número de habitación:</label>
+            <input type="text" id="habitacion" name="habitacion" placeholder=""/>
+          </div>
+          <div class="form-group">
+            <label class="required" for="horaSalida">Hora de salida:</label>
+            <input type="time" id="horaSalida" name="horaSalida" placeholder="hh:mm"/>
+          </div>
+          <div class="form-group">
+            <button type="submit">Siguiente</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Pantalla 2: Selección de responsable -->
+      <div id="seleccionarResponsable" class="hidden">
+        <h2 class="titulo">Seleccionar Responsable de Pago</h2>
+        <div class="tabla-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Apellido</th>
+                <th>Nombres</th>
+                <th>Edad</th>
+                <th>Documento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>García</td><td>Nicolás Alejandro</td><td>17</td><td>45678901</td></tr>
+              <tr><td>Pérez</td><td>Juan Perez</td><td>20</td><td>23456789</td></tr>
+              <tr><td>Rodríguez</td><td>Raúl Armando</td><td>42</td><td>34567890</td></tr>
+              <tr><td>Pereyra</td><td>Lorena</td><td>35</td><td>56789012</td></tr>
+              <tr><td>Walker</td><td>Paloma</td><td>16</td><td>67890123</td></tr>
+              <tr><td>Martínez</td><td>Carla Andrea</td><td>28</td><td>12345678</td></tr>
+              <tr><td>Gómez</td><td>Lucas Emanuel</td><td>33</td><td>87654321</td></tr>
+              <tr><td>Fernández</td><td>María Belén</td><td>45</td><td>11223344</td></tr>
+              <tr><td>Lopez</td><td>Jorge Alberto</td><td>50</td><td>44332211</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tercero">
+          <h3>Pago por Tercero</h3>
+          <label for="cuit">Número de CUIT:</label>
+          <input type="text" id="cuit" name="cuit" placeholder=""/>
+        </div>
+
+        <div class="bottom-buttons">
+          <button type="button" id="boton-volver-responsable">Volver</button>
+          <button type="button" id="boton-aceptar-responsable">Aceptar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pantalla 3: Resumen de factura -->
+    <div id="resumenFactura" class="hidden">
+      <div class="factura-box">
+        <div class="titulo">
+          <h1>Facturacion</h1>
+        </div>
+        <div class="factura">
+          <div class="nombreHusped">
+            <h3><strong>JUAN PEREZ</strong></h3>
+          </div>
+          <div class="valorEstadia">
+            <p>✔️ Valor de Estadia: $23410 ×3 Noches</p>
+          </div>
+          
+          <div class="consumos">
+            <p><strong>Consumos de la Habitación:</strong></p>
+            <div class="listaConsumos">
+              <div class="itemLista">
+                <label><input type="checkbox" disabled /> Servicio de Comida: </label><p>$15000</p>
+              </div>
+              <div class="itemLista">
+                <label><input type="checkbox" disabled /> Uso de Teléfono: </label><p>$500</p>
+              </div>
+              <div class="itemLista">
+                <label><input type="checkbox" disabled /> Consumo Nevera: </label><p>$500</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="recargoCheckout" id="recargoCheckoutSection" style="display: none;">
+            <p><strong>Recargo por Checkout:</strong></p>
+            <div class="recargoInfo">
+              <p id="mensajeRecargo"></p>
+              <p id="montoRecargo"></p>
+            </div>
+            <div class="nuevaOcupacion" id="nuevaOcupacionWarning" style="display: none;">
+              <p><strong>⚠️ Debe realizar una nueva ocupación, sujeto a disponibilidad.</strong></p>
+            </div>
+          </div>
+          
+          <div class="iva">
+            <strong>✔️ IVA (21%):</strong>
+            <strong>$3360</strong>
+          </div>
+          <div class="tipoFactura">
+            <strong>Tipo de Factura: B</strong>
+            <div class="total-box">
+              Monto Total: $19360
+            </div>
+          </div>
+        </div>
+        <div class="bottom-buttons">
+          <button type="button" id="boton-volver-factura">Volver</button>
+          <button type="button" id="boton-vista-previa">Vista Previa</button>
+          <button type="button" id="boton-aceptar-factura">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content error">
+      <h2>ERROR</h2>
+      <img src="../assets/image/Error.png" alt="icono de error">
+      <p id="error-message">Por favor, completa todos los campos requeridos.</p>
+      <button id="ok-button" class="boton">OK</button>
+    </div>
+  </div>
+
+  <!-- Modal de Pregunta -->
+  <div id="modalPregunta" class="modal" style="display: none;">
+    <div class="modal-content pregunta">
+      <h2>PREGUNTA</h2>
+      <img src="../assets/image/Pregunta.png" alt="icono de pregunta">
+      <p id="error-messagePregunta">El numero de documento ya existe</p>
+      <div class="preguntaBotones">
+        <button id="PreguntaBoton1" class="boton" onclick="manejarClickPreguntaBoton1()">ACEPTAR</button>
+        <button id="PreguntaBoton2" class="boton" onclick="manejarClickPreguntaBoton2()">CORREGIR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts modulares -->
+  <!-- Validación de sesión (debe ir primero) -->
+  <script src="../Login/JS/validar-sesion.js"></script>
+  <!-- Navegación volver (debe ir después de validar-sesion) -->
+  <script src="../Login/JS/navegacion-volver.js"></script>
+  <script src="JS/modales.js"></script>
+  <script src="JS/buscar-estadia.js"></script>
+  <script src="JS/datos-huespedes.js"></script>
+  <script src="JS/buscar-responsable-pago.js"></script>
+  <script src="JS/generar-factura.js"></script>
+  <script src="JS/mostrar-json-factura.js"></script>
+  <script src="JS/mostrar-factura.js"></script>
+  <script src="JS/procesar-factura.js"></script>
+  <script src="JS/validaciones.js"></script>
+  <script src="JS/navegacion-pantallas.js"></script>
+  <script src="JS/seleccion-responsable.js"></script>
+  <script src="JS/datos-factura.js"></script>
+  <script src="JS/eventos.js"></script>
+  <script src="../JS/general.js"></script>
+</body>
+</html>
+

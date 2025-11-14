@@ -13,14 +13,43 @@ function convertirReservaDTOAJSONConFechasIndividuales(habitacionesConFechas, re
     
     // Crear una entrada por cada habitación con sus fechas específicas
     habitacionesConFechas.forEach(item => {
+        // Construir el objeto titular completo
+        const titularCompleto = reservaDTO.titular ? {
+            nombre: reservaDTO.titular.nombre || '',
+            apellido: reservaDTO.titular.apellido || '',
+            telefono: reservaDTO.titular.telefono || '',
+            tipoDocumento: reservaDTO.titular.tipoDocumento || null,
+            nroDocumento: reservaDTO.titular.nroDocumento || null,
+            fechaNacimiento: reservaDTO.titular.fechaNacimiento || null,
+            condicionIVA: reservaDTO.titular.condicionIVA || null,
+            ocupacion: reservaDTO.titular.ocupacion || null,
+            nacionalidad: reservaDTO.titular.nacionalidad || null,
+            cuit: reservaDTO.titular.cuit || null,
+            email: reservaDTO.titular.email || null
+        } : null;
+
+        // Construir el array de habitaciones completo
+        const habitacionesCompletas = reservaDTO.habitaciones ? reservaDTO.habitaciones.map(hab => ({
+            numero: hab.numero || item.habitacion.numero,
+            tipo: hab.tipo || item.habitacion.tipo,
+            categoria: hab.categoria || item.habitacion.categoria || '',
+            costoPorNoche: hab.costoPorNoche || hab.costoNoche || item.habitacion.costoNoche,
+            estadoHabitacion: hab.estadoHabitacion || item.habitacion.estado || null
+        })) : [{
+            numero: item.habitacion.numero,
+            tipo: item.habitacion.tipo,
+            categoria: item.habitacion.categoria || '',
+            costoPorNoche: item.habitacion.costoNoche,
+            estadoHabitacion: item.habitacion.estado || null
+        }];
+
         reservasFormatoJSON.push({
-            numeroHabitacion: item.habitacion.numero,
-            desde: item.fechaDesde,
-            hasta: item.fechaHasta,
-            responsable: reservaDTO.titular 
-                ? `${reservaDTO.titular.apellido || ''}, ${reservaDTO.titular.nombre || ''}`.trim()
-                : '',
-            telefono: reservaDTO.titular ? reservaDTO.titular.telefono || '' : ''
+            id: reservaDTO.id || null,
+            fechaInicio: item.fechaDesde,
+            fechaFin: item.fechaHasta,
+            titular: titularCompleto,
+            estado: reservaDTO.estado || null,
+            habitaciones: habitacionesCompletas
         });
     });
     
@@ -36,22 +65,52 @@ function convertirReservaDTOAJSONConFechasIndividuales(habitacionesConFechas, re
 function convertirReservaDTOAJSON(reservaDTO) {
     const reservasFormatoJSON = [];
     
+    // Construir el objeto titular completo
+    const titularCompleto = reservaDTO.titular ? {
+        nombre: reservaDTO.titular.nombre || '',
+        apellido: reservaDTO.titular.apellido || '',
+        telefono: reservaDTO.titular.telefono || '',
+        tipoDocumento: reservaDTO.titular.tipoDocumento || null,
+        nroDocumento: reservaDTO.titular.nroDocumento || null,
+        fechaNacimiento: reservaDTO.titular.fechaNacimiento || null,
+        condicionIVA: reservaDTO.titular.condicionIVA || null,
+        ocupacion: reservaDTO.titular.ocupacion || null,
+        nacionalidad: reservaDTO.titular.nacionalidad || null,
+        cuit: reservaDTO.titular.cuit || null,
+        email: reservaDTO.titular.email || null
+    } : null;
+
+    // Construir el array de habitaciones completo
+    const habitacionesCompletas = reservaDTO.habitaciones ? reservaDTO.habitaciones.map(hab => ({
+        numero: hab.numero,
+        tipo: hab.tipo,
+        categoria: hab.categoria || '',
+        costoPorNoche: hab.costoPorNoche || hab.costoNoche,
+        estadoHabitacion: hab.estadoHabitacion || null
+    })) : [];
+    
     if (reservaDTO.habitaciones && reservaDTO.habitaciones.length > 0) {
         // Crear una entrada por cada habitación (formato del JSON)
         reservaDTO.habitaciones.forEach(habitacion => {
-            reservasFormatoJSON.push({
-                numeroHabitacion: habitacion.numero,
-                desde: reservaDTO.fechaInicio,
-                hasta: reservaDTO.fechaFin,
-                responsable: reservaDTO.titular 
-                    ? `${reservaDTO.titular.apellido || ''}, ${reservaDTO.titular.nombre || ''}`.trim()
-                    : '',
-                telefono: reservaDTO.titular ? reservaDTO.titular.telefono || '' : ''
-            });
+        reservasFormatoJSON.push({
+            id: reservaDTO.id || null,
+            fechaInicio: reservaDTO.fechaInicio,
+            fechaFin: reservaDTO.fechaFin,
+            titular: titularCompleto,
+            estado: reservaDTO.estado || null,
+            habitaciones: habitacionesCompletas
+        });
         });
     } else {
         // Si no hay habitaciones, crear una entrada básica
         reservasFormatoJSON.push({
+            id: reservaDTO.id || null,
+            fechaInicio: reservaDTO.fechaInicio,
+            fechaFin: reservaDTO.fechaFin,
+            titular: titularCompleto,
+            estado: reservaDTO.estado || null,
+            habitaciones: habitacionesCompletas,
+            // Mantener campos legacy para compatibilidad
             numeroHabitacion: null,
             desde: reservaDTO.fechaInicio,
             hasta: reservaDTO.fechaFin,

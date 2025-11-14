@@ -1,0 +1,52 @@
+/* Estilos del formulario de factura */
+
+.container {
+  width: 50%;
+  background-color: #f7f2e8;
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+  margin: 50px;
+  position: relative;
+  left: 0;
+  text-align: center;
+  transition: width 0.5s, height 0.5s;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+  width: 60%;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #4b372e;
+}
+
+input[type="text"],
+input[type="time"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.required::after {
+  content: " *";
+  color: #ffffff00;
+}
+
+
+

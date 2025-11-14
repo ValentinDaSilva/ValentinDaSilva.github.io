@@ -1,0 +1,576 @@
+{
+  "facturas": [
+    {
+      "id": 1,
+      "hora": "14:30",
+      "fecha": "2025-11-15",
+      "horaSalida": "12:00",
+      "tipo": "B",
+      "estado": "Pendiente",
+      "responsableDePago": {
+        "tipo": "huesped",
+        "apellido": "Alvarez",
+        "nombres": "Lucía",
+        "documento": "66554433",
+        "cuit": "27-66554433-1"
+      },
+      "medioDePago": null,
+      "estadia": {
+        "id": 31,
+        "fechaCheckIn": "2025-11-03",
+        "fechaCheckOut": "2025-11-15",
+        "habitacion": {
+          "numero": 407,
+          "tipo": "FAM",
+          "categoria": "",
+          "costoPorNoche": 110500
+        },
+        "titular": {
+          "apellido": "Alvarez",
+          "nombres": "Lucía",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "66554433",
+          "cuit": "27-66554433-1",
+          "fechaNacimiento": "1996-08-12",
+          "caracteristica": "351",
+          "telefonoNumero": "5432109",
+          "email": "lucia.alvarez@example.com",
+          "ocupacion": "Estudiante",
+          "nacionalidad": "Argentina",
+          "calle": "Entre Ríos",
+          "numeroCalle": "234",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "5000",
+          "localidad": "Córdoba",
+          "provincia": "Córdoba",
+          "pais": "Argentina"
+        },
+        "acompaniantes": [
+          {
+            "apellido": "Silva",
+            "nombres": "Matías José",
+            "tipoDocumento": "LE",
+            "numeroDocumento": "66778899",
+            "cuit": "",
+            "fechaNacimiento": "1984-09-23",
+            "caracteristica": "342",
+            "telefonoNumero": "8765432",
+            "email": "matias.silva@example.com",
+            "ocupacion": "Contador",
+            "nacionalidad": "Argentina",
+            "calle": "3 de Febrero",
+            "numeroCalle": "234",
+            "departamento": "",
+            "piso": "",
+            "codigoPostal": "3000",
+            "localidad": "Santa Fe",
+            "provincia": "Santa Fe",
+            "pais": "Argentina"
+          },
+          {
+            "apellido": "López",
+            "nombres": "Ana María",
+            "tipoDocumento": "DNI",
+            "numeroDocumento": "55443322",
+            "cuit": "27-55443322-5",
+            "fechaNacimiento": "1988-07-25",
+            "caracteristica": "342",
+            "telefonoNumero": "9876543",
+            "email": "ana.lopez@example.com",
+            "ocupacion": "Contadora",
+            "nacionalidad": "Argentina",
+            "calle": "Mitre",
+            "numeroCalle": "345",
+            "departamento": "",
+            "piso": "",
+            "codigoPostal": "3000",
+            "localidad": "Rosario",
+            "provincia": "Santa Fe",
+            "pais": "Argentina"
+          }
+        ]
+      },
+      "detalle": {
+        "valorEstadia": 1326000,
+        "numeroNoches": 12,
+        "costoPorNoche": 110500,
+        "consumos": [
+          {
+            "descripcion": "Servicio de Comida",
+            "precio": 25000
+          },
+          {
+            "descripcion": "Consumo Nevera",
+            "precio": 8500
+          }
+        ],
+        "totalConsumos": 33500,
+        "recargoCheckout": 0,
+        "tipoRecargoCheckout": null,
+        "mensajeRecargoCheckout": null,
+        "requiereNuevaOcupacion": false,
+        "subtotal": 1359500,
+        "iva": 285495,
+        "total": 1644995
+      },
+      "pagos": [
+        {
+          "id": 1,
+          "fecha": "2025-11-15",
+          "hora": "15:00",
+          "montoTotal": 500000,
+          "medioDePago": {
+            "tipo": "efectivo",
+            "monto": 500000
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "hora": "10:15",
+      "fecha": "2025-11-10",
+      "horaSalida": "10:00",
+      "tipo": "B",
+      "estado": "Pagada",
+      "responsableDePago": {
+        "tipo": "huesped",
+        "apellido": "González",
+        "nombres": "María Fernanda",
+        "documento": "87654321",
+        "cuit": "27-87654321-3"
+      },
+      "medioDePago": null,
+      "estadia": {
+        "id": 2,
+        "fechaCheckIn": "2025-11-03",
+        "fechaCheckOut": "2025-11-10",
+        "habitacion": {
+          "numero": 102,
+          "tipo": "IND",
+          "categoria": "",
+          "costoPorNoche": 50800
+        },
+        "titular": {
+          "apellido": "González",
+          "nombres": "María Fernanda",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "87654321",
+          "cuit": "27-87654321-3",
+          "fechaNacimiento": "1990-03-20",
+          "caracteristica": "341",
+          "telefonoNumero": "4567890",
+          "email": "maria.gonzalez@example.com",
+          "ocupacion": "Médica",
+          "nacionalidad": "Argentina",
+          "calle": "San Martín",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        "acompaniantes": []
+      },
+      "detalle": {
+        "valorEstadia": 355600,
+        "numeroNoches": 7,
+        "costoPorNoche": 50800,
+        "consumos": [
+          {
+            "descripcion": "Uso de Teléfono",
+            "precio": 3500
+          }
+        ],
+        "totalConsumos": 3500,
+        "recargoCheckout": 0,
+        "tipoRecargoCheckout": null,
+        "mensajeRecargoCheckout": null,
+        "requiereNuevaOcupacion": false,
+        "subtotal": 359100,
+        "iva": 75411,
+        "total": 434511
+      },
+      "pagos": [
+        {
+          "id": 2,
+          "fecha": "2025-11-10",
+          "hora": "10:30",
+          "montoTotal": 200000,
+          "medioDePago": {
+            "tipo": "tarjetas",
+            "tipoTarjeta": "VISA",
+            "numeroTarjeta": "4532123456789012",
+            "monto": 200000
+          }
+        },
+        {
+          "id": 3,
+          "fecha": "2025-11-10",
+          "hora": "10:35",
+          "montoTotal": 234511,
+          "medioDePago": {
+            "tipo": "efectivo",
+            "monto": 234511
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "hora": "16:45",
+      "fecha": "2025-11-12",
+      "horaSalida": "11:00",
+      "tipo": "A",
+      "estado": "Pendiente",
+      "responsableDePago": {
+        "tipo": "tercero",
+        "razonSocial": "EMPRESA ABC S.A.",
+        "cuit": "20-12345678-9",
+        "telefono": "011-1234-5678",
+        "direccion": {
+          "calle": "Av. Corrientes",
+          "numero": "1234",
+          "piso": "5",
+          "departamento": "A",
+          "codigoPostal": "1043",
+          "localidad": "Ciudad Autónoma de Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        }
+      },
+      "medioDePago": null,
+      "estadia": {
+        "id": 20,
+        "fechaCheckIn": "2025-11-03",
+        "fechaCheckOut": "2025-11-12",
+        "habitacion": {
+          "numero": 302,
+          "tipo": "DOBS",
+          "categoria": "",
+          "costoPorNoche": 90560
+        },
+        "titular": {
+          "apellido": "Silva",
+          "nombres": "Matías José",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "66778899",
+          "cuit": "",
+          "fechaNacimiento": "1984-09-23",
+          "caracteristica": "342",
+          "telefonoNumero": "8765432",
+          "email": "matias.silva@example.com",
+          "ocupacion": "Contador",
+          "nacionalidad": "Argentina",
+          "calle": "3 de Febrero",
+          "numeroCalle": "234",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        "acompaniantes": []
+      },
+      "detalle": {
+        "valorEstadia": 815040,
+        "numeroNoches": 9,
+        "costoPorNoche": 90560,
+        "consumos": [
+          {
+            "descripcion": "Servicio de Comida",
+            "precio": 18000
+          },
+          {
+            "descripcion": "Uso de Teléfono",
+            "precio": 4200
+          },
+          {
+            "descripcion": "Consumo Nevera",
+            "precio": 6200
+          }
+        ],
+        "totalConsumos": 28400,
+        "recargoCheckout": 0,
+        "tipoRecargoCheckout": null,
+        "mensajeRecargoCheckout": null,
+        "requiereNuevaOcupacion": false,
+        "subtotal": 843440,
+        "iva": 177122.4,
+        "total": 1020562.4
+      },
+      "pagos": []
+    },
+    {
+      "id": 4,
+      "hora": "09:20",
+      "fecha": "2025-11-17",
+      "horaSalida": "14:30",
+      "tipo": "B",
+      "estado": "Pendiente",
+      "responsableDePago": {
+        "tipo": "huesped",
+        "apellido": "Martínez",
+        "nombres": "Luis Enrique",
+        "documento": "AB123456",
+        "cuit": ""
+      },
+      "medioDePago": null,
+      "estadia": {
+        "id": 5,
+        "fechaCheckIn": "2025-11-08",
+        "fechaCheckOut": "2025-11-17",
+        "habitacion": {
+          "numero": 107,
+          "tipo": "IND",
+          "categoria": "",
+          "costoPorNoche": 50800
+        },
+        "titular": {
+          "apellido": "Martínez",
+          "nombres": "Luis Enrique",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "AB123456",
+          "cuit": "",
+          "fechaNacimiento": "1985-02-14",
+          "caracteristica": "11",
+          "telefonoNumero": "45678901",
+          "email": "luis.martinez@example.com",
+          "ocupacion": "Arquitecto",
+          "nacionalidad": "Brasil",
+          "calle": "Avenida Corrientes",
+          "numeroCalle": "1234",
+          "departamento": "B",
+          "piso": "3",
+          "codigoPostal": "1043",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        },
+        "acompaniantes": []
+      },
+      "detalle": {
+        "valorEstadia": 457200,
+        "numeroNoches": 9,
+        "costoPorNoche": 50800,
+        "consumos": [],
+        "totalConsumos": 0,
+        "recargoCheckout": 25400,
+        "tipoRecargoCheckout": "tardio",
+        "mensajeRecargoCheckout": "Checkout después de las 12:00",
+        "requiereNuevaOcupacion": false,
+        "subtotal": 482600,
+        "iva": 101346,
+        "total": 583946
+      },
+      "pagos": [
+        {
+          "id": 4,
+          "fecha": "2025-11-17",
+          "hora": "09:45",
+          "montoTotal": 200000,
+          "medioDePago": {
+            "tipo": "tarjetas",
+            "tipoTarjeta": "MASTERCARD",
+            "numeroTarjeta": "5555123456789012",
+            "monto": 200000
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "hora": "13:10",
+      "fecha": "2025-11-18",
+      "horaSalida": "10:30",
+      "tipo": "B",
+      "estado": "Pagada",
+      "responsableDePago": {
+        "tipo": "huesped",
+        "apellido": "Moreno",
+        "nombres": "Juan Martín",
+        "documento": "44557788",
+        "cuit": ""
+      },
+      "medioDePago": null,
+      "estadia": {
+        "id": 18,
+        "fechaCheckIn": "2025-11-03",
+        "fechaCheckOut": "2025-11-18",
+        "habitacion": {
+          "numero": 213,
+          "tipo": "DOBE",
+          "categoria": "",
+          "costoPorNoche": 70230
+        },
+        "titular": {
+          "apellido": "Moreno",
+          "nombres": "Juan Martín",
+          "tipoDocumento": "LC",
+          "numeroDocumento": "44557788",
+          "cuit": "",
+          "fechaNacimiento": "1986-12-31",
+          "caracteristica": "342",
+          "telefonoNumero": "9876543",
+          "email": "juan.moreno@example.com",
+          "ocupacion": "Periodista",
+          "nacionalidad": "Argentina",
+          "calle": "Junín",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        "acompaniantes": []
+      },
+      "detalle": {
+        "valorEstadia": 1053450,
+        "numeroNoches": 15,
+        "costoPorNoche": 70230,
+        "consumos": [
+          {
+            "descripcion": "Servicio de Comida",
+            "precio": 32000
+          }
+        ],
+        "totalConsumos": 32000,
+        "recargoCheckout": 0,
+        "tipoRecargoCheckout": null,
+        "mensajeRecargoCheckout": null,
+        "requiereNuevaOcupacion": false,
+        "subtotal": 1085450,
+        "iva": 227944.5,
+        "total": 1313394.5
+      },
+      "pagos": [
+        {
+          "id": 5,
+          "fecha": "2025-11-18",
+          "hora": "13:20",
+          "montoTotal": 800000,
+          "medioDePago": {
+            "tipo": "monedaExtranjera",
+            "tipoMoneda": "USD",
+            "montoExtranjero": 800,
+            "cotizacion": 1000,
+            "monto": 800000
+          }
+        },
+        {
+          "id": 6,
+          "fecha": "2025-11-18",
+          "hora": "13:25",
+          "montoTotal": 513394.5,
+          "medioDePago": {
+            "tipo": "cheques",
+            "numero": "987654",
+            "monto": 513394.5,
+            "fechaVencimiento": "2025-12-20"
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "hora": "11:00",
+      "fecha": "2025-11-15",
+      "horaSalida": "11:00",
+      "tipo": "B",
+      "estado": "Pendiente",
+      "responsableDePago": {
+        "tipo": "huesped",
+        "apellido": "Torres",
+        "nombres": "Laura",
+        "documento": "44556677",
+        "cuit": "27-44556677-9"
+      },
+      "medioDePago": null,
+      "estadia": {
+        "id": 29,
+        "fechaCheckIn": "2025-11-03",
+        "fechaCheckOut": "2025-11-12",
+        "habitacion": {
+          "numero": 405,
+          "tipo": "FAM",
+          "categoria": "",
+          "costoPorNoche": 110500
+        },
+        "titular": {
+          "apellido": "Torres",
+          "nombres": "Laura",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "44556677",
+          "cuit": "27-44556677-9",
+          "fechaNacimiento": "1991-04-22",
+          "caracteristica": "342",
+          "telefonoNumero": "8765432",
+          "email": "laura.torres@example.com",
+          "ocupacion": "Diseñadora",
+          "nacionalidad": "Argentina",
+          "calle": "San Jerónimo",
+          "numeroCalle": "890",
+          "departamento": "D",
+          "piso": "4",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        "acompaniantes": [
+          {
+            "apellido": "Martínez",
+            "nombres": "Luis Enrique",
+            "tipoDocumento": "Pasaporte",
+            "numeroDocumento": "AB123456",
+            "cuit": "",
+            "fechaNacimiento": "1985-02-14",
+            "caracteristica": "11",
+            "telefonoNumero": "45678901",
+            "email": "luis.martinez@example.com",
+            "ocupacion": "Arquitecto",
+            "nacionalidad": "Brasil",
+            "calle": "Avenida Corrientes",
+            "numeroCalle": "1234",
+            "departamento": "B",
+            "piso": "3",
+            "codigoPostal": "1043",
+            "localidad": "Buenos Aires",
+            "provincia": "Buenos Aires",
+            "pais": "Argentina"
+          }
+        ]
+      },
+      "detalle": {
+        "valorEstadia": 994500,
+        "numeroNoches": 9,
+        "costoPorNoche": 110500,
+        "consumos": [
+          {
+            "descripcion": "Servicio de Comida",
+            "precio": 45000
+          },
+          {
+            "descripcion": "Consumo Nevera",
+            "precio": 12000
+          }
+        ],
+        "totalConsumos": 57000,
+        "recargoCheckout": 0,
+        "tipoRecargoCheckout": null,
+        "mensajeRecargoCheckout": null,
+        "requiereNuevaOcupacion": false,
+        "subtotal": 1051500,
+        "iva": 220815,
+        "total": 1272315
+      },
+      "pagos": []
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import EstadoReserva from "./EstadoReserva.js";
+import { EstadoReserva } from "./Enums.js";
 
 class Reserva {
   constructor(id, fechaInicio, fechaFin, titular, estado = EstadoReserva.PENDIENTE) {
@@ -8,6 +8,7 @@ class Reserva {
     this._titular = titular;
     this._estado = estado;
     this._habitaciones = [];
+    this._estadia = null; //Tipo clase Estadia
   }
 
   get id() { return this._id; }

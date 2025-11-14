@@ -1,0 +1,82 @@
+{
+  "responsablesDePago": [
+    {
+      "razonSocial": "EMPRESA ABC S.A.",
+      "cuit": "20-12345678-9",
+      "telefono": "011-1234-5678",
+      "direccion": {
+        "calle": "Av. Corrientes",
+        "numero": "1234",
+        "piso": "5",
+        "departamento": "A",
+        "codigoPostal": "1043",
+        "localidad": "Ciudad Autónoma de Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      }
+    },
+    {
+      "razonSocial": "COMERCIAL XYZ LTDA.",
+      "cuit": "30-98765432-1",
+      "telefono": "341-2345-6789",
+      "direccion": {
+        "calle": "San Martín",
+        "numero": "567",
+        "piso": "",
+        "departamento": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      }
+    },
+    {
+      "razonSocial": "HOTEL PREMIER S.A.",
+      "cuit": "20-11111111-2",
+      "telefono": "342-1111-1111",
+      "direccion": {
+        "calle": "Av. Libertador",
+        "numero": "1000",
+        "piso": "",
+        "departamento": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      }
+    },
+    {
+      "razonSocial": "RESTAURANTE EL BUEN SABOR",
+      "cuit": "30-22222222-3",
+      "telefono": "351-2222-2222",
+      "direccion": {
+        "calle": "Belgrano",
+        "numero": "890",
+        "piso": "2",
+        "departamento": "B",
+        "codigoPostal": "5000",
+        "localidad": "Córdoba",
+        "provincia": "Córdoba",
+        "pais": "Argentina"
+      }
+    },
+    {
+      "razonSocial": "TRANSPORTE RÁPIDO S.R.L.",
+      "cuit": "20-33333333-4",
+      "telefono": "11-3333-3333",
+      "direccion": {
+        "calle": "Mitre",
+        "numero": "345",
+        "piso": "",
+        "departamento": "",
+        "codigoPostal": "3000",
+        "localidad": "Rosario",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      }
+    }
+  ]
+}
+
+
+

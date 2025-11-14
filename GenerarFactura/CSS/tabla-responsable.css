@@ -1,0 +1,81 @@
+/* Estilos de la tabla de selección de responsable */
+
+#seleccionarResponsable {
+  height: 80vh;
+}
+
+.tabla-scroll {
+  width: 100%;
+  height: 150px;
+  overflow-y: auto;
+  position: relative;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  z-index: 1;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #6C3B2A;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #6C3B2A;
+  color: white;
+  z-index: 2;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+/* Scrollbar personalizado */
+.tabla-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tabla-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tabla-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(65, 44, 38, 0.5);
+  border-radius: 4px;
+}
+
+.tercero {
+  background-color: #f7e7c3;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.tercero h3 {
+  margin-top: 0;
+}
+
+.tercero input {
+  width: 50%;
+  margin-top: 10px;
+}
+
+
+

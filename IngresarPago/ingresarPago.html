@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ingresar Pago - Hotel Premier</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario-pago.css">
+  <link rel="stylesheet" href="CSS/tabla-facturas.css">
+  <link rel="stylesheet" href="CSS/modales.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+</head>
+<body>
+  <img src="../assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
+  <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
+  
+  <div class="body">
+    <div class="container">
+      <!-- Pantalla 1: Ingreso de número de habitación -->
+      <div id="ingresoHabitacion">
+        <h1>Ingresar Pago</h1>
+        <form id="habitacionForm" action="#" method="post" onsubmit="return false;">
+          <div class="form-group">
+            <label class="required" for="numeroHabitacion">Número de habitación:</label>
+            <input type="text" id="numeroHabitacion" name="numeroHabitacion" placeholder="Ej: 101"/>
+          </div>
+          <div class="form-group">
+            <button type="submit" id="boton-buscar-facturas">Buscar Facturas</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Pantalla 2: Lista de facturas pendientes -->
+      <div id="listaFacturas" class="hidden">
+        <h2 class="titulo">Facturas Pendientes</h2>
+        <div id="mensajeSinFacturas" class="mensaje-sin-facturas hidden">
+          <p>No hay facturas pendientes para esta habitación.</p>
+        </div>
+        <div class="tabla-scroll" id="contenedorTablaFacturas">
+          <table id="tablaFacturas">
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Fecha</th>
+                <th>Responsable</th>
+                <th>Total</th>
+                <th>Seleccionar</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyFacturas">
+              <!-- Se llenará dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+        <div class="bottom-buttons">
+          <button type="button" id="boton-volver-facturas">Volver</button>
+        </div>
+      </div>
+
+      <!-- Pantalla 3: Detalle de factura y pago -->
+      <div id="detallePago" class="hidden">
+        <h2 class="titulo">Registrar Pago</h2>
+        
+        <!-- Información de la factura -->
+        <div class="factura-info">
+          <h3>Información de la Factura</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Número:</label>
+              <span id="facturaNumero">-</span>
+            </div>
+            <div class="info-item">
+              <label>Responsable:</label>
+              <span id="facturaResponsable">-</span>
+            </div>
+            <div class="info-item">
+              <label>Total:</label>
+              <span id="facturaTotal">$0.00</span>
+            </div>
+            <div class="info-item">
+              <label>Pagado:</label>
+              <span id="facturaPagado">$0.00</span>
+            </div>
+            <div class="info-item">
+              <label>Deuda Restante:</label>
+              <span id="facturaDeuda" class="deuda">$0.00</span>
+            </div>
+            <div class="info-item">
+              <label>Vuelto:</label>
+              <span id="facturaVuelto">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario de pago -->
+        <div class="pago-form">
+          <h3>Medio de Pago</h3>
+          <div class="medios-pago">
+            <label class="checkbox-label">
+              <input type="checkbox" name="medioPago" value="efectivo" id="medio-efectivo">
+              <span>Efectivo</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="medioPago" value="monedaExtranjera" id="medio-moneda">
+              <span>Moneda Extranjera</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="medioPago" value="cheques" id="medio-cheques">
+              <span>Cheques</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="medioPago" value="tarjetas" id="medio-tarjetas">
+              <span>Tarjetas</span>
+            </label>
+          </div>
+
+          <!-- Campos dinámicos según medio de pago -->
+          <div id="camposPago" class="campos-pago">
+            <!-- Se llenará dinámicamente según el medio seleccionado -->
+          </div>
+
+          <div class="form-group">
+            <button type="button" id="boton-registrar-pago">Registrar Pago</button>
+          </div>
+        </div>
+
+        <!-- Lista de pagos realizados -->
+        <div class="pagos-realizados">
+          <h3>Pagos Registrados</h3>
+          <div class="tabla-scroll">
+            <table id="tablaPagos">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Medio</th>
+                  <th>Monto</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyPagos">
+                <!-- Se llenará dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bottom-buttons">
+          <button type="button" id="boton-volver-pago">Volver</button>
+          <button type="button" id="boton-finalizar" class="hidden">Finalizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content error">
+      <h2>ERROR</h2>
+      <img src="../assets/image/Error.png" alt="icono de error">
+      <p id="error-message">Por favor, completa todos los campos requeridos.</p>
+      <button id="ok-button" class="boton">OK</button>
+    </div>
+  </div>
+
+  <!-- Modal de Éxito -->
+  <div id="modalExito" class="modal" style="display: none;">
+    <div class="modal-content exito">
+      <h2>ÉXITO</h2>
+      <img src="../assets/image/Correcto.png" alt="icono de éxito">
+      <p id="exito-message">Factura saldada. Toque una tecla para continuar.</p>
+      <button id="ok-exito-button" class="boton">Continuar</button>
+    </div>
+  </div>
+
+  <!-- Scripts modulares -->
+  <!-- Validación de sesión (debe ir primero) -->
+  <script src="../Login/JS/validar-sesion.js"></script>
+  <!-- Navegación volver (debe ir después de validar-sesion) -->
+  <script src="../Login/JS/navegacion-volver.js"></script>
+  <script type="module" src="JS/datos-facturas.js"></script>
+  <script type="module" src="JS/datos-pagos.js"></script>
+  <script type="module" src="JS/datos-habitaciones.js"></script>
+  <script type="module" src="JS/validaciones.js"></script>
+  <script type="module" src="JS/modales.js"></script>
+  <script type="module" src="JS/buscar-facturas.js"></script>
+  <script type="module" src="JS/seleccion-factura.js"></script>
+  <script type="module" src="JS/medios-pago.js"></script>
+  <script type="module" src="JS/crear-pago-clase.js"></script>
+  <script type="module" src="JS/convertir-factura-clase.js"></script>
+  <script type="module" src="JS/mostrar-json-factura.js"></script>
+  <script type="module" src="JS/registrar-pago.js"></script>
+  <script type="module" src="JS/navegacion-pantallas.js"></script>
+  <script type="module" src="JS/eventos.js"></script>
+  <script src="../JS/general.js"></script>
+</body>
+</html>
+

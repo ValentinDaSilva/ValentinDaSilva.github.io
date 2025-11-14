@@ -1,4 +1,4 @@
-import EstadoEstadia from "./EstadoEstadia.js";
+import { EstadoEstadia } from "./Enums.js";
 
 class Estadia {
   constructor(id, fechaCheckIn, fechaCheckOut, estado = EstadoEstadia.EN_CURSO, reserva, titular, acompaniantes) {
@@ -6,7 +6,7 @@ class Estadia {
     this._fechaCheckIn = new Date(fechaCheckIn);
     this._fechaCheckOut = new Date(fechaCheckOut);
     this._estado = estado;
-    this._consumos = [];
+    this._consumos = []; //Array tipo Consumo
     this._reserva = reserva; //Tipo clase Reserva
     this._titular = titular; //Tipo clase Huesped
     this._acompaniantes = acompaniantes; //Tipo array de clase Huesped

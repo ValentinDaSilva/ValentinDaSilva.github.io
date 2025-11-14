@@ -1,9 +1,8 @@
 import Reserva from "./Reserva.js";
-import EstadoReserva from "./EstadoReserva.js";
+import { EstadoReserva, EstadoHabitacion } from "./Enums.js";
 import Persona from "./Persona.js";
 import Huesped from "./Huesped.js";
 import Habitacion from "./Habitacion.js";
-import EstadoHabitacion from "./EstadoHabitacion.js";
 // ReservaDTO se importa desde el archivo dto.js que se carga antes en los HTML
 
 class GestorReserva {
@@ -63,13 +62,23 @@ class GestorReserva {
       return hab;
     });
 
+    // Convertir estadia a DTO si existe
+    let estadiaDTO = null;
+    if (reserva.estadia) {
+      // La estadia se convierte a DTO si es necesario
+      // Por ahora, pasamos null ya que la conversión completa de Estadia a EstadiaDTO
+      // requeriría más lógica (reserva, titular, acompañantes)
+      estadiaDTO = null; // TODO: Implementar conversión completa de Estadia a EstadiaDTO si es necesario
+    }
+
     return new ReservaDTO(
       reserva.id,
       reserva.fechaInicio.toISOString().split('T')[0], // Formato YYYY-MM-DD
       reserva.fechaFin.toISOString().split('T')[0],
       titularDTO,
       reserva.estado,
-      habitacionesDTO
+      habitacionesDTO,
+      estadiaDTO
     );
   }
 

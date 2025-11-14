@@ -4,10 +4,7 @@
 // ==========================
 
 // ENUMS
-export { default as EstadoHabitacion } from "./EstadoHabitacion.js";
-export { default as EstadoReserva } from "./EstadoReserva.js";
-export { default as EstadoEstadia } from "./EstadoEstadia.js";
-export { default as TipoDocumento } from "./TipoDocumento.js";
+export { EstadoHabitacion, EstadoReserva, EstadoEstadia, TipoDocumento, EstadoFactura, TipoFactura } from "./Enums.js";
 
 // CLASES BASE
 export { default as Direccion } from "./Direccion.js";
@@ -20,6 +17,9 @@ export { default as Huesped } from "./Huesped.js";
 export { default as Habitacion } from "./Habitacion.js";
 export { default as Reserva } from "./Reserva.js";
 export { default as Estadia } from "./Estadia.js";
+export { default as Factura } from "./Factura.js";
+export { default as Pago } from "./Pago.js";
+export { Efectivo, MonedaExtranjera, Cheque, Tarjeta } from "./MedioDePago/index.js";
 
 // GESTORES
 export { default as GestorHuesped } from "./GestorHuesped.js";

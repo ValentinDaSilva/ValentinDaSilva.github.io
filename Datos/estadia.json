@@ -1,0 +1,2300 @@
+{
+  "estadias": [
+    {
+      "id": 1,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 1,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 101,
+            "tipo": "IND",
+            "categoria": "",
+            "costoPorNoche": 50800
+          }
+        ],
+        "titular": {
+          "nombre": "Juan Carlos",
+          "apellido": "Pérez",
+          "telefono": "3425986867"
+        }
+      },
+      "titular": {
+        "apellido": "Pérez",
+        "nombres": "Juan Carlos",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "12345678",
+        "cuit": "20-12345678-9",
+        "fechaNacimiento": "1980-05-15",
+        "caracteristica": "342",
+        "telefonoNumero": "5986867",
+        "email": "juancarlos.perez@example.com",
+        "ocupacion": "Ingeniero",
+        "nacionalidad": "Argentina",
+        "calle": "Av. Libertador",
+        "numeroCalle": "1234",
+        "departamento": "5B",
+        "piso": "5",
+        "codigoPostal": "1426",
+        "localidad": "Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [],
+      "consumos": []
+    },
+    {
+      "id": 2,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": "2025-11-10",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 2,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-10",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 102,
+            "tipo": "IND",
+            "categoria": "",
+            "costoPorNoche": 50800
+          }
+        ],
+        "titular": {
+          "nombre": "María Fernanda",
+          "apellido": "González",
+          "telefono": "3414567890"
+        }
+      },
+      "titular": {
+        "apellido": "González",
+        "nombres": "María Fernanda",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "87654321",
+        "cuit": "27-87654321-3",
+        "fechaNacimiento": "1990-03-20",
+        "caracteristica": "341",
+        "telefonoNumero": "4567890",
+        "email": "maria.gonzalez@example.com",
+        "ocupacion": "Médica",
+        "nacionalidad": "Argentina",
+        "calle": "San Martín",
+        "numeroCalle": "567",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [],
+      "consumos": []
+    },
+    {
+      "id": 3,
+      "fechaCheckIn": "2025-11-15",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 3,
+        "fechaInicio": "2025-11-15",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 104,
+            "tipo": "IND",
+            "categoria": "",
+            "costoPorNoche": 50800
+          }
+        ],
+        "titular": {
+          "nombre": "Carlos Alberto",
+          "apellido": "Rodríguez",
+          "telefono": "3512345678"
+        }
+      },
+      "titular": {
+        "apellido": "Rodríguez",
+        "nombres": "Carlos Alberto",
+        "tipoDocumento": "LC",
+        "numeroDocumento": "11223344",
+        "cuit": "",
+        "fechaNacimiento": "1975-11-10",
+        "caracteristica": "351",
+        "telefonoNumero": "2345678",
+        "email": "carlos.rodriguez@example.com",
+        "ocupacion": "Abogado",
+        "nacionalidad": "Argentina",
+        "calle": "Belgrano",
+        "numeroCalle": "890",
+        "departamento": "A",
+        "piso": "2",
+        "codigoPostal": "5000",
+        "localidad": "Córdoba",
+        "provincia": "Córdoba",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [],
+      "consumos": []
+    },
+    {
+      "id": 4,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 4,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 105,
+            "tipo": "IND",
+            "categoria": "",
+            "costoPorNoche": 50800
+          }
+        ],
+        "titular": {
+          "nombre": "Ana María",
+          "apellido": "López",
+          "telefono": "3429876543"
+        }
+      },
+      "titular": {
+        "apellido": "López",
+        "nombres": "Ana María",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "55443322",
+        "cuit": "27-55443322-5",
+        "fechaNacimiento": "1988-07-25",
+        "caracteristica": "342",
+        "telefonoNumero": "9876543",
+        "email": "ana.lopez@example.com",
+        "ocupacion": "Contadora",
+        "nacionalidad": "Argentina",
+        "calle": "Mitre",
+        "numeroCalle": "345",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Rosario",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [],
+      "consumos": []
+    },
+    {
+      "id": 5,
+      "fechaCheckIn": "2025-11-08",
+      "fechaCheckOut": "2025-11-17",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 5,
+        "fechaInicio": "2025-11-08",
+        "fechaFin": "2025-11-17",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 107,
+            "tipo": "IND",
+            "categoria": "",
+            "costoPorNoche": 50800
+          }
+        ],
+        "titular": {
+          "nombre": "Luis Enrique",
+          "apellido": "Martínez",
+          "telefono": "1145678901"
+        }
+      },
+      "titular": {
+        "apellido": "Martínez",
+        "nombres": "Luis Enrique",
+        "tipoDocumento": "Pasaporte",
+        "numeroDocumento": "AB123456",
+        "cuit": "",
+        "fechaNacimiento": "1985-02-14",
+        "caracteristica": "11",
+        "telefonoNumero": "45678901",
+        "email": "luis.martinez@example.com",
+        "ocupacion": "Arquitecto",
+        "nacionalidad": "Brasil",
+        "calle": "Avenida Corrientes",
+        "numeroCalle": "1234",
+        "departamento": "B",
+        "piso": "3",
+        "codigoPostal": "1043",
+        "localidad": "Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [],
+      "consumos": []
+    },
+    {
+      "id": 6,
+      "fechaCheckIn": "2025-11-10",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 6,
+        "fechaInicio": "2025-11-10",
+        "fechaFin": "2025-11-20",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 108,
+            "tipo": "IND",
+            "categoria": "",
+            "costoPorNoche": 50800
+          }
+        ],
+        "titular": {
+          "nombre": "Sofía",
+          "apellido": "Fernández",
+          "telefono": "3417654321"
+        }
+      },
+      "titular": {
+        "apellido": "Fernández",
+        "nombres": "Sofía",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "98765432",
+        "cuit": "27-98765432-1",
+        "fechaNacimiento": "1995-09-30",
+        "caracteristica": "341",
+        "telefonoNumero": "7654321",
+        "email": "sofia.fernandez@example.com",
+        "ocupacion": "Estudiante",
+        "nacionalidad": "Argentina",
+        "calle": "25 de Mayo",
+        "numeroCalle": "789",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [],
+      "consumos": []
+    },
+    {
+      "id": 7,
+      "fechaCheckIn": "2025-11-22",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 7,
+        "fechaInicio": "2025-11-22",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 109,
+            "tipo": "IND",
+            "categoria": "",
+            "costoPorNoche": 50800
+          }
+        ],
+        "titular": {
+          "nombre": "Diego",
+          "apellido": "García",
+          "telefono": "3421234567"
+        }
+      },
+      "titular": {
+        "apellido": "García",
+        "nombres": "Diego",
+        "tipoDocumento": "LE",
+        "numeroDocumento": "33445566",
+        "cuit": "",
+        "fechaNacimiento": "1992-01-08",
+        "caracteristica": "342",
+        "telefonoNumero": "1234567",
+        "email": "diego.garcia@example.com",
+        "ocupacion": "Programador",
+        "nacionalidad": "Argentina",
+        "calle": "Primera Junta",
+        "numeroCalle": "2457",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [],
+      "consumos": []
+    },
+    {
+      "id": 8,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 8,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 201,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "María Elena",
+          "apellido": "Pérez",
+          "telefono": "1198765432"
+        }
+      },
+      "titular": {
+        "apellido": "Pérez",
+        "nombres": "María Elena",
+        "tipoDocumento": "Pasaporte",
+        "numeroDocumento": "CD789012",
+        "cuit": "",
+        "fechaNacimiento": "1970-12-05",
+        "caracteristica": "11",
+        "telefonoNumero": "98765432",
+        "email": "maria.elena.perez@example.com",
+        "ocupacion": "Profesora",
+        "nacionalidad": "Chile",
+        "calle": "Rivadavia",
+        "numeroCalle": "456",
+        "departamento": "C",
+        "piso": "1",
+        "codigoPostal": "1000",
+        "localidad": "Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Moreno",
+          "nombres": "Juan Martín",
+          "tipoDocumento": "LC",
+          "numeroDocumento": "44557788",
+          "cuit": "",
+          "fechaNacimiento": "1986-12-31",
+          "caracteristica": "342",
+          "telefonoNumero": "9876543",
+          "email": "juan.moreno@example.com",
+          "ocupacion": "Periodista",
+          "nacionalidad": "Argentina",
+          "calle": "Junín",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 9,
+      "fechaCheckIn": "2025-11-15",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 9,
+        "fechaInicio": "2025-11-15",
+        "fechaFin": "2025-11-22",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 202,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Roberto",
+          "apellido": "Sánchez",
+          "telefono": "3416543210"
+        }
+      },
+      "titular": {
+        "apellido": "Sánchez",
+        "nombres": "Roberto",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "22334455",
+        "cuit": "20-22334455-7",
+        "fechaNacimiento": "1983-06-18",
+        "caracteristica": "341",
+        "telefonoNumero": "6543210",
+        "email": "roberto.sanchez@example.com",
+        "ocupacion": "Comerciante",
+        "nacionalidad": "Argentina",
+        "calle": "Moreno",
+        "numeroCalle": "321",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "2000",
+        "localidad": "Rosario",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Rodríguez",
+          "nombres": "Carlos Alberto",
+          "tipoDocumento": "LC",
+          "numeroDocumento": "11223344",
+          "cuit": "",
+          "fechaNacimiento": "1975-11-10",
+          "caracteristica": "351",
+          "telefonoNumero": "2345678",
+          "email": "carlos.rodriguez@example.com",
+          "ocupacion": "Abogado",
+          "nacionalidad": "Argentina",
+          "calle": "Belgrano",
+          "numeroCalle": "890",
+          "departamento": "A",
+          "piso": "2",
+          "codigoPostal": "5000",
+          "localidad": "Córdoba",
+          "provincia": "Córdoba",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 10,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": "2025-11-12",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 10,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-12",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 204,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Laura",
+          "apellido": "Torres",
+          "telefono": "3428765432"
+        }
+      },
+      "titular": {
+        "apellido": "Torres",
+        "nombres": "Laura",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "44556677",
+        "cuit": "27-44556677-9",
+        "fechaNacimiento": "1991-04-22",
+        "caracteristica": "342",
+        "telefonoNumero": "8765432",
+        "email": "laura.torres@example.com",
+        "ocupacion": "Diseñadora",
+        "nacionalidad": "Argentina",
+        "calle": "San Jerónimo",
+        "numeroCalle": "890",
+        "departamento": "D",
+        "piso": "4",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "García",
+          "nombres": "Diego",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "33445566",
+          "cuit": "",
+          "fechaNacimiento": "1992-01-08",
+          "caracteristica": "342",
+          "telefonoNumero": "1234567",
+          "email": "diego.garcia@example.com",
+          "ocupacion": "Programador",
+          "nacionalidad": "Argentina",
+          "calle": "Primera Junta",
+          "numeroCalle": "2457",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 11,
+      "fechaCheckIn": "2025-11-20",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 11,
+        "fechaInicio": "2025-11-20",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 205,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Lucía",
+          "apellido": "Alvarez",
+          "telefono": "3515432109"
+        }
+      },
+      "titular": {
+        "apellido": "Alvarez",
+        "nombres": "Lucía",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "66554433",
+        "cuit": "27-66554433-1",
+        "fechaNacimiento": "1996-08-12",
+        "caracteristica": "351",
+        "telefonoNumero": "5432109",
+        "email": "lucia.alvarez@example.com",
+        "ocupacion": "Estudiante",
+        "nacionalidad": "Argentina",
+        "calle": "Entre Ríos",
+        "numeroCalle": "234",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "5000",
+        "localidad": "Córdoba",
+        "provincia": "Córdoba",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Ramírez",
+          "nombres": "Gabriel Ernesto",
+          "tipoDocumento": "LC",
+          "numeroDocumento": "55667788",
+          "cuit": "",
+          "fechaNacimiento": "1987-10-03",
+          "caracteristica": "342",
+          "telefonoNumero": "3456789",
+          "email": "gabriel.ramirez@example.com",
+          "ocupacion": "Ingeniero",
+          "nacionalidad": "Argentina",
+          "calle": "Córdoba",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 12,
+      "fechaCheckIn": "2025-11-08",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 12,
+        "fechaInicio": "2025-11-08",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 206,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Gabriel Ernesto",
+          "apellido": "Ramírez",
+          "telefono": "3423456789"
+        }
+      },
+      "titular": {
+        "apellido": "Ramírez",
+        "nombres": "Gabriel Ernesto",
+        "tipoDocumento": "LC",
+        "numeroDocumento": "55667788",
+        "cuit": "",
+        "fechaNacimiento": "1987-10-03",
+        "caracteristica": "342",
+        "telefonoNumero": "3456789",
+        "email": "gabriel.ramirez@example.com",
+        "ocupacion": "Ingeniero",
+        "nacionalidad": "Argentina",
+        "calle": "Córdoba",
+        "numeroCalle": "567",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Torres",
+          "nombres": "Laura",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "44556677",
+          "cuit": "27-44556677-9",
+          "fechaNacimiento": "1991-04-22",
+          "caracteristica": "342",
+          "telefonoNumero": "8765432",
+          "email": "laura.torres@example.com",
+          "ocupacion": "Diseñadora",
+          "nacionalidad": "Argentina",
+          "calle": "San Jerónimo",
+          "numeroCalle": "890",
+          "departamento": "D",
+          "piso": "4",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 13,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": "2025-11-17",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 13,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-17",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 208,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Paula Andrea",
+          "apellido": "Méndez",
+          "telefono": "1123456789"
+        }
+      },
+      "titular": {
+        "apellido": "Méndez",
+        "nombres": "Paula Andrea",
+        "tipoDocumento": "Pasaporte",
+        "numeroDocumento": "EF345678",
+        "cuit": "",
+        "fechaNacimiento": "1993-11-27",
+        "caracteristica": "11",
+        "telefonoNumero": "23456789",
+        "email": "paula.mendez@example.com",
+        "ocupacion": "Psicóloga",
+        "nacionalidad": "Uruguay",
+        "calle": "Sarmiento",
+        "numeroCalle": "123",
+        "departamento": "E",
+        "piso": "6",
+        "codigoPostal": "1041",
+        "localidad": "Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "González",
+          "nombres": "María Fernanda",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "87654321",
+          "cuit": "27-87654321-3",
+          "fechaNacimiento": "1990-03-20",
+          "caracteristica": "341",
+          "telefonoNumero": "4567890",
+          "email": "maria.gonzalez@example.com",
+          "ocupacion": "Médica",
+          "nacionalidad": "Argentina",
+          "calle": "San Martín",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 14,
+      "fechaCheckIn": "2025-11-26",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 14,
+        "fechaInicio": "2025-11-26",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 209,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Jorge Mario",
+          "apellido": "Domínguez",
+          "telefono": "3419876543"
+        }
+      },
+      "titular": {
+        "apellido": "Domínguez",
+        "nombres": "Jorge Mario",
+        "tipoDocumento": "LE",
+        "numeroDocumento": "77889911",
+        "cuit": "",
+        "fechaNacimiento": "1978-05-16",
+        "caracteristica": "341",
+        "telefonoNumero": "9876543",
+        "email": "jorge.dominguez@example.com",
+        "ocupacion": "Médico",
+        "nacionalidad": "Argentina",
+        "calle": "Urquiza",
+        "numeroCalle": "678",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "2000",
+        "localidad": "Rosario",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "González",
+          "nombres": "María Fernanda",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "87654321",
+          "cuit": "27-87654321-3",
+          "fechaNacimiento": "1990-03-20",
+          "caracteristica": "341",
+          "telefonoNumero": "4567890",
+          "email": "maria.gonzalez@example.com",
+          "ocupacion": "Médica",
+          "nacionalidad": "Argentina",
+          "calle": "San Martín",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 15,
+      "fechaCheckIn": "2025-11-10",
+      "fechaCheckOut": "2025-11-15",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 15,
+        "fechaInicio": "2025-11-10",
+        "fechaFin": "2025-11-15",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 210,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Natalia Marcela",
+          "apellido": "Vega",
+          "telefono": "3426543210"
+        }
+      },
+      "titular": {
+        "apellido": "Vega",
+        "nombres": "Natalia Marcela",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "99887766",
+        "cuit": "27-99887766-3",
+        "fechaNacimiento": "1989-02-19",
+        "caracteristica": "342",
+        "telefonoNumero": "6543210",
+        "email": "natalia.vega@example.com",
+        "ocupacion": "Abogada",
+        "nacionalidad": "Argentina",
+        "calle": "Estanislao López",
+        "numeroCalle": "432",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "García",
+          "nombres": "Diego",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "33445566",
+          "cuit": "",
+          "fechaNacimiento": "1992-01-08",
+          "caracteristica": "342",
+          "telefonoNumero": "1234567",
+          "email": "diego.garcia@example.com",
+          "ocupacion": "Programador",
+          "nacionalidad": "Argentina",
+          "calle": "Primera Junta",
+          "numeroCalle": "2457",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 16,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 16,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 211,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Esteban",
+          "apellido": "Castro",
+          "telefono": "3514321098"
+        }
+      },
+      "titular": {
+        "apellido": "Castro",
+        "nombres": "Esteban",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "23456789",
+        "cuit": "20-23456789-5",
+        "fechaNacimiento": "1994-07-07",
+        "caracteristica": "351",
+        "telefonoNumero": "4321098",
+        "email": "esteban.castro@example.com",
+        "ocupacion": "Chef",
+        "nacionalidad": "Argentina",
+        "calle": "Independencia",
+        "numeroCalle": "789",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "5000",
+        "localidad": "Córdoba",
+        "provincia": "Córdoba",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Rodríguez",
+          "nombres": "Carlos Alberto",
+          "tipoDocumento": "LC",
+          "numeroDocumento": "11223344",
+          "cuit": "",
+          "fechaNacimiento": "1975-11-10",
+          "caracteristica": "351",
+          "telefonoNumero": "2345678",
+          "email": "carlos.rodriguez@example.com",
+          "ocupacion": "Abogado",
+          "nacionalidad": "Argentina",
+          "calle": "Belgrano",
+          "numeroCalle": "890",
+          "departamento": "A",
+          "piso": "2",
+          "codigoPostal": "5000",
+          "localidad": "Córdoba",
+          "provincia": "Córdoba",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 17,
+      "fechaCheckIn": "2025-11-13",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 17,
+        "fechaInicio": "2025-11-13",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 212,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Camila Soledad",
+          "apellido": "Ruiz",
+          "telefono": "1187654321"
+        }
+      },
+      "titular": {
+        "apellido": "Ruiz",
+        "nombres": "Camila Soledad",
+        "tipoDocumento": "Pasaporte",
+        "numeroDocumento": "GH901234",
+        "cuit": "",
+        "fechaNacimiento": "1997-03-25",
+        "caracteristica": "11",
+        "telefonoNumero": "87654321",
+        "email": "camila.ruiz@example.com",
+        "ocupacion": "Estudiante",
+        "nacionalidad": "Colombia",
+        "calle": "Santa Fe",
+        "numeroCalle": "3456",
+        "departamento": "F",
+        "piso": "2",
+        "codigoPostal": "1425",
+        "localidad": "Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Martínez",
+          "nombres": "Luis Enrique",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "AB123456",
+          "cuit": "",
+          "fechaNacimiento": "1985-02-14",
+          "caracteristica": "11",
+          "telefonoNumero": "45678901",
+          "email": "luis.martinez@example.com",
+          "ocupacion": "Arquitecto",
+          "nacionalidad": "Brasil",
+          "calle": "Avenida Corrientes",
+          "numeroCalle": "1234",
+          "departamento": "B",
+          "piso": "3",
+          "codigoPostal": "1043",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 18,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": "2025-11-18",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 18,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-18",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 213,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Juan Martín",
+          "apellido": "Moreno",
+          "telefono": "3429876543"
+        }
+      },
+      "titular": {
+        "apellido": "Moreno",
+        "nombres": "Juan Martín",
+        "tipoDocumento": "LC",
+        "numeroDocumento": "44557788",
+        "cuit": "",
+        "fechaNacimiento": "1986-12-31",
+        "caracteristica": "342",
+        "telefonoNumero": "9876543",
+        "email": "juan.moreno@example.com",
+        "ocupacion": "Periodista",
+        "nacionalidad": "Argentina",
+        "calle": "Junín",
+        "numeroCalle": "567",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Ruiz",
+          "nombres": "Camila Soledad",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "GH901234",
+          "cuit": "",
+          "fechaNacimiento": "1997-03-25",
+          "caracteristica": "11",
+          "telefonoNumero": "87654321",
+          "email": "camila.ruiz@example.com",
+          "ocupacion": "Estudiante",
+          "nacionalidad": "Colombia",
+          "calle": "Santa Fe",
+          "numeroCalle": "3456",
+          "departamento": "F",
+          "piso": "2",
+          "codigoPostal": "1425",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 19,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": "2025-11-10",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 19,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-10",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 215,
+            "tipo": "DOBE",
+            "categoria": "",
+            "costoPorNoche": 70230
+          }
+        ],
+        "titular": {
+          "nombre": "Carolina Belén",
+          "apellido": "Flores",
+          "telefono": "3417654321"
+        }
+      },
+      "titular": {
+        "apellido": "Flores",
+        "nombres": "Carolina Belén",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "33221100",
+        "cuit": "27-33221100-7",
+        "fechaNacimiento": "1990-06-14",
+        "caracteristica": "341",
+        "telefonoNumero": "7654321",
+        "email": "carolina.flores@example.com",
+        "ocupacion": "Veterinaria",
+        "nacionalidad": "Argentina",
+        "calle": "San Luis",
+        "numeroCalle": "890",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "2000",
+        "localidad": "Rosario",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Torres",
+          "nombres": "Laura",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "44556677",
+          "cuit": "27-44556677-9",
+          "fechaNacimiento": "1991-04-22",
+          "caracteristica": "342",
+          "telefonoNumero": "8765432",
+          "email": "laura.torres@example.com",
+          "ocupacion": "Diseñadora",
+          "nacionalidad": "Argentina",
+          "calle": "San Jerónimo",
+          "numeroCalle": "890",
+          "departamento": "D",
+          "piso": "4",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 20,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": "2025-11-10",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 20,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-10",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 302,
+            "tipo": "DOBS",
+            "categoria": "",
+            "costoPorNoche": 90560
+          }
+        ],
+        "titular": {
+          "nombre": "Matías José",
+          "apellido": "Silva",
+          "telefono": "3428765432"
+        }
+      },
+      "titular": {
+        "apellido": "Silva",
+        "nombres": "Matías José",
+        "tipoDocumento": "LE",
+        "numeroDocumento": "66778899",
+        "cuit": "",
+        "fechaNacimiento": "1984-09-23",
+        "caracteristica": "342",
+        "telefonoNumero": "8765432",
+        "email": "matias.silva@example.com",
+        "ocupacion": "Contador",
+        "nacionalidad": "Argentina",
+        "calle": "3 de Febrero",
+        "numeroCalle": "234",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Rodríguez",
+          "nombres": "Carlos Alberto",
+          "tipoDocumento": "LC",
+          "numeroDocumento": "11223344",
+          "cuit": "",
+          "fechaNacimiento": "1975-11-10",
+          "caracteristica": "351",
+          "telefonoNumero": "2345678",
+          "email": "carlos.rodriguez@example.com",
+          "ocupacion": "Abogado",
+          "nacionalidad": "Argentina",
+          "calle": "Belgrano",
+          "numeroCalle": "890",
+          "departamento": "A",
+          "piso": "2",
+          "codigoPostal": "5000",
+          "localidad": "Córdoba",
+          "provincia": "Córdoba",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 21,
+      "fechaCheckIn": "2025-11-15",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 21,
+        "fechaInicio": "2025-11-15",
+        "fechaFin": "2025-11-22",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 303,
+            "tipo": "DOBS",
+            "categoria": "",
+            "costoPorNoche": 90560
+          }
+        ],
+        "titular": {
+          "nombre": "Juan Carlos",
+          "apellido": "Pérez",
+          "telefono": "3425986867"
+        }
+      },
+      "titular": {
+        "apellido": "Pérez",
+        "nombres": "Juan Carlos",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "12345678",
+        "cuit": "20-12345678-9",
+        "fechaNacimiento": "1980-05-15",
+        "caracteristica": "342",
+        "telefonoNumero": "5986867",
+        "email": "juancarlos.perez@example.com",
+        "ocupacion": "Ingeniero",
+        "nacionalidad": "Argentina",
+        "calle": "Av. Libertador",
+        "numeroCalle": "1234",
+        "departamento": "5B",
+        "piso": "5",
+        "codigoPostal": "1426",
+        "localidad": "Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Rodríguez",
+          "nombres": "Carlos Alberto",
+          "tipoDocumento": "LC",
+          "numeroDocumento": "11223344",
+          "cuit": "",
+          "fechaNacimiento": "1975-11-10",
+          "caracteristica": "351",
+          "telefonoNumero": "2345678",
+          "email": "carlos.rodriguez@example.com",
+          "ocupacion": "Abogado",
+          "nacionalidad": "Argentina",
+          "calle": "Belgrano",
+          "numeroCalle": "890",
+          "departamento": "A",
+          "piso": "2",
+          "codigoPostal": "5000",
+          "localidad": "Córdoba",
+          "provincia": "Córdoba",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 22,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 22,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 304,
+            "tipo": "DOBS",
+            "categoria": "",
+            "costoPorNoche": 90560
+          }
+        ],
+        "titular": {
+          "nombre": "María Fernanda",
+          "apellido": "González",
+          "telefono": "3414567890"
+        }
+      },
+      "titular": {
+        "apellido": "González",
+        "nombres": "María Fernanda",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "87654321",
+        "cuit": "27-87654321-3",
+        "fechaNacimiento": "1990-03-20",
+        "caracteristica": "341",
+        "telefonoNumero": "4567890",
+        "email": "maria.gonzalez@example.com",
+        "ocupacion": "Médica",
+        "nacionalidad": "Argentina",
+        "calle": "San Martín",
+        "numeroCalle": "567",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Méndez",
+          "nombres": "Paula Andrea",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "EF345678",
+          "cuit": "",
+          "fechaNacimiento": "1993-11-27",
+          "caracteristica": "11",
+          "telefonoNumero": "23456789",
+          "email": "paula.mendez@example.com",
+          "ocupacion": "Psicóloga",
+          "nacionalidad": "Uruguay",
+          "calle": "Sarmiento",
+          "numeroCalle": "123",
+          "departamento": "E",
+          "piso": "6",
+          "codigoPostal": "1041",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 23,
+      "fechaCheckIn": "2025-11-25",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 23,
+        "fechaInicio": "2025-11-25",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 306,
+            "tipo": "DOBS",
+            "categoria": "",
+            "costoPorNoche": 90560
+          }
+        ],
+        "titular": {
+          "nombre": "Carlos Alberto",
+          "apellido": "Rodríguez",
+          "telefono": "3512345678"
+        }
+      },
+      "titular": {
+        "apellido": "Rodríguez",
+        "nombres": "Carlos Alberto",
+        "tipoDocumento": "LC",
+        "numeroDocumento": "11223344",
+        "cuit": "",
+        "fechaNacimiento": "1975-11-10",
+        "caracteristica": "351",
+        "telefonoNumero": "2345678",
+        "email": "carlos.rodriguez@example.com",
+        "ocupacion": "Abogado",
+        "nacionalidad": "Argentina",
+        "calle": "Belgrano",
+        "numeroCalle": "890",
+        "departamento": "A",
+        "piso": "2",
+        "codigoPostal": "5000",
+        "localidad": "Córdoba",
+        "provincia": "Córdoba",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Fernández",
+          "nombres": "Sofía",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "98765432",
+          "cuit": "27-98765432-1",
+          "fechaNacimiento": "1995-09-30",
+          "caracteristica": "341",
+          "telefonoNumero": "7654321",
+          "email": "sofia.fernandez@example.com",
+          "ocupacion": "Estudiante",
+          "nacionalidad": "Argentina",
+          "calle": "25 de Mayo",
+          "numeroCalle": "789",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 24,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 24,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 307,
+            "tipo": "DOBS",
+            "categoria": "",
+            "costoPorNoche": 90560
+          }
+        ],
+        "titular": {
+          "nombre": "Ana María",
+          "apellido": "López",
+          "telefono": "3429876543"
+        }
+      },
+      "titular": {
+        "apellido": "López",
+        "nombres": "Ana María",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "55443322",
+        "cuit": "27-55443322-5",
+        "fechaNacimiento": "1988-07-25",
+        "caracteristica": "342",
+        "telefonoNumero": "9876543",
+        "email": "ana.lopez@example.com",
+        "ocupacion": "Contadora",
+        "nacionalidad": "Argentina",
+        "calle": "Mitre",
+        "numeroCalle": "345",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Rosario",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "González",
+          "nombres": "María Fernanda",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "87654321",
+          "cuit": "27-87654321-3",
+          "fechaNacimiento": "1990-03-20",
+          "caracteristica": "341",
+          "telefonoNumero": "4567890",
+          "email": "maria.gonzalez@example.com",
+          "ocupacion": "Médica",
+          "nacionalidad": "Argentina",
+          "calle": "San Martín",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 25,
+      "fechaCheckIn": "2025-11-11",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 25,
+        "fechaInicio": "2025-11-11",
+        "fechaFin": "2025-11-20",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 308,
+            "tipo": "DOBS",
+            "categoria": "",
+            "costoPorNoche": 90560
+          }
+        ],
+        "titular": {
+          "nombre": "Luis Enrique",
+          "apellido": "Martínez",
+          "telefono": "1145678901"
+        }
+      },
+      "titular": {
+        "apellido": "Martínez",
+        "nombres": "Luis Enrique",
+        "tipoDocumento": "Pasaporte",
+        "numeroDocumento": "AB123456",
+        "cuit": "",
+        "fechaNacimiento": "1985-02-14",
+        "caracteristica": "11",
+        "telefonoNumero": "45678901",
+        "email": "luis.martinez@example.com",
+        "ocupacion": "Arquitecto",
+        "nacionalidad": "Brasil",
+        "calle": "Avenida Corrientes",
+        "numeroCalle": "1234",
+        "departamento": "B",
+        "piso": "3",
+        "codigoPostal": "1043",
+        "localidad": "Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Pérez",
+          "nombres": "María Elena",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "CD789012",
+          "cuit": "",
+          "fechaNacimiento": "1970-12-05",
+          "caracteristica": "11",
+          "telefonoNumero": "98765432",
+          "email": "maria.elena.perez@example.com",
+          "ocupacion": "Profesora",
+          "nacionalidad": "Chile",
+          "calle": "Rivadavia",
+          "numeroCalle": "456",
+          "departamento": "C",
+          "piso": "1",
+          "codigoPostal": "1000",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 26,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 26,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 402,
+            "tipo": "FAM",
+            "categoria": "",
+            "costoPorNoche": 110500
+          }
+        ],
+        "titular": {
+          "nombre": "Sofía",
+          "apellido": "Fernández",
+          "telefono": "3417654321"
+        }
+      },
+      "titular": {
+        "apellido": "Fernández",
+        "nombres": "Sofía",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "98765432",
+        "cuit": "27-98765432-1",
+        "fechaNacimiento": "1995-09-30",
+        "caracteristica": "341",
+        "telefonoNumero": "7654321",
+        "email": "sofia.fernandez@example.com",
+        "ocupacion": "Estudiante",
+        "nacionalidad": "Argentina",
+        "calle": "25 de Mayo",
+        "numeroCalle": "789",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "García",
+          "nombres": "Diego",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "33445566",
+          "cuit": "",
+          "fechaNacimiento": "1992-01-08",
+          "caracteristica": "342",
+          "telefonoNumero": "1234567",
+          "email": "diego.garcia@example.com",
+          "ocupacion": "Programador",
+          "nacionalidad": "Argentina",
+          "calle": "Primera Junta",
+          "numeroCalle": "2457",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "Flores",
+          "nombres": "Carolina Belén",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "33221100",
+          "cuit": "27-33221100-7",
+          "fechaNacimiento": "1990-06-14",
+          "caracteristica": "341",
+          "telefonoNumero": "7654321",
+          "email": "carolina.flores@example.com",
+          "ocupacion": "Veterinaria",
+          "nacionalidad": "Argentina",
+          "calle": "San Luis",
+          "numeroCalle": "890",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "2000",
+          "localidad": "Rosario",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 27,
+      "fechaCheckIn": "2025-11-10",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 27,
+        "fechaInicio": "2025-11-10",
+        "fechaFin": "2025-11-20",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 403,
+            "tipo": "FAM",
+            "categoria": "",
+            "costoPorNoche": 110500
+          }
+        ],
+        "titular": {
+          "nombre": "Diego",
+          "apellido": "García",
+          "telefono": "3421234567"
+        }
+      },
+      "titular": {
+        "apellido": "García",
+        "nombres": "Diego",
+        "tipoDocumento": "LE",
+        "numeroDocumento": "33445566",
+        "cuit": "",
+        "fechaNacimiento": "1992-01-08",
+        "caracteristica": "342",
+        "telefonoNumero": "1234567",
+        "email": "diego.garcia@example.com",
+        "ocupacion": "Programador",
+        "nacionalidad": "Argentina",
+        "calle": "Primera Junta",
+        "numeroCalle": "2457",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Ruiz",
+          "nombres": "Camila Soledad",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "GH901234",
+          "cuit": "",
+          "fechaNacimiento": "1997-03-25",
+          "caracteristica": "11",
+          "telefonoNumero": "87654321",
+          "email": "camila.ruiz@example.com",
+          "ocupacion": "Estudiante",
+          "nacionalidad": "Colombia",
+          "calle": "Santa Fe",
+          "numeroCalle": "3456",
+          "departamento": "F",
+          "piso": "2",
+          "codigoPostal": "1425",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "Pérez",
+          "nombres": "María Elena",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "CD789012",
+          "cuit": "",
+          "fechaNacimiento": "1970-12-05",
+          "caracteristica": "11",
+          "telefonoNumero": "98765432",
+          "email": "maria.elena.perez@example.com",
+          "ocupacion": "Profesora",
+          "nacionalidad": "Chile",
+          "calle": "Rivadavia",
+          "numeroCalle": "456",
+          "departamento": "C",
+          "piso": "1",
+          "codigoPostal": "1000",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 28,
+      "fechaCheckIn": "2025-11-21",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 28,
+        "fechaInicio": "2025-11-21",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 404,
+            "tipo": "FAM",
+            "categoria": "",
+            "costoPorNoche": 110500
+          }
+        ],
+        "titular": {
+          "nombre": "María Elena",
+          "apellido": "Pérez",
+          "telefono": "1198765432"
+        }
+      },
+      "titular": {
+        "apellido": "Pérez",
+        "nombres": "María Elena",
+        "tipoDocumento": "Pasaporte",
+        "numeroDocumento": "CD789012",
+        "cuit": "",
+        "fechaNacimiento": "1970-12-05",
+        "caracteristica": "11",
+        "telefonoNumero": "98765432",
+        "email": "maria.elena.perez@example.com",
+        "ocupacion": "Profesora",
+        "nacionalidad": "Chile",
+        "calle": "Rivadavia",
+        "numeroCalle": "456",
+        "departamento": "C",
+        "piso": "1",
+        "codigoPostal": "1000",
+        "localidad": "Buenos Aires",
+        "provincia": "Buenos Aires",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Torres",
+          "nombres": "Laura",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "44556677",
+          "cuit": "27-44556677-9",
+          "fechaNacimiento": "1991-04-22",
+          "caracteristica": "342",
+          "telefonoNumero": "8765432",
+          "email": "laura.torres@example.com",
+          "ocupacion": "Diseñadora",
+          "nacionalidad": "Argentina",
+          "calle": "San Jerónimo",
+          "numeroCalle": "890",
+          "departamento": "D",
+          "piso": "4",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 29,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": "2025-11-12",
+      "estado": "Finalizada",
+      "reserva": {
+        "id": 29,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-12",
+        "estado": "Finalizada",
+        "habitaciones": [
+          {
+            "numero": 405,
+            "tipo": "FAM",
+            "categoria": "",
+            "costoPorNoche": 110500
+          }
+        ],
+        "titular": {
+          "nombre": "Roberto",
+          "apellido": "Sánchez",
+          "telefono": "3416543210"
+        }
+      },
+      "titular": {
+        "apellido": "Sánchez",
+        "nombres": "Roberto",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "22334455",
+        "cuit": "20-22334455-7",
+        "fechaNacimiento": "1983-06-18",
+        "caracteristica": "341",
+        "telefonoNumero": "6543210",
+        "email": "roberto.sanchez@example.com",
+        "ocupacion": "Comerciante",
+        "nacionalidad": "Argentina",
+        "calle": "Moreno",
+        "numeroCalle": "321",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "2000",
+        "localidad": "Rosario",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Martínez",
+          "nombres": "Luis Enrique",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "AB123456",
+          "cuit": "",
+          "fechaNacimiento": "1985-02-14",
+          "caracteristica": "11",
+          "telefonoNumero": "45678901",
+          "email": "luis.martinez@example.com",
+          "ocupacion": "Arquitecto",
+          "nacionalidad": "Brasil",
+          "calle": "Avenida Corrientes",
+          "numeroCalle": "1234",
+          "departamento": "B",
+          "piso": "3",
+          "codigoPostal": "1043",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "Ruiz",
+          "nombres": "Camila Soledad",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "GH901234",
+          "cuit": "",
+          "fechaNacimiento": "1997-03-25",
+          "caracteristica": "11",
+          "telefonoNumero": "87654321",
+          "email": "camila.ruiz@example.com",
+          "ocupacion": "Estudiante",
+          "nacionalidad": "Colombia",
+          "calle": "Santa Fe",
+          "numeroCalle": "3456",
+          "departamento": "F",
+          "piso": "2",
+          "codigoPostal": "1425",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 30,
+      "fechaCheckIn": "2025-11-14",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 30,
+        "fechaInicio": "2025-11-14",
+        "fechaFin": "2025-11-25",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 406,
+            "tipo": "FAM",
+            "categoria": "",
+            "costoPorNoche": 110500
+          }
+        ],
+        "titular": {
+          "nombre": "Laura",
+          "apellido": "Torres",
+          "telefono": "3428765432"
+        }
+      },
+      "titular": {
+        "apellido": "Torres",
+        "nombres": "Laura",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "44556677",
+        "cuit": "27-44556677-9",
+        "fechaNacimiento": "1991-04-22",
+        "caracteristica": "342",
+        "telefonoNumero": "8765432",
+        "email": "laura.torres@example.com",
+        "ocupacion": "Diseñadora",
+        "nacionalidad": "Argentina",
+        "calle": "San Jerónimo",
+        "numeroCalle": "890",
+        "departamento": "D",
+        "piso": "4",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "García",
+          "nombres": "Diego",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "33445566",
+          "cuit": "",
+          "fechaNacimiento": "1992-01-08",
+          "caracteristica": "342",
+          "telefonoNumero": "1234567",
+          "email": "diego.garcia@example.com",
+          "ocupacion": "Programador",
+          "nacionalidad": "Argentina",
+          "calle": "Primera Junta",
+          "numeroCalle": "2457",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "Silva",
+          "nombres": "Matías José",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "66778899",
+          "cuit": "",
+          "fechaNacimiento": "1984-09-23",
+          "caracteristica": "342",
+          "telefonoNumero": "8765432",
+          "email": "matias.silva@example.com",
+          "ocupacion": "Contador",
+          "nacionalidad": "Argentina",
+          "calle": "3 de Febrero",
+          "numeroCalle": "234",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "Pérez",
+          "nombres": "María Elena",
+          "tipoDocumento": "Pasaporte",
+          "numeroDocumento": "CD789012",
+          "cuit": "",
+          "fechaNacimiento": "1970-12-05",
+          "caracteristica": "11",
+          "telefonoNumero": "98765432",
+          "email": "maria.elena.perez@example.com",
+          "ocupacion": "Profesora",
+          "nacionalidad": "Chile",
+          "calle": "Rivadavia",
+          "numeroCalle": "456",
+          "departamento": "C",
+          "piso": "1",
+          "codigoPostal": "1000",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "Pérez",
+          "nombres": "Juan Carlos",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "12345678",
+          "cuit": "20-12345678-9",
+          "fechaNacimiento": "1980-05-15",
+          "caracteristica": "342",
+          "telefonoNumero": "5986867",
+          "email": "juancarlos.perez@example.com",
+          "ocupacion": "Ingeniero",
+          "nacionalidad": "Argentina",
+          "calle": "Av. Libertador",
+          "numeroCalle": "1234",
+          "departamento": "5B",
+          "piso": "5",
+          "codigoPostal": "1426",
+          "localidad": "Buenos Aires",
+          "provincia": "Buenos Aires",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 31,
+      "fechaCheckIn": "2025-11-03",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 31,
+        "fechaInicio": "2025-11-03",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 407,
+            "tipo": "FAM",
+            "categoria": "",
+            "costoPorNoche": 110500
+          }
+        ],
+        "titular": {
+          "nombre": "Lucía",
+          "apellido": "Alvarez",
+          "telefono": "3515432109"
+        }
+      },
+      "titular": {
+        "apellido": "Alvarez",
+        "nombres": "Lucía",
+        "tipoDocumento": "DNI",
+        "numeroDocumento": "66554433",
+        "cuit": "27-66554433-1",
+        "fechaNacimiento": "1996-08-12",
+        "caracteristica": "351",
+        "telefonoNumero": "5432109",
+        "email": "lucia.alvarez@example.com",
+        "ocupacion": "Estudiante",
+        "nacionalidad": "Argentina",
+        "calle": "Entre Ríos",
+        "numeroCalle": "234",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "5000",
+        "localidad": "Córdoba",
+        "provincia": "Córdoba",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Silva",
+          "nombres": "Matías José",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "66778899",
+          "cuit": "",
+          "fechaNacimiento": "1984-09-23",
+          "caracteristica": "342",
+          "telefonoNumero": "8765432",
+          "email": "matias.silva@example.com",
+          "ocupacion": "Contador",
+          "nacionalidad": "Argentina",
+          "calle": "3 de Febrero",
+          "numeroCalle": "234",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "López",
+          "nombres": "Ana María",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "55443322",
+          "cuit": "27-55443322-5",
+          "fechaNacimiento": "1988-07-25",
+          "caracteristica": "342",
+          "telefonoNumero": "9876543",
+          "email": "ana.lopez@example.com",
+          "ocupacion": "Contadora",
+          "nacionalidad": "Argentina",
+          "calle": "Mitre",
+          "numeroCalle": "345",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Rosario",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "Domínguez",
+          "nombres": "Jorge Mario",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "77889911",
+          "cuit": "",
+          "fechaNacimiento": "1978-05-16",
+          "caracteristica": "341",
+          "telefonoNumero": "9876543",
+          "email": "jorge.dominguez@example.com",
+          "ocupacion": "Médico",
+          "nacionalidad": "Argentina",
+          "calle": "Urquiza",
+          "numeroCalle": "678",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "2000",
+          "localidad": "Rosario",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    },
+    {
+      "id": 32,
+      "fechaCheckIn": "2025-11-24",
+      "fechaCheckOut": null,
+      "estado": "EnCurso",
+      "reserva": {
+        "id": 32,
+        "fechaInicio": "2025-11-24",
+        "fechaFin": "2025-11-30",
+        "estado": "Confirmada",
+        "habitaciones": [
+          {
+            "numero": 409,
+            "tipo": "FAM",
+            "categoria": "",
+            "costoPorNoche": 110500
+          }
+        ],
+        "titular": {
+          "nombre": "Gabriel Ernesto",
+          "apellido": "Ramírez",
+          "telefono": "3423456789"
+        }
+      },
+      "titular": {
+        "apellido": "Ramírez",
+        "nombres": "Gabriel Ernesto",
+        "tipoDocumento": "LC",
+        "numeroDocumento": "55667788",
+        "cuit": "",
+        "fechaNacimiento": "1987-10-03",
+        "caracteristica": "342",
+        "telefonoNumero": "3456789",
+        "email": "gabriel.ramirez@example.com",
+        "ocupacion": "Ingeniero",
+        "nacionalidad": "Argentina",
+        "calle": "Córdoba",
+        "numeroCalle": "567",
+        "departamento": "",
+        "piso": "",
+        "codigoPostal": "3000",
+        "localidad": "Santa Fe",
+        "provincia": "Santa Fe",
+        "pais": "Argentina"
+      },
+      "acompaniantes": [
+        {
+          "apellido": "Silva",
+          "nombres": "Matías José",
+          "tipoDocumento": "LE",
+          "numeroDocumento": "66778899",
+          "cuit": "",
+          "fechaNacimiento": "1984-09-23",
+          "caracteristica": "342",
+          "telefonoNumero": "8765432",
+          "email": "matias.silva@example.com",
+          "ocupacion": "Contador",
+          "nacionalidad": "Argentina",
+          "calle": "3 de Febrero",
+          "numeroCalle": "234",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "González",
+          "nombres": "María Fernanda",
+          "tipoDocumento": "DNI",
+          "numeroDocumento": "87654321",
+          "cuit": "27-87654321-3",
+          "fechaNacimiento": "1990-03-20",
+          "caracteristica": "341",
+          "telefonoNumero": "4567890",
+          "email": "maria.gonzalez@example.com",
+          "ocupacion": "Médica",
+          "nacionalidad": "Argentina",
+          "calle": "San Martín",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        },
+        {
+          "apellido": "Moreno",
+          "nombres": "Juan Martín",
+          "tipoDocumento": "LC",
+          "numeroDocumento": "44557788",
+          "cuit": "",
+          "fechaNacimiento": "1986-12-31",
+          "caracteristica": "342",
+          "telefonoNumero": "9876543",
+          "email": "juan.moreno@example.com",
+          "ocupacion": "Periodista",
+          "nacionalidad": "Argentina",
+          "calle": "Junín",
+          "numeroCalle": "567",
+          "departamento": "",
+          "piso": "",
+          "codigoPostal": "3000",
+          "localidad": "Santa Fe",
+          "provincia": "Santa Fe",
+          "pais": "Argentina"
+        }
+      ],
+      "consumos": []
+    }
+  ]
+}

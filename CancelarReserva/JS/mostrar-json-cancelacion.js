@@ -149,3 +149,6 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
     console.log('============================================');
 }
 
+
+
+

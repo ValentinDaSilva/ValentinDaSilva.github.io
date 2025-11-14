@@ -1,4 +1,4 @@
-import EstadoHabitacion from "./EstadoHabitacion.js";
+import { EstadoHabitacion } from "./Enums.js";
 
 class Habitacion {
   constructor(numero, tipo, categoria, costoPorNoche, estadoHabitacion = EstadoHabitacion.DISPONIBLE) {

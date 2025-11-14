@@ -1,5 +1,5 @@
 import Estadia from "./Estadia.js";
-import EstadoEstadia from "./EstadoEstadia.js";
+import { EstadoEstadia } from "./Enums.js";
 
 class GestorEstadia {
   constructor() { 
