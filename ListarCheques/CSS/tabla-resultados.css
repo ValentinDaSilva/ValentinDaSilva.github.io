@@ -61,9 +61,10 @@
 .contenedor-tabla-scroll {
   overflow: auto;
   border: 1px solid #ccc;
-  height: 65%;
+  height: 60%;
   position: relative;
   margin-bottom: 15px;
+  
 }
 
 .tabla-cheques {

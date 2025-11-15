@@ -141,7 +141,7 @@
       background-color: #388e3c;
     }
 
-    .volver {
+    .enlace-volver {
       position: absolute;
       bottom: 20px;
       left: 20px;
@@ -149,6 +149,14 @@
       font-size: 24px;
       color: #64443a;
       z-index: 2;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .enlace-volver:hover {
+      background-color: rgba(255, 255, 255, 1);
     }
 
     .datos-responsable {
@@ -177,7 +185,7 @@
   </style>
 </head>
 <body>
-  <a href="javascript:volverPaginaAnterior()" class="volver">&#8592; Volver</a>
+  <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
   
   <img src="assets/image/fondoAltaHuesped.webp" alt="Fondo" class="bg-image">
   

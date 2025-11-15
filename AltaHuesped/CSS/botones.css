@@ -84,15 +84,19 @@
 
 .enlace-volver {
     position: absolute;
-    top: 20px;
+    bottom: 20px;
     left: 20px;
     text-decoration: none;
     font-size: 24px;
     color: #64443a;
     z-index: 2;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
 }
 
 .enlace-volver:hover {
-    color: #49312a;
+    background-color: rgba(255, 255, 255, 1);
 }
 
