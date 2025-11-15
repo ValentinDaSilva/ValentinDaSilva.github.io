@@ -23,8 +23,6 @@ async function autenticarUsuario(nombreUsuario, contraseña) {
 function guardarSesion(usuario) {
     const sesion = {
         usuario: usuario.usuario,
-        nombre: usuario.nombre,
-        rol: usuario.rol,
         fechaInicio: new Date().toISOString()
     };
     localStorage.setItem('sesionActiva', JSON.stringify(sesion));
@@ -40,7 +38,7 @@ async function procesarAutenticacion(nombreUsuario, contraseña) {
     try {
         const usuario = await autenticarUsuario(nombreUsuario, contraseña);
         if (usuario) {
-            console.log(`Usuario autenticado: ${usuario.nombre} (${usuario.rol})`);
+            console.log(`Usuario autenticado: ${usuario.usuario}`);
             // Guardar sesión en localStorage
             guardarSesion(usuario);
             mostrarModalExito();

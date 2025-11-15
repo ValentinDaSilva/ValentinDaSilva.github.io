@@ -73,62 +73,53 @@ async function confirmarCancelacion() {
   }
   
   // Obtener las reservas seleccionadas en formato JSON con todos los datos de Reserva
+  // Usar directamente la estructura de la reserva tal como está en el JSON
   const reservasAEliminar = reservasSeleccionadas.map(reserva => {
-    // Extraer nombre y apellido del campo responsable (formato: "Apellido, Nombre")
-    let nombre = '';
-    let apellido = '';
-    if (reserva.responsable) {
-      const partes = reserva.responsable.split(',');
-      apellido = partes[0] ? partes[0].trim() : '';
-      nombre = partes[1] ? partes[1].trim() : '';
+    // Crear una copia profunda de la reserva para no modificar la original
+    const reservaCompleta = JSON.parse(JSON.stringify(reserva));
+    
+    // Asegurar que el titular tenga todos los campos necesarios (incluso si son null)
+    if (!reservaCompleta.titular) {
+      reservaCompleta.titular = {};
     }
-
-    // Determinar tipo de habitación según el número (misma lógica que tabla-resultados.js)
-    let tipoHabitacion = null;
-    if (reserva.numeroHabitacion) {
-      if (reserva.numeroHabitacion >= 101 && reserva.numeroHabitacion <= 115) tipoHabitacion = 'IND';
-      else if (reserva.numeroHabitacion >= 201 && reserva.numeroHabitacion <= 215) tipoHabitacion = 'DOBE';
-      else if (reserva.numeroHabitacion >= 302 && reserva.numeroHabitacion <= 308) tipoHabitacion = 'FAM';
-      else if (reserva.numeroHabitacion >= 402 && reserva.numeroHabitacion <= 409) tipoHabitacion = 'SUITE';
-    }
-
-    // Construir el objeto titular completo
+    
+    // Asegurar que todos los campos del titular estén presentes
     const titularCompleto = {
-      nombre: nombre,
-      apellido: apellido,
-      telefono: reserva.telefono || '',
-      tipoDocumento: reserva.titular?.tipoDocumento || null,
-      nroDocumento: reserva.titular?.nroDocumento || null,
-      fechaNacimiento: reserva.titular?.fechaNacimiento || null,
-      condicionIVA: reserva.titular?.condicionIVA || null,
-      ocupacion: reserva.titular?.ocupacion || null,
-      nacionalidad: reserva.titular?.nacionalidad || null,
-      cuit: reserva.titular?.cuit || null,
-      email: reserva.titular?.email || null
+      nombre: reservaCompleta.titular.nombre || '',
+      apellido: reservaCompleta.titular.apellido || '',
+      telefono: reservaCompleta.titular.telefono || '',
+      tipoDocumento: reservaCompleta.titular.tipoDocumento || null,
+      nroDocumento: reservaCompleta.titular.nroDocumento || null,
+      fechaNacimiento: reservaCompleta.titular.fechaNacimiento || null,
+      condicionIVA: reservaCompleta.titular.condicionIVA || null,
+      ocupacion: reservaCompleta.titular.ocupacion || null,
+      nacionalidad: reservaCompleta.titular.nacionalidad || null,
+      cuit: reservaCompleta.titular.cuit || null,
+      email: reservaCompleta.titular.email || null
     };
-
-    // Construir el array de habitaciones completo
-    const habitacionesCompletas = [{
-      numero: reserva.numeroHabitacion,
-      tipo: reserva.habitacion?.tipo || tipoHabitacion || null,
-      categoria: reserva.habitacion?.categoria || reserva.categoria || '',
-      costoPorNoche: reserva.habitacion?.costoPorNoche || reserva.costoPorNoche || null,
-      estadoHabitacion: reserva.habitacion?.estadoHabitacion || reserva.estadoHabitacion || null
-    }];
-
+    
+    // Asegurar que habitaciones sea un array y tenga todos los campos necesarios
+    if (!reservaCompleta.habitaciones || !Array.isArray(reservaCompleta.habitaciones)) {
+      reservaCompleta.habitaciones = [];
+    }
+    
+    // Asegurar que cada habitación tenga todos los campos
+    const habitacionesCompletas = reservaCompleta.habitaciones.map(habitacion => ({
+      numero: habitacion.numero || null,
+      tipo: habitacion.tipo || null,
+      categoria: habitacion.categoria || '',
+      costoPorNoche: habitacion.costoPorNoche || null,
+      estadoHabitacion: habitacion.estadoHabitacion || null
+    }));
+    
+    // Retornar la reserva con la estructura completa
     return {
-      id: reserva.id || null,
-      fechaInicio: reserva.desde,
-      fechaFin: reserva.hasta,
+      id: reservaCompleta.id || null,
+      fechaInicio: reservaCompleta.fechaInicio || reservaCompleta.desde || null,
+      fechaFin: reservaCompleta.fechaFin || reservaCompleta.hasta || null,
       titular: titularCompleto,
-      estado: reserva.estado || null,
-      habitaciones: habitacionesCompletas,
-      // Mantener campos legacy para compatibilidad
-      numeroHabitacion: reserva.numeroHabitacion,
-      desde: reserva.desde,
-      hasta: reserva.hasta,
-      responsable: reserva.responsable,
-      telefono: reserva.telefono
+      estado: reservaCompleta.estado || null,
+      habitaciones: habitacionesCompletas
     };
   });
   

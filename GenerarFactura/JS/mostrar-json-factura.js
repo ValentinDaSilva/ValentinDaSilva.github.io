@@ -33,13 +33,13 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
 
     // Crear título
     const titulo = document.createElement('h2');
-    titulo.textContent = '📋 Factura Generada (JSON)';
+    titulo.textContent = 'Datos a enviar al servidor backend';
     titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
     contenedorJSON.appendChild(titulo);
 
-    // Crear información adicional
+    // Crear información adicional (oculta - solo se muestra el JSON)
     const infoAdicional = document.createElement('div');
-    infoAdicional.style.cssText = 'margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
+    infoAdicional.style.cssText = 'display: none; margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
     infoAdicional.id = 'info-adicional-factura';
     contenedorJSON.appendChild(infoAdicional);
 
@@ -153,6 +153,8 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
   console.log('JSON formateado:', jsonFormateado);
   console.log('=======================');
 }
+
+
 
 
 

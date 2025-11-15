@@ -36,9 +36,17 @@ export function obtenerFacturas() {
  */
 export function obtenerFacturasPendientesPorHabitacion(numeroHabitacion) {
   return facturas.filter(factura => {
+    // Obtener número de habitación (puede estar en estadia.habitacion.numero)
     const habitacionFactura = factura.estadia?.habitacion?.numero;
-    const estadoPendiente = factura.estado === 'Pendiente';
-    return habitacionFactura === numeroHabitacion && estadoPendiente;
+    
+    // Verificar que la habitación coincida (comparar como números)
+    const habitacionCoincide = habitacionFactura === parseInt(numeroHabitacion) || habitacionFactura === numeroHabitacion;
+    
+    // Verificar estado pendiente (acepta diferentes formatos: "Pendiente", "PENDIENTE", etc.)
+    const estadoNormalizado = (factura.estado || '').toUpperCase().trim();
+    const estadoPendiente = estadoNormalizado === 'PENDIENTE';
+    
+    return habitacionCoincide && estadoPendiente;
   });
 }
 

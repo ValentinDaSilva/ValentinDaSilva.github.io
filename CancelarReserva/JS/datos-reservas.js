@@ -31,25 +31,51 @@ function obtenerReservas() {
 }
 
 /**
- * Extrae el apellido del campo responsable
- * @param {string} responsable - String en formato "Apellido, Nombre"
+ * Extrae el apellido del titular (nuevo formato) o del campo responsable (formato antiguo)
+ * @param {Object|string} reserva - Objeto reserva con titular o string responsable
  * @returns {string} - Apellido extraído
  */
-function extraerApellido(responsable) {
-  if (!responsable) return '';
-  const partes = responsable.split(',');
-  return partes[0] ? partes[0].trim().toUpperCase() : '';
+function extraerApellido(reserva) {
+  if (!reserva) return '';
+  // Nuevo formato: reserva.titular.apellido
+  if (typeof reserva === 'object' && reserva.titular && reserva.titular.apellido) {
+    return reserva.titular.apellido.toUpperCase();
+  }
+  // Formato antiguo: reserva.responsable (string "Apellido, Nombre")
+  if (typeof reserva === 'string') {
+    const partes = reserva.split(',');
+    return partes[0] ? partes[0].trim().toUpperCase() : '';
+  }
+  // Compatibilidad: si viene como objeto con responsable
+  if (typeof reserva === 'object' && reserva.responsable) {
+    const partes = reserva.responsable.split(',');
+    return partes[0] ? partes[0].trim().toUpperCase() : '';
+  }
+  return '';
 }
 
 /**
- * Extrae el nombre del campo responsable
- * @param {string} responsable - String en formato "Apellido, Nombre"
+ * Extrae el nombre del titular (nuevo formato) o del campo responsable (formato antiguo)
+ * @param {Object|string} reserva - Objeto reserva con titular o string responsable
  * @returns {string} - Nombre extraído
  */
-function extraerNombre(responsable) {
-  if (!responsable) return '';
-  const partes = responsable.split(',');
-  return partes[1] ? partes[1].trim().toUpperCase() : '';
+function extraerNombre(reserva) {
+  if (!reserva) return '';
+  // Nuevo formato: reserva.titular.nombre
+  if (typeof reserva === 'object' && reserva.titular && reserva.titular.nombre) {
+    return reserva.titular.nombre.toUpperCase();
+  }
+  // Formato antiguo: reserva.responsable (string "Apellido, Nombre")
+  if (typeof reserva === 'string') {
+    const partes = reserva.split(',');
+    return partes[1] ? partes[1].trim().toUpperCase() : '';
+  }
+  // Compatibilidad: si viene como objeto con responsable
+  if (typeof reserva === 'object' && reserva.responsable) {
+    const partes = reserva.responsable.split(',');
+    return partes[1] ? partes[1].trim().toUpperCase() : '';
+  }
+  return '';
 }
 
 /**

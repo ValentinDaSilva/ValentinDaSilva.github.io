@@ -1,20 +1,14 @@
 [
   {
-    "usuario": "ADMIN",
-    "contraseña": "ADMIN123",
-    "nombre": "ADMINISTRADOR",
-    "rol": "ADMINISTRADOR"
+    "usuario": "admin",
+    "contraseña": "admin123"
   },
   {
     "usuario": "RECEPCION",
-    "contraseña": "RECEPCION123",
-    "nombre": "RECEPCIONISTA",
-    "rol": "RECEPCIONISTA"
+    "contraseña": "RECEPCION123"
   },
   {
     "usuario": "GERENTE",
-    "contraseña": "GERENTE123",
-    "nombre": "GERENTE",
-    "rol": "GERENTE"
+    "contraseña": "GERENTE123"
   }
 ]

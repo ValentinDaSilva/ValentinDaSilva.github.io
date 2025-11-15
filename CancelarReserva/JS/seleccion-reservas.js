@@ -24,12 +24,26 @@ function toggleSeleccion(index) {
     }
   } else {
     // Buscar y eliminar la reserva del array
-    // Comparar por numeroHabitacion, desde y hasta para identificar únicamente
-    const indice = reservasSeleccionadas.findIndex(r => 
-      r.numeroHabitacion === reserva.numeroHabitacion && 
-      r.desde === reserva.desde &&
-      r.hasta === reserva.hasta
-    );
+    // Comparar por id para identificar únicamente (más confiable)
+    // Si no hay id, comparar por fechaInicio/fechaFin y primera habitación
+    const indice = reservasSeleccionadas.findIndex(r => {
+      // Si ambas tienen id, comparar por id
+      if (r.id && reserva.id) {
+        return r.id === reserva.id;
+      }
+      // Si no, comparar por fechas y habitación
+      const fechaInicioR = r.fechaInicio || r.desde;
+      const fechaFinR = r.fechaFin || r.hasta;
+      const fechaInicioReserva = reserva.fechaInicio || reserva.desde;
+      const fechaFinReserva = reserva.fechaFin || reserva.hasta;
+      
+      const habitacionR = (r.habitaciones && r.habitaciones[0]) ? r.habitaciones[0].numero : (r.numeroHabitacion || null);
+      const habitacionReserva = (reserva.habitaciones && reserva.habitaciones[0]) ? reserva.habitaciones[0].numero : (reserva.numeroHabitacion || null);
+      
+      return fechaInicioR === fechaInicioReserva && 
+             fechaFinR === fechaFinReserva && 
+             habitacionR === habitacionReserva;
+    });
     if (indice !== -1) {
       reservasSeleccionadas.splice(indice, 1);
     }

@@ -19,9 +19,11 @@ class GestorReserva {
   async _obtenerSiguienteId() {
     if (this._siguienteId === null) {
       const reservasExistentes = await this._leerReservasDesdeBD();
-      // El ID se genera basado en la cantidad de reservas existentes
-      // En un sistema real, debería buscar el máximo ID
-      this._siguienteId = reservasExistentes.length + 1;
+      // Buscar el máximo ID existente
+      const maxId = reservasExistentes.length > 0
+        ? Math.max(...reservasExistentes.map(r => r.id || 0))
+        : 0;
+      this._siguienteId = maxId + 1;
     }
     const id = this._siguienteId;
     this._siguienteId++; // Incrementar para la siguiente reserva
@@ -88,35 +90,15 @@ class GestorReserva {
    * @returns {Reserva} - Objeto Reserva de dominio
    */
   _convertirDTOAReserva(reservaDTO) {
-    // Convertir el titular DTO a Persona o Huesped
+    // Convertir el titular DTO a Persona (las reservas siempre usan Persona, no Huesped)
     let titular = null;
     if (reservaDTO.titular) {
-      // Si el titular tiene más campos, crear un Huesped completo
-      if (reservaDTO.titular.tipoDocumento) {
-        // Crear un Huesped sin dirección (las reservas no tienen dirección completa)
-        // Si se necesita la dirección, se debe buscar el huésped completo desde la BD
-        titular = new Huesped(
-          reservaDTO.titular.nombre,
-          reservaDTO.titular.apellido,
-          reservaDTO.titular.tipoDocumento,
-          reservaDTO.titular.nroDocumento,
-          reservaDTO.titular.fechaNacimiento || '2000-01-01',
-          reservaDTO.titular.ocupacion || '',
-          reservaDTO.titular.nacionalidad || '',
-          reservaDTO.titular.cuit || '',
-          reservaDTO.titular.email || '',
-          null, // dirección - no disponible en reservas
-          reservaDTO.titular.condicionIVA || null
-        );
-        titular.telefono = reservaDTO.titular.telefono || '';
-      } else {
-        // Crear una Persona básica solo con nombre, apellido y teléfono
-        titular = new Persona(
-          reservaDTO.titular.nombre,
-          reservaDTO.titular.apellido,
-          reservaDTO.titular.telefono || ''
-        );
-      }
+      // Las reservas siempre usan Persona, no Huesped
+      titular = new Persona(
+        reservaDTO.titular.nombre || '',
+        reservaDTO.titular.apellido || '',
+        reservaDTO.titular.telefono || ''
+      );
     }
 
     // Convertir habitaciones DTO a Habitacion
@@ -146,7 +128,7 @@ class GestorReserva {
 
   /**
    * Lee las reservas desde el archivo JSON (base de datos)
-   * @returns {Promise<Array>} - Array de objetos ReservaDTO
+   * @returns {Promise<Array>} - Array de objetos en formato JSON (nuevo formato)
    */
   async _leerReservasDesdeBD() {
     try {
@@ -155,6 +137,7 @@ class GestorReserva {
         throw new Error(`Error al leer reservas: ${respuesta.status}`);
       }
       const datos = await respuesta.json();
+      // Retornar las reservas en el nuevo formato (ya vienen en el formato correcto)
       return datos.reservas || [];
     } catch (error) {
       console.error('Error al leer reservas desde BD:', error);
@@ -172,45 +155,34 @@ class GestorReserva {
       // Leer todas las reservas existentes
       const reservasExistentes = await this._leerReservasDesdeBD();
       
-      // Convertir el formato nuevo al formato antiguo del JSON para compatibilidad
-      // Si hay múltiples habitaciones, crear una entrada por cada habitación
-      const reservasFormatoJSON = [];
-      
-      if (reservaDTO.habitaciones && reservaDTO.habitaciones.length > 0) {
-        // Crear una entrada por cada habitación
-        reservaDTO.habitaciones.forEach(habitacion => {
-          reservasFormatoJSON.push({
-            numeroHabitacion: habitacion.numero,
-            desde: reservaDTO.fechaInicio,
-            hasta: reservaDTO.fechaFin,
-            responsable: reservaDTO.titular 
-              ? `${reservaDTO.titular.apellido || ''}, ${reservaDTO.titular.nombre || ''}`.trim()
-              : '',
-            telefono: reservaDTO.titular ? reservaDTO.titular.telefono || '' : ''
-          });
-        });
-      } else {
-        // Si no hay habitaciones, crear una entrada básica
-        reservasFormatoJSON.push({
-          numeroHabitacion: null,
-          desde: reservaDTO.fechaInicio,
-          hasta: reservaDTO.fechaFin,
-          responsable: reservaDTO.titular 
-            ? `${reservaDTO.titular.apellido || ''}, ${reservaDTO.titular.nombre || ''}`.trim()
-            : '',
+      // Convertir ReservaDTO al formato JSON del nuevo formato
+      const reservaJSON = {
+        id: reservaDTO.id,
+        fechaInicio: reservaDTO.fechaInicio,
+        fechaFin: reservaDTO.fechaFin,
+        titular: {
+          nombre: reservaDTO.titular ? reservaDTO.titular.nombre || '' : '',
+          apellido: reservaDTO.titular ? reservaDTO.titular.apellido || '' : '',
           telefono: reservaDTO.titular ? reservaDTO.titular.telefono || '' : ''
-        });
-      }
+        },
+        estado: reservaDTO.estado || 'Pendiente',
+        habitaciones: (reservaDTO.habitaciones || []).map(hab => ({
+          numero: hab.numero,
+          tipo: hab.tipo || '',
+          categoria: hab.categoria || '',
+          costoPorNoche: hab.costoPorNoche || hab.costoNoche || 0,
+          estadoHabitacion: hab.estadoHabitacion || 'Disponible'
+        }))
+      };
 
-      // Agregar las nuevas reservas
-      reservasExistentes.push(...reservasFormatoJSON);
+      // Agregar la nueva reserva
+      reservasExistentes.push(reservaJSON);
 
       // Guardar en el archivo JSON
       // Nota: En un entorno real, esto se haría con una llamada al servidor
       // Por ahora, solo simulamos el guardado
       console.log('=== FORMATO FINAL PARA JSON ===');
-      console.log('Entradas a agregar al JSON (una por cada habitación):', reservasFormatoJSON);
-      console.log('Total de entradas:', reservasFormatoJSON.length);
+      console.log('Reserva a agregar al JSON:', reservaJSON);
       console.log('==============================');
       
       // TODO: Implementar guardado real cuando se tenga acceso al servidor

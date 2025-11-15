@@ -38,12 +38,6 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
         titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #d32f2f; padding-bottom: 10px;';
         contenedorJSON.appendChild(titulo);
 
-        // Crear información adicional
-        const infoAdicional = document.createElement('div');
-        infoAdicional.style.cssText = 'margin-bottom: 15px; padding: 10px; background: #ffe7e7; border-radius: 4px; font-size: 14px;';
-        infoAdicional.id = 'info-adicional-cancelacion';
-        contenedorJSON.appendChild(infoAdicional);
-
         // Crear área de texto con el JSON
         const textarea = document.createElement('textarea');
         textarea.id = 'json-display-cancelacion';
@@ -102,17 +96,6 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
 
     // Formatear el JSON con indentación
     const jsonFormateado = JSON.stringify(reservasAEliminar, null, 2);
-    
-    // Actualizar información adicional
-    const infoAdicional = document.getElementById('info-adicional-cancelacion');
-    if (infoAdicional) {
-        infoAdicional.innerHTML = `
-            <strong>Información de la Cancelación:</strong><br>
-            • <strong>Reservas a eliminar:</strong> ${reservasAEliminar.length}<br>
-            • <strong>Acción:</strong> Estas reservas serán eliminadas de la base de datos<br>
-            • <strong>Formato:</strong> JSON que se eliminará del archivo reservas.json
-        `;
-    }
     
     // Mostrar en el textarea
     const textarea = document.getElementById('json-display-cancelacion');

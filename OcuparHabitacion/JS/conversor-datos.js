@@ -43,26 +43,39 @@ function compararFechas(fecha1, fecha2) {
 
 /**
  * Convierte una reserva del JSON a un objeto Reserva de dominio
- * @param {Object} reservaJSON - Objeto reserva del JSON
- * @param {number} idReserva - ID de la reserva (se genera si no existe en el JSON)
- * @param {Array} habitacionesData - Array de habitaciones cargadas desde el JSON
+ * @param {Object} reservaJSON - Objeto reserva del JSON (nuevo formato)
+ * @param {number} idReserva - ID de la reserva (se usa el del JSON si existe)
+ * @param {Array} habitacionesData - Array de habitaciones cargadas desde el JSON (opcional, ya vienen en reservaJSON)
  * @returns {Reserva} - Objeto Reserva de dominio
  */
 export function convertirReservaJSONADominio(reservaJSON, idReserva, habitacionesData = []) {
-  // Crear el titular como Persona básica
-  const nombreCompleto = reservaJSON.responsable || '';
-  const partesNombre = nombreCompleto.split(',').map(s => s.trim());
-  const apellido = partesNombre[0] || '';
-  const nombre = partesNombre[1] || '';
+  // Usar el ID del JSON si existe, sino el proporcionado
+  const id = reservaJSON.id || idReserva;
   
-  const titular = new Persona(nombre, apellido, reservaJSON.telefono || '');
+  // Crear el titular como Persona básica (nuevo formato)
+  const titular = new Persona(
+    reservaJSON.titular?.nombre || '',
+    reservaJSON.titular?.apellido || '',
+    reservaJSON.titular?.telefono || ''
+  );
   
-  // Buscar la habitación en los datos cargados
-  let habitacion = null;
-  if (habitacionesData && habitacionesData.length > 0) {
-    const habitacionData = habitacionesData.find(h => h.numero === reservaJSON.numeroHabitacion);
+  // Convertir las habitaciones del nuevo formato
+  const habitaciones = (reservaJSON.habitaciones || []).map(habJSON => {
+    // Si ya tenemos los datos completos en el JSON, usarlos
+    if (habJSON.tipo && habJSON.costoPorNoche !== undefined) {
+      return new Habitacion(
+        habJSON.numero,
+        habJSON.tipo,
+        habJSON.categoria || '',
+        habJSON.costoPorNoche,
+        habJSON.estadoHabitacion === 'Disponible' ? EstadoHabitacion.DISPONIBLE : EstadoHabitacion.OCUPADA
+      );
+    }
+    
+    // Si no, buscar en habitacionesData
+    const habitacionData = habitacionesData.find(h => h.numero === habJSON.numero);
     if (habitacionData) {
-      habitacion = new Habitacion(
+      return new Habitacion(
         habitacionData.numero,
         habitacionData.tipo,
         habitacionData.categoria || '',
@@ -70,29 +83,35 @@ export function convertirReservaJSONADominio(reservaJSON, idReserva, habitacione
         EstadoHabitacion.DISPONIBLE
       );
     }
-  }
-  
-  // Si no se encontró la habitación, crear una básica
-  if (!habitacion) {
-    habitacion = new Habitacion(
-      reservaJSON.numeroHabitacion,
+    
+    // Si no se encontró, crear una básica
+    return new Habitacion(
+      habJSON.numero,
       'IND', // Tipo por defecto
       '',
       0,
       EstadoHabitacion.DISPONIBLE
     );
+  });
+  
+  // Convertir estado
+  let estado = EstadoReserva.PENDIENTE;
+  if (reservaJSON.estado === 'Confirmada') {
+    estado = EstadoReserva.CONFIRMADA;
+  } else if (reservaJSON.estado === 'Cancelada') {
+    estado = EstadoReserva.CANCELADA;
   }
   
   // Crear la reserva
   const reserva = new Reserva(
-    idReserva,
-    reservaJSON.desde,
-    reservaJSON.hasta,
+    id,
+    reservaJSON.fechaInicio || reservaJSON.desde, // Compatibilidad con formato antiguo
+    reservaJSON.fechaFin || reservaJSON.hasta,   // Compatibilidad con formato antiguo
     titular,
-    EstadoReserva.PENDIENTE
+    estado
   );
   
-  reserva.habitaciones = [habitacion];
+  reserva.habitaciones = habitaciones.length > 0 ? habitaciones : [];
   
   return reserva;
 }
@@ -148,7 +167,7 @@ export function convertirHuespedJSONADominio(huespedJSON) {
 /**
  * Busca reservas que coincidan con las habitaciones seleccionadas
  * @param {Array} habitacionesSeleccionadas - Array de objetos { habitacion: string, fechaDesde: string, fechaHasta: string }
- * @param {Array} reservasJSON - Array de reservas del JSON
+ * @param {Array} reservasJSON - Array de reservas del JSON (nuevo formato)
  * @returns {Array} - Array de reservas que coinciden
  */
 export function buscarReservasParaHabitaciones(habitacionesSeleccionadas, reservasJSON) {
@@ -161,13 +180,17 @@ export function buscarReservasParaHabitaciones(habitacionesSeleccionadas, reserv
     
     // Buscar reservas que coincidan con esta habitación y fechas
     const reservasEncontradas = reservasJSON.filter(reserva => {
-      if (reserva.numeroHabitacion !== numeroHabitacion) {
+      // Verificar si alguna habitación de la reserva coincide
+      const habitacionesReserva = reserva.habitaciones || [];
+      const tieneHabitacion = habitacionesReserva.some(hab => hab.numero === numeroHabitacion);
+      
+      if (!tieneHabitacion) {
         return false;
       }
       
-      // Verificar si las fechas se solapan
-      const reservaDesde = reserva.desde;
-      const reservaHasta = reserva.hasta;
+      // Verificar si las fechas se solapan (nuevo formato usa fechaInicio/fechaFin)
+      const reservaDesde = reserva.fechaInicio || reserva.desde; // Compatibilidad con formato antiguo
+      const reservaHasta = reserva.fechaFin || reserva.hasta;     // Compatibilidad con formato antiguo
       const seleccionDesde = seleccion.fechaDesde;
       const seleccionHasta = seleccion.fechaHasta;
       
@@ -185,14 +208,14 @@ export function buscarReservasParaHabitaciones(habitacionesSeleccionadas, reserv
     reservasCoincidentes.push(...reservasEncontradas);
   });
   
-  // Eliminar duplicados (mismo numeroHabitacion, desde, hasta)
+  // Eliminar duplicados (mismo id)
   const reservasUnicas = [];
-  const claves = new Set();
+  const idsVistos = new Set();
   
   reservasCoincidentes.forEach(reserva => {
-    const clave = `${reserva.numeroHabitacion}-${reserva.desde}-${reserva.hasta}`;
-    if (!claves.has(clave)) {
-      claves.add(clave);
+    const id = reserva.id || `${reserva.numeroHabitacion || ''}-${reserva.fechaInicio || reserva.desde || ''}-${reserva.fechaFin || reserva.hasta || ''}`;
+    if (!idsVistos.has(id)) {
+      idsVistos.add(id);
       reservasUnicas.push(reserva);
     }
   });

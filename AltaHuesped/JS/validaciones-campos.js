@@ -308,10 +308,9 @@ function validarNumeroCalle(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'El número es requerido' };
     }
-    // Permite números con letras opcionales (ej: 123, 123A, 123B)
-    const regex = /^[0-9]+[A-Za-z]?$/;
-    if (!regex.test(valor.trim())) {
-        return { valido: false, mensaje: 'El número debe ser válido (ej: 123 o 123A)' };
+    // Solo permite números
+    if (!esSoloNumeros(valor.trim())) {
+        return { valido: false, mensaje: 'El número solo puede contener números' };
     }
     return { valido: true, mensaje: '' };
 }

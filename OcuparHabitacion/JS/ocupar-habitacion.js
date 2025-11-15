@@ -116,12 +116,31 @@ function mostrarSelectorReservas(reservasCoincidentes) {
   const tbody = document.createElement('tbody');
   reservasCoincidentes.forEach((reserva, index) => {
     const fila = document.createElement('tr');
+    
+    // Nuevo formato: obtener datos de habitaciones y titular
+    const habitaciones = reserva.habitaciones || [];
+    const primeraHabitacion = habitaciones.length > 0 ? habitaciones[0] : null;
+    const numeroHabitacion = primeraHabitacion ? primeraHabitacion.numero : (reserva.numeroHabitacion || 'N/A');
+    const tipoHabitacion = primeraHabitacion ? primeraHabitacion.tipo : '';
+    
+    // Fechas: nuevo formato usa fechaInicio/fechaFin, antiguo usa desde/hasta
+    const fechaDesde = reserva.fechaInicio || reserva.desde;
+    const fechaHasta = reserva.fechaFin || reserva.hasta;
+    
+    // Titular: nuevo formato tiene titular como objeto, antiguo tiene responsable como string
+    const nombreTitular = reserva.titular 
+      ? `${reserva.titular.apellido || ''}, ${reserva.titular.nombre || ''}`.trim()
+      : (reserva.responsable || '');
+    const telefonoTitular = reserva.titular 
+      ? (reserva.titular.telefono || '')
+      : (reserva.telefono || '');
+    
     fila.innerHTML = `
-      <td style="padding: 10px; border: 1px solid #ddd;">${reserva.numeroHabitacion}</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">${reserva.desde}</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">${reserva.hasta}</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">${reserva.responsable || ''}</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">${reserva.telefono || ''}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${tipoHabitacion}-${numeroHabitacion}${habitaciones.length > 1 ? ` (+${habitaciones.length - 1})` : ''}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${fechaDesde}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${fechaHasta}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${nombreTitular}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${telefonoTitular}</td>
       <td style="padding: 10px; border: 1px solid #ddd;">
         <button class="btn-seleccionar-reserva" data-index="${index}" style="padding: 5px 10px; cursor: pointer;">Seleccionar</button>
       </td>
@@ -337,9 +356,8 @@ async function crearEstadia() {
     const habitacionesData = obtenerHabitaciones();
     
     // Convertir la reserva JSON a objeto Reserva de dominio
-    // Generar un ID temporal para la reserva (en producción, el ID debería venir del JSON)
-    const reservasJSON = obtenerReservas();
-    const idReserva = reservasJSON.indexOf(reservaSeleccionada) + 1;
+    // El ID viene directamente del JSON en el nuevo formato
+    const idReserva = reservaSeleccionada.id || (obtenerReservas().indexOf(reservaSeleccionada) + 1);
     const reserva = convertirReservaJSONADominio(reservaSeleccionada, idReserva, habitacionesData);
     
     // Convertir el titular JSON a objeto Huesped de dominio
@@ -350,9 +368,9 @@ async function crearEstadia() {
       convertirHuespedJSONADominio(acompJSON)
     );
     
-    // Obtener las fechas de la reserva para el check-in
-    const fechaCheckIn = reservaSeleccionada.desde;
-    const fechaCheckOut = reservaSeleccionada.hasta;
+    // Obtener las fechas de la reserva para el check-in (nuevo formato usa fechaInicio/fechaFin)
+    const fechaCheckIn = reservaSeleccionada.fechaInicio || reservaSeleccionada.desde;
+    const fechaCheckOut = reservaSeleccionada.fechaFin || reservaSeleccionada.hasta;
     
     // Crear el gestor de estadías
     const gestorEstadia = new GestorEstadia();

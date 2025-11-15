@@ -21,8 +21,8 @@ async function buscarReservas() {
 
   // Filtrar resultados con criterio "empieza con"
   reservasFiltradas = todasLasReservas.filter(reserva => {
-    const apellidoReserva = extraerApellido(reserva.responsable);
-    const nombresReserva = extraerNombre(reserva.responsable);
+    const apellidoReserva = extraerApellido(reserva);
+    const nombresReserva = extraerNombre(reserva);
     
     const cumpleApellido = apellidoReserva.startsWith(apellido);
     const cumpleNombres = !nombres || nombresReserva.startsWith(nombres);

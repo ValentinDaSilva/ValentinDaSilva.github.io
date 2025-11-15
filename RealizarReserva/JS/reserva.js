@@ -220,8 +220,24 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
       const reservaDTO = gestorReserva._convertirReservaADTO(reserva);
 
       // Convertir al formato JSON que se enviará a la base de datos
-      // Pasar las fechas individuales de cada habitación
+      // Crear una reserva separada por cada habitación
       const jsonParaBD = convertirReservaDTOAJSONConFechasIndividuales(habitacionesConFechas, reservaDTO);
+
+      // Obtener IDs únicos para cada reserva (una por cada habitación)
+      // El primer ID ya lo tenemos, ahora generamos los siguientes
+      const idsReservas = [];
+      let idActual = siguienteId;
+      for (let i = 0; i < jsonParaBD.length; i++) {
+        idsReservas.push(idActual);
+        if (i < jsonParaBD.length - 1) {
+          idActual = await gestorReserva._obtenerSiguienteId();
+        }
+      }
+      
+      // Asignar los IDs a cada reserva
+      jsonParaBD.forEach((reserva, index) => {
+        reserva.id = idsReservas[index];
+      });
 
       // Mostrar el JSON en pantalla antes de guardar
       // Pasar una función callback para mostrar el modal de éxito cuando se cierre el JSON
@@ -230,7 +246,7 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
         mostrarModalExitoReserva(nombre, apellido, contenedor);
       });
 
-      // Guardar la reserva en la base de datos usando las fechas individuales
+      // Guardar las reservas en la base de datos (una reserva por cada habitación)
       await guardarReservaConFechasIndividuales(jsonParaBD);
       
       // Actualizar el siguiente ID en el gestor para mantener consistencia

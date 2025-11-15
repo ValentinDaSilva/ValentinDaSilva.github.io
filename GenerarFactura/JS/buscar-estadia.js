@@ -9,6 +9,42 @@ const EstadoEstadia = {
 };
 
 /**
+ * Compara dos fechas en formato YYYY-MM-DD
+ * @param {string} fecha1 - Primera fecha en formato YYYY-MM-DD
+ * @param {string} fecha2 - Segunda fecha en formato YYYY-MM-DD
+ * @returns {number} - Negativo si fecha1 < fecha2, 0 si son iguales, positivo si fecha1 > fecha2
+ */
+function compararFechas(fecha1, fecha2) {
+  if (!fecha1 || !fecha2) return 0;
+  const partes1 = fecha1.split('-').map(Number);
+  const partes2 = fecha2.split('-').map(Number);
+  
+  if (partes1[0] !== partes2[0]) return partes1[0] - partes2[0];
+  if (partes1[1] !== partes2[1]) return partes1[1] - partes2[1];
+  return partes1[2] - partes2[2];
+}
+
+/**
+ * Normaliza el estado de estadía para comparación (case-insensitive, sin espacios)
+ * @param {string} estado - Estado a normalizar
+ * @returns {string} - Estado normalizado
+ */
+function normalizarEstado(estado) {
+  if (!estado) return '';
+  return estado.toUpperCase().replace(/\s+/g, '');
+}
+
+/**
+ * Verifica si una estadía está en curso
+ * @param {string} estado - Estado de la estadía
+ * @returns {boolean} - true si está en curso
+ */
+function estaEnCurso(estado) {
+  const estadoNormalizado = normalizarEstado(estado);
+  return estadoNormalizado === 'ENCURSO' || estadoNormalizado === 'EN_CURSO' || estadoNormalizado === 'EN CURSO';
+}
+
+/**
  * Obtiene la fecha actual en formato YYYY-MM-DD
  * @returns {string} - Fecha actual
  */
@@ -36,22 +72,40 @@ async function buscarEstadiaPorHabitacion(numeroHabitacion) {
     const estadias = datos.estadias || [];
     const fechaActual = obtenerFechaActual();
     
+    console.log('Buscando estadía para habitación:', numeroHabitacion);
+    console.log('Fecha actual:', fechaActual);
+    console.log('Total de estadías:', estadias.length);
+    
     // Buscar estadía que:
     // 1. Tenga la habitación buscada
-    // 2. Esté en estado EnCurso (EstadoEstadia.EN_CURSO)
+    // 2. Esté en estado EnCurso (diferentes formatos posibles)
     // 3. La fecha de check-in sea menor o igual a la fecha actual
     // 4. La fecha de check-out sea null o mayor o igual a la fecha actual
     const estadiaEncontrada = estadias.find(estadia => {
-      const tieneHabitacion = estadia.reserva?.habitaciones?.some(
+      // Verificar si tiene la habitación buscada
+      const habitaciones = estadia.reserva?.habitaciones || [];
+      const tieneHabitacion = habitaciones.some(
         hab => hab.numero === parseInt(numeroHabitacion)
       );
       
-      const estaEnCurso = estadia.estado === EstadoEstadia.EN_CURSO;
+      if (!tieneHabitacion) {
+        return false;
+      }
       
-      const fechaCheckInValida = estadia.fechaCheckIn && estadia.fechaCheckIn <= fechaActual;
-      const fechaCheckOutValida = !estadia.fechaCheckOut || estadia.fechaCheckOut >= fechaActual;
+      // Verificar estado (acepta diferentes formatos: "ENCURSO", "EnCurso", "En Curso", etc.)
+      const estaEnCursoEstado = estaEnCurso(estadia.estado);
       
-      return tieneHabitacion && estaEnCurso && fechaCheckInValida && fechaCheckOutValida;
+      // Verificar fechas usando comparación correcta
+      const fechaCheckInValida = estadia.fechaCheckIn && compararFechas(estadia.fechaCheckIn, fechaActual) <= 0;
+      const fechaCheckOutValida = !estadia.fechaCheckOut || compararFechas(estadia.fechaCheckOut, fechaActual) >= 0;
+      
+      const encontrada = estaEnCursoEstado && fechaCheckInValida && fechaCheckOutValida;
+      
+      if (encontrada) {
+        console.log('Estadía encontrada:', estadia);
+      }
+      
+      return encontrada;
     });
     
     if (estadiaEncontrada) {
@@ -59,6 +113,7 @@ async function buscarEstadiaPorHabitacion(numeroHabitacion) {
       return estadiaEncontrada;
     }
     
+    console.log('No se encontró estadía en curso para la habitación:', numeroHabitacion);
     return null;
   } catch (error) {
     console.error('Error al buscar estadía:', error);

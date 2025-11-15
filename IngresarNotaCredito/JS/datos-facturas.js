@@ -38,9 +38,13 @@ export function obtenerFacturasNoAnuladasPorResponsable(dniCuit) {
   // Normalizar el DNI/CUIT (remover guiones y espacios)
   const dniCuitNormalizado = dniCuit.replace(/[-\s]/g, '');
   
+  console.log('Buscando facturas para DNI/CUIT:', dniCuitNormalizado);
+  console.log('Total de facturas cargadas:', facturas.length);
+  
   return facturas.filter(factura => {
-    // Verificar que no esté anulada
-    if (factura.estado === 'Anulada') {
+    // Verificar que no esté anulada (acepta diferentes formatos: "Anulada", "ANULADA", etc.)
+    const estadoNormalizado = (factura.estado || '').toUpperCase().trim();
+    if (estadoNormalizado === 'ANULADA') {
       return false;
     }
     
@@ -50,17 +54,28 @@ export function obtenerFacturasNoAnuladasPorResponsable(dniCuit) {
       return false;
     }
     
+    // Normalizar el tipo del responsable (case-insensitive)
+    const tipoNormalizado = (responsable.tipo || '').toUpperCase().trim();
+    
     // Si es un tercero (empresa)
-    if (responsable.tipo === 'tercero') {
+    if (tipoNormalizado === 'TERCERO') {
       const responsableCuitNormalizado = (responsable.cuit || '').replace(/[-\s]/g, '');
-      return responsableCuitNormalizado === dniCuitNormalizado;
+      const coincide = responsableCuitNormalizado === dniCuitNormalizado;
+      if (coincide) {
+        console.log('Factura encontrada (tercero):', factura.id);
+      }
+      return coincide;
     }
     
-    // Si es un huésped
-    if (responsable.tipo === 'huesped') {
+    // Si es un huésped (acepta "HUESPED", "huesped", "Huesped", etc.)
+    if (tipoNormalizado === 'HUESPED') {
       const documentoNormalizado = (responsable.documento || '').replace(/[-\s]/g, '');
       const cuitNormalizado = (responsable.cuit || '').replace(/[-\s]/g, '');
-      return documentoNormalizado === dniCuitNormalizado || cuitNormalizado === dniCuitNormalizado;
+      const coincide = documentoNormalizado === dniCuitNormalizado || cuitNormalizado === dniCuitNormalizado;
+      if (coincide) {
+        console.log('Factura encontrada (huésped):', factura.id);
+      }
+      return coincide;
     }
     
     return false;
@@ -97,5 +112,7 @@ export async function actualizarFacturas(facturasActualizadas) {
 
 // Cargar facturas al inicializar el módulo
 cargarFacturas();
+
+
 
 

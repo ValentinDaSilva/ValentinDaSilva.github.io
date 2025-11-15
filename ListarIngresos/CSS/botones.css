@@ -34,10 +34,10 @@
   font-size: 16px;
   cursor: pointer;
   text-align: center;
-  position: relative;
-  left: calc(70% - 10px);
-  bottom: 0;
-  margin: 10px;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
 }
 
 .boton-volver-menu:hover {

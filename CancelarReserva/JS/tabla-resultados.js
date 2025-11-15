@@ -64,10 +64,19 @@ function mostrarResultados() {
   // Agregar filas
   reservasFiltradas.forEach((reserva, index) => {
     const fila = document.createElement('tr');
-    const apellido = extraerApellido(reserva.responsable);
-    const nombres = extraerNombre(reserva.responsable);
-    const tipoHabitacion = obtenerTipoHabitacion(reserva.numeroHabitacion);
-    const numeroHabitacionFormateado = formatearNumeroHabitacion(reserva.numeroHabitacion);
+    const apellido = extraerApellido(reserva);
+    const nombres = extraerNombre(reserva);
+    
+    // Nuevo formato: habitaciones es un array, mostrar todas o la primera
+    const habitaciones = reserva.habitaciones || [];
+    const primeraHabitacion = habitaciones.length > 0 ? habitaciones[0] : null;
+    const numeroHabitacion = primeraHabitacion ? primeraHabitacion.numero : (reserva.numeroHabitacion || null);
+    const tipoHabitacion = primeraHabitacion ? primeraHabitacion.tipo : obtenerTipoHabitacion(numeroHabitacion);
+    const numeroHabitacionFormateado = numeroHabitacion ? formatearNumeroHabitacion(numeroHabitacion) : 'N/A';
+    
+    // Fechas: nuevo formato usa fechaInicio/fechaFin, antiguo usa desde/hasta
+    const fechaDesde = reserva.fechaInicio || reserva.desde;
+    const fechaHasta = reserva.fechaFin || reserva.hasta;
     
     fila.innerHTML = `
       <td class="celda-checkbox">
@@ -75,10 +84,10 @@ function mostrarResultados() {
       </td>
       <td>${apellido}</td>
       <td>${nombres}</td>
-      <td>${numeroHabitacionFormateado}</td>
+      <td>${numeroHabitacionFormateado}${habitaciones.length > 1 ? ` (+${habitaciones.length - 1})` : ''}</td>
       <td>${tipoHabitacion}</td>
-      <td>${formatearFecha(reserva.desde)}</td>
-      <td>${formatearFecha(reserva.hasta)}</td>
+      <td>${formatearFecha(fechaDesde)}</td>
+      <td>${formatearFecha(fechaHasta)}</td>
     `;
     
     cuerpoTabla.appendChild(fila);

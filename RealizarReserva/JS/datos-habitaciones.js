@@ -82,13 +82,19 @@ function compararFechas(fecha1, fecha2) {
  */
 function estaHabitacionReservada(numeroHabitacion, fecha) {
   return reservas.some(reserva => {
-    if (reserva.numeroHabitacion !== numeroHabitacion) {
+    // Nuevo formato: verificar si la habitación está en el array de habitaciones
+    const habitacionesReserva = reserva.habitaciones || [];
+    const tieneHabitacion = habitacionesReserva.some(hab => hab.numero === numeroHabitacion);
+    
+    // Si no tiene la habitación en el nuevo formato, verificar formato antiguo
+    if (!tieneHabitacion && reserva.numeroHabitacion !== numeroHabitacion) {
       return false;
     }
     
     // Comparar fechas directamente sin usar Date para evitar problemas de zona horaria
-    const fechaDesde = reserva.desde; // Ya viene en formato YYYY-MM-DD
-    const fechaHasta = reserva.hasta;  // Ya viene en formato YYYY-MM-DD
+    // Nuevo formato usa fechaInicio/fechaFin, antiguo usa desde/hasta
+    const fechaDesde = reserva.fechaInicio || reserva.desde; // Compatibilidad con formato antiguo
+    const fechaHasta = reserva.fechaFin || reserva.hasta;   // Compatibilidad con formato antiguo
     
     // La fecha está dentro del rango de reserva (inclusive)
     return compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0;

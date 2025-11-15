@@ -35,8 +35,13 @@ export function inicializarEventos() {
       const responsable = await buscarResponsable(dniCuit);
       
       if (responsable) {
+        // Asegurarse de que las facturas estén cargadas antes de buscar
+        const { cargarFacturas } = await import('./datos-facturas.js');
+        await cargarFacturas();
+        
         // Buscar facturas no anuladas
         const facturas = buscarFacturasNoAnuladas(dniCuit);
+        console.log('Facturas encontradas:', facturas.length);
         
         // Mostrar facturas en tabla
         mostrarFacturasEnTabla(facturas, responsable);

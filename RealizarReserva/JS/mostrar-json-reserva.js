@@ -4,56 +4,45 @@
 
 /**
  * Convierte las habitaciones con fechas individuales al formato JSON que se enviará a la base de datos
+ * Crea una reserva separada por cada habitación
  * @param {Array} habitacionesConFechas - Array de objetos { habitacion: Habitacion, fechaDesde: string, fechaHasta: string }
  * @param {ReservaDTO} reservaDTO - Objeto ReservaDTO (para obtener datos del titular)
- * @returns {Array} - Array de objetos en formato JSON para la base de datos
+ * @returns {Array} - Array de objetos en formato JSON para la base de datos (una reserva por cada habitación)
  */
 function convertirReservaDTOAJSONConFechasIndividuales(habitacionesConFechas, reservaDTO) {
-    const reservasFormatoJSON = [];
-    
-    // Crear una entrada por cada habitación con sus fechas específicas
-    habitacionesConFechas.forEach(item => {
-        // Construir el objeto titular completo
-        const titularCompleto = reservaDTO.titular ? {
-            nombre: reservaDTO.titular.nombre || '',
-            apellido: reservaDTO.titular.apellido || '',
-            telefono: reservaDTO.titular.telefono || '',
-            tipoDocumento: reservaDTO.titular.tipoDocumento || null,
-            nroDocumento: reservaDTO.titular.nroDocumento || null,
-            fechaNacimiento: reservaDTO.titular.fechaNacimiento || null,
-            condicionIVA: reservaDTO.titular.condicionIVA || null,
-            ocupacion: reservaDTO.titular.ocupacion || null,
-            nacionalidad: reservaDTO.titular.nacionalidad || null,
-            cuit: reservaDTO.titular.cuit || null,
-            email: reservaDTO.titular.email || null
-        } : null;
+    // Construir el objeto titular (solo Persona, no Huesped)
+    const titular = reservaDTO.titular ? {
+        nombre: reservaDTO.titular.nombre || '',
+        apellido: reservaDTO.titular.apellido || '',
+        telefono: reservaDTO.titular.telefono || ''
+    } : null;
 
-        // Construir el array de habitaciones completo
-        const habitacionesCompletas = reservaDTO.habitaciones ? reservaDTO.habitaciones.map(hab => ({
-            numero: hab.numero || item.habitacion.numero,
-            tipo: hab.tipo || item.habitacion.tipo,
-            categoria: hab.categoria || item.habitacion.categoria || '',
-            costoPorNoche: hab.costoPorNoche || hab.costoNoche || item.habitacion.costoNoche,
-            estadoHabitacion: hab.estadoHabitacion || item.habitacion.estado || null
-        })) : [{
+    // Crear una reserva separada por cada habitación con sus fechas específicas
+    const reservasJSON = habitacionesConFechas.map((item, index) => {
+        // Crear una habitación individual para esta reserva
+        const habitacionIndividual = {
             numero: item.habitacion.numero,
             tipo: item.habitacion.tipo,
             categoria: item.habitacion.categoria || '',
-            costoPorNoche: item.habitacion.costoNoche,
-            estadoHabitacion: item.habitacion.estado || null
-        }];
+            costoPorNoche: item.habitacion.costoNoche || item.habitacion.costoPorNoche || 0,
+            estadoHabitacion: item.habitacion.estado || item.habitacion.estadoHabitacion || 'Disponible'
+        };
 
-        reservasFormatoJSON.push({
-            id: reservaDTO.id || null,
+        // Crear una reserva separada para esta habitación
+        // El ID se asignará después desde reserva.js para asegurar IDs únicos
+        const reservaJSON = {
+            id: null, // Se asignará después
             fechaInicio: item.fechaDesde,
             fechaFin: item.fechaHasta,
-            titular: titularCompleto,
-            estado: reservaDTO.estado || null,
-            habitaciones: habitacionesCompletas
-        });
+            titular: titular,
+            estado: reservaDTO.estado || 'Pendiente',
+            habitaciones: [habitacionIndividual] // Array con solo esta habitación
+        };
+        
+        return reservaJSON;
     });
     
-    return reservasFormatoJSON;
+    return reservasJSON;
 }
 
 /**
@@ -125,8 +114,8 @@ function convertirReservaDTOAJSON(reservaDTO) {
 }
 
 /**
- * Guarda las reservas en la base de datos usando las fechas individuales
- * @param {Array} nuevasReservas - Array de reservas en formato JSON a guardar
+ * Guarda las reservas en la base de datos (una reserva por cada habitación)
+ * @param {Array} nuevasReservas - Array de reservas en formato JSON a guardar (una por cada habitación)
  * @returns {Promise<void>}
  */
 async function guardarReservaConFechasIndividuales(nuevasReservas) {
@@ -140,13 +129,13 @@ async function guardarReservaConFechasIndividuales(nuevasReservas) {
             reservasExistentes = datos.reservas || [];
         }
 
-        // Agregar las nuevas reservas (que ya tienen las fechas individuales correctas)
+        // Agregar todas las nuevas reservas (una por cada habitación)
         reservasExistentes.push(...nuevasReservas);
 
         // Simular el guardado (en un entorno real, esto se haría con una llamada al servidor)
         console.log('=== FORMATO FINAL PARA JSON ===');
-        console.log('Entradas a agregar al JSON (una por cada habitación con sus fechas):', nuevasReservas);
-        console.log('Total de entradas:', nuevasReservas.length);
+        console.log('Reservas a agregar al JSON (una por cada habitación):', nuevasReservas);
+        console.log('Total de reservas a agregar:', nuevasReservas.length);
         console.log('==============================');
         
         // TODO: Implementar guardado real cuando se tenga acceso al servidor
@@ -159,7 +148,7 @@ async function guardarReservaConFechasIndividuales(nuevasReservas) {
 
 /**
  * Muestra el JSON en pantalla en un contenedor especial
- * @param {Array} nuevasReservas - Array de nuevas reservas a agregar
+ * @param {Array} nuevasReservas - Array de nuevas reservas a agregar (una por cada habitación)
  * @param {ReservaDTO} reservaDTO - ReservaDTO completo para referencia
  * @param {Function} callbackCerrar - Función a ejecutar cuando se cierre el JSON (opcional)
  */
@@ -256,8 +245,7 @@ function mostrarJSONReservaEnPantalla(nuevasReservas, reservaDTO, callbackCerrar
         document.body.appendChild(contenedorJSON);
     }
 
-    // Formatear el JSON con indentación (solo las nuevas reservas)
-    // Si hay múltiples habitaciones, mostrar cada una como objeto separado
+    // Formatear el JSON con indentación (array de reservas, una por cada habitación)
     const jsonFormateado = JSON.stringify(nuevasReservas, null, 2);
     
     // Información adicional oculta (solo se muestra el JSON)
@@ -265,7 +253,7 @@ function mostrarJSONReservaEnPantalla(nuevasReservas, reservaDTO, callbackCerrar
     // Mostrar en el textarea
     const textarea = document.getElementById('json-display-reserva');
     if (textarea) {
-        // Mostrar solo las nuevas reservas que se agregarán
+        // Mostrar las nuevas reservas que se agregarán (una por cada habitación)
         textarea.value = jsonFormateado;
         // Hacer scroll al inicio
         textarea.scrollTop = 0;
@@ -292,9 +280,9 @@ function mostrarJSONReservaEnPantalla(nuevasReservas, reservaDTO, callbackCerrar
     // También mostrar en consola para debugging
     console.log('=== DATOS A ENVIAR A LA BASE DE DATOS ===');
     console.log('ReservaDTO completo:', reservaDTO);
-    console.log('Entradas a agregar a la BD:', nuevasReservas);
+    console.log('Reservas a agregar a la BD (una por cada habitación):', nuevasReservas);
     console.log('JSON formateado:', jsonFormateado);
-    console.log('Total de entradas:', nuevasReservas.length);
+    console.log('Total de reservas a agregar:', nuevasReservas.length);
     console.log('==========================================');
 }
 

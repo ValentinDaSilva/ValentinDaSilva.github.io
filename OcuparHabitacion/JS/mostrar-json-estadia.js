@@ -179,9 +179,9 @@ function mostrarJSONEstadiaEnPantalla(estadia, callbackCerrar) {
         titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
         contenedorJSON.appendChild(titulo);
 
-        // Crear información adicional
+        // Crear información adicional (oculta - solo se muestra el JSON)
         const infoAdicional = document.createElement('div');
-        infoAdicional.style.cssText = 'margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
+        infoAdicional.style.cssText = 'display: none; margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
         infoAdicional.id = 'info-adicional-estadia';
         contenedorJSON.appendChild(infoAdicional);
 

@@ -115,32 +115,6 @@
         "total": 1644995
       },
       "pagos": [
-        {
-          "id": 1,
-          "fecha": "2025-11-15",
-          "hora": "15:00",
-          "montoTotal": 500000,
-          "medioDePago": {
-            "tipo": "EFECTIVO",
-            "monto": 500000
-          }
-        },
-        {
-          "id": 7,
-          "fecha": "2025-11-15",
-          "hora": "15:30",
-          "montoTotal": 600000,
-          "medioDePago": {
-            "tipo": "CHEQUES",
-            "numero": "123456",
-            "monto": 600000,
-            "fechaVencimiento": "2025-11-25",
-            "banco": "BANCO NACIÓN",
-            "titular": "LUCÍA ALVAREZ",
-            "plaza": "CÓRDOBA",
-            "tipoCheque": "PROPIO"
-          }
-        }
       ]
     },
     {
@@ -550,7 +524,7 @@
         "fechaCheckIn": "2025-11-03",
         "fechaCheckOut": "2025-11-12",
         "habitacion": {
-          "numero": 405,
+          "numero": 407,
           "tipo": "FAM",
           "categoria": "",
           "costoPorNoche": 110500
