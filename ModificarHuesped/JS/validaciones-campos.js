@@ -482,22 +482,65 @@ function inicializarValidacionTiempoReal() {
         'departamento'
     ];
     
+    // Campos que deben convertirse a mayúsculas
+    const camposMayusculas = [
+        'apellido',
+        'nombres',
+        'ocupacion',
+        'calle',
+        'localidad',
+        'provincia',
+        'departamento',
+        'piso'
+    ];
+    
     camposAValidar.forEach(campoId => {
         const campo = document.getElementById(campoId);
         if (campo) {
             // Validar cuando el usuario sale del campo
             campo.addEventListener('blur', () => {
+                // Convertir a mayúsculas si es un campo de texto que lo requiere
+                if (camposMayusculas.includes(campoId)) {
+                    campo.value = campo.value.toUpperCase();
+                }
                 validarCampo(campoId);
             });
             
-            // Limpiar errores mientras el usuario escribe (opcional)
+            // Limpiar errores y convertir a mayúsculas mientras el usuario escribe
             campo.addEventListener('input', () => {
+                // Convertir a mayúsculas en tiempo real si es un campo que lo requiere
+                if (camposMayusculas.includes(campoId)) {
+                    const cursorPosition = campo.selectionStart;
+                    campo.value = campo.value.toUpperCase();
+                    // Restaurar la posición del cursor
+                    campo.setSelectionRange(cursorPosition, cursorPosition);
+                }
+                
                 // Solo limpiar si ya había un error visible
                 const mensajeError = campo.parentElement.querySelector('.mensaje-error.mostrar');
                 if (mensajeError && campo.value.trim() !== '') {
                     ocultarError(campoId);
                 }
             });
+        }
+    });
+    
+    // Agregar conversión a mayúsculas para campos que no están en la lista de validación
+    // pero que sí necesitan conversión (como 'piso')
+    camposMayusculas.forEach(campoId => {
+        if (!camposAValidar.includes(campoId)) {
+            const campo = document.getElementById(campoId);
+            if (campo) {
+                campo.addEventListener('blur', () => {
+                    campo.value = campo.value.toUpperCase();
+                });
+                
+                campo.addEventListener('input', () => {
+                    const cursorPosition = campo.selectionStart;
+                    campo.value = campo.value.toUpperCase();
+                    campo.setSelectionRange(cursorPosition, cursorPosition);
+                });
+            }
         }
     });
 }

@@ -273,13 +273,33 @@ function inicializarValidacionesFormulario() {
     const telefonoInput = document.getElementById('telefono');
     
     if (nombreInput) {
-      nombreInput.addEventListener('blur', () => validarCampo(nombreInput, 'nombre'));
-      nombreInput.addEventListener('input', () => limpiarError('nombre'));
+      nombreInput.addEventListener('blur', () => {
+        nombreInput.value = nombreInput.value.toUpperCase();
+        validarCampo(nombreInput, 'nombre');
+      });
+      nombreInput.addEventListener('input', () => {
+        // Convertir a mayúsculas mientras se escribe
+        const cursorPosition = nombreInput.selectionStart;
+        nombreInput.value = nombreInput.value.toUpperCase();
+        // Restaurar la posición del cursor
+        nombreInput.setSelectionRange(cursorPosition, cursorPosition);
+        limpiarError('nombre');
+      });
     }
     
     if (apellidoInput) {
-      apellidoInput.addEventListener('blur', () => validarCampo(apellidoInput, 'apellido'));
-      apellidoInput.addEventListener('input', () => limpiarError('apellido'));
+      apellidoInput.addEventListener('blur', () => {
+        apellidoInput.value = apellidoInput.value.toUpperCase();
+        validarCampo(apellidoInput, 'apellido');
+      });
+      apellidoInput.addEventListener('input', () => {
+        // Convertir a mayúsculas mientras se escribe
+        const cursorPosition = apellidoInput.selectionStart;
+        apellidoInput.value = apellidoInput.value.toUpperCase();
+        // Restaurar la posición del cursor
+        apellidoInput.setSelectionRange(cursorPosition, cursorPosition);
+        limpiarError('apellido');
+      });
     }
     
     if (telefonoInput) {

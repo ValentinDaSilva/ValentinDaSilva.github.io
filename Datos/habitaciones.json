@@ -1,56 +1,244 @@
 {
-	"habitaciones": [
-		{ "numero": 101, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 102, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 103, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 104, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 105, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 106, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 107, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 108, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 109, "tipo": "IND", "costoNoche": 50800 },
-		{ "numero": 110, "tipo": "IND", "costoNoche": 50800 },
-        
-		{ "numero": 201, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 202, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 203, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 204, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 205, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 206, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 207, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 208, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 209, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 210, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 211, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 212, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 213, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 214, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 215, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 216, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 217, "tipo": "DOBE", "costoNoche": 70230 },
-		{ "numero": 218, "tipo": "DOBE", "costoNoche": 70230 },
-
-		{ "numero": 301, "tipo": "DOBS", "costoNoche": 90560 },
-		{ "numero": 302, "tipo": "DOBS", "costoNoche": 90560 },
-		{ "numero": 303, "tipo": "DOBS", "costoNoche": 90560 },
-		{ "numero": 304, "tipo": "DOBS", "costoNoche": 90560 },
-		{ "numero": 305, "tipo": "DOBS", "costoNoche": 90560 },
-		{ "numero": 306, "tipo": "DOBS", "costoNoche": 90560 },
-		{ "numero": 307, "tipo": "DOBS", "costoNoche": 90560 },
-		{ "numero": 308, "tipo": "DOBS", "costoNoche": 90560 },
-
-		{ "numero": 401, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 402, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 403, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 404, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 405, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 406, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 407, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 408, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 409, "tipo": "FAM", "costoNoche": 110500 },
-		{ "numero": 410, "tipo": "FAM", "costoNoche": 110500 },
-        
-		{ "numero": 501, "tipo": "SUITE", "costoNoche": 128600 },
-		{ "numero": 502, "tipo": "SUITE", "costoNoche": 128600 }
-	]
+  "habitaciones": [
+    {
+      "numero": 101,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 102,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 103,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 104,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 105,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 106,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 107,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 108,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 109,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 110,
+      "tipo": "IND",
+      "costoNoche": 50800
+    },
+    {
+      "numero": 201,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 202,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 203,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 204,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 205,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 206,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 207,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 208,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 209,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 210,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 211,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 212,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 213,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 214,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 215,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 216,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 217,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 218,
+      "tipo": "DOBE",
+      "costoNoche": 70230
+    },
+    {
+      "numero": 301,
+      "tipo": "DOBS",
+      "costoNoche": 90560
+    },
+    {
+      "numero": 302,
+      "tipo": "DOBS",
+      "costoNoche": 90560
+    },
+    {
+      "numero": 303,
+      "tipo": "DOBS",
+      "costoNoche": 90560
+    },
+    {
+      "numero": 304,
+      "tipo": "DOBS",
+      "costoNoche": 90560
+    },
+    {
+      "numero": 305,
+      "tipo": "DOBS",
+      "costoNoche": 90560
+    },
+    {
+      "numero": 306,
+      "tipo": "DOBS",
+      "costoNoche": 90560
+    },
+    {
+      "numero": 307,
+      "tipo": "DOBS",
+      "costoNoche": 90560
+    },
+    {
+      "numero": 308,
+      "tipo": "DOBS",
+      "costoNoche": 90560
+    },
+    {
+      "numero": 401,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 402,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 403,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 404,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 405,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 406,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 407,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 408,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 409,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 410,
+      "tipo": "FAM",
+      "costoNoche": 110500
+    },
+    {
+      "numero": 501,
+      "tipo": "SUITE",
+      "costoNoche": 128600
+    },
+    {
+      "numero": 502,
+      "tipo": "SUITE",
+      "costoNoche": 128600
+    }
+  ]
 }

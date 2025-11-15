@@ -6,11 +6,11 @@
       "fecha": "2025-11-15",
       "horaSalida": "12:00",
       "tipo": "B",
-      "estado": "Pendiente",
+      "estado": "PENDIENTE",
       "responsableDePago": {
-        "tipo": "huesped",
-        "apellido": "Alvarez",
-        "nombres": "Lucía",
+        "tipo": "HUESPED",
+        "apellido": "ALVAREZ",
+        "nombres": "LUCÍA",
         "documento": "66554433",
         "cuit": "27-66554433-1"
       },
@@ -26,68 +26,68 @@
           "costoPorNoche": 110500
         },
         "titular": {
-          "apellido": "Alvarez",
-          "nombres": "Lucía",
+          "apellido": "ALVAREZ",
+          "nombres": "LUCÍA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "66554433",
           "cuit": "27-66554433-1",
           "fechaNacimiento": "1996-08-12",
           "caracteristica": "351",
           "telefonoNumero": "5432109",
-          "email": "lucia.alvarez@example.com",
-          "ocupacion": "Estudiante",
-          "nacionalidad": "Argentina",
-          "calle": "Entre Ríos",
+          "email": "LUCIA.ALVAREZ@EXAMPLE.COM",
+          "ocupacion": "ESTUDIANTE",
+          "nacionalidad": "ARGENTINA",
+          "calle": "ENTRE RÍOS",
           "numeroCalle": "234",
           "departamento": "",
           "piso": "",
           "codigoPostal": "5000",
-          "localidad": "Córdoba",
-          "provincia": "Córdoba",
-          "pais": "Argentina"
+          "localidad": "CÓRDOBA",
+          "provincia": "CÓRDOBA",
+          "pais": "ARGENTINA"
         },
         "acompaniantes": [
           {
-            "apellido": "Silva",
-            "nombres": "Matías José",
+            "apellido": "SILVA",
+            "nombres": "MATÍAS JOSÉ",
             "tipoDocumento": "LE",
             "numeroDocumento": "66778899",
             "cuit": "",
             "fechaNacimiento": "1984-09-23",
             "caracteristica": "342",
             "telefonoNumero": "8765432",
-            "email": "matias.silva@example.com",
-            "ocupacion": "Contador",
-            "nacionalidad": "Argentina",
-            "calle": "3 de Febrero",
+            "email": "MATIAS.SILVA@EXAMPLE.COM",
+            "ocupacion": "CONTADOR",
+            "nacionalidad": "ARGENTINA",
+            "calle": "3 DE FEBRERO",
             "numeroCalle": "234",
             "departamento": "",
             "piso": "",
             "codigoPostal": "3000",
-            "localidad": "Santa Fe",
-            "provincia": "Santa Fe",
-            "pais": "Argentina"
+            "localidad": "SANTA FE",
+            "provincia": "SANTA FE",
+            "pais": "ARGENTINA"
           },
           {
-            "apellido": "López",
-            "nombres": "Ana María",
+            "apellido": "LÓPEZ",
+            "nombres": "ANA MARÍA",
             "tipoDocumento": "DNI",
             "numeroDocumento": "55443322",
             "cuit": "27-55443322-5",
             "fechaNacimiento": "1988-07-25",
             "caracteristica": "342",
             "telefonoNumero": "9876543",
-            "email": "ana.lopez@example.com",
-            "ocupacion": "Contadora",
-            "nacionalidad": "Argentina",
-            "calle": "Mitre",
+            "email": "ANA.LOPEZ@EXAMPLE.COM",
+            "ocupacion": "CONTADORA",
+            "nacionalidad": "ARGENTINA",
+            "calle": "MITRE",
             "numeroCalle": "345",
             "departamento": "",
             "piso": "",
             "codigoPostal": "3000",
-            "localidad": "Rosario",
-            "provincia": "Santa Fe",
-            "pais": "Argentina"
+            "localidad": "ROSARIO",
+            "provincia": "SANTA FE",
+            "pais": "ARGENTINA"
           }
         ]
       },
@@ -97,11 +97,11 @@
         "costoPorNoche": 110500,
         "consumos": [
           {
-            "descripcion": "Servicio de Comida",
+            "descripcion": "SERVICIO DE COMIDA",
             "precio": 25000
           },
           {
-            "descripcion": "Consumo Nevera",
+            "descripcion": "CONSUMO NEVERA",
             "precio": 8500
           }
         ],
@@ -121,7 +121,7 @@
           "hora": "15:00",
           "montoTotal": 500000,
           "medioDePago": {
-            "tipo": "efectivo",
+            "tipo": "EFECTIVO",
             "monto": 500000
           }
         },
@@ -131,14 +131,14 @@
           "hora": "15:30",
           "montoTotal": 600000,
           "medioDePago": {
-            "tipo": "cheques",
+            "tipo": "CHEQUES",
             "numero": "123456",
             "monto": 600000,
             "fechaVencimiento": "2025-11-25",
-            "banco": "Banco Nación",
-            "titular": "Lucía Alvarez",
-            "plaza": "Córdoba",
-            "tipoCheque": "propio"
+            "banco": "BANCO NACIÓN",
+            "titular": "LUCÍA ALVAREZ",
+            "plaza": "CÓRDOBA",
+            "tipoCheque": "PROPIO"
           }
         }
       ]
@@ -149,11 +149,11 @@
       "fecha": "2025-11-10",
       "horaSalida": "10:00",
       "tipo": "B",
-      "estado": "Pagada",
+      "estado": "PAGADA",
       "responsableDePago": {
-        "tipo": "huesped",
-        "apellido": "González",
-        "nombres": "María Fernanda",
+        "tipo": "HUESPED",
+        "apellido": "GONZÁLEZ",
+        "nombres": "MARÍA FERNANDA",
         "documento": "87654321",
         "cuit": "27-87654321-3"
       },
@@ -169,25 +169,25 @@
           "costoPorNoche": 50800
         },
         "titular": {
-          "apellido": "González",
-          "nombres": "María Fernanda",
+          "apellido": "GONZÁLEZ",
+          "nombres": "MARÍA FERNANDA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "87654321",
           "cuit": "27-87654321-3",
           "fechaNacimiento": "1990-03-20",
           "caracteristica": "341",
           "telefonoNumero": "4567890",
-          "email": "maria.gonzalez@example.com",
-          "ocupacion": "Médica",
-          "nacionalidad": "Argentina",
-          "calle": "San Martín",
+          "email": "MARIA.GONZALEZ@EXAMPLE.COM",
+          "ocupacion": "MÉDICA",
+          "nacionalidad": "ARGENTINA",
+          "calle": "SAN MARTÍN",
           "numeroCalle": "567",
           "departamento": "",
           "piso": "",
           "codigoPostal": "3000",
-          "localidad": "Santa Fe",
-          "provincia": "Santa Fe",
-          "pais": "Argentina"
+          "localidad": "SANTA FE",
+          "provincia": "SANTA FE",
+          "pais": "ARGENTINA"
         },
         "acompaniantes": []
       },
@@ -197,7 +197,7 @@
         "costoPorNoche": 50800,
         "consumos": [
           {
-            "descripcion": "Uso de Teléfono",
+            "descripcion": "USO DE TELÉFONO",
             "precio": 3500
           }
         ],
@@ -217,7 +217,7 @@
           "hora": "10:30",
           "montoTotal": 200000,
           "medioDePago": {
-            "tipo": "tarjetas",
+            "tipo": "TARJETAS",
             "tipoTarjeta": "VISA",
             "numeroTarjeta": "4532123456789012",
             "monto": 200000
@@ -229,7 +229,7 @@
           "hora": "10:35",
           "montoTotal": 234511,
           "medioDePago": {
-            "tipo": "efectivo",
+            "tipo": "EFECTIVO",
             "monto": 234511
           }
         }
@@ -241,21 +241,21 @@
       "fecha": "2025-11-12",
       "horaSalida": "11:00",
       "tipo": "A",
-      "estado": "Pendiente",
+      "estado": "PENDIENTE",
       "responsableDePago": {
-        "tipo": "tercero",
+        "tipo": "TERCERO",
         "razonSocial": "EMPRESA ABC S.A.",
         "cuit": "20-12345678-9",
         "telefono": "011-1234-5678",
         "direccion": {
-          "calle": "Av. Corrientes",
+          "calle": "AV. CORRIENTES",
           "numero": "1234",
           "piso": "5",
           "departamento": "A",
           "codigoPostal": "1043",
-          "localidad": "Ciudad Autónoma de Buenos Aires",
-          "provincia": "Buenos Aires",
-          "pais": "Argentina"
+          "localidad": "CIUDAD AUTÓNOMA DE BUENOS AIRES",
+          "provincia": "BUENOS AIRES",
+          "pais": "ARGENTINA"
         }
       },
       "medioDePago": null,
@@ -270,25 +270,25 @@
           "costoPorNoche": 90560
         },
         "titular": {
-          "apellido": "Silva",
-          "nombres": "Matías José",
+          "apellido": "SILVA",
+          "nombres": "MATÍAS JOSÉ",
           "tipoDocumento": "LE",
           "numeroDocumento": "66778899",
           "cuit": "",
           "fechaNacimiento": "1984-09-23",
           "caracteristica": "342",
           "telefonoNumero": "8765432",
-          "email": "matias.silva@example.com",
-          "ocupacion": "Contador",
-          "nacionalidad": "Argentina",
-          "calle": "3 de Febrero",
+          "email": "MATIAS.SILVA@EXAMPLE.COM",
+          "ocupacion": "CONTADOR",
+          "nacionalidad": "ARGENTINA",
+          "calle": "3 DE FEBRERO",
           "numeroCalle": "234",
           "departamento": "",
           "piso": "",
           "codigoPostal": "3000",
-          "localidad": "Santa Fe",
-          "provincia": "Santa Fe",
-          "pais": "Argentina"
+          "localidad": "SANTA FE",
+          "provincia": "SANTA FE",
+          "pais": "ARGENTINA"
         },
         "acompaniantes": []
       },
@@ -298,15 +298,15 @@
         "costoPorNoche": 90560,
         "consumos": [
           {
-            "descripcion": "Servicio de Comida",
+            "descripcion": "SERVICIO DE COMIDA",
             "precio": 18000
           },
           {
-            "descripcion": "Uso de Teléfono",
+            "descripcion": "USO DE TELÉFONO",
             "precio": 4200
           },
           {
-            "descripcion": "Consumo Nevera",
+            "descripcion": "CONSUMO NEVERA",
             "precio": 6200
           }
         ],
@@ -326,14 +326,14 @@
           "hora": "17:00",
           "montoTotal": 500000,
           "medioDePago": {
-            "tipo": "cheques",
+            "tipo": "CHEQUES",
             "numero": "789012",
             "monto": 500000,
             "fechaVencimiento": "2025-11-28",
-            "banco": "Banco Santander",
+            "banco": "BANCO SANTANDER",
             "titular": "EMPRESA ABC S.A.",
-            "plaza": "Buenos Aires",
-            "tipoCheque": "terceros"
+            "plaza": "BUENOS AIRES",
+            "tipoCheque": "TERCEROS"
           }
         }
       ]
@@ -344,11 +344,11 @@
       "fecha": "2025-11-17",
       "horaSalida": "14:30",
       "tipo": "B",
-      "estado": "Pendiente",
+      "estado": "PENDIENTE",
       "responsableDePago": {
-        "tipo": "huesped",
-        "apellido": "Alvarez",
-        "nombres": "Lucía",
+        "tipo": "HUESPED",
+        "apellido": "ALVAREZ",
+        "nombres": "LUCÍA",
         "documento": "66554433",
         "cuit": "27-66554433-1"
       },
@@ -364,25 +364,25 @@
           "costoPorNoche": 50800
         },
         "titular": {
-          "apellido": "Martínez",
-          "nombres": "Luis Enrique",
-          "tipoDocumento": "Pasaporte",
+          "apellido": "MARTÍNEZ",
+          "nombres": "LUIS ENRIQUE",
+          "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "11123456",
           "cuit": "",
           "fechaNacimiento": "1985-02-14",
           "caracteristica": "11",
           "telefonoNumero": "45678901",
-          "email": "luis.martinez@example.com",
-          "ocupacion": "Arquitecto",
-          "nacionalidad": "Brasil",
-          "calle": "Avenida Corrientes",
+          "email": "LUIS.MARTINEZ@EXAMPLE.COM",
+          "ocupacion": "ARQUITECTO",
+          "nacionalidad": "BRASIL",
+          "calle": "AVENIDA CORRIENTES",
           "numeroCalle": "1234",
           "departamento": "B",
           "piso": "3",
           "codigoPostal": "1043",
-          "localidad": "Buenos Aires",
-          "provincia": "Buenos Aires",
-          "pais": "Argentina"
+          "localidad": "BUENOS AIRES",
+          "provincia": "BUENOS AIRES",
+          "pais": "ARGENTINA"
         },
         "acompaniantes": []
       },
@@ -393,8 +393,8 @@
         "consumos": [],
         "totalConsumos": 0,
         "recargoCheckout": 25400,
-        "tipoRecargoCheckout": "tardio",
-        "mensajeRecargoCheckout": "Checkout después de las 12:00",
+        "tipoRecargoCheckout": "TARDIO",
+        "mensajeRecargoCheckout": "CHECKOUT DESPUÉS DE LAS 12:00",
         "requiereNuevaOcupacion": false,
         "subtotal": 482600,
         "iva": 101346,
@@ -407,7 +407,7 @@
           "hora": "09:45",
           "montoTotal": 200000,
           "medioDePago": {
-            "tipo": "tarjetas",
+            "tipo": "TARJETAS",
             "tipoTarjeta": "MASTERCARD",
             "numeroTarjeta": "5555123456789012",
             "monto": 200000
@@ -419,14 +419,14 @@
           "hora": "10:00",
           "montoTotal": 200000,
           "medioDePago": {
-            "tipo": "cheques",
+            "tipo": "CHEQUES",
             "numero": "345678",
             "monto": 200000,
             "fechaVencimiento": "2025-11-30",
-            "banco": "Banco Galicia",
-            "titular": "Lucía Alvarez",
-            "plaza": "Córdoba",
-            "tipoCheque": "propio"
+            "banco": "BANCO GALICIA",
+            "titular": "LUCÍA ALVAREZ",
+            "plaza": "CÓRDOBA",
+            "tipoCheque": "PROPIO"
           }
         }
       ]
@@ -437,11 +437,11 @@
       "fecha": "2025-11-18",
       "horaSalida": "10:30",
       "tipo": "B",
-      "estado": "Pagada",
+      "estado": "PAGADA",
       "responsableDePago": {
-        "tipo": "huesped",
-        "apellido": "Moreno",
-        "nombres": "Juan Martín",
+        "tipo": "HUESPED",
+        "apellido": "MORENO",
+        "nombres": "JUAN MARTÍN",
         "documento": "44557788",
         "cuit": ""
       },
@@ -457,25 +457,25 @@
           "costoPorNoche": 70230
         },
         "titular": {
-          "apellido": "Moreno",
-          "nombres": "Juan Martín",
+          "apellido": "MORENO",
+          "nombres": "JUAN MARTÍN",
           "tipoDocumento": "LC",
           "numeroDocumento": "44557788",
           "cuit": "",
           "fechaNacimiento": "1986-12-31",
           "caracteristica": "342",
           "telefonoNumero": "9876543",
-          "email": "juan.moreno@example.com",
-          "ocupacion": "Periodista",
-          "nacionalidad": "Argentina",
-          "calle": "Junín",
+          "email": "JUAN.MORENO@EXAMPLE.COM",
+          "ocupacion": "PERIODISTA",
+          "nacionalidad": "ARGENTINA",
+          "calle": "JUNÍN",
           "numeroCalle": "567",
           "departamento": "",
           "piso": "",
           "codigoPostal": "3000",
-          "localidad": "Santa Fe",
-          "provincia": "Santa Fe",
-          "pais": "Argentina"
+          "localidad": "SANTA FE",
+          "provincia": "SANTA FE",
+          "pais": "ARGENTINA"
         },
         "acompaniantes": []
       },
@@ -485,7 +485,7 @@
         "costoPorNoche": 70230,
         "consumos": [
           {
-            "descripcion": "Servicio de Comida",
+            "descripcion": "SERVICIO DE COMIDA",
             "precio": 32000
           }
         ],
@@ -505,7 +505,7 @@
           "hora": "13:20",
           "montoTotal": 800000,
           "medioDePago": {
-            "tipo": "monedaExtranjera",
+            "tipo": "MONEDAEXTRANJERA",
             "tipoMoneda": "USD",
             "montoExtranjero": 800,
             "cotizacion": 1000,
@@ -518,14 +518,14 @@
           "hora": "13:25",
           "montoTotal": 513394.5,
           "medioDePago": {
-            "tipo": "cheques",
+            "tipo": "CHEQUES",
             "numero": "987654",
             "monto": 513394.5,
             "fechaVencimiento": "2025-11-20",
-            "banco": "Banco Macro",
-            "titular": "Juan Martín Moreno",
-            "plaza": "Santa Fe",
-            "tipoCheque": "propio"
+            "banco": "BANCO MACRO",
+            "titular": "JUAN MARTÍN MORENO",
+            "plaza": "SANTA FE",
+            "tipoCheque": "PROPIO"
           }
         }
       ]
@@ -536,11 +536,11 @@
       "fecha": "2025-11-15",
       "horaSalida": "11:00",
       "tipo": "B",
-      "estado": "Pendiente",
+      "estado": "PENDIENTE",
       "responsableDePago": {
-        "tipo": "huesped",
-        "apellido": "Torres",
-        "nombres": "Laura",
+        "tipo": "HUESPED",
+        "apellido": "TORRES",
+        "nombres": "LAURA",
         "documento": "44556677",
         "cuit": "27-44556677-9"
       },
@@ -556,47 +556,47 @@
           "costoPorNoche": 110500
         },
         "titular": {
-          "apellido": "Torres",
-          "nombres": "Laura",
+          "apellido": "TORRES",
+          "nombres": "LAURA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "44556677",
           "cuit": "27-44556677-9",
           "fechaNacimiento": "1991-04-22",
           "caracteristica": "342",
           "telefonoNumero": "8765432",
-          "email": "laura.torres@example.com",
-          "ocupacion": "Diseñadora",
-          "nacionalidad": "Argentina",
-          "calle": "San Jerónimo",
+          "email": "LAURA.TORRES@EXAMPLE.COM",
+          "ocupacion": "DISEÑADORA",
+          "nacionalidad": "ARGENTINA",
+          "calle": "SAN JERÓNIMO",
           "numeroCalle": "890",
           "departamento": "D",
           "piso": "4",
           "codigoPostal": "3000",
-          "localidad": "Santa Fe",
-          "provincia": "Santa Fe",
-          "pais": "Argentina"
+          "localidad": "SANTA FE",
+          "provincia": "SANTA FE",
+          "pais": "ARGENTINA"
         },
         "acompaniantes": [
           {
-            "apellido": "Martínez",
-            "nombres": "Luis Enrique",
-            "tipoDocumento": "Pasaporte",
+            "apellido": "MARTÍNEZ",
+            "nombres": "LUIS ENRIQUE",
+            "tipoDocumento": "PASAPORTE",
             "numeroDocumento": "11123456",
             "cuit": "",
             "fechaNacimiento": "1985-02-14",
             "caracteristica": "11",
             "telefonoNumero": "45678901",
-            "email": "luis.martinez@example.com",
-            "ocupacion": "Arquitecto",
-            "nacionalidad": "Brasil",
-            "calle": "Avenida Corrientes",
+            "email": "LUIS.MARTINEZ@EXAMPLE.COM",
+            "ocupacion": "ARQUITECTO",
+            "nacionalidad": "BRASIL",
+            "calle": "AVENIDA CORRIENTES",
             "numeroCalle": "1234",
             "departamento": "B",
             "piso": "3",
             "codigoPostal": "1043",
-            "localidad": "Buenos Aires",
-            "provincia": "Buenos Aires",
-            "pais": "Argentina"
+            "localidad": "BUENOS AIRES",
+            "provincia": "BUENOS AIRES",
+            "pais": "ARGENTINA"
           }
         ]
       },
@@ -606,11 +606,11 @@
         "costoPorNoche": 110500,
         "consumos": [
           {
-            "descripcion": "Servicio de Comida",
+            "descripcion": "SERVICIO DE COMIDA",
             "precio": 45000
           },
           {
-            "descripcion": "Consumo Nevera",
+            "descripcion": "CONSUMO NEVERA",
             "precio": 12000
           }
         ],
@@ -630,14 +630,14 @@
           "hora": "11:30",
           "montoTotal": 800000,
           "medioDePago": {
-            "tipo": "cheques",
+            "tipo": "CHEQUES",
             "numero": "456789",
             "monto": 800000,
             "fechaVencimiento": "2025-11-22",
-            "banco": "Banco BBVA",
-            "titular": "Laura Torres",
-            "plaza": "Santa Fe",
-            "tipoCheque": "propio"
+            "banco": "BANCO BBVA",
+            "titular": "LAURA TORRES",
+            "plaza": "SANTA FE",
+            "tipoCheque": "PROPIO"
           }
         },
         {
@@ -646,14 +646,14 @@
           "hora": "12:00",
           "montoTotal": 472315,
           "medioDePago": {
-            "tipo": "cheques",
+            "tipo": "CHEQUES",
             "numero": "234567",
             "monto": 472315,
             "fechaVencimiento": "2025-11-27",
-            "banco": "Banco ICBC",
-            "titular": "Laura Torres",
-            "plaza": "Rosario",
-            "tipoCheque": "terceros"
+            "banco": "BANCO ICBC",
+            "titular": "LAURA TORRES",
+            "plaza": "ROSARIO",
+            "tipoCheque": "TERCEROS"
           }
         }
       ]

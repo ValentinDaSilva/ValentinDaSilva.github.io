@@ -194,9 +194,9 @@ function mostrarJSONReservaEnPantalla(nuevasReservas, reservaDTO, callbackCerrar
         titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
         contenedorJSON.appendChild(titulo);
 
-        // Crear información adicional
+        // Crear información adicional (oculta - solo se muestra el JSON)
         const infoAdicional = document.createElement('div');
-        infoAdicional.style.cssText = 'margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
+        infoAdicional.style.cssText = 'display: none; margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
         infoAdicional.id = 'info-adicional-reserva';
         contenedorJSON.appendChild(infoAdicional);
 
@@ -260,37 +260,7 @@ function mostrarJSONReservaEnPantalla(nuevasReservas, reservaDTO, callbackCerrar
     // Si hay múltiples habitaciones, mostrar cada una como objeto separado
     const jsonFormateado = JSON.stringify(nuevasReservas, null, 2);
     
-    // Actualizar información adicional
-    const infoAdicional = document.getElementById('info-adicional-reserva');
-    if (infoAdicional && reservaDTO) {
-        const habitacionesCount = reservaDTO.habitaciones ? reservaDTO.habitaciones.length : 0;
-        
-        // Verificar si todas las habitaciones tienen las mismas fechas
-        let todasMismasFechas = true;
-        if (nuevasReservas.length > 1) {
-            const primeraFechaDesde = nuevasReservas[0].desde;
-            const primeraFechaHasta = nuevasReservas[0].hasta;
-            todasMismasFechas = nuevasReservas.every(r => r.desde === primeraFechaDesde && r.hasta === primeraFechaHasta);
-        }
-        
-        let infoFechas = '';
-        if (todasMismasFechas && nuevasReservas.length > 0) {
-            infoFechas = `• Fecha Inicio: ${nuevasReservas[0].desde || 'N/A'}<br>
-                          • Fecha Fin: ${nuevasReservas[0].hasta || 'N/A'}<br>`;
-        } else {
-            infoFechas = `• <strong>Fechas:</strong> Diferentes por habitación (ver JSON abajo)<br>`;
-        }
-        
-        infoAdicional.innerHTML = `
-            <strong>Información de la Reserva:</strong><br>
-            • ID Reserva: ${reservaDTO.id || 'N/A'}<br>
-            ${infoFechas}
-            • Estado: ${reservaDTO.estado || 'N/A'}<br>
-            • Habitaciones: ${habitacionesCount}<br>
-            • Titular: ${reservaDTO.titular ? `${reservaDTO.titular.nombre || ''} ${reservaDTO.titular.apellido || ''}`.trim() : 'N/A'}<br>
-            • <strong>Entradas a agregar a la BD:</strong> ${nuevasReservas.length}
-        `;
-    }
+    // Información adicional oculta (solo se muestra el JSON)
     
     // Mostrar en el textarea
     const textarea = document.getElementById('json-display-reserva');
