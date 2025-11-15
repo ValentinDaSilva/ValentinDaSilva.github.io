@@ -1,10 +1,6 @@
-/* Funciones de utilidad para desarrollo y pruebas */
 
-/**
- * Completa automáticamente todos los campos del formulario con datos de prueba
- * Útil para desarrollo y testing
- * Todos los datos de texto se escriben en mayúsculas
- */
+
+
 function completarFormulario() {
     document.getElementById("apellido").value = "GONZÁLEZ";
     document.getElementById("nombres").value = "MARÍA FERNANDA";
@@ -27,12 +23,10 @@ function completarFormulario() {
     document.getElementById("pais").value = "Argentina";
 }
 
-/**
- * Inicializa el atajo de teclado Ctrl+Alt+P para ejecutar completarFormulario()
- */
+
 function inicializarAtajoCompletarFormulario() {
     document.addEventListener('keydown', function(event) {
-        // Verificar si se presionó Ctrl+Alt+P
+        
         if (event.altKey && event.key === 'p') {
             event.preventDefault();
             completarFormulario();
@@ -40,7 +34,7 @@ function inicializarAtajoCompletarFormulario() {
     });
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', inicializarAtajoCompletarFormulario);
 } else {

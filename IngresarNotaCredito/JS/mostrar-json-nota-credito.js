@@ -1,17 +1,12 @@
-/* Mostrar JSON de Nota de Crédito en pantalla */
 
-/**
- * Muestra el JSON de la Nota de Crédito en pantalla en un contenedor especial
- * @param {Object} notaCredito - Objeto Nota de Crédito guardada
- * @param {Array} facturas - Array de facturas anuladas
- * @param {Function} callbackCerrar - Función a ejecutar cuando se cierre el JSON (opcional)
- */
+
+
 export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callbackCerrar) {
-  // Crear o obtener el contenedor para mostrar el JSON
+  
   let contenedorJSON = document.getElementById('contenedor-json-nota-credito');
   
   if (!contenedorJSON) {
-    // Crear el contenedor si no existe
+    
     contenedorJSON = document.createElement('div');
     contenedorJSON.id = 'contenedor-json-nota-credito';
     contenedorJSON.style.cssText = `
@@ -32,19 +27,19 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
       font-family: Arial, sans-serif;
     `;
 
-    // Crear título
+    
     const titulo = document.createElement('h2');
     titulo.textContent = 'Datos a enviar al servidor backend';
     titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
     contenedorJSON.appendChild(titulo);
 
-    // Crear información adicional (oculta - solo se muestra el JSON)
+    
     const infoAdicional = document.createElement('div');
     infoAdicional.style.cssText = 'display: none; margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
     infoAdicional.id = 'info-adicional-nota-credito';
     contenedorJSON.appendChild(infoAdicional);
 
-    // Crear área de texto con el JSON
+    
     const textarea = document.createElement('textarea');
     textarea.id = 'json-display-nota-credito';
     textarea.readOnly = true;
@@ -63,7 +58,7 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
     `;
     contenedorJSON.appendChild(textarea);
 
-    // Crear botón para cerrar
+    
     const botonCerrar = document.createElement('button');
     botonCerrar.textContent = 'Cerrar';
     botonCerrar.style.cssText = `
@@ -80,7 +75,7 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
     `;
     botonCerrar.onclick = function() {
       contenedorJSON.style.display = 'none';
-      // Ejecutar callback si existe
+      
       if (typeof callbackCerrar === 'function') {
         callbackCerrar();
       }
@@ -93,14 +88,14 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
     };
     contenedorJSON.appendChild(botonCerrar);
     
-    // Guardar el callback para poder usarlo más adelante
+    
     contenedorJSON._callbackCerrar = callbackCerrar;
 
-    // Agregar al body
+    
     document.body.appendChild(contenedorJSON);
   }
 
-  // Construir el objeto JSON completo de la Nota de Crédito con las facturas incluidas
+  
   const notaCreditoCompleta = {
     idNota: notaCredito.idNota,
     fecha: notaCredito.fecha,
@@ -121,10 +116,10 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
     }))
   };
 
-  // Formatear el JSON con indentación
+  
   const jsonFormateado = JSON.stringify(notaCreditoCompleta, null, 2);
   
-  // Actualizar información adicional
+  
   const infoAdicional = document.getElementById('info-adicional-nota-credito');
   if (infoAdicional && notaCredito) {
     const responsableNombre = notaCredito.responsable.tipo === 'tercero'
@@ -142,18 +137,18 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
     `;
   }
   
-  // Mostrar en el textarea
+  
   const textarea = document.getElementById('json-display-nota-credito');
   if (textarea) {
     textarea.value = jsonFormateado;
-    // Hacer scroll al inicio
+    
     textarea.scrollTop = 0;
   }
 
-  // Actualizar el callback si se proporcionó uno nuevo
+  
   if (typeof callbackCerrar === 'function') {
     contenedorJSON._callbackCerrar = callbackCerrar;
-    // Actualizar el onclick del botón para incluir el nuevo callback
+    
     const botonCerrar = contenedorJSON.querySelector('button');
     if (botonCerrar) {
       botonCerrar.onclick = function() {
@@ -165,10 +160,10 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
     }
   }
 
-  // Mostrar el contenedor
+  
   contenedorJSON.style.display = 'block';
 
-  // También mostrar en consola para debugging
+  
   console.log('=== NOTA DE CRÉDITO GENERADA ===');
   console.log('Nota de Crédito:', notaCreditoCompleta);
   console.log('JSON formateado:', jsonFormateado);

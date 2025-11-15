@@ -1,4 +1,4 @@
-/* Registro de pagos */
+
 
 import { obtenerFacturaActual } from './seleccion-factura.js';
 import { actualizarFactura, obtenerFacturaPorId } from './datos-facturas.js';
@@ -16,9 +16,7 @@ import { crearInstanciaPago } from './crear-pago-clase.js';
 import { convertirFacturaJSONAClase } from './convertir-factura-clase.js';
 import { mostrarJSONFacturaEnPantalla } from './mostrar-json-factura.js';
 
-/**
- * Registra un pago para la factura actual
- */
+
 export async function registrarPago() {
   const factura = obtenerFacturaActual();
   
@@ -32,18 +30,18 @@ export async function registrarPago() {
     return;
   }
   
-  // Obtener datos de los medios de pago
+  
   const datosPago = obtenerDatosMediosPago();
   
-  // Validar datos
+  
   if (!validarDatosPago(datosPago)) {
     return;
   }
   
-  // Convertir factura JSON a instancia de clase
+  
   const facturaClase = convertirFacturaJSONAClase(factura);
     
-  // Crear instancias de Pago para cada medio seleccionado
+  
   const pagosCreados = [];
   
   try {
@@ -51,7 +49,7 @@ export async function registrarPago() {
       const detalles = datosPago.detalles[medio] || {};
       const medioNormalizado = medio.toLowerCase();
       
-      // Si hay múltiples items (cheques, tarjetas), crear un pago por cada uno
+      
       if (medioNormalizado === 'cheques' && detalles.cheques) {
         for (const cheque of detalles.cheques) {
           const pagoClase = crearInstanciaPago({
@@ -64,7 +62,7 @@ export async function registrarPago() {
           facturaClase.agregarPago(pagoClase);
           pagosCreados.push(pagoClase);
           
-          // También crear registro en datos-pagos.js para persistencia
+          
           await crearPago({
             idFactura: factura.id,
             medioPago: medio,
@@ -87,7 +85,7 @@ export async function registrarPago() {
           facturaClase.agregarPago(pagoClase);
           pagosCreados.push(pagoClase);
           
-          // También crear registro en datos-pagos.js para persistencia
+          
           await crearPago({
             idFactura: factura.id,
             medioPago: medio,
@@ -99,7 +97,7 @@ export async function registrarPago() {
           });
         }
       } else {
-        // Pago único (efectivo, moneda extranjera)
+        
         const pagoClase = crearInstanciaPago({
           medioPago: medio,
           monto: detalles.monto,
@@ -108,7 +106,7 @@ export async function registrarPago() {
         facturaClase.agregarPago(pagoClase);
         pagosCreados.push(pagoClase);
         
-        // También crear registro en datos-pagos.js para persistencia
+        
         await crearPago({
           idFactura: factura.id,
           medioPago: medio,
@@ -118,48 +116,48 @@ export async function registrarPago() {
       }
     }
     
-    // Mostrar JSON de la factura con el pago agregado
+    
     mostrarJSONFacturaEnPantalla(facturaClase, () => {
       console.log('JSON de factura con pago mostrado');
     });
     
-    // Actualizar resumen de pago
+    
     actualizarResumenPago(factura.id);
     
-    // Recargar tabla de pagos
+    
     mostrarPagosRealizados(factura.id);
     
-    // Verificar si la factura está completamente pagada
+    
     const total = factura.detalle?.total || 0;
     const pagado = calcularTotalPagado(factura.id);
     const deuda = total - pagado;
     
     if (deuda <= 0) {
-      // Marcar factura como pagada
+      
       factura.estado = EstadoFactura.PAGADA;
       await actualizarFactura(factura);
       
-      // Calcular vuelto
+      
       const vuelto = Math.max(0, pagado - total);
       
-      // Verificar si hay más facturas pendientes para la habitación
+      
       const numeroHabitacion = obtenerHabitacionActual();
       if (numeroHabitacion) {
         const facturasPendientes = obtenerFacturasPendientesPorHabitacion(numeroHabitacion);
         
-        // Si no hay más facturas pendientes, actualizar habitación a "libre"
+        
         if (facturasPendientes.length === 0) {
           await actualizarEstadoHabitacion(numeroHabitacion, 'Disponible');
         }
       }
       
-      // Mostrar mensaje de éxito
+      
       mensajeExito("Factura saldada. Toque una tecla para continuar.", () => {
-        // Volver a la pantalla inicial
+        
         mostrarPantallaInicial();
       });
     } else {
-      // Limpiar formulario para permitir otro pago
+      
       limpiarFormularioPago();
     }
     
@@ -169,16 +167,14 @@ export async function registrarPago() {
   }
 }
 
-/**
- * Limpia el formulario de pago
- */
+
 function limpiarFormularioPago() {
-  // Desmarcar todos los checkboxes
+  
   document.querySelectorAll('input[name="medioPago"]').forEach(cb => {
     cb.checked = false;
   });
   
-  // Limpiar campos
+  
   const contenedor = document.getElementById('camposPago');
   if (contenedor) {
     contenedor.innerHTML = '';

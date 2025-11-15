@@ -1,11 +1,8 @@
-/* Manejo de la selección de reservas */
+
 
 let reservasSeleccionadas = [];
 
-/**
- * Alterna la selección de una reserva
- * @param {number} index - Índice de la reserva en el array de reservas filtradas
- */
+
 function toggleSeleccion(index) {
   const checkbox = document.getElementById(`check_${index}`);
   const reserva = reservasFiltradas[index];
@@ -17,21 +14,21 @@ function toggleSeleccion(index) {
   const fila = checkbox.closest('tr');
   
   if (checkbox.checked) {
-    // Agregar la reserva completa al array de seleccionadas
+    
     reservasSeleccionadas.push(reserva);
     if (fila) {
       fila.classList.add('fila-seleccionada');
     }
   } else {
-    // Buscar y eliminar la reserva del array
-    // Comparar por id para identificar únicamente (más confiable)
-    // Si no hay id, comparar por fechaInicio/fechaFin y primera habitación
+    
+    
+    
     const indice = reservasSeleccionadas.findIndex(r => {
-      // Si ambas tienen id, comparar por id
+      
       if (r.id && reserva.id) {
         return r.id === reserva.id;
       }
-      // Si no, comparar por fechas y habitación
+      
       const fechaInicioR = r.fechaInicio || r.desde;
       const fechaFinR = r.fechaFin || r.hasta;
       const fechaInicioReserva = reserva.fechaInicio || reserva.desde;
@@ -53,10 +50,7 @@ function toggleSeleccion(index) {
   }
 }
 
-/**
- * Obtiene las reservas seleccionadas
- * @returns {Array} - Array de reservas seleccionadas
- */
+
 function obtenerReservasSeleccionadas() {
   return reservasSeleccionadas;
 }

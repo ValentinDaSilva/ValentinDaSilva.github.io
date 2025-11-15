@@ -1,12 +1,9 @@
-/* Carga y gestión de datos de facturas */
+
 
 let todasLasFacturas = [];
 let facturasCargadas = false;
 
-/**
- * Carga las facturas desde el archivo JSON
- * @returns {Promise<Array>} - Array de facturas
- */
+
 export async function cargarFacturas() {
   if (facturasCargadas) {
     return todasLasFacturas;
@@ -27,10 +24,7 @@ export async function cargarFacturas() {
   }
 }
 
-/**
- * Obtiene todas las facturas cargadas
- * @returns {Array} - Array de facturas
- */
+
 export function obtenerFacturas() {
   return todasLasFacturas;
 }

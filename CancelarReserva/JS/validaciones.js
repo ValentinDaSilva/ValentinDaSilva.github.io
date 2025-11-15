@@ -1,18 +1,11 @@
-/* Validaciones de campos del formulario */
 
-/**
- * Convierte el texto del input a mayúsculas automáticamente
- * @param {HTMLInputElement} input - Campo de entrada a convertir
- */
+
+
 function convertirAMayusculas(input) {
   input.value = input.value.toUpperCase();
 }
 
-/**
- * Muestra un error en un campo específico
- * @param {string} campoId - ID del campo
- * @param {string} mensaje - Mensaje de error a mostrar
- */
+
 function mostrarErrorCampo(campoId, mensaje) {
   const input = document.getElementById(campoId);
   const errorDiv = document.getElementById(campoId + '-error');
@@ -25,9 +18,7 @@ function mostrarErrorCampo(campoId, mensaje) {
   }
 }
 
-/**
- * Limpia todos los errores de los campos
- */
+
 function limpiarErrores() {
   document.querySelectorAll('.mensaje-error').forEach(el => {
     el.style.display = 'none';
@@ -37,10 +28,7 @@ function limpiarErrores() {
   });
 }
 
-/**
- * Valida que el campo apellido no esté vacío
- * @returns {boolean} - true si es válido, false si no
- */
+
 function validarApellido() {
   const apellido = document.getElementById('apellido').value.trim();
   
@@ -52,10 +40,7 @@ function validarApellido() {
   return true;
 }
 
-/**
- * Valida el formulario de búsqueda
- * @returns {boolean} - true si es válido, false si no
- */
+
 function validarFormularioBusqueda() {
   limpiarErrores();
   return validarApellido();

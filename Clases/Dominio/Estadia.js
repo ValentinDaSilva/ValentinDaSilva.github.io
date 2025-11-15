@@ -6,10 +6,10 @@ class Estadia {
     this._fechaCheckIn = new Date(fechaCheckIn);
     this._fechaCheckOut = new Date(fechaCheckOut);
     this._estado = estado;
-    this._consumos = []; //Array tipo Consumo
-    this._reserva = reserva; //Tipo clase Reserva
-    this._titular = titular; //Tipo clase Huesped
-    this._acompaniantes = acompaniantes; //Tipo array de clase Huesped
+    this._consumos = []; 
+    this._reserva = reserva; 
+    this._titular = titular; 
+    this._acompaniantes = acompaniantes; 
   }
 
   get id() { return this._id; }
@@ -37,7 +37,7 @@ class Estadia {
   get acompaniantes() { return this._acompaniantes; }
   set acompaniantes(v) { this._acompaniantes = v; }
 
-  //Metodos
+  
   registrarCheckIn(fecha) {
     this._fechaCheckIn = new Date(fecha);
     this._estado = EstadoEstadia.EN_CURSO;

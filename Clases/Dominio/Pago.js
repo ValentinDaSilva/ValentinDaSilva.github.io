@@ -4,7 +4,7 @@ class Pago {
     this._fecha = fecha;
     this._hora = hora;
     this._montoTotal = montoTotal;
-    this._medioDePago = medioDePago; // Tipo clase MedioDePago (Efectivo, MonedaExtranjera, Cheque, Tarjeta)
+    this._medioDePago = medioDePago; 
   }
 
   get id() { return this._id; }

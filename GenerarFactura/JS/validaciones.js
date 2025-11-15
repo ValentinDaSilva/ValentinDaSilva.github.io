@@ -1,9 +1,6 @@
-/* Validaciones de formulario */
 
-/**
- * Valida el formulario de factura y busca la estadía
- * @returns {Promise<boolean>} - true si el formulario es válido y se encontró la estadía, false en caso contrario
- */
+
+
 async function validarFormularioFactura() {
   const habitacion = document.getElementById("habitacion").value.trim();
   const horaSalida = document.getElementById("horaSalida").value.trim();
@@ -29,7 +26,7 @@ async function validarFormularioFactura() {
   document.getElementById("habitacion").style.border = "";
   document.getElementById("horaSalida").style.border = "";
   
-  // Buscar estadía
+  
   try {
     const estadia = await buscarEstadiaPorHabitacion(habitacion);
     if (!estadia) {
@@ -37,7 +34,7 @@ async function validarFormularioFactura() {
       return false;
     }
     
-    // Cargar huéspedes en la tabla
+    
     const huespedes = obtenerHuespedesDeEstadia(estadia);
     if (huespedes.length === 0) {
       mensajeError("No se encontraron huéspedes en la estadía.");

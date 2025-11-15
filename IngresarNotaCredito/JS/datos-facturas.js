@@ -1,11 +1,8 @@
-/* Gestión de datos de facturas desde facturas.json */
+
 
 let facturas = [];
 
-/**
- * Carga las facturas desde el archivo JSON
- * @returns {Promise<void>}
- */
+
 export async function cargarFacturas() {
   try {
     const respuesta = await fetch('/Datos/facturas.json');
@@ -21,43 +18,36 @@ export async function cargarFacturas() {
   }
 }
 
-/**
- * Obtiene todas las facturas cargadas
- * @returns {Array} - Array de facturas
- */
+
 export function obtenerFacturas() {
   return facturas;
 }
 
-/**
- * Obtiene las facturas no anuladas de un responsable de pago
- * @param {string} dniCuit - DNI o CUIT del responsable
- * @returns {Array} - Array de facturas no anuladas
- */
+
 export function obtenerFacturasNoAnuladasPorResponsable(dniCuit) {
-  // Normalizar el DNI/CUIT (remover guiones y espacios)
+  
   const dniCuitNormalizado = dniCuit.replace(/[-\s]/g, '');
   
   console.log('Buscando facturas para DNI/CUIT:', dniCuitNormalizado);
   console.log('Total de facturas cargadas:', facturas.length);
   
   return facturas.filter(factura => {
-    // Verificar que no esté anulada (acepta diferentes formatos: "Anulada", "ANULADA", etc.)
+    
     const estadoNormalizado = (factura.estado || '').toUpperCase().trim();
     if (estadoNormalizado === 'ANULADA') {
       return false;
     }
     
-    // Buscar por responsable de pago
+    
     const responsable = factura.responsableDePago;
     if (!responsable) {
       return false;
     }
     
-    // Normalizar el tipo del responsable (case-insensitive)
+    
     const tipoNormalizado = (responsable.tipo || '').toUpperCase().trim();
     
-    // Si es un tercero (empresa)
+    
     if (tipoNormalizado === 'TERCERO') {
       const responsableCuitNormalizado = (responsable.cuit || '').replace(/[-\s]/g, '');
       const coincide = responsableCuitNormalizado === dniCuitNormalizado;
@@ -67,7 +57,7 @@ export function obtenerFacturasNoAnuladasPorResponsable(dniCuit) {
       return coincide;
     }
     
-    // Si es un huésped (acepta "HUESPED", "huesped", "Huesped", etc.)
+    
     if (tipoNormalizado === 'HUESPED') {
       const documentoNormalizado = (responsable.documento || '').replace(/[-\s]/g, '');
       const cuitNormalizado = (responsable.cuit || '').replace(/[-\s]/g, '');
@@ -82,11 +72,7 @@ export function obtenerFacturasNoAnuladasPorResponsable(dniCuit) {
   });
 }
 
-/**
- * Actualiza una factura en el array
- * @param {Object} facturaActualizada - Factura con datos actualizados
- * @returns {Promise<void>}
- */
+
 export async function actualizarFactura(facturaActualizada) {
   const index = facturas.findIndex(f => f.id === facturaActualizada.id);
   if (index !== -1) {
@@ -95,11 +81,7 @@ export async function actualizarFactura(facturaActualizada) {
   }
 }
 
-/**
- * Actualiza múltiples facturas
- * @param {Array} facturasActualizadas - Array de facturas actualizadas
- * @returns {Promise<void>}
- */
+
 export async function actualizarFacturas(facturasActualizadas) {
   facturasActualizadas.forEach(factura => {
     const index = facturas.findIndex(f => f.id === factura.id);
@@ -110,7 +92,7 @@ export async function actualizarFacturas(facturasActualizadas) {
   console.log('Facturas actualizadas:', facturasActualizadas.length);
 }
 
-// Cargar facturas al inicializar el módulo
+
 cargarFacturas();
 
 

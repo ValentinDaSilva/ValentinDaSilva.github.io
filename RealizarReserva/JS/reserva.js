@@ -1,4 +1,4 @@
-/* Gestión del flujo principal de reserva */
+
 
 import { 
   Persona, 
@@ -9,16 +9,12 @@ import {
   GestorReserva 
 } from "../../Clases/Dominio/dominio.js";
 
-/**
- * Crea el formulario de datos del huésped
- * @param {HTMLElement} contenedor - Contenedor donde se insertará el formulario
- * @param {Array} habitacionesSeleccionadas - Array de objetos { habitacion, fechaDesde, fechaHasta }
- */
+
 function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
-  // Limpiar completamente el contenedor, incluyendo todos los divs de habitación de la vista anterior
+  
   contenedor.innerHTML = '';
   
-  // Asegurarse de eliminar cualquier div de habitación que pueda quedar
+  
   const divsHabitacion = contenedor.querySelectorAll('.contenedor-habitacion-reserva');
   divsHabitacion.forEach(div => div.remove());
   
@@ -89,28 +85,28 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
     </div>
   `;
 
-  // Inicializar validaciones en tiempo real
+  
   inicializarValidacionesFormulario();
 
   contenedor.appendChild(formularioHuesped);
   
   const confirmarButton = document.createElement('button');
-  confirmarButton.type = "button"; // Cambiado de "submit" a "button" para controlar el evento manualmente
+  confirmarButton.type = "button"; 
   confirmarButton.textContent = "Confirmar Reserva";
   confirmarButton.className = "boton-confirmar";
   
-  // Agregar listener directamente al botón
+  
   confirmarButton.addEventListener('click', async function(event) {
     event.preventDefault();
     event.stopPropagation();
     
-    console.log('Botón confirmar clickeado'); // Debug
+    console.log('Botón confirmar clickeado'); 
     
     const nombreInput = document.getElementById('nombre');
     const apellidoInput = document.getElementById('apellido');
     const telefonoInput = document.getElementById('telefono');
     
-    console.log('Inputs encontrados:', { nombreInput, apellidoInput, telefonoInput }); // Debug
+    console.log('Inputs encontrados:', { nombreInput, apellidoInput, telefonoInput }); 
     
     if (!nombreInput || !apellidoInput || !telefonoInput) {
       console.error('No se encontraron los inputs del formulario');
@@ -122,7 +118,7 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
     const apellido = apellidoInput.value.trim();
     const telefono = telefonoInput.value.trim();
     
-    // Validar todos los campos
+    
     let esValido = true;
     esValido = validarCampo(nombreInput, 'nombre') && esValido;
     esValido = validarCampo(apellidoInput, 'apellido') && esValido;
@@ -133,7 +129,7 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
       return;
     }
 
-    // Obtener las habitaciones seleccionadas
+    
     const habitacionesSeleccionadas = obtenerHabitacionesSeleccionadas();
     if (habitacionesSeleccionadas.length === 0) {
       mensajeError("Por favor, seleccione al menos una habitación.");
@@ -141,10 +137,10 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
     }
 
     try {
-      // Crear el gestor de reserva
+      
       const gestorReserva = new GestorReserva();
 
-      // Obtener las habitaciones ya cargadas desde datos-habitaciones.js
+      
       const todasLasHabitacionesData = obtenerHabitaciones();
       
       if (!todasLasHabitacionesData || todasLasHabitacionesData.length === 0) {
@@ -152,35 +148,35 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
         return;
       }
 
-      // Crear el titular como Persona (no Huesped)
+      
       const titular = new Persona(nombre, apellido, telefono);
 
-      // Convertir las habitaciones seleccionadas a objetos Habitacion usando los datos ya cargados
-      // Mantener las fechas individuales de cada habitación
+      
+      
       const habitacionesConFechas = [];
 
       for (const seleccion of habitacionesSeleccionadas) {
-        // Obtener el número de habitación desde el formato "TIPO-NUMERO"
+        
         const numeroHabitacion = obtenerNumeroDesdeNombre(seleccion.habitacion);
         if (!numeroHabitacion) continue;
 
-        // Buscar la habitación en los datos ya cargados del JSON
+        
         const habitacionData = todasLasHabitacionesData.find(h => h.numero === numeroHabitacion);
         if (!habitacionData) {
           console.warn(`No se encontró la habitación ${numeroHabitacion} en los datos cargados`);
           continue;
         }
 
-        // Convertir el objeto plano del JSON a un objeto Habitacion de dominio
+        
         const habitacion = new Habitacion(
           habitacionData.numero,
           habitacionData.tipo,
-          '', // categoria no está en el JSON
+          '', 
           habitacionData.costoNoche,
           EstadoHabitacion.DISPONIBLE
         );
         
-        // Guardar la habitación con sus fechas específicas
+        
         habitacionesConFechas.push({
           habitacion: habitacion,
           fechaDesde: seleccion.fechaDesde,
@@ -193,8 +189,8 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
         return;
       }
 
-      // Calcular fechas mínimas y máximas para crear la reserva de dominio
-      // (aunque cada habitación mantendrá sus propias fechas en el JSON)
+      
+      
       let fechaInicioMinima = habitacionesConFechas[0].fechaDesde;
       let fechaFinMaxima = habitacionesConFechas[0].fechaHasta;
 
@@ -207,24 +203,24 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
         }
       });
 
-      // Preparar la reserva para mostrar el JSON antes de guardar
-      // Obtener el siguiente ID (accediendo al método privado)
+      
+      
       const siguienteId = await gestorReserva._obtenerSiguienteId();
       
-      // Crear la reserva de dominio temporalmente (usa fechas mín/máx para el dominio)
+      
       const habitacionesReserva = habitacionesConFechas.map(item => item.habitacion);
       const reserva = new Reserva(siguienteId, fechaInicioMinima, fechaFinMaxima, titular, EstadoReserva.PENDIENTE);
       reserva.habitaciones = habitacionesReserva;
 
-      // Convertir a DTO (accediendo al método privado)
+      
       const reservaDTO = gestorReserva._convertirReservaADTO(reserva);
 
-      // Convertir al formato JSON que se enviará a la base de datos
-      // Crear una reserva separada por cada habitación
+      
+      
       const jsonParaBD = convertirReservaDTOAJSONConFechasIndividuales(habitacionesConFechas, reservaDTO);
 
-      // Obtener IDs únicos para cada reserva (una por cada habitación)
-      // El primer ID ya lo tenemos, ahora generamos los siguientes
+      
+      
       const idsReservas = [];
       let idActual = siguienteId;
       for (let i = 0; i < jsonParaBD.length; i++) {
@@ -234,31 +230,31 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
         }
       }
       
-      // Asignar los IDs a cada reserva
+      
       jsonParaBD.forEach((reserva, index) => {
         reserva.id = idsReservas[index];
       });
 
-      // Mostrar el JSON en pantalla antes de guardar
-      // Pasar una función callback para mostrar el modal de éxito cuando se cierre el JSON
+      
+      
       mostrarJSONReservaEnPantalla(jsonParaBD, reservaDTO, function() {
-        // Esta función se ejecutará cuando el usuario cierre el JSON
+        
         mostrarModalExitoReserva(nombre, apellido, contenedor);
       });
 
-      // Guardar las reservas en la base de datos (una reserva por cada habitación)
+      
       await guardarReservaConFechasIndividuales(jsonParaBD);
       
-      // Actualizar el siguiente ID en el gestor para mantener consistencia
-      // (el método _obtenerSiguienteId ya lo incrementó, así que está bien)
+      
+      
 
-      console.log(`Reserva creada exitosamente con ${habitacionesReserva.length} habitación(es)`); // Debug
+      console.log(`Reserva creada exitosamente con ${habitacionesReserva.length} habitación(es)`); 
 
-      // Ocultar el contenedor del formulario
+      
       contenedor.style.display = 'none';
       
-      // Esta función se moverá a mostrarModalExitoReserva
-      // para que el listener se agregue solo cuando se muestre el modal de éxito
+      
+      
 
     } catch (error) {
       console.error('Error al crear la reserva:', error);
@@ -268,21 +264,19 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
 
   contenedor.appendChild(confirmarButton);
   
-  // También mantener el listener del formulario por si acaso
+  
   formularioHuesped.addEventListener('submit', function(event) {
     event.preventDefault();
-    confirmarButton.click(); // Disparar el click del botón
+    confirmarButton.click(); 
   });
   
-  // No agregar los divs de habitaciones aquí porque ya se mostraron en la vista de confirmación anterior
-  // Los divs de habitación solo deben mostrarse en mostrarConfirmacionReserva, no en el formulario del huésped
+  
+  
 }
 
-/**
- * Inicializa las validaciones en tiempo real para el formulario de huésped
- */
+
 function inicializarValidacionesFormulario() {
-  // Usar setTimeout para que los elementos estén en el DOM
+  
   setTimeout(() => {
     const nombreInput = document.getElementById('nombre');
     const apellidoInput = document.getElementById('apellido');
@@ -294,10 +288,10 @@ function inicializarValidacionesFormulario() {
         validarCampo(nombreInput, 'nombre');
       });
       nombreInput.addEventListener('input', () => {
-        // Convertir a mayúsculas mientras se escribe
+        
         const cursorPosition = nombreInput.selectionStart;
         nombreInput.value = nombreInput.value.toUpperCase();
-        // Restaurar la posición del cursor
+        
         nombreInput.setSelectionRange(cursorPosition, cursorPosition);
         limpiarError('nombre');
       });
@@ -309,10 +303,10 @@ function inicializarValidacionesFormulario() {
         validarCampo(apellidoInput, 'apellido');
       });
       apellidoInput.addEventListener('input', () => {
-        // Convertir a mayúsculas mientras se escribe
+        
         const cursorPosition = apellidoInput.selectionStart;
         apellidoInput.value = apellidoInput.value.toUpperCase();
-        // Restaurar la posición del cursor
+        
         apellidoInput.setSelectionRange(cursorPosition, cursorPosition);
         limpiarError('apellido');
       });
@@ -321,7 +315,7 @@ function inicializarValidacionesFormulario() {
     if (telefonoInput) {
       telefonoInput.addEventListener('blur', () => validarCampo(telefonoInput, 'telefono'));
       telefonoInput.addEventListener('input', () => {
-        // Solo permitir números
+        
         telefonoInput.value = telefonoInput.value.replace(/\D/g, '');
         limpiarError('telefono');
       });
@@ -329,12 +323,7 @@ function inicializarValidacionesFormulario() {
   }, 100);
 }
 
-/**
- * Valida un campo del formulario
- * @param {HTMLElement} input - Elemento input a validar
- * @param {string} tipoCampo - Tipo de campo ('nombre', 'apellido', 'telefono')
- * @returns {boolean} - true si es válido, false si no
- */
+
 function validarCampo(input, tipoCampo) {
   const valor = input.value.trim();
   const errorElement = document.getElementById(`error-${tipoCampo}`);
@@ -343,12 +332,12 @@ function validarCampo(input, tipoCampo) {
   let esValido = true;
   let mensajeError = '';
   
-  // Validar campo vacío
+  
   if (!valor) {
     esValido = false;
     mensajeError = 'Este campo es requerido';
   } else {
-    // Validaciones específicas por tipo
+    
     switch (tipoCampo) {
       case 'nombre':
       case 'apellido':
@@ -379,7 +368,7 @@ function validarCampo(input, tipoCampo) {
     }
   }
   
-  // Actualizar UI
+  
   if (esValido) {
     input.classList.remove('campo-invalido');
     input.classList.add('campo-valido');
@@ -401,20 +390,15 @@ function validarCampo(input, tipoCampo) {
   return esValido;
 }
 
-/**
- * Muestra el modal de éxito después de cerrar el JSON
- * @param {string} nombre - Nombre del titular
- * @param {string} apellido - Apellido del titular
- * @param {HTMLElement} contenedor - Contenedor del formulario a remover
- */
+
 function mostrarModalExitoReserva(nombre, apellido, contenedor) {
-  console.log('Llamando a mensajeCorrecto'); // Debug
+  console.log('Llamando a mensajeCorrecto'); 
   mensajeCorrecto(`Reserva realizada con éxito para <br>"${nombre} ${apellido}".<br>Presione cualquier tecla para continuar.`);
   
-  // Verificar que el modal se mostró
+  
   setTimeout(() => {
     const modalCorrecto = document.getElementById('modal-correcto');
-    console.log('Estado del modal después de mostrar:', modalCorrecto ? modalCorrecto.style.display : 'modal no encontrado'); // Debug
+    console.log('Estado del modal después de mostrar:', modalCorrecto ? modalCorrecto.style.display : 'modal no encontrado'); 
     if (modalCorrecto && modalCorrecto.style.display !== 'flex') {
       console.error('El modal no se mostró correctamente, intentando mostrar manualmente');
       modalCorrecto.style.display = 'flex';
@@ -422,15 +406,15 @@ function mostrarModalExitoReserva(nombre, apellido, contenedor) {
     }
   }, 100);
   
-  // Agregar listener para cerrar cuando se presione cualquier tecla
+  
   document.addEventListener('keydown', function limpiarReserva() {
-    // Cerrar el modal primero
+    
     const modalCorrecto = document.getElementById('modal-correcto');
     if (modalCorrecto) {
       modalCorrecto.style.display = 'none';
     }
     
-    // Cerrar el contenedor JSON si está abierto (por si acaso)
+    
     const contenedorJSON = document.getElementById('contenedor-json-reserva');
     if (contenedorJSON) {
       contenedorJSON.style.display = 'none';
@@ -447,10 +431,7 @@ function mostrarModalExitoReserva(nombre, apellido, contenedor) {
   }, { once: true });
 }
 
-/**
- * Limpia el error de un campo
- * @param {string} tipoCampo - Tipo de campo
- */
+
 function limpiarError(tipoCampo) {
   const input = document.getElementById(tipoCampo);
   const errorElement = document.getElementById(`error-${tipoCampo}`);
@@ -467,10 +448,7 @@ function limpiarError(tipoCampo) {
 }
 
 
-/**
- * Muestra la pantalla de confirmación de reserva
- * @param {Array} habitacionesSeleccionadas - Array de objetos { habitacion, fechaDesde, fechaHasta }
- */
+
 function mostrarConfirmacionReserva(habitacionesSeleccionadas) {
   try {
     console.log('mostrarConfirmacionReserva llamado con:', habitacionesSeleccionadas);
@@ -521,7 +499,7 @@ function mostrarConfirmacionReserva(habitacionesSeleccionadas) {
     resultadoCopia.appendChild(nuevoCancelarButton);
     resultadoCopia.appendChild(nuevoSiguienteButton);
 
-    // Agregar información de habitaciones con sus fechas específicas
+    
     const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     habitacionesSeleccionadas.forEach((seleccion) => {
       try {
@@ -553,9 +531,7 @@ function mostrarConfirmacionReserva(habitacionesSeleccionadas) {
   }
 }
 
-/**
- * Maneja el evento de clic en el botón de reservar
- */
+
 function manejarClickReservar() {
   const botonReservar = document.querySelector('.boton-reservar');
   if (!botonReservar) {
@@ -584,9 +560,7 @@ function manejarClickReservar() {
   });
 }
 
-/**
- * Maneja el evento de envío del formulario de búsqueda
- */
+
 function manejarBusqueda() {
   const formulario = document.querySelector('form');
   if (!formulario) {
@@ -604,16 +578,16 @@ function manejarBusqueda() {
     const fechaDesde = document.getElementById('fecha-desde').value;
     const fechaHasta = document.getElementById('fecha-hasta').value;
 
-    // Limpiar selecciones anteriores y resetear filtro
+    
     limpiarHabitacionesSeleccionadas();
     const selectFiltro = document.getElementById('filtro-tipo-habitacion');
     if (selectFiltro) {
       selectFiltro.value = '';
     }
     
-    // Asegurar que los datos estén cargados antes de generar la tabla
+    
     asegurarDatosCargados().then(() => {
-      // Resetear el tipo de filtro antes de generar
+      
       if (typeof establecerTipoFiltro === 'function') {
         establecerTipoFiltro('');
       }
@@ -634,15 +608,13 @@ function manejarBusqueda() {
   });
 }
 
-/**
- * Inicializa el flujo de reserva
- */
+
 function inicializarReserva() {
   manejarBusqueda();
   manejarClickReservar();
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', inicializarReserva);
 } else {

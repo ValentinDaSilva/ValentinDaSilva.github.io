@@ -1,12 +1,9 @@
-/* Visualización de resultados */
+
 
 import { agruparPagosPorTipo, calcularTotalGeneral } from './agrupar-pagos.js';
 import { formatearFecha, formatearMonto, obtenerDetalleMedioPago, obtenerNombreResponsable } from './utilidades.js';
 
-/**
- * Muestra los resultados de los pagos agrupados
- * @param {Array} pagos - Array de pagos a mostrar
- */
+
 export function mostrarResultados(pagos) {
   const contenedor = document.getElementById('contenido-resultados');
   const contenedorResultados = document.getElementById('contenedor-resultados');
@@ -19,13 +16,13 @@ export function mostrarResultados(pagos) {
     return;
   }
   
-  // Agrupar pagos por tipo
+  
   const grupos = agruparPagosPorTipo(pagos);
   
-  // Generar HTML
+  
   let html = '';
   
-  // Ordenar grupos por nombre de tipo
+  
   const tiposOrdenados = Object.keys(grupos).sort();
   
   tiposOrdenados.forEach(tipo => {
@@ -35,21 +32,17 @@ export function mostrarResultados(pagos) {
   
   contenedor.innerHTML = html;
   
-  // Calcular y mostrar total general
+  
   const totalGeneral = calcularTotalGeneral(pagos);
   totalGeneralElement.innerHTML = `
     <div>Total General del Período: ${formatearMonto(totalGeneral)}</div>
   `;
   
-  // Mostrar contenedor de resultados
+  
   contenedorResultados.style.display = 'block';
 }
 
-/**
- * Genera el HTML para un grupo de pagos
- * @param {Object} grupo - Grupo de pagos
- * @returns {string} - HTML del grupo
- */
+
 function generarHTMLGrupo(grupo) {
   let html = `
     <div class="grupo-medio-pago">
@@ -70,7 +63,7 @@ function generarHTMLGrupo(grupo) {
         <tbody>
   `;
   
-  // Los pagos ya vienen ordenados del array principal, así que se mantiene el orden dentro del grupo
+  
   grupo.pagos.forEach(pago => {
     const detalleMedio = obtenerDetalleMedioPago(pago.medioDePago);
     const nombreResponsable = obtenerNombreResponsable(pago.responsableDePago);

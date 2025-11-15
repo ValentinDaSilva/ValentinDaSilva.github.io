@@ -1,9 +1,6 @@
-/* Funciones para manejar modales de error, éxito, advertencia y pregunta */
 
-/**
- * Muestra un mensaje de error
- * @param {string} mensaje - Mensaje de error a mostrar
- */
+
+
 function mensajeError(mensaje) {
   const modal = document.getElementById('modal-error');
   const mensajeError = document.getElementById('mensaje-error');
@@ -30,10 +27,7 @@ function mensajeError(mensaje) {
   }
 }
 
-/**
- * Muestra un mensaje de éxito
- * @param {string} mensaje - Mensaje de éxito a mostrar
- */
+
 function mensajeCorrecto(mensaje) {
   if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
   
@@ -53,7 +47,7 @@ function mensajeCorrecto(mensaje) {
   mensajeCorrectoElement.innerHTML = mensaje;
   modal.style.display = "flex";
   
-  // Asegurar que el modal esté visible
+  
   modal.style.zIndex = "9999";
   
   window.onkeydown = function() {
@@ -61,13 +55,7 @@ function mensajeCorrecto(mensaje) {
   };
 }
 
-/**
- * Muestra un mensaje de advertencia
- * @param {string} mensaje - Mensaje de advertencia a mostrar
- * @param {string} boton1 - Texto del primer botón
- * @param {string} boton2 - Texto del segundo botón
- * @returns {Promise<string>} - Promise que resuelve con el texto del botón clickeado
- */
+
 function advertencia(mensaje, boton1, boton2) {
   if (mensaje == undefined) mensaje = "Mensaje de Advertencia";
   if (boton1 == undefined) boton1 = "ACEPTAR";
@@ -106,14 +94,7 @@ function advertencia(mensaje, boton1, boton2) {
   });
 }
 
-/**
- * Muestra un mensaje de pregunta
- * @param {string} mensaje - Mensaje de pregunta a mostrar
- * @param {string} boton1 - Texto del primer botón
- * @param {string} boton2 - Texto del segundo botón
- * @param {string} boton3 - Texto del tercer botón
- * @returns {Promise<string>} - Promise que resuelve con el texto del botón clickeado
- */
+
 function pregunta(mensaje, boton1, boton2, boton3) {
   if (mensaje == undefined) mensaje = "Mensaje de Pregunta";
   if (boton1 == undefined) boton1 = "ACEPTAR";

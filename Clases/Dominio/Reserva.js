@@ -8,7 +8,7 @@ class Reserva {
     this._titular = titular;
     this._estado = estado;
     this._habitaciones = [];
-    this._estadia = null; //Tipo clase Estadia
+    this._estadia = null; 
   }
 
   get id() { return this._id; }

@@ -1,11 +1,6 @@
-/* Validaciones de campos del formulario de búsqueda */
 
-/**
- * Valida que una fecha no esté vacía
- * @param {HTMLInputElement} campoFecha - Campo de fecha a validar
- * @param {string} nombreCampo - Nombre del campo para el mensaje de error
- * @returns {boolean} - true si es válido, false si no
- */
+
+
 function validarFecha(campoFecha, nombreCampo) {
   if (!campoFecha.value) {
     mensajeError(`Por favor, ingrese una fecha válida en "${nombreCampo}".`);
@@ -15,12 +10,7 @@ function validarFecha(campoFecha, nombreCampo) {
   return true;
 }
 
-/**
- * Valida que la fecha de salida sea posterior a la fecha de entrada
- * @param {HTMLInputElement} checkinInput - Campo de fecha de entrada
- * @param {HTMLInputElement} checkoutInput - Campo de fecha de salida
- * @returns {boolean} - true si es válido, false si no
- */
+
 function validarRangoFechas(checkinInput, checkoutInput) {
   if (new Date(checkinInput.value) >= new Date(checkoutInput.value)) {
     mensajeError('La fecha de salida debe ser posterior a la fecha de entrada.');
@@ -32,10 +22,7 @@ function validarRangoFechas(checkinInput, checkoutInput) {
   return true;
 }
 
-/**
- * Valida todos los campos del formulario de búsqueda
- * @returns {boolean} - true si todos los campos son válidos
- */
+
 function validarFormularioBusqueda() {
   const checkinInput = document.getElementById('checkin');
   const checkoutInput = document.getElementById('checkout');
@@ -55,9 +42,7 @@ function validarFormularioBusqueda() {
   return true;
 }
 
-/**
- * Inicializa los event listeners de validación en los campos de fecha
- */
+
 function inicializarValidacionesCampos() {
   const checkinInput = document.getElementById('checkin');
   const checkoutInput = document.getElementById('checkout');
@@ -79,7 +64,7 @@ function inicializarValidacionesCampos() {
   });
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', inicializarValidacionesCampos);
 } else {

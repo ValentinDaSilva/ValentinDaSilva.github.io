@@ -1,16 +1,12 @@
-/* Conversión de factura JSON a instancia de clase Factura */
+
 
 import Factura from '../../../Clases/Dominio/Factura.js';
 import Pago from '../../../Clases/Dominio/Pago.js';
 import { Efectivo, MonedaExtranjera, Cheque, Tarjeta } from '../../../Clases/Dominio/MedioDePago/index.js';
 
-/**
- * Convierte una factura JSON a una instancia de Factura
- * @param {Object} facturaJSON - Factura en formato JSON
- * @returns {Factura} - Instancia de Factura
- */
+
 export function convertirFacturaJSONAClase(facturaJSON) {
-  // Crear instancia de Factura
+  
   const factura = new Factura(
     facturaJSON.id,
     facturaJSON.hora,
@@ -22,7 +18,7 @@ export function convertirFacturaJSONAClase(facturaJSON) {
     facturaJSON.estadia
   );
   
-  // Convertir pagos si existen
+  
   if (facturaJSON.pagos && Array.isArray(facturaJSON.pagos)) {
     facturaJSON.pagos.forEach(pagoJSON => {
       const pago = convertirPagoJSONAClase(pagoJSON);
@@ -35,11 +31,7 @@ export function convertirFacturaJSONAClase(facturaJSON) {
   return factura;
 }
 
-/**
- * Convierte un pago JSON a una instancia de Pago
- * @param {Object} pagoJSON - Pago en formato JSON
- * @returns {Pago|null} - Instancia de Pago o null
- */
+
 function convertirPagoJSONAClase(pagoJSON) {
   if (!pagoJSON || !pagoJSON.medioDePago) {
     return null;

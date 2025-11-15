@@ -1,8 +1,6 @@
-/* Navegación entre pantallas */
 
-/**
- * Muestra la pantalla de ingreso de habitación
- */
+
+
 export function mostrarPantallaInicial() {
   const pantallaInicial = document.getElementById('ingresoHabitacion');
   const pantallaFacturas = document.getElementById('listaFacturas');
@@ -12,14 +10,12 @@ export function mostrarPantallaInicial() {
   if (pantallaFacturas) pantallaFacturas.classList.add('hidden');
   if (pantallaPago) pantallaPago.classList.add('hidden');
   
-  // Limpiar formulario
+  
   const form = document.getElementById('habitacionForm');
   if (form) form.reset();
 }
 
-/**
- * Muestra la pantalla de lista de facturas
- */
+
 export function mostrarPantallaFacturas() {
   const pantallaInicial = document.getElementById('ingresoHabitacion');
   const pantallaFacturas = document.getElementById('listaFacturas');
@@ -30,9 +26,7 @@ export function mostrarPantallaFacturas() {
   if (pantallaPago) pantallaPago.classList.add('hidden');
 }
 
-/**
- * Muestra la pantalla de pago
- */
+
 export function mostrarPantallaPago() {
   const pantallaInicial = document.getElementById('ingresoHabitacion');
   const pantallaFacturas = document.getElementById('listaFacturas');

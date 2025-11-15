@@ -5,11 +5,11 @@ class Factura {
         this.fecha = fecha;
         this.tipo = tipo;
         this.estado = estado;
-        this.responsableDePago = responsableDePago; // Tipo clase ResponsableDePago
-        this.medioDePago = medioDePago; // Tipo clase MedioDePago 
-        this.estadia = estadia; // Tipo clase Estadia
-        this.pagos = []; // Array de tipo clase Pago
-        this.total = 0; // Total de la factura
+        this.responsableDePago = responsableDePago; 
+        this.medioDePago = medioDePago; 
+        this.estadia = estadia; 
+        this.pagos = []; 
+        this.total = 0; 
     }
     get getId() {
         return this.id;

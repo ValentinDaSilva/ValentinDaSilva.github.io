@@ -1,9 +1,6 @@
-/* Funciones para manejar modales de error, éxito y advertencia */
 
-/**
- * Muestra un mensaje de error
- * @param {string} mensaje - Mensaje de error a mostrar
- */
+
+
 function mensajeError(mensaje) {
   const modal = document.getElementById('modal-error');
   const mensajeError = document.getElementById('mensaje-error');
@@ -30,10 +27,7 @@ function mensajeError(mensaje) {
   }
 }
 
-/**
- * Muestra un mensaje de éxito
- * @param {string} mensaje - Mensaje de éxito a mostrar
- */
+
 function mensajeCorrecto(mensaje) {
   if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
   
@@ -53,7 +47,7 @@ function mensajeCorrecto(mensaje) {
   mensajeCorrectoElement.innerHTML = mensaje;
   modal.style.display = "flex";
   
-  // Asegurar que el modal esté visible
+  
   modal.style.zIndex = "9999";
   
   window.onkeydown = function() {
@@ -61,10 +55,7 @@ function mensajeCorrecto(mensaje) {
   };
 }
 
-/**
- * Muestra un mensaje de advertencia
- * @param {string} mensaje - Mensaje de advertencia a mostrar
- */
+
 function mensajeAdvertencia(mensaje) {
   const modal = document.getElementById('modal-advertencia');
   const mensajeAdvertencia = document.getElementById('mensaje-advertencia');

@@ -1,8 +1,6 @@
-/* Gestión de medios de pago y campos dinámicos */
 
-/**
- * Inicializa los event listeners para los medios de pago
- */
+
+
 export function inicializarMediosPago() {
   const checkboxes = document.querySelectorAll('input[name="medioPago"]');
   checkboxes.forEach(checkbox => {
@@ -10,14 +8,12 @@ export function inicializarMediosPago() {
   });
 }
 
-/**
- * Actualiza los campos de pago según los medios seleccionados
- */
+
 function actualizarCamposPago() {
   const contenedor = document.getElementById('camposPago');
   if (!contenedor) return;
   
-  // Limpiar campos existentes
+  
   contenedor.innerHTML = '';
   
   const mediosSeleccionados = Array.from(document.querySelectorAll('input[name="medioPago"]:checked'))
@@ -29,16 +25,12 @@ function actualizarCamposPago() {
   });
 }
 
-/**
- * Crea el campo de pago para un medio específico
- * @param {string} medio - Tipo de medio de pago
- * @returns {HTMLElement} - Elemento div con los campos
- */
+
 function crearCampoPago(medio) {
   const div = document.createElement('div');
   div.className = 'campo-pago';
   
-  // Normalizar el valor del medio a minúsculas
+  
   const medioNormalizado = medio.toLowerCase();
   div.dataset.medio = medioNormalizado;
   
@@ -108,7 +100,7 @@ function crearCampoPago(medio) {
     return div;
   }
   
-  // Agregar event listeners específicos
+  
   if (medioNormalizado === 'monedaextranjera') {
     const montoExtranjero = div.querySelector('[data-campo="montoExtranjero"]');
     const cotizacion = div.querySelector('[data-campo="cotizacion"]');
@@ -128,24 +120,21 @@ function crearCampoPago(medio) {
     if (botonAgregar) {
       botonAgregar.addEventListener('click', () => agregarCheque(div));
     }
-    // Agregar primer cheque por defecto
+    
     agregarCheque(div);
   } else if (medioNormalizado === 'tarjetas') {
     const botonAgregar = div.querySelector('.boton-agregar-tarjeta');
     if (botonAgregar) {
       botonAgregar.addEventListener('click', () => agregarTarjeta(div));
     }
-    // Agregar primera tarjeta por defecto
+    
     agregarTarjeta(div);
   }
   
   return div;
 }
 
-/**
- * Agrega un campo de cheque
- * @param {HTMLElement} contenedor - Contenedor del campo de cheques
- */
+
 function agregarCheque(contenedor) {
   const chequesContainer = contenedor.querySelector('[data-container="cheques"]');
   if (!chequesContainer) return;
@@ -179,10 +168,7 @@ function agregarCheque(contenedor) {
   actualizarTotalCheques(contenedor);
 }
 
-/**
- * Actualiza el total de cheques
- * @param {HTMLElement} contenedor - Contenedor del campo de cheques
- */
+
 function actualizarTotalCheques(contenedor) {
   const cheques = contenedor.querySelectorAll('.cheque-item');
   let total = 0;
@@ -203,10 +189,7 @@ function actualizarTotalCheques(contenedor) {
   }
 }
 
-/**
- * Agrega un campo de tarjeta
- * @param {HTMLElement} contenedor - Contenedor del campo de tarjetas
- */
+
 function agregarTarjeta(contenedor) {
   const tarjetasContainer = contenedor.querySelector('[data-container="tarjetas"]');
   if (!tarjetasContainer) return;
@@ -247,10 +230,7 @@ function agregarTarjeta(contenedor) {
   actualizarTotalTarjetas(contenedor);
 }
 
-/**
- * Actualiza el total de tarjetas
- * @param {HTMLElement} contenedor - Contenedor del campo de tarjetas
- */
+
 function actualizarTotalTarjetas(contenedor) {
   const tarjetas = contenedor.querySelectorAll('.tarjeta-item');
   let total = 0;
@@ -271,10 +251,7 @@ function actualizarTotalTarjetas(contenedor) {
   }
 }
 
-/**
- * Obtiene los datos de los medios de pago seleccionados
- * @returns {Object} - Datos de los medios de pago
- */
+
 export function obtenerDatosMediosPago() {
   const mediosSeleccionados = Array.from(document.querySelectorAll('input[name="medioPago"]:checked'))
     .map(cb => cb.value);
@@ -286,7 +263,7 @@ export function obtenerDatosMediosPago() {
   };
   
   mediosSeleccionados.forEach(medio => {
-    // Normalizar el medio para buscar el campo (los campos se guardan con valores normalizados)
+    
     const medioNormalizado = medio.toLowerCase();
     const campoDiv = document.querySelector(`.campo-pago[data-medio="${medioNormalizado}"]`);
     if (!campoDiv) {
@@ -342,7 +319,7 @@ export function obtenerDatosMediosPago() {
         break;
     }
     
-    // Guardar con el valor original del checkbox, no el normalizado
+    
     datos.detalles[medio] = detalles;
   });
   

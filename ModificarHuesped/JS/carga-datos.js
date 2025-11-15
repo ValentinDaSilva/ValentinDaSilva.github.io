@@ -1,9 +1,6 @@
-/* Carga de datos del huésped desde sessionStorage */
 
-/**
- * Obtiene los datos del huésped seleccionado desde sessionStorage
- * @returns {Object|null} - Datos del huésped o null si no existe
- */
+
+
 function obtenerHuespedDeSessionStorage() {
     try {
         const huespedGuardado = sessionStorage.getItem('huespedSeleccionado');
@@ -17,17 +14,14 @@ function obtenerHuespedDeSessionStorage() {
     }
 }
 
-/**
- * Carga los datos del huésped en el formulario
- * @param {Object} huesped - Datos del huésped
- */
+
 function cargarDatosEnFormulario(huesped) {
     if (!huesped) return;
     
-    // Mapear los datos del huésped a los campos del formulario
-    // Manejar diferentes formatos de datos que pueden venir del sessionStorage
     
-    // Datos básicos
+    
+    
+    
     if (huesped.apellido) {
         const campoApellido = document.getElementById('apellido');
         if (campoApellido) campoApellido.value = huesped.apellido;
@@ -48,7 +42,7 @@ function cargarDatosEnFormulario(huesped) {
         if (campoNumDoc) campoNumDoc.value = huesped.numeroDocumento;
     }
     
-    // Datos opcionales
+    
     if (huesped.cuit) {
         const campoCuit = document.getElementById('cuit');
         if (campoCuit) campoCuit.value = huesped.cuit;
@@ -59,7 +53,7 @@ function cargarDatosEnFormulario(huesped) {
         if (campoFecha) campoFecha.value = huesped.fechaNacimiento;
     }
     
-    // Teléfono - manejar diferentes formatos
+    
     if (huesped.caracteristica || huesped.telefono) {
         const campoCaracteristica = document.getElementById('caracteristica');
         if (campoCaracteristica) {
@@ -71,7 +65,7 @@ function cargarDatosEnFormulario(huesped) {
         }
     }
     
-    // Teléfono número - puede venir como telefonoNumero o celular
+    
     if (huesped.telefonoNumero || huesped.celular || huesped.telefono) {
         const campoCelular = document.getElementById('celular');
         if (campoCelular) {
@@ -100,13 +94,13 @@ function cargarDatosEnFormulario(huesped) {
         if (campoNacionalidad) campoNacionalidad.value = huesped.nacionalidad;
     }
     
-    // Dirección
+    
     if (huesped.calle || (huesped.direccion && huesped.direccion.calle)) {
         const campoCalle = document.getElementById('calle');
         if (campoCalle) campoCalle.value = huesped.calle || huesped.direccion.calle || '';
     }
     
-    // Número de calle - puede venir como numeroCalle o numero
+    
     if (huesped.numeroCalle || huesped.numero || (huesped.direccion && huesped.direccion.numero)) {
         const campoNumero = document.getElementById('numero');
         if (campoNumero) {
@@ -151,43 +145,40 @@ function cargarDatosEnFormulario(huesped) {
     }
 }
 
-/**
- * Verifica si existe un huésped seleccionado y carga los datos
- * Si no existe, muestra una alerta y redirige a buscarHuesped
- */
+
 function inicializarCargaDatos() {
     const huesped = obtenerHuespedDeSessionStorage();
     
     if (!huesped) {
-        // Mostrar alerta y redirigir
+        
         alert("Primero debes seleccionar un huésped");
         window.location.href = '../BuscarHuesped/buscarHuesped.html';
         return;
     }
     
-    // Esperar a que el gestor esté disponible (los módulos se cargan de forma asíncrona)
+    
     function establecerHuespedEnGestor() {
         if (window.gestorModificarHuesped) {
-            // Crear una copia del huésped para evitar modificaciones accidentales
+            
             const huespedOriginal = JSON.parse(JSON.stringify(huesped));
             window.gestorModificarHuesped.establecerHuespedOriginal(huespedOriginal);
             console.log('Huésped original establecido en el gestor:', huespedOriginal);
         } else {
-            // Si el gestor aún no está disponible, intentar de nuevo después de un breve delay
+            
             setTimeout(establecerHuespedEnGestor, 50);
         }
     }
     
-    // Intentar establecer el huésped en el gestor
+    
     establecerHuespedEnGestor();
     
-    // Cargar los datos en el formulario
+    
     cargarDatosEnFormulario(huesped);
     
     console.log('Datos del huésped cargados correctamente:', huesped);
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', inicializarCargaDatos);
 } else {

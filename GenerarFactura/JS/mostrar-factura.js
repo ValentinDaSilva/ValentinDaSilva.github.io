@@ -1,29 +1,26 @@
-/* Mostrar datos de factura en pantalla */
 
-/**
- * Muestra los datos de la factura en la pantalla de resumen
- * @param {Object} factura - Objeto factura generada
- */
+
+
 function mostrarDatosFacturaEnPantalla(factura) {
   if (!factura) {
     console.error('No se puede mostrar factura: factura es null');
     return;
   }
   
-  // Mostrar nombre del huésped (titular de la estadía)
+  
   const nombreHuespedElement = document.querySelector('.nombreHusped h3');
   if (nombreHuespedElement && factura.estadia.titular) {
     const titular = factura.estadia.titular;
     nombreHuespedElement.innerHTML = `<strong>${titular.apellido}, ${titular.nombres}</strong>`;
   }
   
-  // Mostrar valor de estadía
+  
   const valorEstadiaElement = document.querySelector('.valorEstadia p');
   if (valorEstadiaElement && factura.detalle) {
     valorEstadiaElement.textContent = `✔️ Valor de Estadia: $${factura.detalle.valorEstadia.toFixed(2)} × ${factura.detalle.numeroNoches} Noches`;
   }
   
-  // Mostrar consumos
+  
   const consumosContainer = document.querySelector('.listaConsumos');
   if (consumosContainer && factura.detalle.consumos) {
     consumosContainer.innerHTML = '';
@@ -48,7 +45,7 @@ function mostrarDatosFacturaEnPantalla(factura) {
     }
   }
   
-  // Mostrar recargo de checkout
+  
   const recargoSection = document.getElementById('recargoCheckoutSection');
   const mensajeRecargo = document.getElementById('mensajeRecargo');
   const montoRecargo = document.getElementById('montoRecargo');
@@ -61,7 +58,7 @@ function mostrarDatosFacturaEnPantalla(factura) {
     const requiereNuevaOcupacion = factura.detalle.requiereNuevaOcupacion || false;
     
     if (recargo > 0) {
-      // Mostrar sección de recargo
+      
       recargoSection.style.display = 'block';
       
       if (mensajeRecargo) {
@@ -72,7 +69,7 @@ function mostrarDatosFacturaEnPantalla(factura) {
         montoRecargo.innerHTML = `<strong>Monto del recargo: $${recargo.toFixed(2)}</strong>`;
       }
       
-      // Mostrar advertencia de nueva ocupación si es necesario
+      
       if (nuevaOcupacionWarning) {
         if (requiereNuevaOcupacion) {
           nuevaOcupacionWarning.style.display = 'block';
@@ -81,7 +78,7 @@ function mostrarDatosFacturaEnPantalla(factura) {
         }
       }
     } else {
-      // Ocultar sección si no hay recargo
+      
       recargoSection.style.display = 'none';
       if (nuevaOcupacionWarning) {
         nuevaOcupacionWarning.style.display = 'none';
@@ -89,7 +86,7 @@ function mostrarDatosFacturaEnPantalla(factura) {
     }
   }
   
-  // Mostrar IVA
+  
   const ivaElement = document.querySelector('.iva');
   if (ivaElement && factura.detalle) {
     ivaElement.innerHTML = `
@@ -98,7 +95,7 @@ function mostrarDatosFacturaEnPantalla(factura) {
     `;
   }
   
-  // Mostrar tipo de factura y total
+  
   const tipoFacturaElement = document.querySelector('.tipoFactura');
   if (tipoFacturaElement && factura.detalle) {
     tipoFacturaElement.innerHTML = `

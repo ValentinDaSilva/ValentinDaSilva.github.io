@@ -1,15 +1,11 @@
-/* Validaciones específicas para cada campo del formulario */
 
-/**
- * Muestra un mensaje de error debajo de un campo
- * @param {string} campoId - ID del campo
- * @param {string} mensaje - Mensaje de error a mostrar
- */
+
+
 function mostrarError(campoId, mensaje) {
     const campo = document.getElementById(campoId);
     if (!campo) return;
     
-    // Buscar o crear el contenedor de error
+    
     let contenedorError = campo.parentElement.querySelector('.mensaje-error');
     if (!contenedorError) {
         contenedorError = document.createElement('div');
@@ -23,10 +19,7 @@ function mostrarError(campoId, mensaje) {
     campo.classList.add('campo-invalido');
 }
 
-/**
- * Oculta el mensaje de error de un campo
- * @param {string} campoId - ID del campo
- */
+
 function ocultarError(campoId) {
     const campo = document.getElementById(campoId);
     if (!campo) return;
@@ -39,68 +32,43 @@ function ocultarError(campoId) {
     campo.classList.add('campo-valido');
 }
 
-/**
- * Valida que el campo contenga solo letras, espacios y acentos
- * @param {string} valor - Valor a validar
- * @returns {boolean} - true si es válido
- */
+
 function esSoloLetras(valor) {
     const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
     return regex.test(valor);
 }
 
-/**
- * Valida que el campo contenga solo números
- * @param {string} valor - Valor a validar
- * @returns {boolean} - true si es válido
- */
+
 function esSoloNumeros(valor) {
     const regex = /^\d+$/;
     return regex.test(valor);
 }
 
-/**
- * Valida el formato de email
- * @param {string} valor - Email a validar
- * @returns {boolean} - true si es válido
- */
+
 function esEmailValido(valor) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(valor);
 }
 
-/**
- * Valida el formato de CUIT (XX-XXXXXXX-X o XX-XXXXXXXX-X)
- * Permite 7 u 8 dígitos en la parte media para DNI de ancianos
- * @param {string} valor - CUIT a validar
- * @returns {boolean} - true si es válido
- */
+
 function esCUITValido(valor) {
     const regex = /^\d{2}-\d{7,8}-\d{1}$/;
     return regex.test(valor);
 }
 
-/**
- * Valida que la fecha no sea futura y sea razonable (al menos 18 años atrás)
- * @param {string} fecha - Fecha a validar (formato YYYY-MM-DD)
- * @returns {boolean} - true si es válida
- */
+
 function esFechaValida(fecha) {
     if (!fecha) return false;
     
     const fechaIngresada = new Date(fecha);
     const hoy = new Date();
     const fechaMinima = new Date();
-    fechaMinima.setFullYear(hoy.getFullYear() - 120); // No más de 120 años
+    fechaMinima.setFullYear(hoy.getFullYear() - 120); 
     
     return fechaIngresada <= hoy && fechaIngresada >= fechaMinima;
 }
 
-/**
- * Valida el campo Apellido
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarApellido(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'El apellido es requerido' };
@@ -114,11 +82,7 @@ function validarApellido(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Nombres
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarNombres(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'Los nombres son requeridos' };
@@ -132,11 +96,7 @@ function validarNombres(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Número de Documento
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarNumeroDocumento(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'El número de documento es requerido' };
@@ -150,14 +110,10 @@ function validarNumeroDocumento(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo CUIT
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarCUIT(valor) {
     if (!valor || valor.trim() === '') {
-        return { valido: true, mensaje: '' }; // CUIT es opcional
+        return { valido: true, mensaje: '' }; 
     }
     if (!esCUITValido(valor.trim())) {
         return { valido: false, mensaje: 'El CUIT debe tener el formato XX-XXXXXXX-X o XX-XXXXXXXX-X' };
@@ -165,11 +121,7 @@ function validarCUIT(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Fecha de Nacimiento
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarFechaNacimiento(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'La fecha de nacimiento es requerida' };
@@ -180,11 +132,7 @@ function validarFechaNacimiento(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Característica (código de área)
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarCaracteristica(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'El código de área es requerido' };
@@ -198,11 +146,7 @@ function validarCaracteristica(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Número de Teléfono
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarTelefonoNumero(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'El número de teléfono es requerido' };
@@ -216,14 +160,10 @@ function validarTelefonoNumero(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Email
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarEmail(valor) {
     if (!valor || valor.trim() === '') {
-        return { valido: true, mensaje: '' }; // Email es opcional
+        return { valido: true, mensaje: '' }; 
     }
     if (!esEmailValido(valor.trim())) {
         return { valido: false, mensaje: 'El email debe tener un formato válido (ejemplo@correo.com)' };
@@ -231,11 +171,7 @@ function validarEmail(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Ocupación
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarOcupacion(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'La ocupación es requerida' };
@@ -246,11 +182,7 @@ function validarOcupacion(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Código Postal
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarCodigoPostal(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'El código postal es requerido' };
@@ -264,12 +196,7 @@ function validarCodigoPostal(valor) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida campos de texto genéricos (calle)
- * @param {string} valor - Valor del campo
- * @param {string} nombreCampo - Nombre del campo para el mensaje
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarCampoTexto(valor, nombreCampo) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: `${nombreCampo} es requerido` };
@@ -280,12 +207,7 @@ function validarCampoTexto(valor, nombreCampo) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida campos que solo pueden contener letras (localidad, provincia, país, departamento)
- * @param {string} valor - Valor del campo
- * @param {string} nombreCampo - Nombre del campo para el mensaje
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarCampoSoloLetras(valor, nombreCampo) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: `${nombreCampo} es requerido` };
@@ -299,27 +221,19 @@ function validarCampoSoloLetras(valor, nombreCampo) {
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida el campo Número de Calle
- * @param {string} valor - Valor del campo
- * @returns {Object} - {valido: boolean, mensaje: string}
- */
+
 function validarNumeroCalle(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: false, mensaje: 'El número es requerido' };
     }
-    // Solo permite números
+    
     if (!esSoloNumeros(valor.trim())) {
         return { valido: false, mensaje: 'El número solo puede contener números' };
     }
     return { valido: true, mensaje: '' };
 }
 
-/**
- * Valida un campo específico según su ID
- * @param {string} campoId - ID del campo a validar
- * @returns {boolean} - true si es válido
- */
+
 function validarCampo(campoId) {
     const campo = document.getElementById(campoId);
     if (!campo) return true;
@@ -347,7 +261,7 @@ function validarCampo(campoId) {
             resultado = validarCaracteristica(valor);
             break;
         case 'telefonoNumero':
-        case 'celular': // Compatibilidad con el nombre antiguo
+        case 'celular': 
             resultado = validarTelefonoNumero(valor);
             break;
         case 'email':
@@ -363,7 +277,7 @@ function validarCampo(campoId) {
             resultado = validarCampoTexto(valor, 'La calle');
             break;
         case 'numeroCalle':
-        case 'numero': // Compatibilidad con el nombre antiguo
+        case 'numero': 
             resultado = validarNumeroCalle(valor);
             break;
         case 'localidad':
@@ -377,9 +291,9 @@ function validarCampo(campoId) {
             break;
         case 'departamento':
             if (!valor || valor.trim() === '') {
-                resultado = { valido: true, mensaje: '' }; // Departamento es opcional
+                resultado = { valido: true, mensaje: '' }; 
             } else {
-                // Validar que solo contenga letras, sin restricción de longitud mínima
+                
                 if (!esSoloLetras(valor.trim())) {
                     resultado = { valido: false, mensaje: 'El departamento solo puede contener letras y espacios' };
                 } else {
@@ -388,7 +302,7 @@ function validarCampo(campoId) {
             }
             break;
         case 'piso':
-            // Piso es opcional, no necesita validación específica
+            
             resultado = { valido: true, mensaje: '' };
             break;
         case 'tipoDocumento':
@@ -402,7 +316,7 @@ function validarCampo(campoId) {
             }
             break;
         default:
-            // Campos opcionales sin validación específica
+            
             return true;
     }
     
@@ -415,10 +329,7 @@ function validarCampo(campoId) {
     }
 }
 
-/**
- * Valida todos los campos del formulario
- * @returns {boolean} - true si todos los campos son válidos
- */
+
 function validarTodosLosCampos() {
     const camposAValidar = [
         'apellido',
@@ -429,13 +340,13 @@ function validarTodosLosCampos() {
         'fechaNacimiento',
         'caracteristica',
         'telefonoNumero',
-        'celular', // Compatibilidad
+        'celular', 
         'email',
         'ocupacion',
         'nacionalidad',
         'calle',
         'numeroCalle',
-        'numero', // Compatibilidad
+        'numero', 
         'codigoPostal',
         'localidad',
         'provincia',
@@ -454,9 +365,7 @@ function validarTodosLosCampos() {
     return todosValidos;
 }
 
-/**
- * Inicializa los event listeners para validación en tiempo real
- */
+
 function inicializarValidacionTiempoReal() {
     const camposAValidar = [
         'apellido',
@@ -467,13 +376,13 @@ function inicializarValidacionTiempoReal() {
         'fechaNacimiento',
         'caracteristica',
         'telefonoNumero',
-        'celular', // Compatibilidad
+        'celular', 
         'email',
         'ocupacion',
         'nacionalidad',
         'calle',
         'numeroCalle',
-        'numero', // Compatibilidad
+        'numero', 
         'codigoPostal',
         'localidad',
         'provincia',
@@ -481,7 +390,7 @@ function inicializarValidacionTiempoReal() {
         'departamento'
     ];
     
-    // Campos que deben convertirse a mayúsculas
+    
     const camposMayusculas = [
         'apellido',
         'nombres',
@@ -496,26 +405,26 @@ function inicializarValidacionTiempoReal() {
     camposAValidar.forEach(campoId => {
         const campo = document.getElementById(campoId);
         if (campo) {
-            // Validar cuando el usuario sale del campo
+            
             campo.addEventListener('blur', () => {
-                // Convertir a mayúsculas si es un campo de texto que lo requiere
+                
                 if (camposMayusculas.includes(campoId)) {
                     campo.value = campo.value.toUpperCase();
                 }
                 validarCampo(campoId);
             });
             
-            // Limpiar errores y convertir a mayúsculas mientras el usuario escribe
+            
             campo.addEventListener('input', () => {
-                // Convertir a mayúsculas en tiempo real si es un campo que lo requiere
+                
                 if (camposMayusculas.includes(campoId)) {
                     const cursorPosition = campo.selectionStart;
                     campo.value = campo.value.toUpperCase();
-                    // Restaurar la posición del cursor
+                    
                     campo.setSelectionRange(cursorPosition, cursorPosition);
                 }
                 
-                // Solo limpiar si ya había un error visible
+                
                 const mensajeError = campo.parentElement.querySelector('.mensaje-error.mostrar');
                 if (mensajeError && campo.value.trim() !== '') {
                     ocultarError(campoId);
@@ -524,8 +433,8 @@ function inicializarValidacionTiempoReal() {
         }
     });
     
-    // Agregar conversión a mayúsculas para campos que no están en la lista de validación
-    // pero que sí necesitan conversión (como 'piso')
+    
+    
     camposMayusculas.forEach(campoId => {
         if (!camposAValidar.includes(campoId)) {
             const campo = document.getElementById(campoId);
@@ -544,7 +453,7 @@ function inicializarValidacionTiempoReal() {
     });
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', inicializarValidacionTiempoReal);
 } else {

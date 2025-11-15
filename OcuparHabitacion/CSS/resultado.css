@@ -1,4 +1,4 @@
-/* Estilos del contenedor de resultados y tabla */
+
 
 .resultado,
 .contenedor-resultados {
@@ -67,7 +67,7 @@
   background-color: #f9f9f9;
 }
 
-/* Header fijo para scroll vertical */
+
 .tabla-habitaciones thead th {
   position: sticky;
   top: 0;
@@ -75,7 +75,7 @@
   background-color: #412c26;
 }
 
-/* Primera columna (fecha) fija para scroll horizontal */
+
 .tabla-habitaciones th:first-child,
 .tabla-habitaciones td:first-child {
   position: sticky;
@@ -93,12 +93,12 @@
   cursor: default;
 }
 
-/* Asegurar que el header de fecha también esté fijo en ambas direcciones */
+
 .tabla-habitaciones thead th:first-child {
   z-index: 11;
 }
 
-/* Celdas seleccionadas deben mantener el z-index */
+
 .tabla-habitaciones td.estado-seleccionada {
   position: relative;
   z-index: 1;
@@ -140,7 +140,7 @@
   cursor: pointer;
 }
 
-/* Ancho del scrollbar (vertical) y alto (horizontal) */
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

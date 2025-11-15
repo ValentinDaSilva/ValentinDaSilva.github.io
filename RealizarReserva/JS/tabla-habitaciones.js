@@ -1,12 +1,10 @@
-/* Gestión de la tabla de habitaciones y estados */
 
-/**
- * Aplica los estilos correspondientes a las celdas según su estado
- */
+
+
 function aplicarEstilosCeldas() {
   const celdas = document.querySelectorAll('.tabla-habitaciones td');
   celdas.forEach(celda => {
-    // Si está seleccionada, mantener el amarillo
+    
     if (celda.classList.contains('estado-seleccionada') || celda.style.backgroundColor === 'yellow') {
       celda.style.backgroundColor = 'yellow';
       return;
@@ -35,11 +33,7 @@ function aplicarEstilosCeldas() {
   });
 }
 
-/**
- * Obtiene todas las celdas de una columna específica
- * @param {number} indiceColumna - Índice de la columna (0 para fecha, 1+ para habitaciones)
- * @returns {HTMLTableCellElement[]} - Array de celdas de la columna
- */
+
 function obtenerCeldasColumna(indiceColumna) {
   const filas = document.querySelectorAll('.tabla-habitaciones tbody tr');
   const celdasColumna = [];
@@ -52,7 +46,7 @@ function obtenerCeldasColumna(indiceColumna) {
   return celdasColumna;
 }
 
-// Inicializar estilos cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', aplicarEstilosCeldas);
 } else {

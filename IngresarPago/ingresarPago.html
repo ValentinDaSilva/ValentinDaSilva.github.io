@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ingresar Pago - Hotel Premier</title>
   
-  <!-- Estilos modulares -->
+  
   <link rel="stylesheet" href="CSS/estilos-base.css">
   <link rel="stylesheet" href="CSS/fondo.css">
   <link rel="stylesheet" href="CSS/formulario-pago.css">
@@ -19,7 +19,7 @@
   
   <div class="body">
     <div class="container">
-      <!-- Pantalla 1: Ingreso de número de habitación -->
+      
       <div id="ingresoHabitacion">
         <h1>Ingresar Pago</h1>
         <form id="habitacionForm" action="#" method="post" onsubmit="return false;">
@@ -33,7 +33,7 @@
         </form>
       </div>
 
-      <!-- Pantalla 2: Lista de facturas pendientes -->
+      
       <div id="listaFacturas" class="hidden">
         <h2 class="titulo">Facturas Pendientes</h2>
         <div id="mensajeSinFacturas" class="mensaje-sin-facturas hidden">
@@ -51,7 +51,7 @@
               </tr>
             </thead>
             <tbody id="tbodyFacturas">
-              <!-- Se llenará dinámicamente -->
+              
             </tbody>
           </table>
         </div>
@@ -60,11 +60,11 @@
         </div>
       </div>
 
-      <!-- Pantalla 3: Detalle de factura y pago -->
+      
       <div id="detallePago" class="hidden">
         <h2 class="titulo">Registrar Pago</h2>
         
-        <!-- Información de la factura -->
+        
         <div class="factura-info">
           <h3>Información de la Factura</h3>
           <div class="info-grid">
@@ -95,7 +95,7 @@
           </div>
         </div>
 
-        <!-- Formulario de pago -->
+        
         <div class="pago-form">
           <h3>Medio de Pago</h3>
           <div class="medios-pago">
@@ -117,9 +117,9 @@
             </label>
           </div>
 
-          <!-- Campos dinámicos según medio de pago -->
+          
           <div id="camposPago" class="campos-pago">
-            <!-- Se llenará dinámicamente según el medio seleccionado -->
+            
           </div>
 
           <div class="form-group">
@@ -127,7 +127,7 @@
           </div>
         </div>
 
-        <!-- Lista de pagos realizados -->
+        
         <div class="pagos-realizados">
           <h3>Pagos Registrados</h3>
           <div class="tabla-scroll">
@@ -140,7 +140,7 @@
                 </tr>
               </thead>
               <tbody id="tbodyPagos">
-                <!-- Se llenará dinámicamente -->
+                
               </tbody>
             </table>
           </div>
@@ -154,7 +154,7 @@
     </div>
   </div>
 
-  <!-- Modal de Error -->
+  
   <div id="modal" class="modal" style="display: none;">
     <div class="modal-content error">
       <h2>ERROR</h2>
@@ -164,7 +164,7 @@
     </div>
   </div>
 
-  <!-- Modal de Éxito -->
+  
   <div id="modalExito" class="modal" style="display: none;">
     <div class="modal-content exito">
       <h2>ÉXITO</h2>
@@ -174,10 +174,10 @@
     </div>
   </div>
 
-  <!-- Scripts modulares -->
-  <!-- Validación de sesión (debe ir primero) -->
+  
+  
   <script src="../Login/JS/validar-sesion.js"></script>
-  <!-- Navegación volver (debe ir después de validar-sesion) -->
+  
   <script src="../Login/JS/navegacion-volver.js"></script>
   <script type="module" src="JS/datos-facturas.js"></script>
   <script type="module" src="JS/datos-pagos.js"></script>

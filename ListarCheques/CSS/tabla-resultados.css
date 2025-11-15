@@ -1,4 +1,4 @@
-/* Estilos del contenedor de resultados y tabla */
+
 
 .contenedor-resultados {
   width: 60vw;
@@ -123,24 +123,24 @@
   font-size: 16px;
 }
 
-/* Ancho del scrollbar (vertical) y alto (horizontal) */
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-/* Fondo del "rastro" del scroll → transparente */
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-/* Thumb = la parte que se mueve */
+
 ::-webkit-scrollbar-thumb {
   background: rgba(0,0,0,0.4);
   border-radius: 4px;
 }
 
-/* Hover */
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0,0,0,0.6);
 }

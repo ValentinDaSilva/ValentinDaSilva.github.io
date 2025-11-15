@@ -1,8 +1,6 @@
-/* Gestión de la leyenda/información de habitaciones */
 
-/**
- * Muestra la leyenda de estados y nomenclatura de habitaciones
- */
+
+
 function mostrarLeyenda() {
   const resultado = document.querySelector('.contenedor-resultados');
   if (!resultado) {
@@ -12,7 +10,7 @@ function mostrarLeyenda() {
   
   const hijosCopia = Array.from(resultado.children).map(child => child.cloneNode(true));
   
-  // Limpiar contenido actual
+  
   while (resultado.firstChild) {
     resultado.removeChild(resultado.firstChild);
   }
@@ -73,16 +71,14 @@ function mostrarLeyenda() {
     iconoCerrar.addEventListener('click', function() {
       resultado.innerHTML = '';
       hijosCopia.forEach(child => resultado.appendChild(child));
-      // Reaplicar estilos después de restaurar
+      
       aplicarEstilosCeldas();
       inicializarSeleccionHabitaciones();
     });
   }
 }
 
-/**
- * Inicializa el event listener del icono de información
- */
+
 function inicializarLeyenda() {
   const iconoInformacion = document.querySelector('.icono-informacion');
   if (iconoInformacion) {
@@ -90,7 +86,7 @@ function inicializarLeyenda() {
   }
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', inicializarLeyenda);
 } else {

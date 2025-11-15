@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ingresar Nota de Crédito - Hotel Premier</title>
   
-  <!-- Estilos modulares -->
+  
   <link rel="stylesheet" href="CSS/estilos-base.css">
   <link rel="stylesheet" href="CSS/fondo.css">
   <link rel="stylesheet" href="CSS/formulario.css">
@@ -20,7 +20,7 @@
   
   <div class="body">
     <div class="container">
-      <!-- Pantalla 1: Búsqueda de responsable de pago -->
+      
       <div id="buscarResponsable">
         <h1>Ingresar Nota de Crédito</h1>
         <form id="formBuscarResponsable">
@@ -34,7 +34,7 @@
         </form>
       </div>
 
-      <!-- Pantalla 2: Lista de facturas -->
+      
       <div id="listaFacturas" class="hidden">
         <h2 class="titulo">Facturas del Responsable</h2>
         <div id="infoResponsable" class="info-responsable">
@@ -56,7 +56,7 @@
               </tr>
             </thead>
             <tbody id="tbodyFacturas">
-              <!-- Se llenará dinámicamente -->
+              
             </tbody>
           </table>
         </div>
@@ -68,7 +68,7 @@
 
     </div>
 
-    <!-- Pantalla 3: Resumen de Nota de Crédito -->
+    
     <div id="resumenNotaCredito" class="hidden">
       <div class="nota-credito-box">
         <div class="titulo">
@@ -82,7 +82,7 @@
           <div class="facturas-anuladas">
             <p><strong>Facturas Anuladas:</strong></p>
             <div class="listaFacturas" id="listaFacturasAnuladas">
-              <!-- Se llenará dinámicamente -->
+              
             </div>
           </div>
           
@@ -111,7 +111,7 @@
     </div>
   </div>
 
-  <!-- Modal de Error -->
+  
   <div id="modal" class="modal" style="display: none;">
     <div class="modal-content error">
       <h2>ERROR</h2>
@@ -121,7 +121,7 @@
     </div>
   </div>
 
-  <!-- Modal de Éxito -->
+  
   <div id="modalExito" class="modal" style="display: none;">
     <div class="modal-content exito">
       <h2>ÉXITO</h2>
@@ -131,10 +131,10 @@
     </div>
   </div>
 
-  <!-- Scripts modulares -->
-  <!-- Validación de sesión (debe ir primero) -->
+  
+  
   <script src="../Login/JS/validar-sesion.js"></script>
-  <!-- Navegación volver (debe ir después de validar-sesion) -->
+  
   <script src="../Login/JS/navegacion-volver.js"></script>
   <script type="module" src="JS/modales.js"></script>
   <script type="module" src="JS/datos-facturas.js"></script>

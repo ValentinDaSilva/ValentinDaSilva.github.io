@@ -11,8 +11,8 @@ class Huesped extends Persona {
     this._nacionalidad = nacionalidad;
     this._cuit = cuit || '';
     this._email = email || '';
-    this._direccion = direccion; // Objeto Direccion (opcional, puede ser null)
-    this._condicionIVA = condicionIVA; // Opcional, puede ser null
+    this._direccion = direccion; 
+    this._condicionIVA = condicionIVA; 
   }
 
   get tipoDocumento() { return this._tipoDocumento; }

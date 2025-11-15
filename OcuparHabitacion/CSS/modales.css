@@ -1,4 +1,4 @@
-/* Estilos para los modales */
+
 
 .modal {
   display: none;
@@ -139,7 +139,7 @@
   background-color: #28c038;
 }
 
-/* Estilos para el modal de pregunta */
+
 .pregunta {
   background-color: #fff;
   padding: 20px;

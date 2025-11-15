@@ -1,9 +1,6 @@
-/* Gestión de modales */
 
-/**
- * Muestra el modal de error
- * @param {string} mensaje - Mensaje de error a mostrar
- */
+
+
 export function mostrarModalError(mensaje) {
   const modal = document.getElementById('modal-error');
   const mensajeElement = document.getElementById('mensaje-error');
@@ -17,9 +14,7 @@ export function mostrarModalError(mensaje) {
   }
 }
 
-/**
- * Cierra el modal de error
- */
+
 export function cerrarModalError() {
   const modal = document.getElementById('modal-error');
   if (modal) {
@@ -27,9 +22,7 @@ export function cerrarModalError() {
   }
 }
 
-/**
- * Muestra el modal de sin resultados
- */
+
 export function mostrarModalSinResultados() {
   const modal = document.getElementById('modal-sin-resultados');
   if (modal) {
@@ -37,9 +30,7 @@ export function mostrarModalSinResultados() {
   }
 }
 
-/**
- * Cierra el modal de sin resultados
- */
+
 export function cerrarModalSinResultados() {
   const modal = document.getElementById('modal-sin-resultados');
   if (modal) {
@@ -47,7 +38,7 @@ export function cerrarModalSinResultados() {
   }
 }
 
-// Hacer funciones disponibles globalmente para los onclick
+
 window.cerrarModalError = cerrarModalError;
 window.cerrarModalSinResultados = cerrarModalSinResultados;
 

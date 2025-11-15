@@ -1,4 +1,4 @@
-/* Estilos para los estados de las habitaciones */
+
 
 .estado-libre {
   background-color: rgb(145, 190, 153);
@@ -20,7 +20,7 @@
   background-color: yellow;
 }
 
-/* Estilos para la leyenda de estados */
+
 
 .caja-color {
   width: 20px;

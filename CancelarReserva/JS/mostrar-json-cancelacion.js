@@ -1,18 +1,12 @@
-/* 
- * Función para mostrar el JSON de las reservas que se eliminarán
- */
 
-/**
- * Muestra el JSON en pantalla en un contenedor especial
- * @param {Array} reservasAEliminar - Array de reservas a eliminar
- * @param {Function} callbackCerrar - Función a ejecutar cuando se cierre el JSON (opcional)
- */
+
+
 function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
-    // Crear o obtener el contenedor para mostrar el JSON
+    
     let contenedorJSON = document.getElementById('contenedor-json-cancelacion');
     
     if (!contenedorJSON) {
-        // Crear el contenedor si no existe
+        
         contenedorJSON = document.createElement('div');
         contenedorJSON.id = 'contenedor-json-cancelacion';
         contenedorJSON.style.cssText = `
@@ -32,13 +26,13 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
             font-family: Arial, sans-serif;
         `;
 
-        // Crear título
+        
         const titulo = document.createElement('h2');
         titulo.textContent = 'Datos a enviar al servidor backend';
         titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #d32f2f; padding-bottom: 10px;';
         contenedorJSON.appendChild(titulo);
 
-        // Crear área de texto con el JSON
+        
         const textarea = document.createElement('textarea');
         textarea.id = 'json-display-cancelacion';
         textarea.readOnly = true;
@@ -57,7 +51,7 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
         `;
         contenedorJSON.appendChild(textarea);
 
-        // Crear botón para cerrar
+        
         const botonCerrar = document.createElement('button');
         botonCerrar.textContent = 'Cerrar';
         botonCerrar.style.cssText = `
@@ -74,7 +68,7 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
         `;
         botonCerrar.onclick = function() {
             contenedorJSON.style.display = 'none';
-            // Ejecutar callback si existe
+            
             if (typeof callbackCerrar === 'function') {
                 callbackCerrar();
             }
@@ -87,29 +81,29 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
         };
         contenedorJSON.appendChild(botonCerrar);
         
-        // Guardar el callback para poder usarlo más adelante
+        
         contenedorJSON._callbackCerrar = callbackCerrar;
 
-        // Agregar al body
+        
         document.body.appendChild(contenedorJSON);
     }
 
-    // Formatear el JSON con indentación
+    
     const jsonFormateado = JSON.stringify(reservasAEliminar, null, 2);
     
-    // Mostrar en el textarea
+    
     const textarea = document.getElementById('json-display-cancelacion');
     if (textarea) {
-        // Mostrar las reservas que se eliminarán
+        
         textarea.value = jsonFormateado;
-        // Hacer scroll al inicio
+        
         textarea.scrollTop = 0;
     }
 
-    // Actualizar el callback si se proporcionó uno nuevo
+    
     if (typeof callbackCerrar === 'function') {
         contenedorJSON._callbackCerrar = callbackCerrar;
-        // Actualizar el onclick del botón para incluir el nuevo callback
+        
         const botonCerrar = contenedorJSON.querySelector('button');
         if (botonCerrar) {
             botonCerrar.onclick = function() {
@@ -121,10 +115,10 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
         }
     }
 
-    // Mostrar el contenedor
+    
     contenedorJSON.style.display = 'block';
 
-    // También mostrar en consola para debugging
+    
     console.log('=== DATOS A ELIMINAR DE LA BASE DE DATOS ===');
     console.log('Reservas a eliminar:', reservasAEliminar);
     console.log('JSON formateado:', jsonFormateado);

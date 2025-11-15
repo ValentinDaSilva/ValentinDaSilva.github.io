@@ -6,10 +6,7 @@ class GestorEstadia {
     this.estadias = [];
   }
 
-  /**
-   * Obtiene el siguiente ID disponible para una nueva estadía
-   * @returns {number} - El siguiente ID disponible
-   */
+  
   _obtenerSiguienteId() {
     if (this.estadias.length === 0) {
       return 1;
@@ -18,15 +15,7 @@ class GestorEstadia {
     return maxId + 1;
   }
 
-  /**
-   * Crea una nueva estadía con reserva, titular y acompañantes
-   * @param {Reserva} reserva - Objeto Reserva al que hace referencia la estadía
-   * @param {Huesped} titular - Huésped titular de la estadía
-   * @param {Array<Huesped>} acompaniantes - Array de acompañantes (puede estar vacío)
-   * @param {string} fechaCheckIn - Fecha de check-in en formato YYYY-MM-DD
-   * @param {string} fechaCheckOut - Fecha de check-out en formato YYYY-MM-DD (opcional, puede ser null)
-   * @returns {Estadia} - La estadía creada
-   */
+  
   crearEstadia(reserva, titular, acompaniantes = [], fechaCheckIn, fechaCheckOut = null) {
     const siguienteId = this._obtenerSiguienteId();
     const estadia = new Estadia(

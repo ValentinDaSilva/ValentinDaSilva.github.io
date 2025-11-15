@@ -1,12 +1,10 @@
-/* Gestión de la tabla de habitaciones y estados */
 
-/**
- * Aplica los estilos correspondientes a las celdas según su estado
- */
+
+
 function aplicarEstilosCeldas() {
   const celdas = document.querySelectorAll('.tabla-habitaciones td');
   celdas.forEach(celda => {
-    // Si está seleccionada, mantener el amarillo
+    
     if (celda.classList.contains('estado-seleccionada') || celda.style.backgroundColor === 'yellow') {
       celda.style.backgroundColor = 'yellow';
       return;
@@ -35,7 +33,7 @@ function aplicarEstilosCeldas() {
   });
 }
 
-// Inicializar estilos cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', aplicarEstilosCeldas);
 } else {

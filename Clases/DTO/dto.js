@@ -1,6 +1,6 @@
-// ==========================
-// DTOs (solo atributos + getters/setters)
-// ==========================
+
+
+
 
 class DireccionDTO {
   constructor(calle, numero, piso, departamento, localidad, provincia, codigoPostal, pais) {
@@ -37,7 +37,7 @@ class PersonaDTO {
 
 class HuespedDTO extends PersonaDTO {
   constructor(nombre, apellido, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null, condicionIVA = null) {
-    super(nombre, apellido, null); // Huesped no tiene telefono en su constructor
+    super(nombre, apellido, null); 
     this._tipoDocumento = tipoDocumento;
     this._nroDocumento = nroDocumento;
     this._fechaNacimiento = fechaNacimiento;

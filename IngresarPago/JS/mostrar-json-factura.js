@@ -1,12 +1,8 @@
-/* Mostrar JSON de factura con pago en pantalla */
 
-/**
- * Convierte una instancia de Factura a JSON
- * @param {Factura} factura - Instancia de Factura
- * @returns {Object} - JSON de la factura
- */
+
+
 function convertirFacturaAJSON(factura) {
-  // Convertir pagos a JSON
+  
   const pagosJSON = factura.pagos.map(pago => {
     const pagoJSON = {
       id: pago.id,
@@ -16,7 +12,7 @@ function convertirFacturaAJSON(factura) {
       medioDePago: null
     };
     
-    // Convertir medio de pago según su tipo
+    
     const medio = pago.medioDePago;
     
     if (medio && medio.constructor.name === 'Efectivo') {
@@ -51,7 +47,7 @@ function convertirFacturaAJSON(factura) {
     return pagoJSON;
   });
   
-  // Construir JSON de factura
+  
   const facturaJSON = {
     id: factura.id,
     hora: factura.hora,
@@ -67,17 +63,13 @@ function convertirFacturaAJSON(factura) {
   return facturaJSON;
 }
 
-/**
- * Muestra el JSON de la factura con el pago en pantalla
- * @param {Factura} factura - Instancia de Factura con el pago agregado
- * @param {Function} callbackCerrar - Función a ejecutar cuando se cierre el JSON (opcional)
- */
+
 export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
-  // Crear o obtener el contenedor para mostrar el JSON
+  
   let contenedorJSON = document.getElementById('contenedor-json-factura-pago');
   
   if (!contenedorJSON) {
-    // Crear el contenedor si no existe
+    
     contenedorJSON = document.createElement('div');
     contenedorJSON.id = 'contenedor-json-factura-pago';
     contenedorJSON.style.cssText = `
@@ -98,19 +90,19 @@ export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
       font-family: Arial, sans-serif;
     `;
 
-    // Crear título
+    
     const titulo = document.createElement('h2');
     titulo.textContent = 'Datos a enviar al servidor backend';
     titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
     contenedorJSON.appendChild(titulo);
 
-    // Crear información adicional (oculta - solo se muestra el JSON)
+    
     const infoAdicional = document.createElement('div');
     infoAdicional.style.cssText = 'display: none; margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
     infoAdicional.id = 'info-adicional-factura-pago';
     contenedorJSON.appendChild(infoAdicional);
 
-    // Crear área de texto con el JSON
+    
     const textarea = document.createElement('textarea');
     textarea.id = 'json-display-factura-pago';
     textarea.readOnly = true;
@@ -129,7 +121,7 @@ export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     `;
     contenedorJSON.appendChild(textarea);
 
-    // Crear botón para cerrar
+    
     const botonCerrar = document.createElement('button');
     botonCerrar.textContent = 'Cerrar';
     botonCerrar.style.cssText = `
@@ -146,7 +138,7 @@ export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     `;
     botonCerrar.onclick = function() {
       contenedorJSON.style.display = 'none';
-      // Ejecutar callback si existe
+      
       if (typeof callbackCerrar === 'function') {
         callbackCerrar();
       }
@@ -159,20 +151,20 @@ export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     };
     contenedorJSON.appendChild(botonCerrar);
     
-    // Guardar el callback para poder usarlo más adelante
+    
     contenedorJSON._callbackCerrar = callbackCerrar;
 
-    // Agregar al body
+    
     document.body.appendChild(contenedorJSON);
   }
 
-  // Convertir factura a JSON
+  
   const facturaJSON = convertirFacturaAJSON(factura);
   
-  // Formatear el JSON con indentación
+  
   const jsonFormateado = JSON.stringify(facturaJSON, null, 2);
   
-  // Actualizar información adicional
+  
   const infoAdicional = document.getElementById('info-adicional-factura-pago');
   if (infoAdicional && factura) {
     const responsableNombre = factura.responsableDePago?.tipo === 'tercero'
@@ -194,18 +186,18 @@ export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     `;
   }
   
-  // Mostrar en el textarea
+  
   const textarea = document.getElementById('json-display-factura-pago');
   if (textarea) {
     textarea.value = jsonFormateado;
-    // Hacer scroll al inicio
+    
     textarea.scrollTop = 0;
   }
 
-  // Actualizar el callback si se proporcionó uno nuevo
+  
   if (typeof callbackCerrar === 'function') {
     contenedorJSON._callbackCerrar = callbackCerrar;
-    // Actualizar el onclick del botón para incluir el nuevo callback
+    
     const botonCerrar = contenedorJSON.querySelector('button');
     if (botonCerrar) {
       botonCerrar.onclick = function() {
@@ -217,10 +209,10 @@ export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     }
   }
 
-  // Mostrar el contenedor
+  
   contenedorJSON.style.display = 'block';
 
-  // También mostrar en consola para debugging
+  
   console.log('=== FACTURA CON PAGO ===');
   console.log('Factura:', factura);
   console.log('JSON formateado:', jsonFormateado);

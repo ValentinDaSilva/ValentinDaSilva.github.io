@@ -1,22 +1,15 @@
-/* Visualización de resultados */
+
 
 import { formatearFecha, formatearMonto, obtenerNombreResponsable } from './utilidades.js';
 
-/**
- * Calcula el total general de todos los cheques
- * @param {Array} cheques - Array de cheques
- * @returns {number} - Total general
- */
+
 export function calcularTotalGeneral(cheques) {
   return cheques.reduce((total, cheque) => {
     return total + (cheque.importe || 0);
   }, 0);
 }
 
-/**
- * Muestra los resultados de los cheques
- * @param {Array} cheques - Array de cheques a mostrar
- */
+
 export function mostrarResultados(cheques) {
   const contenedor = document.getElementById('contenido-resultados');
   const contenedorResultados = document.getElementById('contenedor-resultados');
@@ -29,7 +22,7 @@ export function mostrarResultados(cheques) {
     return;
   }
   
-  // Generar HTML de la tabla
+  
   let html = `
     <table class="tabla-cheques">
       <thead>
@@ -71,13 +64,13 @@ export function mostrarResultados(cheques) {
   
   contenedor.innerHTML = html;
   
-  // Calcular y mostrar total general
+  
   const totalGeneral = calcularTotalGeneral(cheques);
   totalGeneralElement.innerHTML = `
     <div>Total General de Cheques: ${formatearMonto(totalGeneral)}</div>
   `;
   
-  // Mostrar contenedor de resultados
+  
   contenedorResultados.style.display = 'block';
 }
 

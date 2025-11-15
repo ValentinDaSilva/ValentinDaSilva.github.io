@@ -3,7 +3,7 @@ class NotaDeCredito {
         this.idNota = null;
         this.fecha = new Date();
         this.responsable = responsable;
-        this.facturas = [];   // acá va la lista
+        this.facturas = [];   
         this.total = 0;
         this.tipo = null;
     }
@@ -55,7 +55,7 @@ class NotaDeCredito {
 
     agregarFactura(factura) {
         this.facturas.push(factura);
-        factura.notaDeCredito = this;  // relación desde el otro lado
+        factura.notaDeCredito = this;  
         this.calcularTotal();
     }
 

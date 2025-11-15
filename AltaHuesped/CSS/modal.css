@@ -1,4 +1,4 @@
-/* Estilos de modales */
+
 .modal {
     display: none;
     position: fixed;
@@ -12,7 +12,7 @@
     align-items: center;
 }
 
-/* Cuando el modal está visible, se muestra como flex mediante inline style */
+
 .modal[style*="flex"] {
     display: flex !important;
 }

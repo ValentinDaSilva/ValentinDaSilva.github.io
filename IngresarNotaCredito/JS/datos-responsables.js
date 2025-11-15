@@ -1,12 +1,9 @@
-/* Gestión de datos de responsables de pago */
+
 
 let responsables = [];
 let huespedes = [];
 
-/**
- * Carga los responsables de pago desde el archivo JSON
- * @returns {Promise<void>}
- */
+
 export async function cargarResponsables() {
   try {
     const respuesta = await fetch('/Datos/responsableDePago.json');
@@ -22,10 +19,7 @@ export async function cargarResponsables() {
   }
 }
 
-/**
- * Carga los huéspedes desde el archivo JSON
- * @returns {Promise<void>}
- */
+
 export async function cargarHuespedes() {
   try {
     const respuesta = await fetch('/Datos/huspedes.json');
@@ -40,13 +34,9 @@ export async function cargarHuespedes() {
   }
 }
 
-/**
- * Busca un responsable de pago por DNI o CUIT
- * @param {string} dniCuit - DNI o CUIT a buscar
- * @returns {Promise<Object|null>} - Responsable encontrado o null
- */
+
 export async function buscarResponsablePorDniCuit(dniCuit) {
-  // Asegurar que los datos estén cargados
+  
   if (responsables.length === 0) {
     await cargarResponsables();
   }
@@ -54,10 +44,10 @@ export async function buscarResponsablePorDniCuit(dniCuit) {
     await cargarHuespedes();
   }
   
-  // Normalizar DNI/CUIT (remover guiones y espacios)
+  
   const dniCuitNormalizado = dniCuit.replace(/[-\s]/g, '');
   
-  // Buscar en responsables de pago (terceros/empresas)
+  
   const responsableEncontrado = responsables.find(responsable => {
     const responsableCuitNormalizado = (responsable.cuit || '').replace(/[-\s]/g, '');
     return responsableCuitNormalizado === dniCuitNormalizado;
@@ -73,7 +63,7 @@ export async function buscarResponsablePorDniCuit(dniCuit) {
     };
   }
   
-  // Buscar en huéspedes
+  
   const huespedEncontrado = huespedes.find(huesped => {
     const documentoNormalizado = (huesped.numeroDocumento || '').replace(/[-\s]/g, '');
     const cuitNormalizado = (huesped.cuit || '').replace(/[-\s]/g, '');
@@ -94,20 +84,16 @@ export async function buscarResponsablePorDniCuit(dniCuit) {
   return null;
 }
 
-/**
- * Determina si un responsable es responsable inscripto (tiene CUIT y condición IVA)
- * @param {Object} responsable - Objeto responsable
- * @returns {boolean} - true si es responsable inscripto
- */
+
 export function esResponsableInscripto(responsable) {
   if (!responsable) return false;
   
-  // Si es tercero, siempre tiene CUIT
+  
   if (responsable.tipo === 'tercero') {
     return !!responsable.cuit;
   }
   
-  // Si es huésped, debe tener CUIT y condición IVA
+  
   if (responsable.tipo === 'huesped') {
     return !!(responsable.cuit && responsable.condicionIVA);
   }
@@ -115,7 +101,7 @@ export function esResponsableInscripto(responsable) {
   return false;
 }
 
-// Cargar datos al inicializar el módulo
+
 cargarResponsables();
 cargarHuespedes();
 

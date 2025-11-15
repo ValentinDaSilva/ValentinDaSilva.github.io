@@ -1,4 +1,4 @@
-/* Estilos para mensajes de error en formularios */
+
 
 .contenedor-campo {
     position: relative;
@@ -28,7 +28,7 @@
     border: 2px solid #4caf50 !important;
 }
 
-/* Asegurar que los campos dentro del contenedor-telefono también muestren errores */
+
 .contenedor-telefono .contenedor-campo {
     margin-bottom: 0;
 }

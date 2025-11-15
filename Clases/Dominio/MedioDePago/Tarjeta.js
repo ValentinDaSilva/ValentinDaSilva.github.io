@@ -1,6 +1,6 @@
 class Tarjeta {
   constructor(tipo, numeroTarjeta, monto) {
-    this._tipo = tipo; // VISA, MASTERCARD, AMEX, CABAL, NARANJA
+    this._tipo = tipo; 
     this._numeroTarjeta = numeroTarjeta;
     this._monto = monto;
   }

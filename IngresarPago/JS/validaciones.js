@@ -1,13 +1,9 @@
-/* Validaciones de formulario */
+
 
 import { existeHabitacion } from './datos-habitaciones.js';
 import { mensajeError } from './modales.js';
 
-/**
- * Valida el número de habitación
- * @param {string} numeroHabitacion - Número de habitación a validar
- * @returns {Promise<boolean>} - true si es válido, false en caso contrario
- */
+
 export async function validarHabitacion(numeroHabitacion) {
   if (!numeroHabitacion || numeroHabitacion.trim() === '') {
     mensajeError("Por favor, ingrese un número de habitación.");
@@ -28,7 +24,7 @@ export async function validarHabitacion(numeroHabitacion) {
     return false;
   }
 
-  // Asegurarse de que las habitaciones estén cargadas
+  
   const { cargarHabitaciones } = await import('./datos-habitaciones.js');
   await cargarHabitaciones();
   
@@ -49,11 +45,7 @@ export async function validarHabitacion(numeroHabitacion) {
   return true;
 }
 
-/**
- * Valida los datos del pago
- * @param {Object} datosPago - Datos del pago a validar
- * @returns {boolean} - true si es válido, false en caso contrario
- */
+
 export function validarDatosPago(datosPago) {
   if (!datosPago.medioPago || datosPago.medioPago.length === 0) {
     mensajeError("Debe seleccionar al menos un medio de pago.");
@@ -65,7 +57,7 @@ export function validarDatosPago(datosPago) {
     return false;
   }
 
-  // Validaciones específicas por medio de pago
+  
   for (const medio of datosPago.medioPago) {
     const detalles = datosPago.detalles[medio] || {};
     const medioNormalizado = medio.toLowerCase();
@@ -102,7 +94,7 @@ export function validarDatosPago(datosPago) {
           mensajeError("Debe ingresar al menos un cheque.");
           return false;
         }
-        // Validar cada cheque
+        
         for (const cheque of detalles.cheques) {
           if (!cheque.numero || cheque.numero.trim() === '') {
             mensajeError("Todos los cheques deben tener un número.");
@@ -128,7 +120,7 @@ export function validarDatosPago(datosPago) {
           mensajeError("Debe ingresar al menos una tarjeta.");
           return false;
         }
-        // Validar cada tarjeta
+        
         for (const tarjeta of detalles.tarjetas) {
           if (!tarjeta.tipo || tarjeta.tipo.trim() === '') {
             mensajeError("Todas las tarjetas deben tener un tipo.");

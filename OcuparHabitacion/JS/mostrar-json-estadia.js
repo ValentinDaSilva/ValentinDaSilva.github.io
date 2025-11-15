@@ -1,14 +1,8 @@
-/* 
- * Función para mostrar el JSON de la estadía que se enviará a la base de datos
- */
 
-/**
- * Convierte una Estadia al formato JSON que se enviaría a la base de datos
- * @param {Estadia} estadia - Objeto Estadia de dominio
- * @returns {Object} - Objeto en formato JSON para la base de datos
- */
+
+
 function convertirEstadiaAJSON(estadia) {
-    // Convertir la reserva a un formato simple
+    
     let reservaJSON = null;
     if (estadia.reserva) {
         reservaJSON = {
@@ -22,7 +16,7 @@ function convertirEstadiaAJSON(estadia) {
             estado: estadia.reserva.estado
         };
         
-        // Agregar habitaciones si existen
+        
         if (estadia.reserva.habitaciones && estadia.reserva.habitaciones.length > 0) {
             reservaJSON.habitaciones = estadia.reserva.habitaciones.map(hab => ({
                 numero: hab.numero,
@@ -32,7 +26,7 @@ function convertirEstadiaAJSON(estadia) {
             }));
         }
         
-        // Agregar titular si existe
+        
         if (estadia.reserva.titular) {
             reservaJSON.titular = {
                 nombre: estadia.reserva.titular.nombre,
@@ -42,24 +36,24 @@ function convertirEstadiaAJSON(estadia) {
         }
     }
     
-    // Función auxiliar para convertir un Huesped a JSON (formato original del JSON de huéspedes)
+    
     function convertirHuespedAJSON(huesped) {
         if (!huesped) return null;
         
-        // Separar el teléfono en caracteristica y telefonoNumero
-        // El formato del teléfono puede ser "caracteristica-telefonoNumero" o solo números
+        
+        
         let caracteristica = '';
         let telefonoNumero = '';
         if (huesped.telefono) {
             const telefonoStr = huesped.telefono.toString();
-            // Intentar separar por guión si existe
+            
             if (telefonoStr.includes('-')) {
                 const partes = telefonoStr.split('-');
                 caracteristica = partes[0] || '';
                 telefonoNumero = partes.slice(1).join('-') || '';
             } else {
-                // Si no tiene guión, asumir que los primeros 3-4 dígitos son la característica
-                // Esto es una aproximación, pero es mejor que nada
+                
+                
                 if (telefonoStr.length >= 7) {
                     caracteristica = telefonoStr.substring(0, 3);
                     telefonoNumero = telefonoStr.substring(3);
@@ -69,7 +63,7 @@ function convertirEstadiaAJSON(estadia) {
             }
         }
         
-        // Crear el objeto JSON con el formato del JSON original de huéspedes
+        
         const huespedJSON = {
             apellido: huesped.apellido || '',
             nombres: huesped.nombre || '',
@@ -86,7 +80,7 @@ function convertirEstadiaAJSON(estadia) {
             nacionalidad: huesped.nacionalidad || ''
         };
         
-        // Agregar campos de dirección en el nivel raíz (formato del JSON original)
+        
         if (huesped.direccion) {
             huespedJSON.calle = huesped.direccion.calle || '';
             huespedJSON.numeroCalle = huesped.direccion.numero || '';
@@ -97,7 +91,7 @@ function convertirEstadiaAJSON(estadia) {
             huespedJSON.provincia = huesped.direccion.provincia || '';
             huespedJSON.pais = huesped.direccion.pais || '';
         } else {
-            // Si no hay dirección, agregar campos vacíos para mantener el formato
+            
             huespedJSON.calle = '';
             huespedJSON.numeroCalle = '';
             huespedJSON.departamento = '';
@@ -108,7 +102,7 @@ function convertirEstadiaAJSON(estadia) {
             huespedJSON.pais = '';
         }
         
-        // Agregar condicionIVA si existe (aunque no esté en el JSON original, puede ser útil)
+        
         if (huesped.condicionIVA) {
             huespedJSON.condicionIVA = huesped.condicionIVA;
         }
@@ -116,15 +110,15 @@ function convertirEstadiaAJSON(estadia) {
         return huespedJSON;
     }
     
-    // Convertir el titular a un formato simple
+    
     const titularJSON = convertirHuespedAJSON(estadia.titular);
     
-    // Convertir los acompañantes a un formato simple (todos son Huesped)
+    
     const acompaniantesJSON = (estadia.acompaniantes || []).map(acomp => 
         convertirHuespedAJSON(acomp)
     ).filter(acomp => acomp !== null);
     
-    // Construir el objeto JSON final
+    
     const estadiaJSON = {
         id: estadia.id,
         fechaCheckIn: estadia.fechaCheckIn instanceof Date
@@ -143,17 +137,13 @@ function convertirEstadiaAJSON(estadia) {
     return estadiaJSON;
 }
 
-/**
- * Muestra el JSON en pantalla en un contenedor especial
- * @param {Estadia} estadia - Objeto Estadia completo
- * @param {Function} callbackCerrar - Función a ejecutar cuando se cierre el JSON (opcional)
- */
+
 function mostrarJSONEstadiaEnPantalla(estadia, callbackCerrar) {
-    // Crear o obtener el contenedor para mostrar el JSON
+    
     let contenedorJSON = document.getElementById('contenedor-json-estadia');
     
     if (!contenedorJSON) {
-        // Crear el contenedor si no existe
+        
         contenedorJSON = document.createElement('div');
         contenedorJSON.id = 'contenedor-json-estadia';
         contenedorJSON.style.cssText = `
@@ -173,19 +163,19 @@ function mostrarJSONEstadiaEnPantalla(estadia, callbackCerrar) {
             font-family: Arial, sans-serif;
         `;
 
-        // Crear título
+        
         const titulo = document.createElement('h2');
         titulo.textContent = '📋 Datos de la Estadía (JSON)';
         titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
         contenedorJSON.appendChild(titulo);
 
-        // Crear información adicional (oculta - solo se muestra el JSON)
+        
         const infoAdicional = document.createElement('div');
         infoAdicional.style.cssText = 'display: none; margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
         infoAdicional.id = 'info-adicional-estadia';
         contenedorJSON.appendChild(infoAdicional);
 
-        // Crear área de texto con el JSON
+        
         const textarea = document.createElement('textarea');
         textarea.id = 'json-display-estadia';
         textarea.readOnly = true;
@@ -204,7 +194,7 @@ function mostrarJSONEstadiaEnPantalla(estadia, callbackCerrar) {
         `;
         contenedorJSON.appendChild(textarea);
 
-        // Crear botón para cerrar
+        
         const botonCerrar = document.createElement('button');
         botonCerrar.textContent = 'Cerrar';
         botonCerrar.style.cssText = `
@@ -221,7 +211,7 @@ function mostrarJSONEstadiaEnPantalla(estadia, callbackCerrar) {
         `;
         botonCerrar.onclick = function() {
             contenedorJSON.style.display = 'none';
-            // Ejecutar callback si existe
+            
             if (typeof callbackCerrar === 'function') {
                 callbackCerrar();
             }
@@ -234,20 +224,20 @@ function mostrarJSONEstadiaEnPantalla(estadia, callbackCerrar) {
         };
         contenedorJSON.appendChild(botonCerrar);
         
-        // Guardar el callback para poder usarlo más adelante
+        
         contenedorJSON._callbackCerrar = callbackCerrar;
 
-        // Agregar al body
+        
         document.body.appendChild(contenedorJSON);
     }
 
-    // Convertir la estadía a JSON
+    
     const estadiaJSON = convertirEstadiaAJSON(estadia);
     
-    // Formatear el JSON con indentación
+    
     const jsonFormateado = JSON.stringify(estadiaJSON, null, 2);
     
-    // Actualizar información adicional
+    
     const infoAdicional = document.getElementById('info-adicional-estadia');
     if (infoAdicional && estadia) {
         const fechaCheckIn = estadia.fechaCheckIn instanceof Date
@@ -269,18 +259,18 @@ function mostrarJSONEstadiaEnPantalla(estadia, callbackCerrar) {
         `;
     }
     
-    // Mostrar en el textarea
+    
     const textarea = document.getElementById('json-display-estadia');
     if (textarea) {
         textarea.value = jsonFormateado;
-        // Hacer scroll al inicio
+        
         textarea.scrollTop = 0;
     }
 
-    // Actualizar el callback si se proporcionó uno nuevo
+    
     if (typeof callbackCerrar === 'function') {
         contenedorJSON._callbackCerrar = callbackCerrar;
-        // Actualizar el onclick del botón para incluir el nuevo callback
+        
         const botonCerrar = contenedorJSON.querySelector('button');
         if (botonCerrar) {
             botonCerrar.onclick = function() {
@@ -292,19 +282,19 @@ function mostrarJSONEstadiaEnPantalla(estadia, callbackCerrar) {
         }
     }
 
-    // Mostrar el contenedor
+    
     contenedorJSON.style.display = 'block';
 
-    // También mostrar en consola para debugging
+    
     console.log('=== DATOS DE LA ESTADÍA (JSON) ===');
     console.log('Estadia completa:', estadia);
     console.log('JSON formateado:', jsonFormateado);
     console.log('==================================');
 }
 
-// Exportar función para uso en otros módulos
+
 export { mostrarJSONEstadiaEnPantalla, convertirEstadiaAJSON };
 
-// También hacer disponible globalmente para compatibilidad
+
 window.mostrarJSONEstadiaEnPantalla = mostrarJSONEstadiaEnPantalla;
 

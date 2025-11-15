@@ -1,10 +1,8 @@
-/* Manejo de eventos */
 
-/**
- * Inicializa todos los event listeners
- */
+
+
 function inicializarEventos() {
-  // Event listener del formulario de factura
+  
   const facturaForm = document.getElementById("facturaForm");
   if (facturaForm) {
     facturaForm.addEventListener("submit", async (event) => {
@@ -16,7 +14,7 @@ function inicializarEventos() {
     });
   }
 
-  // Event listener del botón de aceptar en selección de responsable
+  
   const botonAceptar = document.getElementById("boton-aceptar-responsable");
   if (botonAceptar) {
     botonAceptar.addEventListener("click", async () => {
@@ -26,7 +24,7 @@ function inicializarEventos() {
       if (!selectedRow && !cuit) {
         window.location.href = "../darAltaResponsableDePago.html";
       } else if (cuit) {
-        // Buscar responsable de pago por CUIT
+        
         try {
           const responsable = await buscarResponsableDePagoPorCUIT(cuit);
           if (responsable) {
@@ -35,10 +33,10 @@ function inicializarEventos() {
               "Cancelar", 
               "Aceptar",
               () => {
-                // Callback para Cancelar - no hacer nada
+                
               },
               async () => {
-                // Callback para Aceptar - procesar factura con tercero
+                
                 await procesarFactura(null, responsable);
               }
             );
@@ -50,13 +48,13 @@ function inicializarEventos() {
           mensajeError("Error al buscar el responsable de pago. Por favor, intente nuevamente.");
         }
       } else if (selectedRow) {
-        // Si hay un responsable seleccionado, proceder a facturar
+        
         await procesarFactura(selectedRow, null);
       }
     });
   }
 
-  // Event listener para Enter en el campo CUIT
+  
   const cuitInput = document.getElementById("cuit");
   if (cuitInput) {
     cuitInput.addEventListener("keypress", (event) => {
@@ -70,19 +68,19 @@ function inicializarEventos() {
     });
   }
 
-  // Event listener del botón volver en selección de responsable
+  
   const botonVolverResponsable = document.getElementById("boton-volver-responsable");
   if (botonVolverResponsable) {
     botonVolverResponsable.addEventListener("click", volverFactura);
   }
 
-  // Event listener del botón volver en resumen de factura
+  
   const botonVolverFactura = document.getElementById("boton-volver-factura");
   if (botonVolverFactura) {
     botonVolverFactura.addEventListener("click", cambiarPantalla);
   }
 
-  // Event listener del botón vista previa
+  
   const botonVistaPrevia = document.getElementById("boton-vista-previa");
   if (botonVistaPrevia) {
     botonVistaPrevia.addEventListener("click", () => {
@@ -90,17 +88,17 @@ function inicializarEventos() {
     });
   }
 
-  // Event listener del botón aceptar en resumen de factura
+  
   const botonAceptarFactura = document.getElementById("boton-aceptar-factura");
   if (botonAceptarFactura) {
     botonAceptarFactura.addEventListener("click", () => {
       const factura = obtenerFacturaGenerada();
       if (factura) {
-        // Mostrar JSON de la factura
+        
         mostrarJSONFacturaEnPantalla(factura, () => {
-          // Callback cuando se cierra el JSON
+          
           console.log("Factura generada y mostrada");
-          // TODO: Implementar guardado en base de datos
+          
         });
       } else {
         mensajeError("No se pudo generar la factura. Por favor, intente nuevamente.");
@@ -109,11 +107,11 @@ function inicializarEventos() {
   }
   
 
-  // La inicialización de selección de responsable se hace cuando se cargan los huéspedes
-  // No es necesario inicializarla aquí porque la tabla está vacía al inicio
+  
+  
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', inicializarEventos);
 } else {

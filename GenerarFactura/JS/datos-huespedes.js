@@ -1,10 +1,6 @@
-/* Datos de huéspedes (titular y acompañantes) */
 
-/**
- * Obtiene todos los huéspedes de una estadía (titular + acompañantes)
- * @param {Object} estadia - Objeto estadía
- * @returns {Array} - Array de huéspedes con información formateada
- */
+
+
 function obtenerHuespedesDeEstadia(estadia) {
   if (!estadia) {
     return [];
@@ -12,7 +8,7 @@ function obtenerHuespedesDeEstadia(estadia) {
   
   const huespedes = [];
   
-  // Agregar titular
+  
   if (estadia.titular) {
     const titular = estadia.titular;
     const fechaNacimiento = new Date(titular.fechaNacimiento);
@@ -33,7 +29,7 @@ function obtenerHuespedesDeEstadia(estadia) {
     });
   }
   
-  // Agregar acompañantes
+  
   if (estadia.acompaniantes && Array.isArray(estadia.acompaniantes)) {
     estadia.acompaniantes.forEach(acompanante => {
       const fechaNacimiento = new Date(acompanante.fechaNacimiento);
@@ -58,10 +54,7 @@ function obtenerHuespedesDeEstadia(estadia) {
   return huespedes;
 }
 
-/**
- * Carga los huéspedes en la tabla de selección de responsable
- * @param {Array} huespedes - Array de huéspedes
- */
+
 function cargarHuespedesEnTabla(huespedes) {
   const tbody = document.querySelector("#seleccionarResponsable tbody");
   if (!tbody) {
@@ -69,10 +62,10 @@ function cargarHuespedesEnTabla(huespedes) {
     return;
   }
   
-  // Limpiar tabla
+  
   tbody.innerHTML = '';
   
-  // Agregar huéspedes a la tabla
+  
   huespedes.forEach(huesped => {
     const fila = document.createElement('tr');
     fila.innerHTML = `
@@ -82,14 +75,14 @@ function cargarHuespedesEnTabla(huespedes) {
       <td>${huesped.documento}</td>
     `;
     
-    // Almacenar datos completos del huésped en la fila
+    
     fila.dataset.huesped = JSON.stringify(huesped.datosCompletos);
     fila.dataset.esTitular = huesped.esTitular;
     
     tbody.appendChild(fila);
   });
   
-  // Reinicializar la selección de responsable después de cargar la tabla
+  
   if (typeof inicializarSeleccionResponsable === 'function') {
     inicializarSeleccionResponsable();
   }

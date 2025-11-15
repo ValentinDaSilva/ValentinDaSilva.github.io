@@ -1,9 +1,6 @@
-/* Funciones para manejar modales */
 
-/**
- * Muestra un mensaje de éxito
- * @param {string} mensaje - Mensaje a mostrar
- */
+
+
 function mensajeCorrecto(mensaje) {
     if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
     
@@ -20,10 +17,7 @@ function mensajeCorrecto(mensaje) {
     };
 }
 
-/**
- * Muestra un mensaje de error
- * @param {string} mensaje - Mensaje de error a mostrar
- */
+
 function mensajeError(mensaje) {
     const modal = document.getElementById('modalError');
     const mensajeErrorElement = document.getElementById('mensaje-error');
@@ -41,12 +35,7 @@ function mensajeError(mensaje) {
     }
 }
 
-/**
- * Muestra un mensaje de advertencia con dos botones
- * @param {string} mensaje - Mensaje de advertencia
- * @param {string} boton1 - Texto del primer botón
- * @param {string} boton2 - Texto del segundo botón
- */
+
 function advertencia(mensaje, boton1, boton2) {
     if(mensaje == undefined) mensaje = "Mensaje de Advertencia";
     if(boton1 == undefined) boton1 = "ACEPTAR";
@@ -66,14 +55,7 @@ function advertencia(mensaje, boton1, boton2) {
     modal.style.display = "flex";
 }
 
-/**
- * Muestra un mensaje de pregunta con dos botones y funciones callback
- * @param {string} mensaje - Mensaje de pregunta
- * @param {string} boton1 - Texto del primer botón
- * @param {string} boton2 - Texto del segundo botón
- * @param {Function} funcionBoton1 - Función a ejecutar al hacer clic en botón1
- * @param {Function} funcionBoton2 - Función a ejecutar al hacer clic en botón2
- */
+
 function pregunta(mensaje, boton1, boton2, funcionBoton1, funcionBoton2) {
     if (mensaje == undefined) mensaje = "Mensaje de Pregunta";
     if (boton1 == undefined) boton1 = "ACEPTAR";
@@ -105,9 +87,7 @@ function pregunta(mensaje, boton1, boton2, funcionBoton1, funcionBoton2) {
     }
 }
 
-/**
- * Inicializa los event listeners de los botones de cierre de modales
- */
+
 function inicializarBotonesModal() {
     let botones = document.querySelectorAll(".boton-general");
     botones.forEach(boton => {
@@ -119,7 +99,7 @@ function inicializarBotonesModal() {
     });
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', inicializarBotonesModal);
 } else {

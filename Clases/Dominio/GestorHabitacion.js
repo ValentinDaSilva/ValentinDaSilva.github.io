@@ -1,17 +1,13 @@
 import Habitacion from "./Habitacion.js";
 import { EstadoHabitacion } from "./Enums.js";
-// HabitacionDTO se importa desde el archivo dto.js que se carga antes en los HTML
+
 
 class GestorHabitacion {
   constructor() {
     this._rutaBD = '/Datos/habitaciones.json';
   }
 
-  /**
-   * Convierte una Habitacion de dominio a HabitacionDTO
-   * @param {Habitacion} habitacion - Objeto Habitacion de dominio
-   * @returns {HabitacionDTO} - Objeto HabitacionDTO
-   */
+  
   _convertirHabitacionADTO(habitacion) {
     return new HabitacionDTO(
       habitacion.numero,
@@ -22,11 +18,7 @@ class GestorHabitacion {
     );
   }
 
-  /**
-   * Convierte un HabitacionDTO a Habitacion de dominio
-   * @param {HabitacionDTO} habitacionDTO - Objeto HabitacionDTO
-   * @returns {Habitacion} - Objeto Habitacion de dominio
-   */
+  
   _convertirDTOAHabitacion(habitacionDTO) {
     return new Habitacion(
       habitacionDTO.numero,
@@ -37,10 +29,7 @@ class GestorHabitacion {
     );
   }
 
-  /**
-   * Lee las habitaciones desde el archivo JSON (base de datos)
-   * @returns {Promise<Array>} - Array de objetos HabitacionDTO
-   */
+  
   async _leerHabitacionesDesdeBD() {
     try {
       const respuesta = await fetch(this._rutaBD);
@@ -55,10 +44,7 @@ class GestorHabitacion {
     }
   }
 
-  /**
-   * Carga las habitaciones desde la base de datos y las convierte a objetos de dominio
-   * @returns {Promise<Array<Habitacion>>} - Array de objetos Habitacion de dominio
-   */
+  
   async cargarHabitacionesDesdeBD() {
     try {
       const habitacionesDTO = await this._leerHabitacionesDesdeBD();

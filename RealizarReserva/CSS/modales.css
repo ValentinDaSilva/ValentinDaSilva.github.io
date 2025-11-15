@@ -1,4 +1,4 @@
-/* Estilos para los modales */
+
 
 .modal {
   display: none;
@@ -129,7 +129,7 @@
   background-color: #28c038;
 }
 
-/* Estilos para el contenedor de confirmación de reserva */
+
 
 .contenedor-confirmacion {
   display: flex;
@@ -137,7 +137,7 @@
   align-items: center;
 }
 
-/* Estilo para el título del formulario de huésped */
+
 .titulo-formulario-huesped,
 .formulario-datos-huesped + h2,
 .contenedor-confirmacion h2 {
@@ -148,7 +148,7 @@
   font-weight: 700;
 }
 
-/* Estilos mejorados para el formulario de datos del huésped */
+
 .formulario-datos-huesped {
   width: 100%;
   max-width: 800px;
@@ -259,7 +259,7 @@
   font-weight: 600;
   width: 100%;
   max-width: 300px;
-  /*margin: 20px auto 0;*/
+  
   display: block;
   position: relative;
   z-index: 1;

@@ -1,4 +1,4 @@
-/* Estilos de la tabla de resultados */
+
 
 .contenedor-resultados {
     width: 60vw;
@@ -13,8 +13,8 @@
     display: flex;
     flex-direction: column;
     max-height: 600px;
-    min-height: 600px; /* Altura mínima inicial */
-    height: 600px; /* Altura fija inicial */
+    min-height: 600px; 
+    height: 600px; 
 }
 
 .titulo-resultados {
@@ -26,7 +26,7 @@
 .contenedor-tabla {
     overflow-y: auto;
     flex: 1;
-    max-height: calc(60vh - 7%); /* Altura máxima menos espacio para título y botón */
+    max-height: calc(60vh - 7%); 
     border: 1px solid #ddd;
     border-radius: 4px;
 }

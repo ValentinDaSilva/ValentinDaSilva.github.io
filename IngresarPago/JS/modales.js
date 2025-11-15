@@ -1,9 +1,6 @@
-/* Manejo de modales */
 
-/**
- * Muestra un mensaje de error
- * @param {string} mensaje - Mensaje de error a mostrar
- */
+
+
 export function mensajeError(mensaje) {
   const modal = document.getElementById("modal");
   const errorMessage = document.getElementById("error-message");
@@ -26,11 +23,7 @@ export function mensajeError(mensaje) {
   }
 }
 
-/**
- * Muestra un mensaje de éxito
- * @param {string} mensaje - Mensaje de éxito a mostrar
- * @param {Function} callback - Callback a ejecutar al cerrar
- */
+
 export function mensajeExito(mensaje, callback) {
   const modal = document.getElementById("modalExito");
   const exitoMessage = document.getElementById("exito-message");

@@ -1,16 +1,13 @@
-/* Validaciones de formulario */
 
-/**
- * Valida el formulario de fechas
- * @returns {boolean} - true si es válido, false en caso contrario
- */
+
+
 export function validarFormularioFechas() {
   const fechaDesde = document.getElementById('fechaDesde').value;
   const fechaHasta = document.getElementById('fechaHasta').value;
   
   let esValido = true;
   
-  // Validar fecha desde
+  
   if (!fechaDesde) {
     mostrarError('fechaDesde', 'La fecha "Desde" es obligatoria');
     esValido = false;
@@ -18,7 +15,7 @@ export function validarFormularioFechas() {
     ocultarError('fechaDesde');
   }
   
-  // Validar fecha hasta
+  
   if (!fechaHasta) {
     mostrarError('fechaHasta', 'La fecha "Hasta" es obligatoria');
     esValido = false;
@@ -26,7 +23,7 @@ export function validarFormularioFechas() {
     ocultarError('fechaHasta');
   }
   
-  // Validar que fecha desde sea anterior o igual a fecha hasta
+  
   if (fechaDesde && fechaHasta && fechaDesde > fechaHasta) {
     mostrarError('fechaHasta', 'La fecha "Hasta" debe ser posterior o igual a la fecha "Desde"');
     esValido = false;
@@ -35,11 +32,7 @@ export function validarFormularioFechas() {
   return esValido;
 }
 
-/**
- * Valida que una fecha sea válida
- * @param {string} fecha - Fecha en formato YYYY-MM-DD
- * @returns {boolean} - true si es válida
- */
+
 export function validarFecha(fecha) {
   if (!fecha) return false;
   
@@ -50,11 +43,7 @@ export function validarFecha(fecha) {
   return fechaObj instanceof Date && !isNaN(fechaObj);
 }
 
-/**
- * Muestra un mensaje de error en un campo
- * @param {string} campoId - ID del campo
- * @param {string} mensaje - Mensaje de error
- */
+
 function mostrarError(campoId, mensaje) {
   const errorElement = document.getElementById(`${campoId}-error`);
   if (errorElement) {
@@ -63,10 +52,7 @@ function mostrarError(campoId, mensaje) {
   }
 }
 
-/**
- * Oculta el mensaje de error de un campo
- * @param {string} campoId - ID del campo
- */
+
 function ocultarError(campoId) {
   const errorElement = document.getElementById(`${campoId}-error`);
   if (errorElement) {

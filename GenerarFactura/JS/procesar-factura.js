@@ -1,10 +1,6 @@
-/* Procesamiento de factura */
 
-/**
- * Procesa la factura con el responsable seleccionado
- * @param {HTMLElement|null} selectedRow - Fila seleccionada de la tabla (huésped) o null
- * @param {Object|null} responsableTercero - Responsable de pago (tercero) o null
- */
+
+
 async function procesarFactura(selectedRow, responsableTercero) {
   try {
     const estadia = obtenerEstadiaActual();
@@ -19,14 +15,14 @@ async function procesarFactura(selectedRow, responsableTercero) {
       return;
     }
     
-    // Determinar responsable de pago
+    
     let responsableDePago = null;
     
     if (responsableTercero) {
-      // Es un tercero
+      
       responsableDePago = responsableTercero;
     } else if (selectedRow) {
-      // Es un huésped (titular o acompañante)
+      
       const datosHuesped = JSON.parse(selectedRow.dataset.huesped || '{}');
       responsableDePago = datosHuesped;
     } else {
@@ -34,13 +30,13 @@ async function procesarFactura(selectedRow, responsableTercero) {
       return;
     }
     
-    // Generar factura
+    
     const factura = generarJSONFactura(estadia, responsableDePago, horaSalida, 'B');
     
-    // Mostrar datos en pantalla
+    
     mostrarDatosFacturaEnPantalla(factura);
     
-    // Cambiar a pantalla de factura
+    
     facturar();
     
   } catch (error) {

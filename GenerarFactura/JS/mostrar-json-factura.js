@@ -1,16 +1,12 @@
-/* Mostrar JSON de factura en pantalla */
 
-/**
- * Muestra el JSON de la factura en pantalla en un contenedor especial
- * @param {Object} factura - Objeto factura
- * @param {Function} callbackCerrar - Función a ejecutar cuando se cierre el JSON (opcional)
- */
+
+
 function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
-  // Crear o obtener el contenedor para mostrar el JSON
+  
   let contenedorJSON = document.getElementById('contenedor-json-factura');
   
   if (!contenedorJSON) {
-    // Crear el contenedor si no existe
+    
     contenedorJSON = document.createElement('div');
     contenedorJSON.id = 'contenedor-json-factura';
     contenedorJSON.style.cssText = `
@@ -31,19 +27,19 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
       font-family: Arial, sans-serif;
     `;
 
-    // Crear título
+    
     const titulo = document.createElement('h2');
     titulo.textContent = 'Datos a enviar al servidor backend';
     titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
     contenedorJSON.appendChild(titulo);
 
-    // Crear información adicional (oculta - solo se muestra el JSON)
+    
     const infoAdicional = document.createElement('div');
     infoAdicional.style.cssText = 'display: none; margin-bottom: 15px; padding: 10px; background: #e7f3ff; border-radius: 4px; font-size: 14px;';
     infoAdicional.id = 'info-adicional-factura';
     contenedorJSON.appendChild(infoAdicional);
 
-    // Crear área de texto con el JSON
+    
     const textarea = document.createElement('textarea');
     textarea.id = 'json-display-factura';
     textarea.readOnly = true;
@@ -62,7 +58,7 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     `;
     contenedorJSON.appendChild(textarea);
 
-    // Crear botón para cerrar
+    
     const botonCerrar = document.createElement('button');
     botonCerrar.textContent = 'Cerrar';
     botonCerrar.style.cssText = `
@@ -79,7 +75,7 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     `;
     botonCerrar.onclick = function() {
       contenedorJSON.style.display = 'none';
-      // Ejecutar callback si existe
+      
       if (typeof callbackCerrar === 'function') {
         callbackCerrar();
       }
@@ -92,17 +88,17 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     };
     contenedorJSON.appendChild(botonCerrar);
     
-    // Guardar el callback para poder usarlo más adelante
+    
     contenedorJSON._callbackCerrar = callbackCerrar;
 
-    // Agregar al body
+    
     document.body.appendChild(contenedorJSON);
   }
 
-  // Formatear el JSON con indentación
+  
   const jsonFormateado = JSON.stringify(factura, null, 2);
   
-  // Actualizar información adicional
+  
   const infoAdicional = document.getElementById('info-adicional-factura');
   if (infoAdicional && factura) {
     const responsableNombre = factura.responsableDePago.tipo === 'tercero'
@@ -121,18 +117,18 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     `;
   }
   
-  // Mostrar en el textarea
+  
   const textarea = document.getElementById('json-display-factura');
   if (textarea) {
     textarea.value = jsonFormateado;
-    // Hacer scroll al inicio
+    
     textarea.scrollTop = 0;
   }
 
-  // Actualizar el callback si se proporcionó uno nuevo
+  
   if (typeof callbackCerrar === 'function') {
     contenedorJSON._callbackCerrar = callbackCerrar;
-    // Actualizar el onclick del botón para incluir el nuevo callback
+    
     const botonCerrar = contenedorJSON.querySelector('button');
     if (botonCerrar) {
       botonCerrar.onclick = function() {
@@ -144,10 +140,10 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     }
   }
 
-  // Mostrar el contenedor
+  
   contenedorJSON.style.display = 'block';
 
-  // También mostrar en consola para debugging
+  
   console.log('=== FACTURA GENERADA ===');
   console.log('Factura:', factura);
   console.log('JSON formateado:', jsonFormateado);

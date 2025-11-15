@@ -1,9 +1,9 @@
 class MonedaExtranjera {
   constructor(tipoMoneda, montoExtranjero, cotizacion, monto) {
-    this._tipoMoneda = tipoMoneda; // USD, EUR, BRL, etc.
+    this._tipoMoneda = tipoMoneda; 
     this._montoExtranjero = montoExtranjero;
     this._cotizacion = cotizacion;
-    this._monto = monto; // Monto en pesos (calculado)
+    this._monto = monto; 
   }
 
   get tipoMoneda() { return this._tipoMoneda; }

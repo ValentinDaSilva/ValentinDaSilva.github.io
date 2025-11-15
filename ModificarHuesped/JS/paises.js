@@ -1,4 +1,4 @@
-/* Gestión de la lista de países para el selector de nacionalidad */
+
 
 const listaPaises = [
     "Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argelia",
@@ -25,10 +25,7 @@ const listaPaises = [
     "Yemen", "Yibuti", "Zambia", "Zimbabue", "Palestina"
 ];
 
-/**
- * Carga la lista de países en el selector de nacionalidad y país
- * @param {Array} listaPaises - Lista de países a cargar
- */
+
 function cargarPaises(listaPaises) {
     const selectNacionalidad = document.getElementById("nacionalidad");
     const selectPais = document.getElementById("pais");
@@ -56,14 +53,12 @@ function cargarPaises(listaPaises) {
     }
 }
 
-/**
- * Inicializa la carga de países cuando el DOM esté listo
- */
+
 function inicializarPaises() {
     cargarPaises(listaPaises);
 }
 
-// Inicializar cuando el DOM esté listo
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', inicializarPaises);
 } else {
