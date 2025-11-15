@@ -1,0 +1,56 @@
+/* Estilos para impresión */
+
+@media print {
+  body {
+    background: white;
+  }
+  
+  .fondo-reserva {
+    background: white;
+    padding: 0;
+  }
+  
+  .formulario-busqueda,
+  .enlace-volver,
+  .contenedor-botones-accion,
+  .controles-ordenamiento,
+  .icono-informacion {
+    display: none !important;
+  }
+  
+  .contenedor-resultados {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 20px;
+    box-shadow: none;
+    border: none;
+    page-break-inside: avoid;
+  }
+  
+  .contenedor-tabla-scroll {
+    height: auto;
+    overflow: visible;
+    border: 1px solid #000;
+  }
+  
+  .tabla-pagos {
+    page-break-inside: auto;
+  }
+  
+  .tabla-pagos tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+  
+  .grupo-medio-pago {
+    page-break-inside: avoid;
+    margin-bottom: 20px;
+  }
+  
+  .total-general {
+    page-break-inside: avoid;
+  }
+}
+

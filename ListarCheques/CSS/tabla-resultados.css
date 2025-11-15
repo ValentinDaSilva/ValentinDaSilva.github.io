@@ -1,0 +1,146 @@
+/* Estilos del contenedor de resultados y tabla */
+
+.contenedor-resultados {
+  width: 60vw;
+  height: 80vh;
+  margin: 50px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+  border: 2px solid #6b493ed0;
+  position: absolute;
+  top: 50px;
+  left: 300px;
+  padding: 20px;
+  z-index: 2;
+}
+
+.titulo-resultados {
+  text-align: center;
+  color: #333;
+  height: 10%;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.controles-ordenamiento {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  justify-content: flex-end;
+  padding-right: 60px;
+}
+
+.etiqueta-filtro {
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+}
+
+.select-filtro {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 13px;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.select-filtro:hover {
+  border-color: #412c26;
+}
+
+.select-filtro:focus {
+  outline: none;
+  border-color: #412c26;
+  box-shadow: 0 0 5px rgba(65, 44, 38, 0.3);
+}
+
+.contenedor-tabla-scroll {
+  overflow: auto;
+  border: 1px solid #ccc;
+  height: 65%;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.tabla-cheques {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+.tabla-cheques thead {
+  background-color: #412c26;
+  color: white;
+}
+
+.tabla-cheques th {
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+  border: 1px solid black;
+  white-space: nowrap;
+}
+
+.tabla-cheques tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s ease;
+}
+
+.tabla-cheques tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.tabla-cheques td {
+  padding: 10px;
+  font-size: 13px;
+  color: #333;
+  text-align: center;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+
+.total-general {
+  background-color: #2fd345;
+  color: white;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.mensaje-sin-resultados {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 16px;
+}
+
+/* Ancho del scrollbar (vertical) y alto (horizontal) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Fondo del "rastro" del scroll → transparente */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Thumb = la parte que se mueve */
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.4);
+  border-radius: 4px;
+}
+
+/* Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.6);
+}
+

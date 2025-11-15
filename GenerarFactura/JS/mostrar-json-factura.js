@@ -156,3 +156,4 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
 
 
 
+

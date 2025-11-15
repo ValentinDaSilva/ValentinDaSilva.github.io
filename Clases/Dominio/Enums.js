@@ -7,7 +7,8 @@ const EstadoReserva = {
 
 const EstadoFactura = {
   PENDIENTE: "Pendiente",
-  PAGADA: "Pagada"
+  PAGADA: "Pagada",
+  ANULADA: "Anulada"
 };
 
 const EstadoEstadia = {

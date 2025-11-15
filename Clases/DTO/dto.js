@@ -118,3 +118,21 @@ class EstadiaDTO {
   get acompaniantes() { return this._acompaniantes; } set acompaniantes(v) { this._acompaniantes = v; }
 }
 
+class NotaDeCreditoDTO {
+  constructor(idNota, fecha, responsable, facturas, total, tipo) {
+    this._idNota = idNota;
+    this._fecha = fecha;
+    this._responsable = responsable;
+    this._facturas = facturas;
+    this._total = total;
+    this._tipo = tipo;
+  }
+
+  get idNota() { return this._idNota; } set idNota(v) { this._idNota = v; }
+  get fecha() { return this._fecha; } set fecha(v) { this._fecha = v; }
+  get responsable() { return this._responsable; } set responsable(v) { this._responsable = v; }
+  get facturas() { return this._facturas; } set facturas(v) { this._facturas = v; }
+  get total() { return this._total; } set total(v) { this._total = v; }
+  get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
+}
+

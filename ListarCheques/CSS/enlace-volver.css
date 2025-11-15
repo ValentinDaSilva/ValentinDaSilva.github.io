@@ -1,0 +1,12 @@
+/* Estilos para el enlace de volver */
+
+.enlace-volver {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  text-decoration: none;
+  font-size: 24px;
+  color: #64443a;
+  z-index: 2;
+}
+

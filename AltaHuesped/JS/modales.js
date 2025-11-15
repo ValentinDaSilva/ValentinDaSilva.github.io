@@ -45,10 +45,12 @@ function mensajeError(mensaje) {
 /**
  * Muestra un mensaje de advertencia con dos botones
  * @param {string} mensaje - Mensaje de advertencia
- * @param {string} boton1 - Texto del primer botón
- * @param {string} boton2 - Texto del segundo botón
+ * @param {string} boton1 - Texto del primer botón (ACEPTAR)
+ * @param {string} boton2 - Texto del segundo botón (CORREGIR)
+ * @param {Function} funcionAceptar - Función a ejecutar al hacer clic en ACEPTAR
+ * @param {Function} funcionCorregir - Función a ejecutar al hacer clic en CORREGIR
  */
-function advertencia(mensaje, boton1, boton2) {
+function advertencia(mensaje, boton1, boton2, funcionAceptar, funcionCorregir) {
     if(mensaje == undefined) mensaje = "Mensaje de Advertencia";
     if(boton1 == undefined) boton1 = "ACEPTAR";
     if(boton2 == undefined) boton2 = "CANCELAR";
@@ -62,8 +64,43 @@ function advertencia(mensaje, boton1, boton2) {
     const botonAceptar = document.getElementById("boton-advertencia-aceptar");
     const botonCorregir = document.getElementById("boton-advertencia-corregir");
     
-    if (botonAceptar) botonAceptar.textContent = boton1;
-    if (botonCorregir) botonCorregir.textContent = boton2;
+    // Remover todos los listeners anteriores clonando los botones
+    const nuevoBotonAceptar = botonAceptar ? botonAceptar.cloneNode(true) : null;
+    const nuevoBotonCorregir = botonCorregir ? botonCorregir.cloneNode(true) : null;
+    
+    if (nuevoBotonAceptar) nuevoBotonAceptar.textContent = boton1;
+    if (nuevoBotonCorregir) nuevoBotonCorregir.textContent = boton2;
+    
+    if (botonAceptar && botonAceptar.parentNode && nuevoBotonAceptar) {
+        botonAceptar.parentNode.replaceChild(nuevoBotonAceptar, botonAceptar);
+    }
+    if (botonCorregir && botonCorregir.parentNode && nuevoBotonCorregir) {
+        botonCorregir.parentNode.replaceChild(nuevoBotonCorregir, botonCorregir);
+    }
+    
+    // Agregar nuevos listeners
+    if (typeof funcionAceptar === "function" && nuevoBotonAceptar) {
+        nuevoBotonAceptar.addEventListener("click", () => {
+            modal.style.display = "none";
+            funcionAceptar();
+        }, { once: true });
+    } else if (nuevoBotonAceptar) {
+        nuevoBotonAceptar.addEventListener("click", () => {
+            modal.style.display = "none";
+        }, { once: true });
+    }
+    
+    if (typeof funcionCorregir === "function" && nuevoBotonCorregir) {
+        nuevoBotonCorregir.addEventListener("click", () => {
+            modal.style.display = "none";
+            funcionCorregir();
+        }, { once: true });
+    } else if (nuevoBotonCorregir) {
+        nuevoBotonCorregir.addEventListener("click", () => {
+            modal.style.display = "none";
+        }, { once: true });
+    }
+    
     modal.style.display = "flex";
 }
 

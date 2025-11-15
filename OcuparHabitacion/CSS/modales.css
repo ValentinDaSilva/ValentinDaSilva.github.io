@@ -101,9 +101,11 @@
 
 .botones-advertencia {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  gap: 10px;
+  padding: 0 20px;
 }
 
 .boton-advertencia {
@@ -153,7 +155,9 @@
 
 .preguntaBotones {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 20px;
 }
 
 .preguntaBotones button {

@@ -18,6 +18,7 @@ export { default as Habitacion } from "./Habitacion.js";
 export { default as Reserva } from "./Reserva.js";
 export { default as Estadia } from "./Estadia.js";
 export { default as Factura } from "./Factura.js";
+export { default as NotaDeCredito } from "./NotaDeCredito.js";
 export { default as Pago } from "./Pago.js";
 export { Efectivo, MonedaExtranjera, Cheque, Tarjeta } from "./MedioDePago/index.js";
 

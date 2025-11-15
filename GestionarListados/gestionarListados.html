@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestionar Listados - Hotel Premier</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/menu-listados.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+  <link rel="stylesheet" href="CSS/enlace-volver.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body>
+  <a href="../index.html" class="enlace-volver">&#8592; Volver al Menú</a>
+  
+  <div class="fondo-reserva">
+    <div class="contenedor-menu-listados">
+      <h1 class="titulo-principal">Gestionar Listados</h1>
+      <p class="subtitulo">Seleccione el tipo de informe que desea visualizar</p>
+      
+      <div class="menu-opciones">
+        <div class="opcion-listado" onclick="redirigirAListado('cheques')">
+          <div class="icono-opcion">📋</div>
+          <h3 class="titulo-opcion">Listado de Cheques en Cartera</h3>
+          <p class="descripcion-opcion">Consultar cheques recibidos por rango de fechas</p>
+        </div>
+        
+        <div class="opcion-listado" onclick="redirigirAListado('ingresos')">
+          <div class="icono-opcion">💰</div>
+          <h3 class="titulo-opcion">Ingresos por Fechas y Medios de Pago</h3>
+          <p class="descripcion-opcion">Ver historial de ingresos agrupados por tipo de medio de pago</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function redirigirAListado(tipo) {
+      if (tipo === 'cheques') {
+        window.location.href = '../ListarCheques/listarCheques.html';
+      } else if (tipo === 'ingresos') {
+        window.location.href = '../ListarIngresos/listarIngresos.html';
+      }
+    }
+  </script>
+</body>
+</html>
+

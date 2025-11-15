@@ -9,6 +9,7 @@ class Factura {
         this.medioDePago = medioDePago; // Tipo clase MedioDePago 
         this.estadia = estadia; // Tipo clase Estadia
         this.pagos = []; // Array de tipo clase Pago
+        this.total = 0; // Total de la factura
     }
     get getId() {
         return this.id;
@@ -55,6 +56,19 @@ class Factura {
 
     set setPagos(pagos) {
         this.pagos = pagos;
+    }
+
+    get getNotaDeCredito() {
+        return this.notaDeCredito;
+    }
+
+
+    get getTotal() {
+        return this.total;
+    }
+
+    set setTotal(total) {
+        this.total = total;
     }
 }
 

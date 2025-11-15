@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ingresar Nota de Crédito - Hotel Premier</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario.css">
+  <link rel="stylesheet" href="CSS/tabla-facturas.css">
+  <link rel="stylesheet" href="CSS/nota-credito-box.css">
+  <link rel="stylesheet" href="CSS/modales.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+</head>
+<body>
+  <img src="../assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="bg-image">
+  <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
+  
+  <div class="body">
+    <div class="container">
+      <!-- Pantalla 1: Búsqueda de responsable de pago -->
+      <div id="buscarResponsable">
+        <h1>Ingresar Nota de Crédito</h1>
+        <form id="formBuscarResponsable">
+          <div class="form-group">
+            <label class="required" for="dniCuit">DNI o CUIT del responsable de pago:</label>
+            <input type="text" id="dniCuit" name="dniCuit" placeholder="Ej: 12345678 o 20-12345678-9"/>
+          </div>
+          <div class="form-group">
+            <button type="submit">Buscar Facturas</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Pantalla 2: Lista de facturas -->
+      <div id="listaFacturas" class="hidden">
+        <h2 class="titulo">Facturas del Responsable</h2>
+        <div id="infoResponsable" class="info-responsable">
+          <p><strong>Responsable:</strong> <span id="responsableNombre">-</span></p>
+        </div>
+        <div id="mensajeSinFacturas" class="mensaje-sin-facturas hidden">
+          <p>No hay facturas disponibles para anular.</p>
+        </div>
+        <div class="tabla-scroll" id="contenedorTablaFacturas">
+          <table id="tablaFacturas">
+            <thead>
+              <tr>
+                <th>Seleccionar</th>
+                <th>Número</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Tipo</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyFacturas">
+              <!-- Se llenará dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+        <div class="bottom-buttons">
+          <button type="button" id="boton-volver-facturas">Volver</button>
+          <button type="button" id="boton-continuar-facturas">Continuar</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pantalla 3: Resumen de Nota de Crédito -->
+    <div id="resumenNotaCredito" class="hidden">
+      <div class="nota-credito-box">
+        <div class="titulo">
+          <h1>Nota de Crédito</h1>
+        </div>
+        <div class="nota-credito">
+          <div class="responsable-info">
+            <h3><strong id="ncResponsableNombre">-</strong></h3>
+          </div>
+          
+          <div class="facturas-anuladas">
+            <p><strong>Facturas Anuladas:</strong></p>
+            <div class="listaFacturas" id="listaFacturasAnuladas">
+              <!-- Se llenará dinámicamente -->
+            </div>
+          </div>
+          
+          <div class="subtotal">
+            <strong>Subtotal:</strong>
+            <strong id="ncSubtotal">$0.00</strong>
+          </div>
+          
+          <div class="iva" id="ncIvaSection">
+            <strong>IVA (21%):</strong>
+            <strong id="ncIva">$0.00</strong>
+          </div>
+          
+          <div class="tipoNotaCredito">
+            <strong>Tipo de Nota de Crédito: <span id="ncTipo">-</span></strong>
+            <div class="total-box">
+              Total: <span id="ncTotal">$0.00</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-buttons">
+          <button type="button" id="boton-volver-nota">Cancelar</button>
+          <button type="button" id="boton-confirmar-nota">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content error">
+      <h2>ERROR</h2>
+      <img src="../assets/image/Error.png" alt="icono de error">
+      <p id="error-message">Por favor, completa todos los campos requeridos.</p>
+      <button id="ok-button" class="boton">OK</button>
+    </div>
+  </div>
+
+  <!-- Modal de Éxito -->
+  <div id="modalExito" class="modal" style="display: none;">
+    <div class="modal-content exito">
+      <h2>ÉXITO</h2>
+      <img src="../assets/image/Correcto.png" alt="icono de éxito">
+      <p id="exito-message">Nota de Crédito generada correctamente. Las facturas fueron anuladas.</p>
+      <button id="ok-exito-button" class="boton">Continuar</button>
+    </div>
+  </div>
+
+  <!-- Scripts modulares -->
+  <!-- Validación de sesión (debe ir primero) -->
+  <script src="../Login/JS/validar-sesion.js"></script>
+  <!-- Navegación volver (debe ir después de validar-sesion) -->
+  <script src="../Login/JS/navegacion-volver.js"></script>
+  <script type="module" src="JS/modales.js"></script>
+  <script type="module" src="JS/datos-facturas.js"></script>
+  <script type="module" src="JS/datos-responsables.js"></script>
+  <script type="module" src="JS/datos-nota-credito.js"></script>
+  <script type="module" src="JS/buscar-responsable.js"></script>
+  <script type="module" src="JS/buscar-facturas.js"></script>
+  <script type="module" src="JS/seleccion-facturas.js"></script>
+  <script type="module" src="JS/generar-nota-credito.js"></script>
+  <script type="module" src="JS/validaciones.js"></script>
+  <script type="module" src="JS/navegacion-pantallas.js"></script>
+  <script type="module" src="JS/mostrar-json-nota-credito.js"></script>
+  <script type="module" src="JS/eventos.js"></script>
+  <script src="../JS/general.js"></script>
+</body>
+</html>
+
+

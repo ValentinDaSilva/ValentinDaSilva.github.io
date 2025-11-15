@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Listar Cheques - Hotel Premier</title>
+  
+  <!-- Estilos modulares -->
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario.css">
+  <link rel="stylesheet" href="CSS/tabla-resultados.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+  <link rel="stylesheet" href="CSS/modales.css">
+  <link rel="stylesheet" href="CSS/enlace-volver.css">
+  <link rel="stylesheet" href="CSS/impresion.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body>
+  <a href="../index.html" class="enlace-volver">&#8592; Volver al Menú</a>
+  
+  <div class="fondo-reserva">
+    <div class="formulario-busqueda">
+      <h2 class="titulo-formulario">Listar Cheques</h2>
+      <form id="formulario-fechas" novalidate>
+        <label for="fechaDesde" class="etiqueta-campo requerido">Desde fecha</label>
+        <input 
+          type="date" 
+          id="fechaDesde" 
+          name="fechaDesde" 
+          class="campo-fecha"
+          required
+        />
+        <div class="mensaje-error" id="fechaDesde-error"></div>
+
+        <label for="fechaHasta" class="etiqueta-campo requerido">Hasta fecha</label>
+        <input 
+          type="date" 
+          id="fechaHasta" 
+          name="fechaHasta" 
+          class="campo-fecha"
+          required
+        />
+        <div class="mensaje-error" id="fechaHasta-error"></div>
+        
+        <button type="submit" class="boton-buscar">Buscar</button>
+      </form>
+    </div>
+
+    <div class="contenedor-resultados animate__animated animate__fadeIn" id="contenedor-resultados" style="display: none;">
+      <h2 class="titulo-resultados">Cheques del Período</h2>
+      <div class="controles-ordenamiento">
+        <label for="ordenarPor" class="etiqueta-filtro">Ordenar por:</label>
+        <select id="ordenarPor" class="select-filtro">
+          <option value="fecha">Fecha</option>
+          <option value="monto">Importe</option>
+          <option value="numero">Número de Cheque</option>
+          <option value="banco">Banco</option>
+          <option value="responsable">Responsable de Pago</option>
+        </select>
+      </div>
+
+      <div class="contenedor-tabla-scroll">
+        <div id="contenido-resultados">
+          <!-- Los resultados se cargarán dinámicamente -->
+        </div>
+      </div>
+
+      <div class="total-general" id="total-general">
+        <!-- El total general se calculará dinámicamente -->
+      </div>
+      
+      <div class="contenedor-botones-accion">
+        <button class="boton-imprimir" onclick="imprimirListado()">🖨️ Imprimir</button>
+        <div class="boton-volver-menu" onclick="window.location.href='../index.html'">Volver al Menú</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Error -->
+  <div id="modal-error" class="modal">
+    <div class="contenido-modal contenido-modal-error">
+      <h2>ERROR</h2>
+      <img src="../assets/image/Error.png" alt="icono de error">
+      <p id="mensaje-error"></p>
+      <button onclick="cerrarModalError()">OK👍</button>
+    </div>
+  </div>
+
+  <!-- Modal de Sin Resultados -->
+  <div id="modal-sin-resultados" class="modal">
+    <div class="contenido-modal contenido-modal-advertencia">
+      <h2>INFORMACIÓN</h2>
+      <img src="../assets/image/Advertencia.png" alt="icono de advertencia">
+      <p>No se registraron cheques en el período seleccionado</p>
+      <button onclick="cerrarModalSinResultados()">OK👍</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="JS/datos-facturas.js"></script>
+  <script type="module" src="JS/filtrar-cheques.js"></script>
+  <script type="module" src="JS/mostrar-resultados.js"></script>
+  <script type="module" src="JS/ordenar-cheques.js"></script>
+  <script type="module" src="JS/validaciones.js"></script>
+  <script type="module" src="JS/modales.js"></script>
+  <script type="module" src="JS/eventos.js"></script>
+  <script>
+    function imprimirListado() {
+      window.print();
+    }
+  </script>
+</body>
+</html>
+

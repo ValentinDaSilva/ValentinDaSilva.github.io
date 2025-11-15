@@ -372,13 +372,22 @@ function validarCampo(campoId) {
             resultado = validarCampoSoloLetras(valor, 'La provincia');
             break;
         case 'pais':
-            resultado = validarCampoSoloLetras(valor, 'El país');
+            if (!valor || valor === '') {
+                resultado = { valido: false, mensaje: 'Debe seleccionar un país' };
+            } else {
+                resultado = { valido: true, mensaje: '' };
+            }
             break;
         case 'departamento':
             if (!valor || valor.trim() === '') {
                 resultado = { valido: true, mensaje: '' }; // Departamento es opcional
             } else {
-                resultado = validarCampoSoloLetras(valor, 'El departamento');
+                // Departamento es opcional, solo validar que no tenga caracteres inválidos si tiene contenido
+                if (!esSoloLetras(valor.trim())) {
+                    resultado = { valido: false, mensaje: 'El departamento solo puede contener letras y espacios' };
+                } else {
+                    resultado = { valido: true, mensaje: '' };
+                }
             }
             break;
         case 'piso':

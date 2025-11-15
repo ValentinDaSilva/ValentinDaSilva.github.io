@@ -1,0 +1,125 @@
+/* Estilos de la caja de nota de crédito */
+
+#resumenNotaCredito {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+#resumenNotaCredito.hidden {
+  display: none !important;
+}
+
+.nota-credito-box {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 20px 25px;
+  text-align: left;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  color: #412c26;
+  height: 80vh;
+  max-height: 80vh;
+  overflow: hidden;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.titulo {
+  height: 10%;
+  overflow: hidden;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.titulo h1 {
+  margin: 0;
+  border-bottom: 2px solid #412c26;
+}
+
+.responsable-info h3 {
+  margin: 5px;
+  overflow: hidden;
+}
+
+.nota-credito {
+  max-height: 80%;
+  height: 80%;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.facturas-anuladas {
+  height: 50%;
+  max-height: 50%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.listaFacturas {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.itemFactura {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.itemFactura:last-child {
+  border-bottom: none;
+}
+
+.itemFactura p {
+  margin: 0;
+}
+
+.subtotal {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 0;
+  height: 10%;
+  max-height: 10%;
+}
+
+.iva {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 0;
+  height: 10%;
+  max-height: 10%;
+}
+
+.tipoNotaCredito {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  align-items: center;
+}
+
+.tipoNotaCredito > * {
+  display: flex;
+  justify-content: center;
+}
+
+.total-box {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: rgb(250, 171, 0);
+  color: #412c26;
+  font-weight: bold;
+}
+
+

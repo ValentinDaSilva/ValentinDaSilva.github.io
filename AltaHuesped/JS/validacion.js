@@ -10,7 +10,69 @@ function verificarCUIT(listaCUITS) {
     const input = document.getElementById("cuit").value.trim();
     if (input !== "") {
         if(listaCUITS.includes(input)) {
-            advertencia("¡CUIDADO! El tipo y número de documento ya existen en el sistema","CORREGIR ✏️ ","ACEPTAR ✅ ");
+            advertencia(
+                "¡CUIDADO! El tipo y número de documento ya existen en el sistema",
+                "ACEPTAR ✅",
+                "CORREGIR ✏️",
+                function() {
+                    // Si acepta, procesar el formulario normalmente
+                    const procesadoExitoso = gestorAltaHuesped.procesarAltaHuesped();
+                    
+                    if (procesadoExitoso) {
+                        // Mostrar pregunta de confirmación después de mostrar el JSON
+                        const nombres = document.getElementById("nombres").value.trim();
+                        const apellido = document.getElementById("apellido").value.trim();
+                        pregunta(
+                            `El huésped\n${nombres} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
+                            "SI ✅",
+                            "NO ❌",
+                            function() { 
+                                // Cerrar el contenedor JSON si está abierto
+                                const contenedorJSON = document.getElementById('contenedor-json');
+                                if (contenedorJSON) {
+                                    contenedorJSON.style.display = 'none';
+                                }
+                                
+                                // Cerrar el modal de pregunta
+                                const modalPregunta = document.getElementById('modalPregunta');
+                                if (modalPregunta) {
+                                    modalPregunta.style.display = 'none';
+                                }
+                                
+                                // Reiniciar el formulario (limpiar todos los campos)
+                                reiniciarFormulario();
+                                
+                                // Mostrar mensaje de éxito
+                                mensajeCorrecto("Huésped cargado correctamente. El formulario ha sido reiniciado.");
+                            },
+                            function() {
+                                // Cerrar el contenedor JSON si está abierto
+                                const contenedorJSON = document.getElementById('contenedor-json');
+                                if (contenedorJSON) {
+                                    contenedorJSON.style.display = 'none';
+                                }
+                                
+                                // Cerrar el modal de pregunta
+                                const modalPregunta = document.getElementById('modalPregunta');
+                                if (modalPregunta) {
+                                    modalPregunta.style.display = 'none';
+                                }
+                                
+                                // Volver a la pantalla principal
+                                window.location.href = '../index.html';
+                            }
+                        );
+                    }
+                },
+                function() {
+                    // Si corrige, hacer foco en el campo CUIT
+                    const campoCuit = document.getElementById("cuit");
+                    if (campoCuit) {
+                        campoCuit.focus();
+                        campoCuit.select();
+                    }
+                }
+            );
             return true;
         }
     }

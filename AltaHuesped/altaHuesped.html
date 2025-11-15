@@ -117,7 +117,9 @@
               </div>
               <div class="contenedor-campo">
                 <label for="pais" class="etiqueta-campo requerido">País:</label>
-                <input type="text" id="pais" name="pais" placeholder="Argentina" required>
+                <select id="pais" name="pais" required>
+                    <option value=""></option>
+                </select>
               </div>
             </div>
           </fieldset>
@@ -158,7 +160,7 @@
         <img src="/assets/image/Pregunta.png" alt="icono de pregunta" class="imagen-modal">
         <p id="mensaje-pregunta" class="mensaje-modal">El numero de documento ya existe</p>
         <div class="botones-pregunta">
-          <button id="boton-pregunta-1" class="boton-general boton-pregunta">CORREGIR</button>
+          <button id="boton-pregunta-1" class="boton-general boton-pregunta">ACEPTAR</button>
           <button id="boton-pregunta-2" class="boton-general boton-pregunta">CANCELAR</button>
         </div>
       </div>
