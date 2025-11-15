@@ -36,8 +36,8 @@ class PersonaDTO {
 }
 
 class HuespedDTO extends PersonaDTO {
-  constructor(nombre, apellido, telefono, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null, condicionIVA = null) {
-    super(nombre, apellido, telefono);
+  constructor(nombre, apellido, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null, condicionIVA = null) {
+    super(nombre, apellido, null); // Huesped no tiene telefono en su constructor
     this._tipoDocumento = tipoDocumento;
     this._nroDocumento = nroDocumento;
     this._fechaNacimiento = fechaNacimiento;
@@ -97,15 +97,15 @@ class ReservaDTO {
 }
 
 class EstadiaDTO {
-  constructor(id, fechaCheckIn, fechaCheckOut, estado, consumos, reserva, titular, acompaniantes) {
+  constructor(id, fechaCheckIn, fechaCheckOut, estado, reserva, titular, acompaniantes, consumos = []) {
     this._id = id;
     this._fechaCheckIn = fechaCheckIn;
     this._fechaCheckOut = fechaCheckOut;
     this._estado = estado;
-    this._consumos = consumos;
     this._reserva = reserva;
     this._titular = titular;
     this._acompaniantes = acompaniantes;
+    this._consumos = consumos;
   }
 
   get id() { return this._id; } set id(v) { this._id = v; }
@@ -119,7 +119,7 @@ class EstadiaDTO {
 }
 
 class NotaDeCreditoDTO {
-  constructor(idNota, fecha, responsable, facturas, total, tipo) {
+  constructor(idNota = null, fecha = null, responsable = null, facturas = [], total = 0, tipo = null) {
     this._idNota = idNota;
     this._fecha = fecha;
     this._responsable = responsable;
@@ -134,5 +134,47 @@ class NotaDeCreditoDTO {
   get facturas() { return this._facturas; } set facturas(v) { this._facturas = v; }
   get total() { return this._total; } set total(v) { this._total = v; }
   get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
+}
+
+class FacturaDTO {
+  constructor(id, hora, fecha, tipo, estado, responsableDePago, medioDePago, estadia, pagos = [], total = 0) {
+    this._id = id;
+    this._hora = hora;
+    this._fecha = fecha;
+    this._tipo = tipo;
+    this._estado = estado;
+    this._responsableDePago = responsableDePago;
+    this._medioDePago = medioDePago;
+    this._estadia = estadia;
+    this._pagos = pagos;
+    this._total = total;
+  }
+
+  get id() { return this._id; } set id(v) { this._id = v; }
+  get hora() { return this._hora; } set hora(v) { this._hora = v; }
+  get fecha() { return this._fecha; } set fecha(v) { this._fecha = v; }
+  get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
+  get estado() { return this._estado; } set estado(v) { this._estado = v; }
+  get responsableDePago() { return this._responsableDePago; } set responsableDePago(v) { this._responsableDePago = v; }
+  get medioDePago() { return this._medioDePago; } set medioDePago(v) { this._medioDePago = v; }
+  get estadia() { return this._estadia; } set estadia(v) { this._estadia = v; }
+  get pagos() { return this._pagos; } set pagos(v) { this._pagos = v; }
+  get total() { return this._total; } set total(v) { this._total = v; }
+}
+
+class PagoDTO {
+  constructor(id, fecha, hora, montoTotal, medioDePago) {
+    this._id = id;
+    this._fecha = fecha;
+    this._hora = hora;
+    this._montoTotal = montoTotal;
+    this._medioDePago = medioDePago;
+  }
+
+  get id() { return this._id; } set id(v) { this._id = v; }
+  get fecha() { return this._fecha; } set fecha(v) { this._fecha = v; }
+  get hora() { return this._hora; } set hora(v) { this._hora = v; }
+  get montoTotal() { return this._montoTotal; } set montoTotal(v) { this._montoTotal = v; }
+  get medioDePago() { return this._medioDePago; } set medioDePago(v) { this._medioDePago = v; }
 }
 

@@ -342,10 +342,6 @@
     let filaSeleccionada = null;
     let ordenActual = { columna: null, direccion: 'asc' };
 
-    // Función para convertir a mayúsculas automáticamente
-    function convertirAMayusculas(input) {
-      input.value = input.value.toUpperCase();
-    }
 
          // Función para buscar responsables de pago
      function buscarResponsables() {
@@ -533,15 +529,6 @@
       }
     });
 
-    // Configurar conversión automática a mayúsculas
-    document.addEventListener('DOMContentLoaded', function() {
-      const inputs = document.querySelectorAll('input[type="text"]');
-      inputs.forEach(input => {
-        input.addEventListener('input', function() {
-          convertirAMayusculas(this);
-        });
-      });
-    });
 
     // Configurar formulario de búsqueda
     document.getElementById('searchForm').addEventListener('submit', function(event) {
@@ -587,5 +574,6 @@
   <!-- Validación de sesión (debe ir primero) -->
   <script src="Login/JS/validar-sesion.js"></script>
   <script src="Login/JS/navegacion-volver.js"></script>
+  <script src="JS/general.js"></script>
 </body>
 </html> 

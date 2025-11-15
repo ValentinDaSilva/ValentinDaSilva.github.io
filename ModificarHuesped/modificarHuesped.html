@@ -117,7 +117,9 @@
               </div>
               <div class="contenedor-campo">
                 <label for="pais" class="etiqueta-campo requerido">País:</label>
-                <input type="text" id="pais" name="pais" placeholder="Argentina" required>
+                <select id="pais" name="pais" required>
+                    <option value=""></option>
+                </select>
               </div>
             </div>
           </fieldset>
@@ -179,10 +181,19 @@
     <script src="../Login/JS/validar-sesion.js"></script>
     <!-- Navegación volver (debe ir después de validar-sesion) -->
     <script src="../Login/JS/navegacion-volver.js"></script>
-    <script src="JS/carga-datos.js"></script>
+    <!-- Clases de dominio y DTO -->
+    <script type="module" src="../Clases/Dominio/dominio.js"></script>
+    <script src="../Clases/DTO/dto.js"></script>
+    <!-- Scripts del formulario -->
     <script src="JS/paises.js"></script>
     <script src="JS/modales.js"></script>
     <script src="JS/validaciones-campos.js"></script>
+    <script src="JS/mostrar-json-modificacion.js"></script>
+    <!-- El gestor debe cargarse antes de carga-datos para que esté disponible -->
+    <script type="module" src="JS/gestor-modificar-huesped.js"></script>
+    <script src="JS/carga-datos.js"></script>
     <script src="JS/validacion.js"></script>
+    <script src="JS/utilidades.js"></script>
+    <script src="../JS/general.js"></script>
 </body>
 </html>

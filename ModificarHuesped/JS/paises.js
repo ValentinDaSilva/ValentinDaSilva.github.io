@@ -26,21 +26,34 @@ const listaPaises = [
 ];
 
 /**
- * Carga la lista de países en el selector de nacionalidad
+ * Carga la lista de países en el selector de nacionalidad y país
  * @param {Array} listaPaises - Lista de países a cargar
  */
 function cargarPaises(listaPaises) {
-    const select = document.getElementById("nacionalidad");
-    if (!select) return;
+    const selectNacionalidad = document.getElementById("nacionalidad");
+    const selectPais = document.getElementById("pais");
     
-    select.innerHTML = "<option value=''>Seleccione una opción</option>";
+    if (selectNacionalidad) {
+        selectNacionalidad.innerHTML = "<option value=''>Seleccione una opción</option>";
+        
+        listaPaises.forEach(pais => {
+            const option = document.createElement("option");
+            option.value = pais;
+            option.textContent = pais;
+            selectNacionalidad.appendChild(option);
+        });
+    }
     
-    listaPaises.forEach(pais => {
-        const option = document.createElement("option");
-        option.value = pais;
-        option.textContent = pais;
-        select.appendChild(option);
-    });
+    if (selectPais) {
+        selectPais.innerHTML = "<option value=''>Seleccione una opción</option>";
+        
+        listaPaises.forEach(pais => {
+            const option = document.createElement("option");
+            option.value = pais;
+            option.textContent = pais;
+            selectPais.appendChild(option);
+        });
+    }
 }
 
 /**

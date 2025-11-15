@@ -1,20 +1,22 @@
 /* 
- * Función para mostrar el JSON de las reservas que se eliminarán
+ * Muestra el JSON de modificación de huésped en pantalla
+ * Similar a mostrar-json-factura.js pero adaptado para modificación de huésped
  */
 
 /**
- * Muestra el JSON en pantalla en un contenedor especial
- * @param {Array} reservasAEliminar - Array de reservas a eliminar
- * @param {Function} callbackCerrar - Función a ejecutar cuando se cierre el JSON (opcional)
+ * Muestra el JSON de modificación de huésped en pantalla
+ * @param {Object} jsonData - Datos JSON modificados del huésped
+ * @param {Object} huespedOriginal - Datos originales del huésped (opcional, para comparación)
+ * @param {Function} callbackCerrar - Función a ejecutar al cerrar el modal (opcional)
  */
-function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
+function mostrarJSONModificacionEnPantalla(jsonData, huespedOriginal = null, callbackCerrar = null) {
     // Crear o obtener el contenedor para mostrar el JSON
-    let contenedorJSON = document.getElementById('contenedor-json-cancelacion');
+    let contenedorJSON = document.getElementById('contenedor-json-modificacion');
     
     if (!contenedorJSON) {
         // Crear el contenedor si no existe
         contenedorJSON = document.createElement('div');
-        contenedorJSON.id = 'contenedor-json-cancelacion';
+        contenedorJSON.id = 'contenedor-json-modificacion';
         contenedorJSON.style.cssText = `
             position: fixed;
             top: 50%;
@@ -28,25 +30,19 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
             max-width: 90%;
             max-height: 90%;
             overflow: auto;
-            z-index: 10001;
+            z-index: 10000;
             font-family: Arial, sans-serif;
         `;
 
         // Crear título
         const titulo = document.createElement('h2');
-        titulo.textContent = 'Datos a enviar al servidor backend';
-        titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #d32f2f; padding-bottom: 10px;';
+        titulo.textContent = 'Datos modificados del huésped - JSON para enviar al servidor backend';
+        titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
         contenedorJSON.appendChild(titulo);
-
-        // Crear información adicional
-        const infoAdicional = document.createElement('div');
-        infoAdicional.style.cssText = 'margin-bottom: 15px; padding: 10px; background: #ffe7e7; border-radius: 4px; font-size: 14px;';
-        infoAdicional.id = 'info-adicional-cancelacion';
-        contenedorJSON.appendChild(infoAdicional);
 
         // Crear área de texto con el JSON
         const textarea = document.createElement('textarea');
-        textarea.id = 'json-display-cancelacion';
+        textarea.id = 'json-display-modificacion';
         textarea.readOnly = true;
         textarea.style.cssText = `
             width: 100%;
@@ -69,7 +65,7 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
         botonCerrar.style.cssText = `
             margin-top: 15px;
             padding: 10px 30px;
-            background: #d32f2f;
+            background: #007bff;
             color: white;
             border: none;
             border-radius: 4px;
@@ -80,19 +76,18 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
         `;
         botonCerrar.onclick = function() {
             contenedorJSON.style.display = 'none';
-            // Ejecutar callback si existe
             if (typeof callbackCerrar === 'function') {
                 callbackCerrar();
             }
         };
         botonCerrar.onmouseover = function() {
-            this.style.background = '#b71c1c';
+            this.style.background = '#0056b3';
         };
         botonCerrar.onmouseout = function() {
-            this.style.background = '#d32f2f';
+            this.style.background = '#007bff';
         };
         contenedorJSON.appendChild(botonCerrar);
-        
+
         // Guardar el callback para poder usarlo más adelante
         contenedorJSON._callbackCerrar = callbackCerrar;
 
@@ -101,23 +96,11 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
     }
 
     // Formatear el JSON con indentación
-    const jsonFormateado = JSON.stringify(reservasAEliminar, null, 2);
-    
-    // Actualizar información adicional
-    const infoAdicional = document.getElementById('info-adicional-cancelacion');
-    if (infoAdicional) {
-        infoAdicional.innerHTML = `
-            <strong>Información de la Cancelación:</strong><br>
-            • <strong>Reservas a eliminar:</strong> ${reservasAEliminar.length}<br>
-            • <strong>Acción:</strong> Estas reservas serán eliminadas de la base de datos<br>
-            • <strong>Formato:</strong> JSON que se eliminará del archivo reservas.json
-        `;
-    }
+    const jsonFormateado = JSON.stringify(jsonData, null, 2);
     
     // Mostrar en el textarea
-    const textarea = document.getElementById('json-display-cancelacion');
+    const textarea = document.getElementById('json-display-modificacion');
     if (textarea) {
-        // Mostrar las reservas que se eliminarán
         textarea.value = jsonFormateado;
         // Hacer scroll al inicio
         textarea.scrollTop = 0;
@@ -142,14 +125,10 @@ function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
     contenedorJSON.style.display = 'block';
 
     // También mostrar en consola para debugging
-    console.log('=== DATOS A ELIMINAR DE LA BASE DE DATOS ===');
-    console.log('Reservas a eliminar:', reservasAEliminar);
+    console.log('=== DATOS MODIFICADOS DEL HUÉSPED ===');
+    console.log('Datos originales:', huespedOriginal);
+    console.log('Datos modificados:', jsonData);
     console.log('JSON formateado:', jsonFormateado);
-    console.log('Total de reservas:', reservasAEliminar.length);
-    console.log('============================================');
+    console.log('=====================================');
 }
-
-
-
-
 

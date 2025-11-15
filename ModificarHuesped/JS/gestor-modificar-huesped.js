@@ -1,17 +1,34 @@
 /* 
- * Gestor de Huéspedes - Maneja la lógica de negocio para dar de alta huéspedes
+ * Gestor de Modificación de Huéspedes - Maneja la lógica de negocio para modificar huéspedes
  * Usa clases de dominio y DTOs para trabajar con la base de datos
  */
 
 import { GestorHuesped, Huesped, Direccion } from "../../Clases/Dominio/dominio.js";
 
 /**
- * Clase que extiende GestorHuesped para manejar el alta de huéspedes desde el formulario
+ * Clase que extiende GestorHuesped para manejar la modificación de huéspedes desde el formulario
  */
-class GestorAltaHuesped extends GestorHuesped {
+class GestorModificarHuesped extends GestorHuesped {
     constructor() {
         super();
         this._rutaBD = '/Datos/huspedes.json';
+        this._huespedOriginal = null; // Guardar el huésped original para comparar cambios
+    }
+
+    /**
+     * Establece el huésped original que se está modificando
+     * @param {Object} huesped - Datos del huésped original
+     */
+    establecerHuespedOriginal(huesped) {
+        this._huespedOriginal = huesped;
+    }
+
+    /**
+     * Obtiene el huésped original
+     * @returns {Object|null} - Datos del huésped original
+     */
+    obtenerHuespedOriginal() {
+        return this._huespedOriginal;
     }
 
     /**
@@ -27,13 +44,15 @@ class GestorAltaHuesped extends GestorHuesped {
             cuit: document.getElementById('cuit').value.trim() || null,
             fechaNacimiento: document.getElementById('fechaNacimiento').value,
             caracteristica: document.getElementById('caracteristica').value.trim(),
-            telefonoNumero: document.getElementById('telefonoNumero').value.trim(),
+            // Manejar tanto 'celular' como 'telefonoNumero' para compatibilidad
+            telefonoNumero: document.getElementById('celular')?.value.trim() || 
+                          document.getElementById('telefonoNumero')?.value.trim() || '',
             email: document.getElementById('email').value.trim() || null,
             ocupacion: document.getElementById('ocupacion').value.trim(),
             nacionalidad: document.getElementById('nacionalidad').value.trim(),
             // Dirección
             calle: document.getElementById('calle').value.trim(),
-            numeroCalle: document.getElementById('numeroCalle').value.trim(),
+            numeroCalle: document.getElementById('numero').value.trim(),
             departamento: document.getElementById('departamento').value.trim() || null,
             piso: document.getElementById('piso').value.trim() || null,
             codigoPostal: document.getElementById('codigoPostal').value.trim(),
@@ -54,9 +73,8 @@ class GestorAltaHuesped extends GestorHuesped {
      * @returns {Huesped} - Objeto Huesped de dominio
      */
     crearHuespedDominio(datos) {
-        // Nota: condicionIVA no está en el formulario, se establece como null
-        // En un sistema real, esto podría determinarse automáticamente o pedirse al usuario
-        const condicionIVA = null; // O se podría calcular basándose en el CUIT si existe
+        // Nota: condicionIVA no está en el formulario, se mantiene del original o se establece como null
+        const condicionIVA = this._huespedOriginal?.condicionIVA || null;
 
         // Crear la dirección primero
         const direccion = this.crearDireccionDominio(datos);
@@ -187,115 +205,10 @@ class GestorAltaHuesped extends GestorHuesped {
     }
 
     /**
-     * Muestra el JSON en pantalla en un contenedor especial
-     * @param {Object} jsonData - Datos JSON a mostrar
-     */
-    mostrarJSONEnPantalla(jsonData) {
-        // Crear o obtener el contenedor para mostrar el JSON
-        let contenedorJSON = document.getElementById('contenedor-json');
-        
-        if (!contenedorJSON) {
-            // Crear el contenedor si no existe
-            contenedorJSON = document.createElement('div');
-            contenedorJSON.id = 'contenedor-json';
-            contenedorJSON.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 20px;
-                border: 2px solid #333;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                max-width: 90%;
-                max-height: 90%;
-                overflow: auto;
-                z-index: 10000;
-                font-family: Arial, sans-serif;
-            `;
-
-            // Crear título
-            const titulo = document.createElement('h2');
-            titulo.textContent = 'Datos a enviar al servidor backend';
-            titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
-            contenedorJSON.appendChild(titulo);
-
-            // Crear área de texto con el JSON
-            const textarea = document.createElement('textarea');
-            textarea.id = 'json-display';
-            textarea.readOnly = true;
-            textarea.style.cssText = `
-                width: 100%;
-                min-height: 400px;
-                padding: 15px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-family: 'Courier New', monospace;
-                font-size: 13px;
-                resize: vertical;
-                box-sizing: border-box;
-                background: #f8f9fa;
-                line-height: 1.5;
-            `;
-            contenedorJSON.appendChild(textarea);
-
-            // Crear botón para cerrar
-            const botonCerrar = document.createElement('button');
-            botonCerrar.textContent = 'Cerrar';
-            botonCerrar.style.cssText = `
-                margin-top: 15px;
-                padding: 10px 30px;
-                background: #007bff;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 14px;
-                font-weight: bold;
-                transition: background 0.3s;
-            `;
-            botonCerrar.onclick = function() {
-                contenedorJSON.style.display = 'none';
-            };
-            botonCerrar.onmouseover = function() {
-                this.style.background = '#0056b3';
-            };
-            botonCerrar.onmouseout = function() {
-                this.style.background = '#007bff';
-            };
-            contenedorJSON.appendChild(botonCerrar);
-
-            // Agregar al body
-            document.body.appendChild(contenedorJSON);
-        }
-
-        // Formatear el JSON con indentación
-        const jsonFormateado = JSON.stringify(jsonData, null, 2);
-        
-        // Mostrar en el textarea
-        const textarea = document.getElementById('json-display');
-        if (textarea) {
-            textarea.value = jsonFormateado;
-            // Hacer scroll al inicio
-            textarea.scrollTop = 0;
-        }
-
-        // Mostrar el contenedor
-        contenedorJSON.style.display = 'block';
-
-        // También mostrar en consola para debugging
-        console.log('=== DATOS A ENVIAR A LA BASE DE DATOS ===');
-        console.log('Objeto completo:', jsonData);
-        console.log('JSON formateado:', jsonFormateado);
-        console.log('==========================================');
-    }
-
-    /**
-     * Procesa el alta de huésped: extrae datos, crea objetos de dominio y DTOs, y muestra el JSON
+     * Procesa la modificación de huésped: extrae datos, crea objetos de dominio y DTOs, y muestra el JSON
      * @returns {boolean} - true si el proceso fue exitoso, false en caso contrario
      */
-    procesarAltaHuesped() {
+    procesarModificacionHuesped() {
         try {
             // 1. Extraer datos del formulario
             const datosFormulario = this.extraerDatosFormulario();
@@ -303,7 +216,6 @@ class GestorAltaHuesped extends GestorHuesped {
 
             // 2. Crear objetos de dominio
             const huespedDominio = this.crearHuespedDominio(datosFormulario);
-            // La dirección ya está incluida en el huésped, no es necesario crearla por separado
             const direccionDominio = huespedDominio.direccion;
             
             console.log('Huesped de dominio creado:', huespedDominio);
@@ -317,7 +229,6 @@ class GestorAltaHuesped extends GestorHuesped {
 
             // 4. Crear DTOs
             const huespedDTO = this.crearHuespedDTO(huespedDominio);
-            // La dirección ya está incluida en el HuespedDTO
             const direccionDTO = huespedDTO.direccion;
             
             console.log('HuespedDTO creado:', huespedDTO);
@@ -327,15 +238,16 @@ class GestorAltaHuesped extends GestorHuesped {
             const jsonParaBD = this.convertirDTOAJSON(huespedDTO, direccionDTO, datosFormulario);
             
             // 6. Mostrar el JSON en pantalla
-            this.mostrarJSONEnPantalla(jsonParaBD);
+            mostrarJSONModificacionEnPantalla(jsonParaBD, this._huespedOriginal);
 
-            // 7. Dar de alta el huésped en el gestor (opcional, para mantener consistencia en memoria)
-            this.darDeAlta(huespedDominio);
+            // 7. Actualizar el huésped en el gestor (opcional, para mantener consistencia en memoria)
+            // En un sistema real, esto actualizaría la base de datos
+            // this.modificarHuesped(huespedDominio);
 
             return true;
         } catch (error) {
-            console.error('Error al procesar el alta de huésped:', error);
-            mensajeError('Error al procesar el alta de huésped: ' + error.message);
+            console.error('Error al procesar la modificación de huésped:', error);
+            mensajeError('Error al procesar la modificación de huésped: ' + error.message);
             return false;
         }
     }
@@ -356,13 +268,23 @@ class GestorAltaHuesped extends GestorHuesped {
                 huespedesExistentes = await respuesta.json();
             }
 
-            // Agregar el nuevo huésped
-            huespedesExistentes.push(jsonData);
+            // Buscar y actualizar el huésped existente
+            const indice = huespedesExistentes.findIndex(h => 
+                h.tipoDocumento === jsonData.tipoDocumento && 
+                h.numeroDocumento === jsonData.numeroDocumento
+            );
 
-            // En un sistema real, aquí se haría una petición PUT/POST al servidor
+            if (indice !== -1) {
+                huespedesExistentes[indice] = jsonData;
+            } else {
+                // Si no se encuentra, agregar como nuevo (no debería pasar en modificación)
+                huespedesExistentes.push(jsonData);
+            }
+
+            // En un sistema real, aquí se haría una petición PUT al servidor
             // Por ahora, solo simulamos el guardado
             console.log('Simulando guardado en BD. Total de huéspedes:', huespedesExistentes.length);
-            console.log('Nuevo huésped a guardar:', jsonData);
+            console.log('Huésped modificado a guardar:', jsonData);
 
             // TODO: Implementar guardado real cuando se tenga acceso al servidor
         } catch (error) {
@@ -373,8 +295,8 @@ class GestorAltaHuesped extends GestorHuesped {
 }
 
 // Crear una instancia global del gestor
-const gestorAltaHuesped = new GestorAltaHuesped();
+const gestorModificarHuesped = new GestorModificarHuesped();
 
 // Exportar para uso global
-window.gestorAltaHuesped = gestorAltaHuesped;
+window.gestorModificarHuesped = gestorModificarHuesped;
 

@@ -24,6 +24,11 @@ function verificarCUIT(listaCUITS) {
 function manejarGuardarFormulario(event) {
     event.preventDefault();
     
+    // Verificar si hay algún modal abierto - si es así, no procesar el formulario
+    if (hayModalAbierto && hayModalAbierto()) {
+        return;
+    }
+    
     // Validar todos los campos usando las funciones de validación específicas
     const todosLosCamposValidos = validarTodosLosCampos();
     
@@ -43,10 +48,23 @@ function manejarGuardarFormulario(event) {
         return;
     }
     
-    // Si todo está bien, mostrar mensaje de éxito
-    const nombres = document.getElementById("nombres").value.trim();
-    const apellido = document.getElementById("apellido").value.trim();
-    mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+    // Si todo está bien, procesar la modificación usando el gestor de huéspedes
+    // El gestor creará los objetos de dominio y DTO, y mostrará el JSON
+    if (window.gestorModificarHuesped) {
+        const procesadoExitoso = window.gestorModificarHuesped.procesarModificacionHuesped();
+        
+        if (procesadoExitoso) {
+            // Mostrar mensaje de éxito después de mostrar el JSON
+            const nombres = document.getElementById("nombres").value.trim();
+            const apellido = document.getElementById("apellido").value.trim();
+            mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+        }
+    } else {
+        // Fallback si el gestor no está disponible
+        const nombres = document.getElementById("nombres").value.trim();
+        const apellido = document.getElementById("apellido").value.trim();
+        mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+    }
 }
 
 /**
@@ -118,6 +136,24 @@ function inicializarValidacionFormulario() {
     if (botonCancelar) {
         botonCancelar.addEventListener("click", manejarBotonCancelar);
     }
+}
+
+/**
+ * Verifica si algún modal está abierto/visible
+ * @returns {boolean} - true si hay algún modal abierto, false en caso contrario
+ */
+function hayModalAbierto() {
+    const modales = [
+        document.getElementById('modalError'),
+        document.getElementById('modalCorrecto'),
+        document.getElementById('modalAdvertencia'),
+        document.getElementById('modalPregunta'),
+        document.getElementById('contenedor-json-modificacion') // También considerar el contenedor JSON como modal
+    ];
+    
+    return modales.some(modal => {
+        return modal && modal.style.display !== 'none' && modal.style.display !== '';
+    });
 }
 
 // Inicializar cuando el DOM esté listo

@@ -294,6 +294,66 @@
             background: rgba(139, 69, 19, 0.9);
             transform: scale(1.05);
         }
+
+        .under-construction {
+            position: relative;
+            opacity: 0.7;
+        }
+
+        .under-construction::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(0, 0, 0, 0.05) 10px,
+                rgba(0, 0, 0, 0.05) 20px
+            );
+            pointer-events: none;
+            border-radius: 20px;
+            z-index: 1;
+        }
+
+        .construction-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .under-construction .menu-item {
+            pointer-events: none;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .under-construction .menu-item:hover {
+            background: #f8f9fa;
+            color: #495057;
+            transform: none;
+        }
     </style>
 </head>
 <body>
@@ -432,36 +492,36 @@
                 </div>
 
                 <!-- Gestión de Responsables de Pago -->
-                <div class="menu-category animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                <div class="menu-category under-construction animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
                     <div class="category-header">
                         <div class="category-icon">
                             <img src="assets/image/factura.png" alt="Responsables">
                         </div>
-                        <h3 class="category-title">Responsables de Pago</h3>
+                        <h3 class="category-title">Responsables de Pago <span class="construction-badge">En Construcción</span></h3>
                     </div>
                     <div class="menu-items">
-                        <a href="altaResponsablePago.html" class="menu-item">
+                        <a href="#" class="menu-item" onclick="return false;">
                             <img src="assets/image/responsablePago.png" alt="Alta">
                             <div class="menu-item-text">
                                 <div class="menu-item-title">Alta Responsable</div>
                                 <div class="menu-item-description">Registrar nuevos responsables de pago</div>
                             </div>
                         </a>
-                        <a href="buscarResponsablePago.html" class="menu-item">
+                        <a href="#" class="menu-item" onclick="return false;">
                             <img src="assets/image/buscarHuesped.png" alt="Buscar">
                             <div class="menu-item-text">
                                 <div class="menu-item-title">Buscar Responsable</div>
                                 <div class="menu-item-description">Consultar responsables de pago</div>
                             </div>
                         </a>
-                        <a href="modificarResponsablePago.html" class="menu-item">
+                        <a href="#" class="menu-item" onclick="return false;">
                             <img src="assets/image/modificarUsuario.png" alt="Modificar">
                             <div class="menu-item-text">
                                 <div class="menu-item-title">Modificar Responsable</div>
                                 <div class="menu-item-description">Actualizar datos de responsables</div>
                             </div>
                         </a>
-                        <a href="darBajaResponsablePago.html" class="menu-item">
+                        <a href="#" class="menu-item" onclick="return false;">
                             <img src="assets/image/eliminarResponsble.png" alt="Baja">
                             <div class="menu-item-text">
                                 <div class="menu-item-title">Dar Baja Responsable</div>

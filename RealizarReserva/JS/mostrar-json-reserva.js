@@ -190,7 +190,7 @@ function mostrarJSONReservaEnPantalla(nuevasReservas, reservaDTO, callbackCerrar
 
         // Crear título
         const titulo = document.createElement('h2');
-        titulo.textContent = '📋 Datos a enviar a la Base de Datos (JSON)';
+        titulo.textContent = 'Datos a enviar al servidor backend';
         titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
         contenedorJSON.appendChild(titulo);
 

@@ -165,6 +165,22 @@ function inicializarCargaDatos() {
         return;
     }
     
+    // Esperar a que el gestor esté disponible (los módulos se cargan de forma asíncrona)
+    function establecerHuespedEnGestor() {
+        if (window.gestorModificarHuesped) {
+            // Crear una copia del huésped para evitar modificaciones accidentales
+            const huespedOriginal = JSON.parse(JSON.stringify(huesped));
+            window.gestorModificarHuesped.establecerHuespedOriginal(huespedOriginal);
+            console.log('Huésped original establecido en el gestor:', huespedOriginal);
+        } else {
+            // Si el gestor aún no está disponible, intentar de nuevo después de un breve delay
+            setTimeout(establecerHuespedEnGestor, 50);
+        }
+    }
+    
+    // Intentar establecer el huésped en el gestor
+    establecerHuespedEnGestor();
+    
     // Cargar los datos en el formulario
     cargarDatosEnFormulario(huesped);
     

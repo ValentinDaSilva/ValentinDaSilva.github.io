@@ -380,7 +380,12 @@ function validarCampo(campoId) {
             if (!valor || valor.trim() === '') {
                 resultado = { valido: true, mensaje: '' }; // Departamento es opcional
             } else {
-                resultado = validarCampoSoloLetras(valor, 'El departamento');
+                // Validar que solo contenga letras, sin restricción de longitud mínima
+                if (!esSoloLetras(valor.trim())) {
+                    resultado = { valido: false, mensaje: 'El departamento solo puede contener letras y espacios' };
+                } else {
+                    resultado = { valido: true, mensaje: '' };
+                }
             }
             break;
         case 'piso':
