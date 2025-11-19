@@ -1,29 +1,32 @@
 
 
 import { obtenerFacturaPorId } from './datos-facturas.js';
-import { obtenerPagosPorFactura, calcularTotalPagado } from './datos-pagos.js';
 import { mensajeError } from './modales.js';
 import { mostrarPantallaPago } from './navegacion-pantallas.js';
+import { convertirFacturaJSONAClase } from './convertir-factura-clase.js';
 
 let facturaActual = null;
 
 
 export function seleccionarFacturaPorId(idFactura) {
-  const factura = obtenerFacturaPorId(idFactura);
+  const facturaJSON = obtenerFacturaPorId(idFactura);
   
-  if (!factura) {
+  if (!facturaJSON) {
     mensajeError("No se encontró la factura seleccionada.");
     return;
   }
   
-  if (factura.estado === 'Pagada') {
+  if (facturaJSON.estado === 'Pagada') {
     mensajeError("No se puede pagar una factura ya pagada.");
     return;
   }
   
+  // Convertir a clase Factura
+  const factura = convertirFacturaJSONAClase(facturaJSON);
   facturaActual = factura;
-  mostrarDatosFactura(factura);
-  mostrarPagosRealizados(idFactura);
+  
+  mostrarDatosFactura(facturaJSON);
+  mostrarPagosRealizados(factura);
   
   
   mostrarPantallaPago();
@@ -59,16 +62,36 @@ function mostrarDatosFactura(factura) {
   }
   
   
-  actualizarResumenPago(factura.id);
+  // Actualizar resumen con la instancia de clase
+  actualizarResumenPago(facturaActual);
 }
 
 
-export function actualizarResumenPago(idFactura) {
-  const factura = obtenerFacturaPorId(idFactura);
+export function actualizarResumenPago(factura) {
+  // Si se pasa un ID, obtener la factura actual
+  if (typeof factura === 'number') {
+    factura = facturaActual;
+  }
+  
   if (!factura) return;
   
-  const total = factura.detalle?.total || 0;
-  const pagado = calcularTotalPagado(idFactura);
+  // Obtener total de la factura JSON si es necesario
+  let total = 0;
+  if (factura.detalle) {
+    total = factura.detalle.total || 0;
+  } else if (factura.getTotal !== undefined) {
+    // getTotal es un getter, no un método
+    total = factura.getTotal || 0;
+  }
+  
+  // Calcular total pagado desde los pagos de la clase Factura
+  // getPagos es un getter, no un método, así que se accede sin paréntesis
+  const pagos = (factura.getPagos !== undefined) ? factura.getPagos : (factura.pagos || []);
+  const pagado = pagos.reduce((sum, pago) => {
+    const monto = pago.montoTotal || pago.monto || 0;
+    return sum + monto;
+  }, 0);
+  
   const deuda = Math.max(0, total - pagado);
   const vuelto = Math.max(0, pagado - total);
   
@@ -99,12 +122,23 @@ export function actualizarResumenPago(idFactura) {
 }
 
 
-export function mostrarPagosRealizados(idFactura) {
+export function mostrarPagosRealizados(factura) {
   const tbody = document.getElementById('tbodyPagos');
   if (!tbody) return;
   
-  const pagos = obtenerPagosPorFactura(idFactura);
+  // Si se pasa un ID, obtener la factura actual
+  if (typeof factura === 'number') {
+    factura = facturaActual;
+  }
   
+  if (!factura) {
+    tbody.innerHTML = '';
+    return;
+  }
+  
+  // Obtener pagos de la instancia de Factura
+  // getPagos es un getter, no un método, así que se accede sin paréntesis
+  const pagos = (factura.getPagos !== undefined) ? factura.getPagos : (factura.pagos || []);
   
   tbody.innerHTML = '';
   
@@ -124,23 +158,44 @@ export function mostrarPagosRealizados(idFactura) {
   pagos.forEach(pago => {
     const row = document.createElement('tr');
     
-    
+    // Obtener fecha y hora del pago
+    // En la clase Pago, los getters son fecha y hora directamente, no getFecha/getHora
+    const fecha = pago.fecha || (pago._fecha || '-');
+    const hora = pago.hora || (pago._hora || '');
     const tdFecha = document.createElement('td');
-    tdFecha.textContent = `${pago.fecha || '-'} ${pago.hora || ''}`;
+    tdFecha.textContent = `${fecha} ${hora}`;
     
-    
+    // Obtener medio de pago
+    // En la clase Pago, el getter es medioDePago directamente, no getMedioDePago
+    const medioDePago = pago.medioDePago || pago._medioDePago || null;
     const tdMedio = document.createElement('td');
-    const nombresMedios = {
-      'efectivo': 'Efectivo',
-      'monedaExtranjera': 'Moneda Extranjera',
-      'cheques': 'Cheques',
-      'tarjetas': 'Tarjetas'
-    };
-    tdMedio.textContent = nombresMedios[pago.medioPago] || pago.medioPago;
+    let nombreMedio = 'Desconocido';
     
+    if (medioDePago) {
+      const nombreClase = medioDePago.constructor.name;
+      const nombresMedios = {
+        'Efectivo': 'Efectivo',
+        'MonedaExtranjera': 'Moneda Extranjera',
+        'Cheque': 'Cheques',
+        'Tarjeta': 'Tarjetas'
+      };
+      nombreMedio = nombresMedios[nombreClase] || nombreClase;
+    } else if (pago.medioPago) {
+      const nombresMedios = {
+        'efectivo': 'Efectivo',
+        'monedaExtranjera': 'Moneda Extranjera',
+        'cheques': 'Cheques',
+        'tarjetas': 'Tarjetas'
+      };
+      nombreMedio = nombresMedios[pago.medioPago] || pago.medioPago;
+    }
+    tdMedio.textContent = nombreMedio;
     
+    // Obtener monto
+    // En la clase Pago, el getter es montoTotal directamente, no getMontoTotal
+    const monto = pago.montoTotal || pago._montoTotal || (pago.monto || 0);
     const tdMonto = document.createElement('td');
-    tdMonto.textContent = `$${(pago.monto || 0).toFixed(2)}`;
+    tdMonto.textContent = `$${monto.toFixed(2)}`;
     
     row.appendChild(tdFecha);
     row.appendChild(tdMedio);
@@ -155,6 +210,9 @@ export function obtenerFacturaActual() {
   return facturaActual;
 }
 
+export function establecerFacturaActual(factura) {
+  facturaActual = factura;
+}
 
 export function limpiarFacturaActual() {
   facturaActual = null;

@@ -151,6 +151,11 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
 }
 
 
+if (typeof window !== 'undefined') {
+  window.mostrarJSONFacturaEnPantalla = mostrarJSONFacturaEnPantalla;
+}
+
+
 
 
 

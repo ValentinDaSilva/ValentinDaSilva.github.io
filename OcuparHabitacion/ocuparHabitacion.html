@@ -178,6 +178,14 @@
   <script src="JS/buscar-huesped.js"></script>
   <script src="/JS/general.js"></script>
   
+  <script type="module" src="/Clases/Dominio/dominio.js"></script>
+  <script type="module">
+    import GestorEstadia from '../Clases/Dominio/GestorEstadia.js';
+    if (!window.gestorEstadia) {
+      window.gestorEstadia = new GestorEstadia();
+    }
+  </script>
+  <script type="module" src="JS/gestor-ocupar-habitacion.js"></script>
   <script type="module" src="JS/mostrar-json-estadia.js"></script>
   <script type="module" src="JS/conversor-datos.js"></script>
   <script type="module" src="JS/ocupar-habitacion.js"></script>

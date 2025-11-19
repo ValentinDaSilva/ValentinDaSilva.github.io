@@ -42,10 +42,31 @@ class Huesped extends Persona {
   get condicionIVA() { return this._condicionIVA; }
   set condicionIVA(v) { this._condicionIVA = v; }
 
-  verificarMayorEdad() {
+  calcularEdad() {
+    if (!this._fechaNacimiento) {
+      return 0;
+    }
+    
     const hoy = new Date();
-    const edad = hoy.getFullYear() - this._fechaNacimiento.getFullYear();
-    return edad >= 18;
+    const fechaNac = new Date(this._fechaNacimiento);
+    
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+    
+    // Ajustar si aún no cumplió años este año
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+    
+    return edad;
+  }
+
+  /**
+   * Verifica si el huésped es mayor de edad (18 años o más)
+   * @returns {boolean} true si es mayor de edad, false en caso contrario
+   */
+  verificarMayorEdad() {
+    return this.calcularEdad() >= 18;
   }
 }
 

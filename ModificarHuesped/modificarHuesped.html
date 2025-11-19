@@ -183,6 +183,12 @@
     <script src="../Login/JS/navegacion-volver.js"></script>
     
     <script type="module" src="../Clases/Dominio/dominio.js"></script>
+    <script type="module">
+      import GestorHuesped from '../Clases/Dominio/GestorHuesped.js';
+      if (!window.gestorHuesped) {
+        window.gestorHuesped = new GestorHuesped();
+      }
+    </script>
     <script src="../Clases/DTO/dto.js"></script>
     
     <script src="JS/paises.js"></script>

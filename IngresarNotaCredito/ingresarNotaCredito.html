@@ -137,6 +137,12 @@
   
   <script src="../Login/JS/navegacion-volver.js"></script>
   <script type="module" src="JS/modales.js"></script>
+  <script type="module">
+    import GestorFactura from '../Clases/Dominio/GestorFactura.js';
+    if (!window.gestorFactura) {
+      window.gestorFactura = new GestorFactura();
+    }
+  </script>
   <script type="module" src="JS/datos-facturas.js"></script>
   <script type="module" src="JS/datos-responsables.js"></script>
   <script type="module" src="JS/datos-nota-credito.js"></script>

@@ -30,15 +30,26 @@ export function inicializarEventos() {
         return;
       }
       
-      const responsable = await buscarResponsable(dniCuit);
+      let responsable = null;
+      let facturas = [];
+      
+      if (window.gestorFactura) {
+        responsable = await window.gestorFactura.buscarResponsableParaNotaCredito(dniCuit);
+        facturas = await window.gestorFactura.buscarFacturasParaNotaCredito(dniCuit);
+      } else if (window.gestorIngresarNotaCredito) {
+        responsable = await window.gestorIngresarNotaCredito.buscarResponsable(dniCuit);
+        facturas = await window.gestorIngresarNotaCredito.buscarFacturasNoAnuladas(dniCuit);
+      } else {
+        responsable = await buscarResponsable(dniCuit);
+        
+        if (responsable) {
+          const { cargarFacturas } = await import('./datos-facturas.js');
+          await cargarFacturas();
+          facturas = buscarFacturasNoAnuladas(dniCuit);
+        }
+      }
       
       if (responsable) {
-        
-        const { cargarFacturas } = await import('./datos-facturas.js');
-        await cargarFacturas();
-        
-        
-        const facturas = buscarFacturasNoAnuladas(dniCuit);
         console.log('Facturas encontradas:', facturas.length);
         
         
@@ -102,57 +113,95 @@ export function inicializarEventos() {
       }
       
       try {
+        let notaCreditoGuardada = null;
         
-        const notaCreditoGuardada = await guardarNotaCredito({
-          idNota: null,
-          fecha: notaCredito.fecha,
-          tipo: notaCredito.tipo,
-          total: notaCredito.total,
-          responsable: notaCredito.responsable
-        });
+        if (window.gestorFactura) {
+          notaCreditoGuardada = await window.gestorFactura.ingresarNotaCredito(
+            notaCredito.facturas,
+            notaCredito.responsable
+          );
+        } else if (window.gestorIngresarNotaCredito) {
+          notaCreditoGuardada = await window.gestorIngresarNotaCredito.procesarNotaCredito(
+            notaCredito.facturas,
+            notaCredito.responsable
+          );
+          
+          const notaCreditoJSON = {
+            idNota: null,
+            fecha: notaCreditoGuardada.fecha,
+            tipo: notaCreditoGuardada.tipo,
+            total: notaCreditoGuardada.total,
+            responsable: notaCreditoGuardada.responsable
+          };
+          
+          notaCreditoGuardada = await guardarNotaCredito(notaCreditoJSON);
+          
+          const idsFacturas = notaCredito.facturas.map(f => f.id);
+          await guardarNotasCreditoFactura(notaCreditoGuardada.idNota, idsFacturas);
+          
+          const facturasActualizadas = notaCredito.facturas.map(factura => ({
+            ...factura,
+            estado: 'Anulada',
+            notaDeCredito: {
+              idNota: notaCreditoGuardada.idNota,
+              fecha: notaCreditoGuardada.fecha
+            }
+          }));
+          
+          await actualizarFacturas(facturasActualizadas);
+        } else {
+          
+          notaCreditoGuardada = await guardarNotaCredito({
+            idNota: null,
+            fecha: notaCredito.fecha,
+            tipo: notaCredito.tipo,
+            total: notaCredito.total,
+            responsable: notaCredito.responsable
+          });
+          
+          const idsFacturas = notaCredito.facturas.map(f => f.id);
+          await guardarNotasCreditoFactura(notaCreditoGuardada.idNota, idsFacturas);
+          
+          const facturasActualizadas = notaCredito.facturas.map(factura => ({
+            ...factura,
+            estado: 'Anulada',
+            notaDeCredito: {
+              idNota: notaCreditoGuardada.idNota,
+              fecha: notaCreditoGuardada.fecha
+            }
+          }));
+          
+          await actualizarFacturas(facturasActualizadas);
+        }
         
-        
-        const idsFacturas = notaCredito.facturas.map(f => f.id);
-        await guardarNotasCreditoFactura(notaCreditoGuardada.idNota, idsFacturas);
-        
-        
-        const facturasActualizadas = notaCredito.facturas.map(factura => ({
-          ...factura,
-          estado: 'Anulada',
-          notaDeCredito: {
-            idNota: notaCreditoGuardada.idNota,
-            fecha: notaCreditoGuardada.fecha
-          }
-        }));
-        
-        await actualizarFacturas(facturasActualizadas);
-        
-        
-        mostrarJSONNotaCreditoEnPantalla(
-          notaCreditoGuardada,
-          notaCredito.facturas,
-          () => {
-            
-            mensajeExito('Nota de Crédito generada correctamente. Las facturas fueron anuladas.', () => {
+        if (notaCreditoGuardada) {
+          
+          mostrarJSONNotaCreditoEnPantalla(
+            notaCreditoGuardada,
+            notaCredito.facturas,
+            () => {
               
-              limpiarSeleccionFacturas();
-              limpiarResponsableActual();
-              limpiarNotaCreditoActual();
-              
-              
-              const dniCuitInput = document.getElementById('dniCuit');
-              if (dniCuitInput) {
-                dniCuitInput.value = '';
-              }
-              
-              mostrarPantallaBuscarResponsable();
-            });
-          }
-        );
+              mensajeExito('Nota de Crédito generada correctamente. Las facturas fueron anuladas.', () => {
+                
+                limpiarSeleccionFacturas();
+                limpiarResponsableActual();
+                limpiarNotaCreditoActual();
+                
+                
+                const dniCuitInput = document.getElementById('dniCuit');
+                if (dniCuitInput) {
+                  dniCuitInput.value = '';
+                }
+                
+                mostrarPantallaBuscarResponsable();
+              });
+            }
+          );
+        }
         
       } catch (error) {
         console.error('Error al guardar Nota de Crédito:', error);
-        alert('Error al guardar la Nota de Crédito. Por favor, intente nuevamente.');
+        alert('Error al guardar la Nota de Crédito: ' + (error.message || 'Por favor, intente nuevamente.'));
       }
     });
   }

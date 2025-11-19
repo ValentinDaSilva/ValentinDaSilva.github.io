@@ -60,70 +60,27 @@ async function confirmarCancelacion() {
     modalConfirmacion.style.display = 'none';
   }
   
+  if (!reservasSeleccionadas || reservasSeleccionadas.length === 0) {
+    mensajeError("No se han seleccionado reservas para cancelar.");
+    return;
+  }
   
-  
-  const reservasAEliminar = reservasSeleccionadas.map(reserva => {
-    
-    const reservaCompleta = JSON.parse(JSON.stringify(reserva));
-    
-    
-    if (!reservaCompleta.titular) {
-      reservaCompleta.titular = {};
+  try {
+    if (window.gestorReserva) {
+      const exito = await window.gestorReserva.cancelarReservas(reservasSeleccionadas);
+      
+      if (exito) {
+        if (typeof mostrarModalExito === 'function') {
+          mostrarModalExito();
+        }
+      }
+    } else {
+      mensajeError("Error: El gestor de reservas no está disponible.");
     }
-    
-    
-    const titularCompleto = {
-      nombre: reservaCompleta.titular.nombre || '',
-      apellido: reservaCompleta.titular.apellido || '',
-      telefono: reservaCompleta.titular.telefono || '',
-      tipoDocumento: reservaCompleta.titular.tipoDocumento || null,
-      nroDocumento: reservaCompleta.titular.nroDocumento || null,
-      fechaNacimiento: reservaCompleta.titular.fechaNacimiento || null,
-      condicionIVA: reservaCompleta.titular.condicionIVA || null,
-      ocupacion: reservaCompleta.titular.ocupacion || null,
-      nacionalidad: reservaCompleta.titular.nacionalidad || null,
-      cuit: reservaCompleta.titular.cuit || null,
-      email: reservaCompleta.titular.email || null
-    };
-    
-    
-    if (!reservaCompleta.habitaciones || !Array.isArray(reservaCompleta.habitaciones)) {
-      reservaCompleta.habitaciones = [];
-    }
-    
-    
-    const habitacionesCompletas = reservaCompleta.habitaciones.map(habitacion => ({
-      numero: habitacion.numero || null,
-      tipo: habitacion.tipo || null,
-      categoria: habitacion.categoria || '',
-      costoPorNoche: habitacion.costoPorNoche || null,
-      estadoHabitacion: habitacion.estadoHabitacion || null
-    }));
-    
-    
-    return {
-      id: reservaCompleta.id || null,
-      fechaInicio: reservaCompleta.fechaInicio || reservaCompleta.desde || null,
-      fechaFin: reservaCompleta.fechaFin || reservaCompleta.hasta || null,
-      titular: titularCompleto,
-      estado: reservaCompleta.estado || null,
-      habitaciones: habitacionesCompletas
-    };
-  });
-  
-  
-  
-  mostrarJSONCancelacionEnPantalla(reservasAEliminar, function() {
-    
-    mostrarModalExito();
-  });
-  
-  
-  
-  console.log('Reservas a eliminar:', reservasAEliminar);
-  
-  
-  
+  } catch (error) {
+    console.error('Error al cancelar reservas:', error);
+    mensajeError("Error al cancelar las reservas. Por favor, intente nuevamente.");
+  }
 }
 
 

@@ -128,6 +128,14 @@
   
   <script src="../JS/general.js"></script>
   
+  <script type="module" src="../Clases/Dominio/dominio.js"></script>
+  <script type="module">
+    import GestorReserva from '../Clases/Dominio/GestorReserva.js';
+    if (!window.gestorReserva) {
+      window.gestorReserva = new GestorReserva();
+    }
+  </script>
+  <script type="module" src="JS/gestor-cancelar-reserva.js"></script>
   <script src="JS/datos-reservas.js"></script>
   
   <script src="JS/validaciones.js"></script>

@@ -5,11 +5,59 @@ import Huesped from "./Huesped.js";
 import Habitacion from "./Habitacion.js";
 
 
+let ReservaDTO;
+if (typeof window !== 'undefined') {
+  ReservaDTO = window.ReservaDTO || class {
+    constructor(id, fechaInicio, fechaFin, titular, estado, habitaciones, estadia = null) {
+      this._id = id;
+      this._fechaInicio = fechaInicio;
+      this._fechaFin = fechaFin;
+      this._titular = titular;
+      this._estado = estado;
+      this._habitaciones = habitaciones;
+      this._estadia = estadia;
+    }
+    get id() { return this._id; } set id(v) { this._id = v; }
+    get fechaInicio() { return this._fechaInicio; } set fechaInicio(v) { this._fechaInicio = v; }
+    get fechaFin() { return this._fechaFin; } set fechaFin(v) { this._fechaFin = v; }
+    get titular() { return this._titular; } set titular(v) { this._titular = v; }
+    get estado() { return this._estado; } set estado(v) { this._estado = v; }
+    get habitaciones() { return this._habitaciones; } set habitaciones(v) { this._habitaciones = v; }
+    get estadia() { return this._estadia; } set estadia(v) { this._estadia = v; }
+  };
+}
+/**
+ * GestorReserva - Coordinador central para todas las operaciones relacionadas con reservas.
+ * 
+ * MÉTODOS PÚBLICOS:
+ * - async realizarReserva(habitacionesSeleccionadas, datosTitular)
+ *   → Procesa la creación de una nueva reserva con habitaciones y titular.
+ * 
+ * - async cancelarReservas(reservasSeleccionadas)
+ *   → Cancela múltiples reservas seleccionadas y actualiza su estado.
+ * 
+ * - async buscarReservasParaCancelar()
+ *   → Busca y retorna las reservas disponibles para cancelación.
+ * 
+ * - async crearReserva(fechaInicio, fechaFin, titular, habitaciones = [])
+ *   → Crea una nueva reserva con los datos proporcionados.
+ * 
+ * - cancelarReserva(id)
+ *   → Cancela una reserva por su ID (marca como cancelada).
+ * 
+ * - verHabitacionesAsociadas(id)
+ *   → Retorna las habitaciones asociadas a una reserva por ID.
+ * 
+ * - async guardarReservasEnBD(reservasJSON)
+ *   → Guarda múltiples reservas en la base de datos.
+ */
 class GestorReserva {
   constructor() { 
     this.reservas = [];
     this._rutaBD = '/Datos/reservas.json';
     this._siguienteId = null; 
+    this._gestorRealizar = null;
+    this._gestorCancelar = null;
   }
 
   
@@ -211,7 +259,172 @@ class GestorReserva {
     const r = this.reservas.find(res => res.id === id);
     return r ? r.habitaciones : [];
   }
+
+  
+  async guardarReservasEnBD(reservasJSON) {
+    try {
+      const respuesta = await fetch(this._rutaBD);
+      let datos = { reservas: [] };
+      
+      if (respuesta.ok) {
+        datos = await respuesta.json();
+      }
+
+      datos.reservas.push(...reservasJSON);
+
+      console.log('Simulando guardado en BD. Total de reservas:', datos.reservas.length);
+      console.log('Nuevas reservas a guardar:', reservasJSON.length);
+
+      
+    } catch (error) {
+      console.error('Error al guardar reservas en BD:', error);
+      throw error;
+    }
+  }
+
+  
+  async realizarReserva(habitacionesSeleccionadas, datosTitular) {
+    try {
+      
+      if (!this._gestorRealizar) {
+        if (window.gestorRealizarReserva) {
+          this._gestorRealizar = window.gestorRealizarReserva;
+        } else {
+          const { GestorRealizarReserva } = await import('../../RealizarReserva/JS/gestor-realizar-reserva.js');
+          this._gestorRealizar = new GestorRealizarReserva();
+        }
+      }
+
+      
+      const resultado = await this._gestorRealizar.procesarReserva(habitacionesSeleccionadas);
+      if (!resultado) {
+        return false;
+      }
+
+      
+      const { nombre, apellido, telefono } = datosTitular;
+      const titular = new Persona(nombre, apellido, telefono);
+
+      
+      const reserva = this._gestorRealizar.crearReservaConTitular(
+        resultado.id,
+        resultado.fechaInicio,
+        resultado.fechaFin,
+        titular,
+        resultado.habitacionesReserva
+      );
+
+      
+      const reservaDTO = this._convertirReservaADTO(reserva);
+
+      
+      const jsonParaBD = await this._gestorRealizar.generarReservasIndividuales(
+        reservaDTO,
+        resultado.habitacionesConFechas,
+        resultado.id
+      );
+
+      
+      if (typeof window.mostrarJSONReservaEnPantalla === 'function') {
+        window.mostrarJSONReservaEnPantalla(jsonParaBD, reservaDTO, function() {
+          
+          if (typeof window.mostrarModalExitoReserva === 'function') {
+            window.mostrarModalExitoReserva(nombre, apellido);
+          }
+        });
+      } else {
+        
+        if (typeof window.mostrarModalExitoReserva === 'function') {
+          window.mostrarModalExitoReserva(nombre, apellido);
+        }
+      }
+
+      
+      await this.guardarReservasEnBD(jsonParaBD);
+
+      
+      this.reservas.push(reserva);
+
+      return true;
+    } catch (error) {
+      console.error('Error al realizar reserva:', error);
+      mensajeError('Error al realizar la reserva: ' + error.message);
+      return false;
+    }
+  }
+
+  
+  async buscarReservasParaCancelar() {
+    try {
+      
+      if (!this._gestorCancelar) {
+        if (window.gestorCancelarReserva) {
+          this._gestorCancelar = window.gestorCancelarReserva;
+        } else {
+          const { GestorCancelarReserva } = await import('../../CancelarReserva/JS/gestor-cancelar-reserva.js');
+          this._gestorCancelar = new GestorCancelarReserva();
+        }
+      }
+
+      
+      return await this._gestorCancelar.buscarReservas();
+    } catch (error) {
+      console.error('Error al buscar reservas:', error);
+      mensajeError('Error al buscar reservas: ' + error.message);
+      return [];
+    }
+  }
+
+  
+  async cancelarReservas(reservasSeleccionadas) {
+    try {
+      
+      if (!this._gestorCancelar) {
+        if (window.gestorCancelarReserva) {
+          this._gestorCancelar = window.gestorCancelarReserva;
+        } else {
+          const { GestorCancelarReserva } = await import('../../CancelarReserva/JS/gestor-cancelar-reserva.js');
+          this._gestorCancelar = new GestorCancelarReserva();
+        }
+      }
+
+      
+      await this._gestorCancelar.cargarReservas();
+
+      
+      const reservasParaCancelar = this._gestorCancelar.procesarReservasParaCancelar(reservasSeleccionadas);
+
+      
+      if (typeof window.mostrarJSONCancelacionEnPantalla === 'function') {
+        window.mostrarJSONCancelacionEnPantalla(reservasParaCancelar, function() {
+          if (typeof window.mostrarModalExito === 'function') {
+            window.mostrarModalExito();
+          }
+        });
+      }
+
+      
+      await this._gestorCancelar.cancelarReservasEnBD(reservasParaCancelar);
+
+      
+      reservasParaCancelar.forEach(reserva => {
+        this.cancelarReserva(reserva.id);
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error al cancelar reservas:', error);
+      mensajeError('Error al cancelar las reservas: ' + error.message);
+      return false;
+    }
+  }
 }
 
 export default GestorReserva;
+
+
+const gestorReserva = new GestorReserva();
+
+
+window.gestorReserva = gestorReserva;
 

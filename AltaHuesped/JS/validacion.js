@@ -114,7 +114,7 @@ function reiniciarFormulario() {
 }
 
 
-function manejarEnvioFormulario(event) {
+async function manejarEnvioFormulario(event) {
     event.preventDefault();
     
     
@@ -143,7 +143,12 @@ function manejarEnvioFormulario(event) {
     
     
     
-    const procesadoExitoso = gestorAltaHuesped.procesarAltaHuesped();
+    let procesadoExitoso = false;
+    if (window.gestorHuesped) {
+        procesadoExitoso = await window.gestorHuesped.darAltaHuesped();
+    } else if (window.gestorAltaHuesped) {
+        procesadoExitoso = window.gestorAltaHuesped.procesarAltaHuesped();
+    }
     
     if (procesadoExitoso) {
         

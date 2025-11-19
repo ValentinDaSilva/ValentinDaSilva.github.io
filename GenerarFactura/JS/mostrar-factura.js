@@ -1,18 +1,35 @@
 
 
 
+
 function mostrarDatosFacturaEnPantalla(factura) {
-  if (!factura) {
-    console.error('No se puede mostrar factura: factura es null');
-    return;
-  }
-  
-  
-  const nombreHuespedElement = document.querySelector('.nombreHusped h3');
-  if (nombreHuespedElement && factura.estadia.titular) {
-    const titular = factura.estadia.titular;
-    nombreHuespedElement.innerHTML = `<strong>${titular.apellido}, ${titular.nombres}</strong>`;
-  }
+  try {
+    console.log('mostrarDatosFacturaEnPantalla - Recibida factura:', factura);
+    
+    if (!factura) {
+      console.error('No se puede mostrar factura: factura es null');
+      return;
+    }
+    
+    if (!factura.estadia) {
+      console.error('La factura no tiene estadía:', factura);
+      throw new Error('La factura generada no tiene la estructura de estadía correcta');
+    }
+    
+    if (!factura.detalle) {
+      console.error('La factura no tiene detalle:', factura);
+      throw new Error('La factura generada no tiene la estructura de detalle correcta');
+    }
+    
+    console.log('Actualizando elementos de la UI...');
+    
+    // Actualizar nombre del huésped
+    const nombreHuespedElement = document.querySelector('.nombreHusped h3');
+    if (nombreHuespedElement && factura.estadia && factura.estadia.titular) {
+      const titular = factura.estadia.titular;
+      nombreHuespedElement.innerHTML = `<strong>${titular.apellido || ''}, ${titular.nombres || ''}</strong>`;
+      console.log('Nombre del huésped actualizado');
+    }
   
   
   const valorEstadiaElement = document.querySelector('.valorEstadia p');
@@ -105,6 +122,17 @@ function mostrarDatosFacturaEnPantalla(factura) {
       </div>
     `;
   }
+  
+  console.log('mostrarDatosFacturaEnPantalla - Completado exitosamente');
+  } catch (error) {
+    console.error('Error en mostrarDatosFacturaEnPantalla:', error);
+    throw error;
+  }
+}
+
+
+if (typeof window !== 'undefined') {
+  window.mostrarDatosFacturaEnPantalla = mostrarDatosFacturaEnPantalla;
 }
 
 

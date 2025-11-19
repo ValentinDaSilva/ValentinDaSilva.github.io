@@ -4,6 +4,12 @@ let datosHuespedes = [];
 
 
 async function cargarHuespedes() {
+    
+    if (window.gestorBuscarHuesped) {
+        return await window.gestorBuscarHuesped.cargarHuespedes();
+    }
+    
+    
     try {
         const respuesta = await fetch('../Datos/huspedes.json');
         if (!respuesta.ok) {
@@ -21,6 +27,11 @@ async function cargarHuespedes() {
 
 
 function filtrarHuespedes(apellido, nombres, tipoDocumento, numeroDocumento) {
+    
+    if (window.gestorBuscarHuesped) {
+        return window.gestorBuscarHuesped.filtrarHuespedes(apellido, nombres, tipoDocumento, numeroDocumento);
+    }
+    
     
     const apellidoTrim = apellido ? apellido.trim() : '';
     const nombresTrim = nombres ? nombres.trim() : '';
@@ -68,6 +79,10 @@ function filtrarHuespedes(apellido, nombres, tipoDocumento, numeroDocumento) {
 
 
 function obtenerTodosLosHuespedes() {
+    
+    if (window.gestorBuscarHuesped) {
+        return window.gestorBuscarHuesped.obtenerDatosHuespedes();
+    }
     return datosHuespedes;
 }
 
@@ -75,11 +90,4 @@ function obtenerTodosLosHuespedes() {
 window.cargarHuespedes = cargarHuespedes;
 window.filtrarHuespedes = filtrarHuespedes;
 window.obtenerTodosLosHuespedes = obtenerTodosLosHuespedes;
-
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', cargarHuespedes);
-} else {
-    cargarHuespedes();
-}
 

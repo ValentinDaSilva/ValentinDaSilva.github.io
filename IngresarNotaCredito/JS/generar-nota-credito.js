@@ -142,5 +142,12 @@ export function limpiarNotaCreditoActual() {
 }
 
 
+if (typeof window !== 'undefined') {
+  window.mostrarNotaCreditoEnPantalla = mostrarNotaCreditoEnPantalla;
+  window.obtenerNotaCreditoActual = obtenerNotaCreditoActual;
+  window.limpiarNotaCreditoActual = limpiarNotaCreditoActual;
+}
+
+
 
 

@@ -171,4 +171,9 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
 }
 
 
+if (typeof window !== 'undefined') {
+  window.mostrarJSONNotaCreditoEnPantalla = mostrarJSONNotaCreditoEnPantalla;
+}
+
+
 

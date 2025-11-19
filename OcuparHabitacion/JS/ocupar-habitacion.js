@@ -333,38 +333,14 @@ async function crearEstadia() {
     }
     
     
-    await asegurarDatosCargados();
-    const habitacionesData = obtenerHabitaciones();
-    
-    
-    
-    const idReserva = reservaSeleccionada.id || (obtenerReservas().indexOf(reservaSeleccionada) + 1);
-    const reserva = convertirReservaJSONADominio(reservaSeleccionada, idReserva, habitacionesData);
-    
-    
-    const titular = convertirHuespedJSONADominio(titularSeleccionado);
-    
-    
-    const acompaniantes = acompaniantesSeleccionados.map(acompJSON => 
-      convertirHuespedJSONADominio(acompJSON)
-    );
-    
-    
-    const fechaCheckIn = reservaSeleccionada.fechaInicio || reservaSeleccionada.desde;
-    const fechaCheckOut = reservaSeleccionada.fechaFin || reservaSeleccionada.hasta;
-    
-    
-    const gestorEstadia = new GestorEstadia();
-    
-    
-    const estadia = gestorEstadia.crearEstadia(
-      reserva,
-      titular,
-      acompaniantes,
-      fechaCheckIn,
-      fechaCheckOut
-    );
-    
+    if (window.gestorEstadia) {
+      const exito = await window.gestorEstadia.ocuparHabitacion(
+        reservaSeleccionada,
+        titularSeleccionado,
+        acompaniantesSeleccionados
+      );
+      
+      if (exito) {
     
     const container = document.querySelector('.container');
     if (container) {
@@ -374,31 +350,10 @@ async function crearEstadia() {
     if (resultadoBusqueda) {
       resultadoBusqueda.style.display = 'none';
     }
-    
-    
-    mostrarJSONEstadiaEnPantalla(estadia, function() {
-      
-      mensajeCorrecto(`Estadía creada exitosamente.<br>Presione cualquier tecla para continuar.`);
-      
-      
-      document.addEventListener('keydown', function limpiarEstadia() {
-        const modalCorrecto = document.getElementById('modal-correcto');
-        if (modalCorrecto) {
-          modalCorrecto.style.display = 'none';
-        }
-        
-        
-        const contenedorJSON = document.getElementById('contenedor-json-estadia');
-        if (contenedorJSON) {
-          contenedorJSON.style.display = 'none';
-        }
-        
-        
-        location.reload();
-        
-        document.removeEventListener('keydown', limpiarEstadia);
-      }, { once: true });
-    });
+      }
+    } else {
+      mensajeError("Error: El gestor de estadías no está disponible.");
+    }
     
   } catch (error) {
     console.error('Error al crear la estadía:', error);

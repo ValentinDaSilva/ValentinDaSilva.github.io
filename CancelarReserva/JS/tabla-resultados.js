@@ -35,7 +35,10 @@ function mostrarResultados() {
   const contenedorResultados = document.getElementById('contenedor-resultados');
   const cuerpoTabla = document.getElementById('cuerpo-tabla');
 
-  if (reservasFiltradas.length === 0) {
+  
+  const reservas = window.reservasFiltradas || reservasFiltradas || [];
+
+  if (reservas.length === 0) {
     
     mostrarModalNoResultados();
     return;
@@ -48,7 +51,7 @@ function mostrarResultados() {
   cuerpoTabla.innerHTML = '';
 
   
-  reservasFiltradas.forEach((reserva, index) => {
+  reservas.forEach((reserva, index) => {
     const fila = document.createElement('tr');
     const apellido = extraerApellido(reserva);
     const nombres = extraerNombre(reserva);

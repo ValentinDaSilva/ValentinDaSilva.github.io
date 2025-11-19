@@ -264,3 +264,7 @@ function mostrarJSONReservaEnPantalla(nuevasReservas, reservaDTO, callbackCerrar
     console.log('==========================================');
 }
 
+
+window.convertirReservaDTOAJSONConFechasIndividuales = convertirReservaDTOAJSONConFechasIndividuales;
+window.mostrarJSONReservaEnPantalla = mostrarJSONReservaEnPantalla;
+

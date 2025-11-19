@@ -99,6 +99,13 @@
   <script src="../Login/JS/navegacion-volver.js"></script>
   <script src="/Clases/DTO/dto.js"></script>
   <script type="module" src="/Clases/Dominio/dominio.js"></script>
+  <script type="module">
+    import GestorReserva from '../Clases/Dominio/GestorReserva.js';
+    if (!window.gestorReserva) {
+      window.gestorReserva = new GestorReserva();
+    }
+  </script>
+  <script type="module" src="JS/gestor-realizar-reserva.js"></script>
   <script src="JS/modales.js"></script>
   <script src="JS/datos-habitaciones.js"></script>
   <script src="JS/validaciones-campos.js"></script>

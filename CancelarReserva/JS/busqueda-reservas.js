@@ -5,15 +5,23 @@ let reservasFiltradas = [];
 
 async function buscarReservas() {
   
-  await asegurarReservasCargadas();
-  
-  const apellido = document.getElementById('apellido').value.trim().toUpperCase();
-  const nombres = document.getElementById('nombres').value.trim().toUpperCase();
-
-  
   if (!validarFormularioBusqueda()) {
     return;
   }
+
+  
+  if (window.gestorReserva) {
+    reservasFiltradas = await window.gestorReserva.buscarReservasParaCancelar();
+    window.reservasFiltradas = reservasFiltradas;
+  } else if (window.gestorCancelarReserva) {
+    await window.gestorCancelarReserva.buscarReservas();
+    reservasFiltradas = window.reservasFiltradas || [];
+  } else {
+    
+    await asegurarReservasCargadas();
+    
+    const apellido = document.getElementById('apellido').value.trim().toUpperCase();
+    const nombres = document.getElementById('nombres').value.trim().toUpperCase();
 
   const todasLasReservas = obtenerReservas();
 
@@ -30,3 +38,7 @@ async function buscarReservas() {
 
   mostrarResultados();
 }
+}
+
+
+window.reservasFiltradas = reservasFiltradas;

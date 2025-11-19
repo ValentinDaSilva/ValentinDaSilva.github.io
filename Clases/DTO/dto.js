@@ -178,3 +178,16 @@ class PagoDTO {
   get medioDePago() { return this._medioDePago; } set medioDePago(v) { this._medioDePago = v; }
 }
 
+
+if (typeof window !== 'undefined') {
+  window.ReservaDTO = ReservaDTO;
+  window.HuespedDTO = HuespedDTO;
+  window.DireccionDTO = DireccionDTO;
+  window.PersonaDTO = PersonaDTO;
+  window.HabitacionDTO = HabitacionDTO;
+  window.EstadiaDTO = EstadiaDTO;
+  window.NotaDeCreditoDTO = NotaDeCreditoDTO;
+  window.FacturaDTO = FacturaDTO;
+  window.PagoDTO = PagoDTO;
+}
+

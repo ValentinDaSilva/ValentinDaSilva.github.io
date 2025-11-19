@@ -5,7 +5,8 @@ let reservasSeleccionadas = [];
 
 function toggleSeleccion(index) {
   const checkbox = document.getElementById(`check_${index}`);
-  const reserva = reservasFiltradas[index];
+  const reservas = window.reservasFiltradas || reservasFiltradas || [];
+  const reserva = reservas[index];
   
   if (!checkbox || !reserva) {
     return;

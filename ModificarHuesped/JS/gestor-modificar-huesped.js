@@ -202,8 +202,19 @@ class GestorModificarHuesped extends GestorHuesped {
             mostrarJSONModificacionEnPantalla(jsonParaBD, this._huespedOriginal);
 
             
-            
-            
+            this.modificarHuesped(huespedDominio.nroDocumento, {
+                nombre: huespedDominio.nombre,
+                apellido: huespedDominio.apellido,
+                telefono: huespedDominio.telefono,
+                tipoDocumento: huespedDominio.tipoDocumento,
+                fechaNacimiento: huespedDominio.fechaNacimiento,
+                ocupacion: huespedDominio.ocupacion,
+                nacionalidad: huespedDominio.nacionalidad,
+                cuit: huespedDominio.cuit,
+                email: huespedDominio.email,
+                direccion: huespedDominio.direccion,
+                condicionIVA: huespedDominio.condicionIVA
+            });
 
             return true;
         } catch (error) {
@@ -250,6 +261,8 @@ class GestorModificarHuesped extends GestorHuesped {
     }
 }
 
+
+export { GestorModificarHuesped };
 
 const gestorModificarHuesped = new GestorModificarHuesped();
 

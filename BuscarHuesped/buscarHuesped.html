@@ -76,9 +76,17 @@
   
   <script src="../Login/JS/navegacion-volver.js"></script>
   <script src="JS/modales.js"></script>
+  <script type="module" src="../Clases/Dominio/dominio.js"></script>
+  <script type="module">
+    import GestorHuesped from '../Clases/Dominio/GestorHuesped.js';
+    if (!window.gestorHuesped) {
+      window.gestorHuesped = new GestorHuesped();
+    }
+  </script>
   <script src="JS/datos-huespedes.js"></script>
   <script src="JS/validaciones-campos.js"></script>
   <script src="JS/tabla-resultados.js"></script>
+  <script type="module" src="JS/gestor-buscar-huesped.js"></script>
   <script src="JS/busqueda.js"></script>
   <script src="../JS/general.js"></script>
 </body>

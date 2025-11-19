@@ -297,4 +297,5 @@ export { mostrarJSONEstadiaEnPantalla, convertirEstadiaAJSON };
 
 
 window.mostrarJSONEstadiaEnPantalla = mostrarJSONEstadiaEnPantalla;
+window.convertirEstadiaAJSON = convertirEstadiaAJSON;
 

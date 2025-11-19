@@ -138,123 +138,21 @@ function crearFormularioDatosHuesped(contenedor, habitacionesSeleccionadas) {
 
     try {
       
-      const gestorReserva = new GestorReserva();
-
-      
-      const todasLasHabitacionesData = obtenerHabitaciones();
-      
-      if (!todasLasHabitacionesData || todasLasHabitacionesData.length === 0) {
-        mensajeError("Error: No se pudieron cargar las habitaciones.");
-        return;
-      }
-
-      
-      const titular = new Persona(nombre, apellido, telefono);
-
-      
-      
-      const habitacionesConFechas = [];
-
-      for (const seleccion of habitacionesSeleccionadas) {
+      if (window.gestorReserva) {
+        const datosTitular = { nombre, apellido, telefono };
+        const exito = await window.gestorReserva.realizarReserva(habitacionesSeleccionadas, datosTitular);
         
-        const numeroHabitacion = obtenerNumeroDesdeNombre(seleccion.habitacion);
-        if (!numeroHabitacion) continue;
-
-        
-        const habitacionData = todasLasHabitacionesData.find(h => h.numero === numeroHabitacion);
-        if (!habitacionData) {
-          console.warn(`No se encontró la habitación ${numeroHabitacion} en los datos cargados`);
-          continue;
-        }
-
-        
-        const habitacion = new Habitacion(
-          habitacionData.numero,
-          habitacionData.tipo,
-          '', 
-          habitacionData.costoNoche,
-          EstadoHabitacion.DISPONIBLE
-        );
-        
-        
-        habitacionesConFechas.push({
-          habitacion: habitacion,
-          fechaDesde: seleccion.fechaDesde,
-          fechaHasta: seleccion.fechaHasta
-        });
-      }
-
-      if (habitacionesConFechas.length === 0) {
-        mensajeError("Error: No se pudieron procesar las habitaciones seleccionadas.");
-        return;
-      }
-
-      
-      
-      let fechaInicioMinima = habitacionesConFechas[0].fechaDesde;
-      let fechaFinMaxima = habitacionesConFechas[0].fechaHasta;
-
-      habitacionesConFechas.forEach(item => {
-        if (compararFechas(item.fechaDesde, fechaInicioMinima) < 0) {
-          fechaInicioMinima = item.fechaDesde;
-        }
-        if (compararFechas(item.fechaHasta, fechaFinMaxima) > 0) {
-          fechaFinMaxima = item.fechaHasta;
-        }
-      });
-
-      
-      
-      const siguienteId = await gestorReserva._obtenerSiguienteId();
-      
-      
-      const habitacionesReserva = habitacionesConFechas.map(item => item.habitacion);
-      const reserva = new Reserva(siguienteId, fechaInicioMinima, fechaFinMaxima, titular, EstadoReserva.PENDIENTE);
-      reserva.habitaciones = habitacionesReserva;
-
-      
-      const reservaDTO = gestorReserva._convertirReservaADTO(reserva);
-
-      
-      
-      const jsonParaBD = convertirReservaDTOAJSONConFechasIndividuales(habitacionesConFechas, reservaDTO);
-
-      
-      
-      const idsReservas = [];
-      let idActual = siguienteId;
-      for (let i = 0; i < jsonParaBD.length; i++) {
-        idsReservas.push(idActual);
-        if (i < jsonParaBD.length - 1) {
-          idActual = await gestorReserva._obtenerSiguienteId();
-        }
-      }
-      
-      
-      jsonParaBD.forEach((reserva, index) => {
-        reserva.id = idsReservas[index];
-      });
-
-      
-      
-      mostrarJSONReservaEnPantalla(jsonParaBD, reservaDTO, function() {
-        
+        if (exito) {
+          console.log(`Reserva creada exitosamente`);
+          contenedor.style.display = 'none';
+          
+          if (typeof mostrarModalExitoReserva === 'function') {
         mostrarModalExitoReserva(nombre, apellido, contenedor);
-      });
-
-      
-      await guardarReservaConFechasIndividuales(jsonParaBD);
-      
-      
-      
-
-      console.log(`Reserva creada exitosamente con ${habitacionesReserva.length} habitación(es)`); 
-
-      
-      contenedor.style.display = 'none';
-      
-      
-      
+          }
+        }
+      } else {
+        mensajeError("Error: El gestor de reservas no está disponible.");
+      }
 
     } catch (error) {
       console.error('Error al crear la reserva:', error);
@@ -430,6 +328,9 @@ function mostrarModalExitoReserva(nombre, apellido, contenedor) {
     document.removeEventListener('keydown', limpiarReserva);
   }, { once: true });
 }
+
+
+window.mostrarModalExitoReserva = mostrarModalExitoReserva;
 
 
 function limpiarError(tipoCampo) {

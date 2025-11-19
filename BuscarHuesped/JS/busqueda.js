@@ -1,17 +1,6 @@
 
 
 
-function mostrarResultados() {
-    const contenedorResultados = document.querySelector('.contenedor-resultados');
-    const contenedorPrincipal = document.querySelector('.contenedor-principal');
-    
-    if (contenedorResultados && contenedorPrincipal) {
-        contenedorPrincipal.style.width = '40vw';
-        contenedorResultados.style.display = 'block';
-    }
-}
-
-
 async function manejarBusqueda(event) {
     event.preventDefault(); 
     
@@ -29,41 +18,14 @@ async function manejarBusqueda(event) {
     }
     
     
-    if (datosHuespedes.length === 0) {
-        await cargarHuespedes();
-        if (datosHuespedes.length === 0) {
-            mensajeError('No se pudieron cargar los datos. Por favor, recarga la página.');
-            return;
-        }
-    }
-    
-    
-    const apellido = document.getElementById('apellido').value.trim();
-    const nombres = document.getElementById('nombres').value.trim();
-    const tipoDocumento = document.getElementById('tipoDocumento').value;
-    const numeroDocumento = document.getElementById('numeroDocumento').value.trim();
-    
-    
-    const resultados = filtrarHuespedes(apellido, nombres, tipoDocumento, numeroDocumento);
-    
-    
-    if (typeof renderizarResultados === 'function') {
-        renderizarResultados(resultados);
+    if (window.gestorHuesped) {
+        await window.gestorHuesped.buscarHuespedes();
+    } else if (window.gestorBuscarHuesped) {
+        await window.gestorBuscarHuesped.procesarBusqueda();
     } else {
-        console.error('La función renderizarResultados no está disponible');
-    }
-    
-    
-    mostrarResultados();
-    
-    
-    setTimeout(() => {
-        if (typeof inicializarTablaResultados === 'function') {
-            inicializarTablaResultados();
-        } else {
-            console.error('La función inicializarTablaResultados no está disponible');
+        console.error('El gestor de búsqueda de huéspedes no está disponible');
+        mensajeError('Error al procesar la búsqueda. Por favor, recarga la página.');
         }
-    }, 200);
 }
 
 

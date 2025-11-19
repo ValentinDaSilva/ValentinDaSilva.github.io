@@ -16,8 +16,35 @@ function volverFactura() {
 
 
 function facturar() {
-  document.querySelector(".container").style.display = "none";
-  document.querySelector("#resumenFactura").classList.remove("hidden");
+  try {
+    console.log('facturar() - Ejecutando...');
+    const container = document.querySelector(".container");
+    const resumenFactura = document.querySelector("#resumenFactura");
+    
+    if (container) {
+      container.style.display = "none";
+      console.log('Container ocultado');
+    } else {
+      console.warn('No se encontró el elemento .container');
+    }
+    
+    if (resumenFactura) {
+      resumenFactura.classList.remove("hidden");
+      console.log('Resumen de factura mostrado');
+    } else {
+      console.warn('No se encontró el elemento #resumenFactura');
+    }
+    
+    console.log('facturar() - Completado');
+  } catch (error) {
+    console.error('Error en facturar():', error);
+    throw error;
+  }
+}
+
+
+if (typeof window !== 'undefined') {
+  window.facturar = facturar;
 }
 
 

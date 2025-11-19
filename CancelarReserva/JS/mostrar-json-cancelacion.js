@@ -1,6 +1,9 @@
 
 
 
+
+window.mostrarJSONCancelacionEnPantalla = mostrarJSONCancelacionEnPantalla;
+
 function mostrarJSONCancelacionEnPantalla(reservasAEliminar, callbackCerrar) {
     
     let contenedorJSON = document.getElementById('contenedor-json-cancelacion');

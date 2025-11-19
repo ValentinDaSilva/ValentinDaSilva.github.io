@@ -332,6 +332,8 @@ class GestorAltaHuesped extends GestorHuesped {
 }
 
 
+export { GestorAltaHuesped };
+
 const gestorAltaHuesped = new GestorAltaHuesped();
 
 

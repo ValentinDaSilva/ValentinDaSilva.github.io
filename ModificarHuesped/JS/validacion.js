@@ -14,7 +14,7 @@ function verificarCUIT(listaCUITS) {
 }
 
 
-function manejarGuardarFormulario(event) {
+async function manejarGuardarFormulario(event) {
     event.preventDefault();
     
     
@@ -43,16 +43,14 @@ function manejarGuardarFormulario(event) {
     
     
     
-    if (window.gestorModificarHuesped) {
-        const procesadoExitoso = window.gestorModificarHuesped.procesarModificacionHuesped();
+    let procesadoExitoso = false;
+    if (window.gestorHuesped) {
+        procesadoExitoso = await window.gestorHuesped.modificarHuespedCompleto();
+    } else if (window.gestorModificarHuesped) {
+        procesadoExitoso = window.gestorModificarHuesped.procesarModificacionHuesped();
+    }
         
         if (procesadoExitoso) {
-            
-            const nombres = document.getElementById("nombres").value.trim();
-            const apellido = document.getElementById("apellido").value.trim();
-            mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
-        }
-    } else {
         
         const nombres = document.getElementById("nombres").value.trim();
         const apellido = document.getElementById("apellido").value.trim();

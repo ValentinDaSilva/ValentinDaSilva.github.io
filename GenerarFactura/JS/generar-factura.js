@@ -2,6 +2,21 @@
 
 let facturaGenerada = null;
 
+// Hacer facturaGenerada disponible globalmente
+if (typeof window !== 'undefined') {
+  // Crear getter/setter para facturaGenerada
+  Object.defineProperty(window, 'facturaGenerada', {
+    get: function() {
+      return facturaGenerada;
+    },
+    set: function(value) {
+      facturaGenerada = value;
+    },
+    enumerable: true,
+    configurable: true
+  });
+}
+
 
 function obtenerFechaActual() {
   const hoy = new Date();
@@ -206,11 +221,26 @@ function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFactura 
 
 
 function obtenerFacturaGenerada() {
+  // Primero verificar window.facturaGenerada, luego la variable local
+  if (typeof window !== 'undefined' && window.facturaGenerada) {
+    facturaGenerada = window.facturaGenerada;
+    return window.facturaGenerada;
+  }
   return facturaGenerada;
 }
 
 
 function limpiarFacturaGenerada() {
   facturaGenerada = null;
+  if (typeof window !== 'undefined') {
+    window.facturaGenerada = null;
+  }
+}
+
+
+if (typeof window !== 'undefined') {
+  window.generarJSONFactura = generarJSONFactura;
+  window.obtenerFacturaGenerada = obtenerFacturaGenerada;
+  window.limpiarFacturaGenerada = limpiarFacturaGenerada;
 }
 

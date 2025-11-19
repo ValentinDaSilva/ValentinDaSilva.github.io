@@ -176,6 +176,12 @@
 
   
   
+  <script type="module">
+    import GestorFactura from '../Clases/Dominio/GestorFactura.js';
+    if (!window.gestorFactura) {
+      window.gestorFactura = new GestorFactura();
+    }
+  </script>
   <script src="../Login/JS/validar-sesion.js"></script>
   
   <script src="../Login/JS/navegacion-volver.js"></script>
