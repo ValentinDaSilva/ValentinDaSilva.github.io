@@ -202,7 +202,7 @@ class GestorHuesped {
   }
 
   
-  async modificarHuespedCompleto() {
+  async modificarHuespedCompleto(callbackCerrar = null) {
     try {
       
       if (!this._gestorModificar) {
@@ -237,7 +237,7 @@ class GestorHuesped {
       const jsonParaBD = this._gestorModificar.convertirDTOAJSON(huespedDTO, direccionDTO, datosFormulario);
 
       
-      mostrarJSONModificacionEnPantalla(jsonParaBD, this._gestorModificar.obtenerHuespedOriginal());
+      mostrarJSONModificacionEnPantalla(jsonParaBD, this._gestorModificar.obtenerHuespedOriginal(), callbackCerrar);
 
       
       await this.guardarEnBD(jsonParaBD, 'modificacion');

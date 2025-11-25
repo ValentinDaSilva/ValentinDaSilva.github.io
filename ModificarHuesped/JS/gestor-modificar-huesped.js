@@ -108,7 +108,6 @@ class GestorModificarHuesped extends GestorHuesped {
         const huespedDTO = new HuespedDTO(
             huesped.nombre,
             huesped.apellido,
-            huesped.telefono,
             huesped.tipoDocumento,
             huesped.nroDocumento,
             huesped.fechaNacimiento.toISOString().split('T')[0], 
@@ -119,6 +118,8 @@ class GestorModificarHuesped extends GestorHuesped {
             direccionDTO,
             huesped.condicionIVA
         );
+        
+        huespedDTO.telefono = huesped.telefono;
 
         return huespedDTO;
     }
@@ -169,7 +170,7 @@ class GestorModificarHuesped extends GestorHuesped {
     }
 
     
-    procesarModificacionHuesped() {
+    procesarModificacionHuesped(callbackCerrar = null) {
         try {
             
             const datosFormulario = this.extraerDatosFormulario();
@@ -199,7 +200,7 @@ class GestorModificarHuesped extends GestorHuesped {
             const jsonParaBD = this.convertirDTOAJSON(huespedDTO, direccionDTO, datosFormulario);
             
             
-            mostrarJSONModificacionEnPantalla(jsonParaBD, this._huespedOriginal);
+            mostrarJSONModificacionEnPantalla(jsonParaBD, this._huespedOriginal, callbackCerrar);
 
             
             this.modificarHuesped(huespedDominio.nroDocumento, {

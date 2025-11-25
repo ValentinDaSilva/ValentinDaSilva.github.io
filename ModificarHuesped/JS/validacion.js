@@ -37,24 +37,19 @@ async function manejarGuardarFormulario(event) {
     }
     
     
-    if(verificarCUIT()) {
-        return;
-    }
-    
-    
     
     let procesadoExitoso = false;
+    const nombres = document.getElementById("nombres").value.trim();
+    const apellido = document.getElementById("apellido").value.trim();
+    
     if (window.gestorHuesped) {
-        procesadoExitoso = await window.gestorHuesped.modificarHuespedCompleto();
+        procesadoExitoso = await window.gestorHuesped.modificarHuespedCompleto(function() {
+            mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+        });
     } else if (window.gestorModificarHuesped) {
-        procesadoExitoso = window.gestorModificarHuesped.procesarModificacionHuesped();
-    }
-        
-        if (procesadoExitoso) {
-        
-        const nombres = document.getElementById("nombres").value.trim();
-        const apellido = document.getElementById("apellido").value.trim();
-        mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+        procesadoExitoso = window.gestorModificarHuesped.procesarModificacionHuesped(function() {
+            mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+        });
     }
 }
 
@@ -82,19 +77,50 @@ function manejarBotonBorrar(event) {
             const tipoDocumento = document.getElementById("tipoDocumento").value.trim();
             const numeroDocumento = document.getElementById("numeroDocumento").value.trim();
             
-            mensajeCorrecto(
-                `Los datos del huésped <br> ${nombre} ${apellido}, ${tipoDocumento}: ${numeroDocumento}<br> han sido eliminados del sistema. <br><br> PRESIONE CUALQUIER TECLA PARA CONTINUAR…`
-            );
             
-            
-            window.addEventListener("keydown", function redirigir() {
-                window.location.href = '../BuscarHuesped/buscarHuesped.html';
-            }, { once: true });
+            const jsonHuespedBorrar = crearJSONHuespedBorrar();
+            mostrarJSONModificacionEnPantalla(jsonHuespedBorrar, null, function() {
+                mensajeCorrecto(
+                    `Los datos del huésped <br> ${nombre} ${apellido}, ${tipoDocumento}: ${numeroDocumento}<br> han sido eliminados del sistema. <br><br> PRESIONE CUALQUIER TECLA PARA CONTINUAR…`
+                );
+                
+                
+                window.addEventListener("keydown", function redirigir() {
+                    window.location.href = '../BuscarHuesped/buscarHuesped.html';
+                }, { once: true });
+            }, true);
             
             
             botonEliminar.removeEventListener("click", manejarEliminar);
         }, { once: true });
     }
+}
+
+
+function crearJSONHuespedBorrar() {
+    const datosFormulario = {
+        apellido: document.getElementById('apellido').value.trim(),
+        nombres: document.getElementById('nombres').value.trim(),
+        tipoDocumento: document.getElementById('tipoDocumento').value.trim(),
+        numeroDocumento: document.getElementById('numeroDocumento').value.trim(),
+        cuit: document.getElementById('cuit').value.trim() || '',
+        fechaNacimiento: document.getElementById('fechaNacimiento').value,
+        caracteristica: document.getElementById('caracteristica').value.trim(),
+        telefonoNumero: document.getElementById('celular')?.value.trim() || '',
+        email: document.getElementById('email').value.trim() || '',
+        ocupacion: document.getElementById('ocupacion').value.trim(),
+        nacionalidad: document.getElementById('nacionalidad').value.trim(),
+        calle: document.getElementById('calle').value.trim(),
+        numeroCalle: document.getElementById('numero').value.trim(),
+        departamento: document.getElementById('departamento').value.trim() || '',
+        piso: document.getElementById('piso').value.trim() || '',
+        codigoPostal: document.getElementById('codigoPostal').value.trim(),
+        localidad: document.getElementById('localidad').value.trim(),
+        provincia: document.getElementById('provincia').value.trim(),
+        pais: document.getElementById('pais').value.trim()
+    };
+    
+    return datosFormulario;
 }
 
 

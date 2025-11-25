@@ -1,7 +1,7 @@
 
 
 
-function mostrarJSONModificacionEnPantalla(jsonData, huespedOriginal = null, callbackCerrar = null) {
+function mostrarJSONModificacionEnPantalla(jsonData, huespedOriginal = null, callbackCerrar = null, esBorrado = false) {
     
     let contenedorJSON = document.getElementById('contenedor-json-modificacion');
     
@@ -28,7 +28,10 @@ function mostrarJSONModificacionEnPantalla(jsonData, huespedOriginal = null, cal
 
         
         const titulo = document.createElement('h2');
-        titulo.textContent = 'Datos modificados del huésped - JSON para enviar al servidor backend';
+        titulo.id = 'titulo-json-modificacion';
+        titulo.textContent = esBorrado 
+            ? 'Datos del huésped a borrar - JSON para enviar al servidor backend'
+            : 'Datos modificados del huésped - JSON para enviar al servidor backend';
         titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
         contenedorJSON.appendChild(titulo);
 
@@ -96,6 +99,14 @@ function mostrarJSONModificacionEnPantalla(jsonData, huespedOriginal = null, cal
         textarea.value = jsonFormateado;
         
         textarea.scrollTop = 0;
+    }
+    
+    
+    const titulo = document.getElementById('titulo-json-modificacion');
+    if (titulo) {
+        titulo.textContent = esBorrado 
+            ? 'Datos del huésped a borrar - JSON para enviar al servidor backend'
+            : 'Datos modificados del huésped - JSON para enviar al servidor backend';
     }
 
     
