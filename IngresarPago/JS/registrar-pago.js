@@ -137,7 +137,7 @@ export async function registrarPago() {
       
       // Obtener total de la factura
       // getTotal es un getter, no un método
-      const total = facturaClase.detalle ? facturaClase.detalle.total : ((facturaClase.getTotal !== undefined) ? facturaClase.getTotal : 0);
+      const total = facturaClase.total !== undefined ? facturaClase.total : ((facturaClase.getTotal !== undefined) ? facturaClase.getTotal : 0);
       
       // Calcular total pagado desde los pagos de la clase
       // getPagos es un getter, no un método, así que se accede sin paréntesis

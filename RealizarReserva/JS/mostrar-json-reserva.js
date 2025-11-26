@@ -49,7 +49,6 @@ function convertirReservaDTOAJSON(reservaDTO) {
         tipoDocumento: reservaDTO.titular.tipoDocumento || null,
         nroDocumento: reservaDTO.titular.nroDocumento || null,
         fechaNacimiento: reservaDTO.titular.fechaNacimiento || null,
-        condicionIVA: reservaDTO.titular.condicionIVA || null,
         ocupacion: reservaDTO.titular.ocupacion || null,
         nacionalidad: reservaDTO.titular.nacionalidad || null,
         cuit: reservaDTO.titular.cuit || null,

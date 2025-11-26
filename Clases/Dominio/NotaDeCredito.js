@@ -1,11 +1,11 @@
 class NotaDeCredito {
     constructor(responsable = null) {
-        this.idNota = null;
-        this.fecha = new Date();
-        this.responsable = responsable;
-        this.facturas = [];   
-        this.total = 0;
-        this.tipo = null;
+        this.idNota = null; //Tipo number
+        this.fecha = new Date(); //Tipo Date
+        this.responsable = responsable; //Tipo ResponsableDePago
+        this.facturas = []; //Tipo Factura
+        this.total = 0; //Tipo number
+        this.tipo = null; //Tipo TipoFactura
     }
 
     get getIdNota() {

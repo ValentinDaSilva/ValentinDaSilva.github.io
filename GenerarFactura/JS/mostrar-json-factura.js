@@ -3,7 +3,26 @@
 
 function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
   
+  let fondoJSON = document.getElementById('fondo-json');
+  if (!fondoJSON) {
+    fondoJSON = document.createElement('div');
+    fondoJSON.id = 'fondo-json';
+    fondoJSON.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(1px);
+      z-index: 9999;
+      display: none;
+    `;
+    document.body.appendChild(fondoJSON);
+  }
+
   let contenedorJSON = document.getElementById('contenedor-json-factura');
+  let botonCerrar = null;
   
   if (!contenedorJSON) {
     
@@ -59,7 +78,7 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
     contenedorJSON.appendChild(textarea);
 
     
-    const botonCerrar = document.createElement('button');
+    botonCerrar = document.createElement('button');
     botonCerrar.textContent = 'Cerrar';
     botonCerrar.style.cssText = `
       margin-top: 15px;
@@ -73,19 +92,6 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
       font-weight: bold;
       transition: background 0.3s;
     `;
-    botonCerrar.onclick = function() {
-      contenedorJSON.style.display = 'none';
-      
-      if (typeof callbackCerrar === 'function') {
-        callbackCerrar();
-      }
-    };
-    botonCerrar.onmouseover = function() {
-      this.style.background = '#0056b3';
-    };
-    botonCerrar.onmouseout = function() {
-      this.style.background = '#007bff';
-    };
     contenedorJSON.appendChild(botonCerrar);
     
     
@@ -93,6 +99,37 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
 
     
     document.body.appendChild(contenedorJSON);
+  } else {
+    botonCerrar = contenedorJSON.querySelector('button');
+  }
+
+  const cerrarModalJSON = () => {
+    contenedorJSON.style.display = 'none';
+    if (fondoJSON) {
+      fondoJSON.style.display = 'none';
+    }
+    if (typeof contenedorJSON._callbackCerrar === 'function') {
+      contenedorJSON._callbackCerrar();
+    }
+  };
+
+  if (typeof callbackCerrar === 'function') {
+    contenedorJSON._callbackCerrar = callbackCerrar;
+  } else {
+    contenedorJSON._callbackCerrar = null;
+  }
+
+  if (botonCerrar) {
+    botonCerrar.onclick = cerrarModalJSON;
+    botonCerrar.onmouseover = function() {
+      this.style.background = '#0056b3';
+    };
+    botonCerrar.onmouseout = function() {
+      this.style.background = '#007bff';
+    };
+  }
+  if (fondoJSON) {
+    fondoJSON.onclick = cerrarModalJSON;
   }
 
   
@@ -105,14 +142,17 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
       ? factura.responsableDePago.razonSocial
       : `${factura.responsableDePago.apellido}, ${factura.responsableDePago.nombres}`;
     
+    const totalFactura = factura.total || 0;
+    const idEstadia = factura.estadia && factura.estadia.id ? factura.estadia.id : 'N/A';
+    
     infoAdicional.innerHTML = `
       <strong>Información de la Factura:</strong><br>
-      • ID Estadía: ${factura.estadia.id || 'N/A'}<br>
+      • ID Estadía: ${idEstadia}<br>
       • Fecha: ${factura.fecha || 'N/A'}<br>
       • Hora: ${factura.hora || 'N/A'}<br>
       • Tipo: ${factura.tipo || 'N/A'}<br>
       • Responsable: ${responsableNombre}<br>
-      • Total: $${factura.detalle.total.toFixed(2) || '0.00'}<br>
+      • Total: $${totalFactura.toFixed(2)}<br>
       • <strong>Estado:</strong> ${factura.estado || 'N/A'}
     `;
   }
@@ -126,22 +166,11 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
   }
 
   
-  if (typeof callbackCerrar === 'function') {
-    contenedorJSON._callbackCerrar = callbackCerrar;
-    
-    const botonCerrar = contenedorJSON.querySelector('button');
-    if (botonCerrar) {
-      botonCerrar.onclick = function() {
-        contenedorJSON.style.display = 'none';
-        if (typeof callbackCerrar === 'function') {
-          callbackCerrar();
-        }
-      };
-    }
-  }
-
   
   contenedorJSON.style.display = 'block';
+  if (fondoJSON) {
+    fondoJSON.style.display = 'block';
+  }
 
   
   console.log('=== FACTURA GENERADA ===');

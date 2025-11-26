@@ -26,7 +26,7 @@ export function generarNotaCredito() {
   
   
   const total = facturas.reduce((acc, factura) => {
-    return acc + (factura.detalle?.total || 0);
+    return acc + (factura.total || 0);
   }, 0);
   
   
@@ -92,7 +92,7 @@ export function mostrarNotaCreditoEnPantalla(notaCredito) {
       numero.textContent = `Factura #${factura.id}`;
       
       const total = document.createElement('p');
-      const totalFactura = factura.detalle?.total || 0;
+      const totalFactura = factura.total || 0;
       total.textContent = `$${totalFactura.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       
       item.appendChild(numero);

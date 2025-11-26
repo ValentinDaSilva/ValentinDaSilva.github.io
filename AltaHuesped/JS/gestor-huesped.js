@@ -6,7 +6,7 @@ import { GestorHuesped, Huesped, Direccion } from "../../Clases/Dominio/dominio.
 class GestorAltaHuesped extends GestorHuesped {
     constructor() {
         super();
-        this._rutaBD = '/Datos/huspedes.json';
+        this._rutaBD = '/Datos/huespedes.json';
     }
 
     
@@ -43,10 +43,6 @@ class GestorAltaHuesped extends GestorHuesped {
     
     crearHuespedDominio(datos) {
         
-        
-        const condicionIVA = null; 
-
-        
         const direccion = this.crearDireccionDominio(datos);
 
         const huesped = new Huesped(
@@ -60,7 +56,7 @@ class GestorAltaHuesped extends GestorHuesped {
             datos.cuit || '',
             datos.email || '',
             direccion,
-            condicionIVA
+            null
         );
 
         
@@ -105,7 +101,7 @@ class GestorAltaHuesped extends GestorHuesped {
             huesped.cuit,
             huesped.email,
             direccionDTO,
-            huesped.condicionIVA
+            null
         );
 
         return huespedDTO;
@@ -129,28 +125,67 @@ class GestorAltaHuesped extends GestorHuesped {
 
     
     convertirDTOAJSON(huespedDTO, direccionDTO, datosOriginales) {
+        // Construir dirección siempre desde datosOriginales (datos del formulario)
+        // ya que es la fuente más confiable y directa
+        let direccion = null;
+        
+        if (datosOriginales) {
+            direccion = {
+                calle: String(datosOriginales.calle || ''),
+                numero: String(datosOriginales.numeroCalle || ''),
+                piso: String(datosOriginales.piso || ''),
+                departamento: String(datosOriginales.departamento || ''),
+                ciudad: String(datosOriginales.localidad || ''),
+                provincia: String(datosOriginales.provincia || ''),
+                codigoPostal: String(datosOriginales.codigoPostal || ''),
+                pais: String(datosOriginales.pais || '')
+            };
+        } else if (direccionDTO) {
+            // Fallback: usar direccionDTO si datosOriginales no está disponible
+            direccion = {
+                calle: String(direccionDTO.calle || ''),
+                numero: String(direccionDTO.numero || ''),
+                piso: String(direccionDTO.piso || ''),
+                departamento: String(direccionDTO.departamento || ''),
+                ciudad: String(direccionDTO.localidad || ''),
+                provincia: String(direccionDTO.provincia || ''),
+                codigoPostal: String(direccionDTO.codigoPostal || ''),
+                pais: String(direccionDTO.pais || '')
+            };
+        }
+
+        // Validar y extraer valores primitivos de huespedDTO usando getters
+        const nombre = huespedDTO?.nombre;
+        const apellido = huespedDTO?.apellido;
+        const tipoDocumento = huespedDTO?.tipoDocumento;
+        const nroDocumento = huespedDTO?.nroDocumento;
+        const ocupacion = huespedDTO?.ocupacion;
+        const nacionalidad = huespedDTO?.nacionalidad;
+        const cuit = huespedDTO?.cuit;
+        const email = huespedDTO?.email;
+
+        // Función auxiliar para convertir a valor primitivo
+        const toPrimitive = (value) => {
+            if (value === null || value === undefined) return null;
+            if (typeof value === 'object') {
+                // Si es un objeto, intentar convertirlo a string o retornar null
+                console.warn('Valor no primitivo detectado:', value);
+                return null;
+            }
+            return String(value);
+        };
+
+        // Construir objeto JSON solo con valores primitivos según la estructura requerida
         const jsonData = {
-            
-            apellido: huespedDTO.apellido,
-            nombres: huespedDTO.nombre,
-            tipoDocumento: huespedDTO.tipoDocumento,
-            numeroDocumento: huespedDTO.nroDocumento,
-            cuit: huespedDTO.cuit || '',
-            fechaNacimiento: huespedDTO.fechaNacimiento,
-            caracteristica: datosOriginales.caracteristica,
-            telefonoNumero: datosOriginales.telefonoNumero,
-            email: huespedDTO.email || '',
-            ocupacion: huespedDTO.ocupacion,
-            nacionalidad: huespedDTO.nacionalidad,
-            
-            calle: direccionDTO.calle,
-            numeroCalle: direccionDTO.numero,
-            departamento: direccionDTO.departamento || '',
-            piso: direccionDTO.piso || '',
-            codigoPostal: direccionDTO.codigoPostal,
-            localidad: direccionDTO.localidad,
-            provincia: direccionDTO.provincia,
-            pais: datosOriginales.pais 
+            apellido: toPrimitive(apellido) || '',
+            nombre: toPrimitive(nombre) || '',
+            tipoDocumento: toPrimitive(tipoDocumento) || '',
+            numeroDocumento: toPrimitive(nroDocumento) || '',
+            cuit: toPrimitive(cuit) || '',
+            email: toPrimitive(email) || '',
+            ocupacion: toPrimitive(ocupacion) || '',
+            nacionalidad: toPrimitive(nacionalidad) || '',
+            direccion: direccion
         };
 
         return jsonData;
@@ -159,7 +194,26 @@ class GestorAltaHuesped extends GestorHuesped {
     
     mostrarJSONEnPantalla(jsonData) {
         
+        let fondoJSON = document.getElementById('fondo-json');
+        if (!fondoJSON) {
+            fondoJSON = document.createElement('div');
+            fondoJSON.id = 'fondo-json';
+            fondoJSON.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.45);
+                backdrop-filter: blur(1px);
+                z-index: 9999;
+                display: none;
+            `;
+            document.body.appendChild(fondoJSON);
+        }
+
         let contenedorJSON = document.getElementById('contenedor-json');
+        let botonCerrar = null;
         
         if (!contenedorJSON) {
             
@@ -208,7 +262,7 @@ class GestorAltaHuesped extends GestorHuesped {
             contenedorJSON.appendChild(textarea);
 
             
-            const botonCerrar = document.createElement('button');
+            botonCerrar = document.createElement('button');
             botonCerrar.textContent = 'Cerrar';
             botonCerrar.style.cssText = `
                 margin-top: 15px;
@@ -222,19 +276,32 @@ class GestorAltaHuesped extends GestorHuesped {
                 font-weight: bold;
                 transition: background 0.3s;
             `;
-            botonCerrar.onclick = function() {
-                contenedorJSON.style.display = 'none';
-            };
+            contenedorJSON.appendChild(botonCerrar);
+
+            
+            document.body.appendChild(contenedorJSON);
+        } else {
+            botonCerrar = contenedorJSON.querySelector('button');
+        }
+
+        const cerrarModalJSON = () => {
+            contenedorJSON.style.display = 'none';
+            if (fondoJSON) {
+                fondoJSON.style.display = 'none';
+            }
+        };
+
+        if (botonCerrar) {
+            botonCerrar.onclick = cerrarModalJSON;
             botonCerrar.onmouseover = function() {
                 this.style.background = '#0056b3';
             };
             botonCerrar.onmouseout = function() {
                 this.style.background = '#007bff';
             };
-            contenedorJSON.appendChild(botonCerrar);
-
-            
-            document.body.appendChild(contenedorJSON);
+        }
+        if (fondoJSON) {
+            fondoJSON.onclick = cerrarModalJSON;
         }
 
         
@@ -250,6 +317,9 @@ class GestorAltaHuesped extends GestorHuesped {
 
         
         contenedorJSON.style.display = 'block';
+        if (fondoJSON) {
+            fondoJSON.style.display = 'block';
+        }
 
         
         console.log('=== DATOS A ENVIAR A LA BASE DE DATOS ===');

@@ -22,7 +22,7 @@ export async function cargarResponsables() {
 
 export async function cargarHuespedes() {
   try {
-    const respuesta = await fetch('/Datos/huspedes.json');
+    const respuesta = await fetch('/Datos/huespedes.json');
     if (!respuesta.ok) {
       throw new Error(`Error HTTP: ${respuesta.status}`);
     }
@@ -76,8 +76,7 @@ export async function buscarResponsablePorDniCuit(dniCuit) {
       apellido: huespedEncontrado.apellido,
       nombres: huespedEncontrado.nombres,
       documento: huespedEncontrado.numeroDocumento,
-      cuit: huespedEncontrado.cuit || null,
-      condicionIVA: huespedEncontrado.condicionIVA || null
+      cuit: huespedEncontrado.cuit || null
     };
   }
   
@@ -95,7 +94,7 @@ export function esResponsableInscripto(responsable) {
   
   
   if (responsable.tipo === 'huesped') {
-    return !!(responsable.cuit && responsable.condicionIVA);
+    return !!responsable.cuit;
   }
   
   return false;

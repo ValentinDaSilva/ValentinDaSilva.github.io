@@ -7,22 +7,14 @@ import { EstadoFactura, TipoFactura } from "./Enums.js";
  * 
  * MÉTODOS PÚBLICOS:
  * - async generarFactura(estadia, responsableDePago, horaSalida, tipoFactura = 'B')
- *   → Genera una nueva factura a partir de una estadía y responsable de pago.
+ *   → Genera 
+ *  nueva factura a partir de una estadía y responsable de pago.
  * 
  * - async ingresarNotaCredito(facturas, responsable)
  *   → Procesa el ingreso de una nota de crédito para facturas anuladas.
  * 
  * - async ingresarPago(factura, datosPago)
  *   → Registra un pago asociado a una factura y actualiza su estado.
- * 
- * - async buscarFacturasParaNotaCredito(dniCuit)
- *   → Busca facturas no anuladas asociadas a un DNI/CUIT.
- * 
- * - async buscarResponsableParaNotaCredito(dniCuit)
- *   → Busca el responsable (huésped o tercero) por DNI/CUIT.
- * 
- * - async buscarFacturasParaPago(numeroHabitacion)
- *   → Busca facturas pendientes asociadas a un número de habitación.
  * 
  * - async guardarFacturasEnBD(facturasJSON)
  *   → Guarda o actualiza facturas en la base de datos.
@@ -32,6 +24,12 @@ import { EstadoFactura, TipoFactura } from "./Enums.js";
  * 
  * - async guardarPagosEnBD(pagosJSON) [DEPRECADO]
  *   → Deprecado: Los pagos se guardan como parte de las facturas.
+ * 
+ * - convertirFacturaADTO(factura)
+ *   → Convierte un objeto Factura de dominio a un DTO para la persistencia/transferencia de datos.
+ * 
+ * - convertirDTOAFactura(facturaDTO)
+ *   → Convierte un DTO de factura (desde la base de datos u origen externo) a un objeto Factura de dominio.
  */
 class GestorFactura {
   constructor() {
@@ -44,115 +42,6 @@ class GestorFactura {
     this._gestorPago = null;
   }
 
-  
-  async guardarFacturasEnBD(facturasJSON) {
-    try {
-      let facturasExistentes = [];
-      try {
-        const respuesta = await fetch(this._rutaBDFacturas);
-        if (respuesta.ok) {
-          const datos = await respuesta.json();
-          facturasExistentes = datos.facturas || [];
-        }
-      } catch (error) {
-        console.warn('No se pudieron cargar facturas existentes, se creará un nuevo archivo');
-      }
-
-      
-      const facturasActualizadas = [...facturasExistentes];
-      
-      
-      facturasJSON.forEach(facturaNueva => {
-        if (!facturaNueva.id) {
-          
-          const maxId = facturasActualizadas.length > 0
-            ? Math.max(...facturasActualizadas.map(f => f.id || 0))
-            : 0;
-          facturaNueva.id = maxId + 1;
-        }
-        
-        const indiceExistente = facturasActualizadas.findIndex(f => f.id === facturaNueva.id);
-        if (indiceExistente !== -1) {
-          facturasActualizadas[indiceExistente] = facturaNueva;
-        } else {
-          facturasActualizadas.push(facturaNueva);
-        }
-      });
-
-      console.log('Facturas a guardar en BD:', facturasActualizadas);
-      
-      
-      
-    } catch (error) {
-      console.error('Error al guardar facturas en BD:', error);
-      throw error;
-    }
-  }
-
-  
-  async guardarNotaCreditoEnBD(notaCreditoJSON, idsFacturas) {
-    try {
-      
-      let notasCreditoExistentes = [];
-      try {
-        const respuesta = await fetch(this._rutaBDNotasCredito);
-        if (respuesta.ok) {
-          const datos = await respuesta.json();
-          notasCreditoExistentes = datos.notasCredito || [];
-        }
-      } catch (error) {
-        console.warn('No se pudieron cargar notas de crédito existentes');
-      }
-
-      
-      if (!notaCreditoJSON.idNota) {
-        const maxId = notasCreditoExistentes.length > 0
-          ? Math.max(...notasCreditoExistentes.map(nc => nc.idNota || 0))
-          : 0;
-        notaCreditoJSON.idNota = maxId + 1;
-      }
-
-      notasCreditoExistentes.push(notaCreditoJSON);
-
-      
-      let relacionesExistentes = [];
-      try {
-        const respuesta = await fetch(this._rutaBDNotasCreditoFactura);
-        if (respuesta.ok) {
-          const datos = await respuesta.json();
-          relacionesExistentes = datos.nota_credito_factura || [];
-        }
-      } catch (error) {
-        console.warn('No se pudieron cargar relaciones nota_credito_factura existentes');
-      }
-
-      idsFacturas.forEach(idFactura => {
-        relacionesExistentes.push({
-          idNotaCredito: notaCreditoJSON.idNota,
-          idFactura: idFactura
-        });
-      });
-
-      console.log('Nota de crédito a guardar en BD:', notaCreditoJSON);
-      console.log('Relaciones nota_credito_factura a guardar:', relacionesExistentes.length);
-      
-      
-      
-    } catch (error) {
-      console.error('Error al guardar nota de crédito en BD:', error);
-      throw error;
-    }
-  }
-
-  
-  // DEPRECADO: Los pagos se guardan como parte de las facturas
-  // Este método se mantiene por compatibilidad pero ya no se usa
-  async guardarPagosEnBD(pagosJSON) {
-    console.warn('guardarPagosEnBD() está deprecado. Los pagos se guardan como parte de las facturas.');
-    // Los pagos se guardan junto con las facturas, no en un JSON separado
-  }
-
-  
   async generarFactura(estadia, responsableDePago, horaSalida, tipoFactura = 'B') {
     try {
       console.log('GestorFactura.generarFactura - Iniciando con:', { 
@@ -205,7 +94,6 @@ class GestorFactura {
     }
   }
 
-  
   async ingresarNotaCredito(facturas, responsable) {
     try {
       if (!this._gestorNotaCredito) {
@@ -308,6 +196,120 @@ class GestorFactura {
       throw error;
     }
   }
+
+  
+  async guardarFacturasEnBD(facturasJSON) {
+    try {
+      let facturasExistentes = [];
+      try {
+        const respuesta = await fetch(this._rutaBDFacturas);
+        if (respuesta.ok) {
+          const datos = await respuesta.json();
+          facturasExistentes = datos.facturas || [];
+        }
+      } catch (error) {
+        console.warn('No se pudieron cargar facturas existentes, se creará un nuevo archivo');
+      }
+
+      
+      const facturasActualizadas = [...facturasExistentes];
+      
+      
+      facturasJSON.forEach(facturaNueva => {
+        if (!facturaNueva.id) {
+          
+          const maxId = facturasActualizadas.length > 0
+            ? Math.max(...facturasActualizadas.map(f => f.id || 0))
+            : 0;
+          facturaNueva.id = maxId + 1;
+        }
+        
+        const indiceExistente = facturasActualizadas.findIndex(f => f.id === facturaNueva.id);
+        if (indiceExistente !== -1) {
+          facturasActualizadas[indiceExistente] = facturaNueva;
+        } else {
+          facturasActualizadas.push(facturaNueva);
+        }
+      });
+
+      console.log('Facturas a guardar en BD:', facturasActualizadas);
+      
+      
+      
+    } catch (error) {
+      console.error('Error al guardar facturas en BD:', error);
+      throw error;
+    }
+  }
+  
+
+  
+  async guardarNotaCreditoEnBD(notaCreditoJSON, idsFacturas) {
+    try {
+      
+      let notasCreditoExistentes = [];
+      try {
+        const respuesta = await fetch(this._rutaBDNotasCredito);
+        if (respuesta.ok) {
+          const datos = await respuesta.json();
+          notasCreditoExistentes = datos.notasCredito || [];
+        }
+      } catch (error) {
+        console.warn('No se pudieron cargar notas de crédito existentes');
+      }
+
+      
+      if (!notaCreditoJSON.idNota) {
+        const maxId = notasCreditoExistentes.length > 0
+          ? Math.max(...notasCreditoExistentes.map(nc => nc.idNota || 0))
+          : 0;
+        notaCreditoJSON.idNota = maxId + 1;
+      }
+
+      notasCreditoExistentes.push(notaCreditoJSON);
+
+      
+      let relacionesExistentes = [];
+      try {
+        const respuesta = await fetch(this._rutaBDNotasCreditoFactura);
+        if (respuesta.ok) {
+          const datos = await respuesta.json();
+          relacionesExistentes = datos.nota_credito_factura || [];
+        }
+      } catch (error) {
+        console.warn('No se pudieron cargar relaciones nota_credito_factura existentes');
+      }
+
+      idsFacturas.forEach(idFactura => {
+        relacionesExistentes.push({
+          idNotaCredito: notaCreditoJSON.idNota,
+          idFactura: idFactura
+        });
+      });
+
+      console.log('Nota de crédito a guardar en BD:', notaCreditoJSON);
+      console.log('Relaciones nota_credito_factura a guardar:', relacionesExistentes.length);
+      
+      
+      
+    } catch (error) {
+      console.error('Error al guardar nota de crédito en BD:', error);
+      throw error;
+    }
+  }
+
+  
+  // DEPRECADO: Los pagos se guardan como parte de las facturas
+  // Este método se mantiene por compatibilidad pero ya no se usa
+  async guardarPagosEnBD(pagosJSON) {
+    console.warn('guardarPagosEnBD() está deprecado. Los pagos se guardan como parte de las facturas.');
+    // Los pagos se guardan junto con las facturas, no en un JSON separado
+  }
+
+  
+  
+  
+  
 
   
   async _obtenerFacturaActualizada(idFactura) {

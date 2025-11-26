@@ -36,11 +36,11 @@ import { EstadoHabitacion } from "./Enums.js";
  */
 class Habitacion {
   constructor(numero, tipo, categoria, costoPorNoche, estadoHabitacion = EstadoHabitacion.DISPONIBLE) {
-    this._numero = numero;
-    this._tipo = tipo;
-    this._categoria = categoria;
-    this._costoPorNoche = costoPorNoche;
-    this._estadoHabitacion = estadoHabitacion;
+    this._numero = numero; //Tipo number
+    this._tipo = tipo; //Tipo string
+    this._categoria = categoria; //Tipo string
+    this._costoPorNoche = costoPorNoche; //Tipo number
+    this._estadoHabitacion = estadoHabitacion; //Tipo EstadoHabitacion
   }
 
   get numero() { return this._numero; }

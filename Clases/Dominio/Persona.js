@@ -1,8 +1,8 @@
 class Persona {
   constructor(nombre, apellido, telefono) {
-    this._nombre = nombre;
-    this._apellido = apellido;
-    this._telefono = telefono;
+    this._nombre = nombre; //Tipo string
+    this._apellido = apellido; //Tipo string
+    this._telefono = telefono; //Tipo string
   }
 
   get nombre() { return this._nombre; }

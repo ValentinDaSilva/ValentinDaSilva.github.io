@@ -110,7 +110,8 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
       estado: factura.estado,
       responsableDePago: factura.responsableDePago,
       estadia: factura.estadia,
-      detalle: factura.detalle,
+      iva: factura.iva,
+      total: factura.total,
       medioDePago: factura.medioDePago,
       pagos: factura.pagos || []
     }))

@@ -15,23 +15,23 @@
  *   → Calcula el IVA (21%) sobre un subtotal.
  * 
  * - async calcularDetalle(estadia, horaSalida)
- *   → Calcula y actualiza el detalle completo de la factura (valor estadía, consumos, recargos, IVA, total).
+ *   → Calcula y actualiza el IVA y total de la factura.
  * 
  */
 class Factura {
     constructor(id, hora, fecha, tipo, estado, responsableDePago, medioDePago, estadia) {
         this.id = id;
-        this.hora = hora;
-        this.fecha = fecha;
-        this.tipo = tipo;
-        this.estado = estado;
-        this.responsableDePago = responsableDePago; 
-        this.medioDePago = medioDePago; 
-        this.estadia = estadia; 
-        this.pagos = []; 
-        this.total = 0;
-        this.detalle = null; // Contendrá valorEstadia, consumos, recargo, iva, etc.
-        this.horaSalida = null; // Hora de salida para calcular recargos
+        this.hora = hora; //Tipo Date
+        this.fecha = fecha; //Tipo Date 
+        this.tipo = tipo; //Tipo TipoFactura
+        this.estado = estado; //Tipo EstadoFactura
+        this.responsableDePago = responsableDePago; //Tipo ResponsableDePago
+        this.medioDePago = medioDePago; //Tipo MedioDePago
+        this.estadia = estadia; //Tipo Estadia
+        this.pagos = []; //Tipo Pago
+        this.total = 0; //Tipo number
+        this.iva = 0; // IVA calculado sobre el subtotal
+        this.horaSalida = null; // Tipo Date
     }
 
 
@@ -108,10 +108,10 @@ class Factura {
     }
 
     /**
-     * Calcula y actualiza el detalle completo de la factura
+     * Calcula y actualiza el IVA y total de la factura
      * @param {Object} estadia - Objeto estadía con reserva, consumos, etc.
      * @param {string} horaSalida - Hora de salida para calcular recargos
-     * @returns {Promise<Object>} Objeto detalle con todos los cálculos
+     * @returns {Promise<Object>} Objeto con iva y total calculados
      */
     async calcularDetalle(estadia, horaSalida) {
         if (!estadia) {
@@ -164,25 +164,11 @@ class Factura {
         const iva = this.calcularIVA(subtotal);
         const total = subtotal + iva;
 
-        this.detalle = {
-            valorEstadia: valorEstadia,
-            numeroNoches: numeroNoches,
-            costoPorNoche: costoPorNoche,
-            consumos: consumos,
-            totalConsumos: totalConsumos,
-            recargoCheckout: recargoCheckout.recargo,
-            tipoRecargoCheckout: recargoCheckout.tipo,
-            mensajeRecargoCheckout: recargoCheckout.mensaje,
-            requiereNuevaOcupacion: recargoCheckout.requiereNuevaOcupacion,
-            subtotal: subtotal,
-            iva: iva,
-            total: total
-        };
-
-        // Actualizar el total de la factura
+        // Actualizar solo iva y total como atributos directos
+        this.iva = iva;
         this.total = total;
 
-        return this.detalle;
+        return { iva: iva, total: total };
     }
 
     /**
@@ -198,22 +184,19 @@ class Factura {
     }
 
     /**
-     * Obtiene el detalle de la factura
-     * @returns {Object} Detalle de la factura
+     * Obtiene el IVA de la factura
+     * @returns {number} IVA de la factura
      */
-    get getDetalle() {
-        return this.detalle;
+    get getIva() {
+        return this.iva;
     }
 
     /**
-     * Establece el detalle de la factura
-     * @param {Object} detalle - Detalle de la factura
+     * Establece el IVA de la factura
+     * @param {number} iva - IVA de la factura
      */
-    set setDetalle(detalle) {
-        this.detalle = detalle;
-        if (detalle && detalle.total) {
-            this.total = detalle.total;
-        }
+    set setIva(iva) {
+        this.iva = iva;
     }
     get getId() {
         return this.id;

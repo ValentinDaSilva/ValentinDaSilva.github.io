@@ -28,13 +28,13 @@ import { EstadoEstadia } from "./Enums.js";
 class Estadia {
   constructor(id, fechaCheckIn, fechaCheckOut, estado = EstadoEstadia.EN_CURSO, reserva, titular, acompaniantes) {
     this._id = id;
-    this._fechaCheckIn = new Date(fechaCheckIn);
-    this._fechaCheckOut = new Date(fechaCheckOut);
-    this._estado = estado;
-    this._consumos = []; 
-    this._reserva = reserva; 
-    this._titular = titular; 
-    this._acompaniantes = acompaniantes; 
+    this._fechaCheckIn = new Date(fechaCheckIn); //Tipo Date
+    this._fechaCheckOut = new Date(fechaCheckOut); //Tipo Date
+    this._estado = estado; //Tipo EstadoEstadia
+    this._consumos = []; //Tipo Consumo
+    this._reserva = reserva; //Tipo Reserva
+    this._titular = titular; //Tipo Huesped
+    this._acompaniantes = acompaniantes; //Tipo Huesped
   }
 
   get id() { return this._id; }

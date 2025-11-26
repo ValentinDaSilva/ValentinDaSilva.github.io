@@ -67,7 +67,7 @@ export function mostrarFacturasEnTabla(facturas) {
     
     
     const tdTotal = document.createElement('td');
-    const total = factura.detalle?.total || 0;
+    const total = factura.total || 0;
     tdTotal.textContent = `$${total.toFixed(2)}`;
     
     

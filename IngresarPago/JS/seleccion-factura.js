@@ -57,7 +57,7 @@ function mostrarDatosFactura(factura) {
   
   const totalElement = document.getElementById('facturaTotal');
   if (totalElement) {
-    const total = factura.detalle?.total || 0;
+    const total = factura.total || 0;
     totalElement.textContent = `$${total.toFixed(2)}`;
   }
   
@@ -77,8 +77,8 @@ export function actualizarResumenPago(factura) {
   
   // Obtener total de la factura JSON si es necesario
   let total = 0;
-  if (factura.detalle) {
-    total = factura.detalle.total || 0;
+  if (factura.total !== undefined) {
+    total = factura.total || 0;
   } else if (factura.getTotal !== undefined) {
     // getTotal es un getter, no un método
     total = factura.getTotal || 0;

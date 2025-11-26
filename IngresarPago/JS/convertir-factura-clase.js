@@ -2,10 +2,31 @@
 
 import Factura from '../../../Clases/Dominio/Factura.js';
 import Pago from '../../../Clases/Dominio/Pago.js';
+import PersonaFisica from '../../../Clases/Dominio/PersonaFisica.js';
+import PersonaJuridica from '../../../Clases/Dominio/PersonaJuridica.js';
 import { Efectivo, MonedaExtranjera, Cheque, Tarjeta } from '../../../Clases/Dominio/MedioDePago/index.js';
 
 
 export function convertirFacturaJSONAClase(facturaJSON) {
+  // Convertir responsableDePago JSON a instancia de clase
+  let responsableDePago = facturaJSON.responsableDePago;
+  
+  if (responsableDePago && !(responsableDePago instanceof PersonaFisica) && !(responsableDePago instanceof PersonaJuridica)) {
+    if (responsableDePago.tipo === 'huesped') {
+      responsableDePago = new PersonaFisica({
+        apellido: responsableDePago.apellido,
+        nombres: responsableDePago.nombres,
+        documento: responsableDePago.documento
+      });
+    } else if (responsableDePago.tipo === 'tercero') {
+      responsableDePago = new PersonaJuridica({
+        razonSocial: responsableDePago.razonSocial,
+        cuit: responsableDePago.cuit,
+        telefono: responsableDePago.telefono,
+        direccion: responsableDePago.direccion
+      });
+    }
+  }
   
   const factura = new Factura(
     facturaJSON.id,
@@ -13,7 +34,7 @@ export function convertirFacturaJSONAClase(facturaJSON) {
     facturaJSON.fecha,
     facturaJSON.tipo,
     facturaJSON.estado,
-    facturaJSON.responsableDePago,
+    responsableDePago,
     facturaJSON.medioDePago,
     facturaJSON.estadia
   );

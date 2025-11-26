@@ -1,12 +1,76 @@
 
 import GestorFactura from "../../Clases/Dominio/GestorFactura.js";
 import Factura from "../../Clases/Dominio/Factura.js";
+import PersonaFisica from "../../Clases/Dominio/PersonaFisica.js";
+import PersonaJuridica from "../../Clases/Dominio/PersonaJuridica.js";
 import { EstadoFactura, TipoFactura } from "../../Clases/Dominio/Enums.js";
 
 
 class GestorGenerarFactura extends GestorFactura {
   constructor() {
     super();
+  }
+
+  /**
+   * Convierte un huésped al formato estándar requerido
+   * @param {Object} huesped - Huésped en cualquier formato (dominio, JSON, etc.)
+   * @returns {Object} Huésped en formato estándar
+   */
+  convertirHuespedAFormatoEstandar(huesped) {
+    if (!huesped) return null;
+    
+    // Obtener dirección - puede venir como objeto direccion o como campos planos
+    let direccion = null;
+    if (huesped.direccion && typeof huesped.direccion === 'object') {
+      // Dirección viene como objeto
+      const dir = huesped.direccion;
+      direccion = {
+        calle: dir.calle || '',
+        numero: dir.numero || '',
+        piso: dir.piso || '',
+        departamento: dir.departamento || '',
+        ciudad: dir.ciudad || dir.localidad || '',
+        provincia: dir.provincia || '',
+        codigoPostal: dir.codigoPostal || '',
+        pais: dir.pais || ''
+      };
+    } else if (huesped.calle || huesped.numeroCalle || huesped.localidad) {
+      // Dirección viene en formato plano (campos directos del huésped)
+      direccion = {
+        calle: huesped.calle || '',
+        numero: huesped.numero || huesped.numeroCalle || '',
+        piso: huesped.piso || '',
+        departamento: huesped.departamento || '',
+        ciudad: huesped.ciudad || huesped.localidad || '',
+        provincia: huesped.provincia || '',
+        codigoPostal: huesped.codigoPostal || '',
+        pais: huesped.pais || ''
+      };
+    } else {
+      // Si no hay dirección, crear una vacía
+      direccion = {
+        calle: '',
+        numero: '',
+        piso: '',
+        departamento: '',
+        ciudad: '',
+        provincia: '',
+        codigoPostal: '',
+        pais: ''
+      };
+    }
+    
+    return {
+      apellido: huesped.apellido || '',
+      nombre: huesped.nombre || huesped.nombres || '',
+      tipoDocumento: huesped.tipoDocumento || '',
+      numeroDocumento: huesped.numeroDocumento || huesped.nroDocumento || huesped.documento || '',
+      cuit: huesped.cuit || '',
+      email: huesped.email || '',
+      ocupacion: huesped.ocupacion || '',
+      nacionalidad: huesped.nacionalidad || '',
+      direccion: direccion
+    };
   }
 
   
@@ -54,52 +118,64 @@ class GestorGenerarFactura extends GestorFactura {
     const fechaActual = facturaTemporal.obtenerFechaActual();
     const horaActual = new Date().toTimeString().slice(0, 5);
     
-    // Usar métodos de la clase Factura para calcular el detalle (ahora es async)
-    const detalle = await facturaTemporal.calcularDetalle(estadia, horaSalida);
+    // Usar métodos de la clase Factura para calcular IVA y total (ahora es async)
+    const resultado = await facturaTemporal.calcularDetalle(estadia, horaSalida);
     
     
     let responsable = null;
-    if (responsableDePago.razonSocial) {
-      
-      responsable = {
-        tipo: 'tercero',
+    
+    // Si ya es una instancia de ResponsableDePago (PersonaFisica o PersonaJuridica), usarla directamente
+    if (responsableDePago && (responsableDePago instanceof PersonaFisica || responsableDePago instanceof PersonaJuridica)) {
+      responsable = responsableDePago;
+    } else if (responsableDePago.razonSocial) {
+      // Es un tercero (persona jurídica)
+      responsable = new PersonaJuridica({
         razonSocial: responsableDePago.razonSocial,
         cuit: responsableDePago.cuit,
         telefono: responsableDePago.telefono,
         direccion: responsableDePago.direccion
-      };
+      });
     } else {
-      
-      responsable = {
-        tipo: 'huesped',
+      // Es un huésped (persona física)
+      responsable = new PersonaFisica({
         apellido: responsableDePago.apellido || estadia.titular.apellido,
         nombres: responsableDePago.nombres || estadia.titular.nombres,
-        documento: responsableDePago.numeroDocumento || estadia.titular.numeroDocumento,
-        cuit: responsableDePago.cuit || estadia.titular.cuit
-      };
+        documento: responsableDePago.numeroDocumento || responsableDePago.documento || estadia.titular.numeroDocumento
+      });
     }
     
-    const habitacion = estadia.reserva.habitaciones[0];
+    // Generar JSON con la estructura completa de Factura (sin detalle)
+    // Convertir responsable a JSON si es una instancia de ResponsableDePago
+    const responsableJSON = (responsable instanceof PersonaFisica || responsable instanceof PersonaJuridica)
+      ? responsable.toJSON() 
+      : responsable;
     
+    // Convertir titular y acompañantes al formato estándar
+    const titularEstandar = this.convertirHuespedAFormatoEstandar(estadia.titular);
+    const acompaniantesEstandar = (estadia.acompaniantes || []).map(acomp => 
+      this.convertirHuespedAFormatoEstandar(acomp)
+    ).filter(acomp => acomp !== null);
+    
+    // Crear estadía con huéspedes en formato estándar
+    const estadiaEstandar = {
+      ...estadia,
+      titular: titularEstandar,
+      acompaniantes: acompaniantesEstandar
+    };
     
     const factura = {
       id: null, 
       hora: horaActual,
       fecha: fechaActual,
-      horaSalida: horaSalida,
       tipo: tipoFactura,
       estado: EstadoFactura.PENDIENTE,
-      responsableDePago: responsable,
+      responsableDePago: responsableJSON,
       medioDePago: null, 
-      estadia: {
-        id: estadia.id,
-        fechaCheckIn: estadia.fechaCheckIn,
-        fechaCheckOut: estadia.fechaCheckOut || fechaActual,
-        habitacion: habitacion,
-        titular: estadia.titular,
-        acompaniantes: estadia.acompaniantes || []
-      },
-      detalle: detalle
+      estadia: estadiaEstandar, // Estadía con huéspedes en formato estándar
+      pagos: [], // Array vacío inicialmente
+      total: resultado.total, // Total de la factura
+      iva: resultado.iva, // IVA calculado
+      horaSalida: horaSalida // Hora de salida para calcular recargos
     };
     
     return factura;

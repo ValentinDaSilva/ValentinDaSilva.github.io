@@ -6,7 +6,7 @@ import { GestorHuesped } from "../../Clases/Dominio/dominio.js";
 class GestorBuscarHuesped extends GestorHuesped {
     constructor() {
         super();
-        this._rutaBD = '/Datos/huspedes.json';
+        this._rutaBD = '/Datos/huespedes.json';
         this._datosHuespedes = [];
     }
 
@@ -29,7 +29,8 @@ class GestorBuscarHuesped extends GestorHuesped {
             if (!respuesta.ok) {
                 throw new Error(`Error al cargar los datos: ${respuesta.status}`);
             }
-            this._datosHuespedes = await respuesta.json();
+      const datosCrudos = await respuesta.json();
+      this._datosHuespedes = this.normalizarDatosHuespedes(datosCrudos);
             console.log(`Se cargaron ${this._datosHuespedes.length} huéspedes`);
             return this._datosHuespedes;
         } catch (error) {
@@ -58,7 +59,7 @@ class GestorBuscarHuesped extends GestorHuesped {
         if (apellidoTrim !== '') {
             const apellidoLower = apellidoTrim.toLowerCase();
             resultados = resultados.filter(huesped => 
-                huesped.apellido.toLowerCase().startsWith(apellidoLower)
+        (huesped.apellido || '').toLowerCase().startsWith(apellidoLower)
             );
         }
         
@@ -66,7 +67,7 @@ class GestorBuscarHuesped extends GestorHuesped {
         if (nombresTrim !== '') {
             const nombresLower = nombresTrim.toLowerCase();
             resultados = resultados.filter(huesped => 
-                huesped.nombres.toLowerCase().startsWith(nombresLower)
+        (huesped.nombres || '').toLowerCase().startsWith(nombresLower)
             );
         }
         
@@ -80,7 +81,7 @@ class GestorBuscarHuesped extends GestorHuesped {
         
         if (numDoc !== '') {
             resultados = resultados.filter(huesped => 
-                huesped.numeroDocumento.startsWith(numDoc)
+        (huesped.numeroDocumento || '').toString().startsWith(numDoc)
             );
         }
         

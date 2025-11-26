@@ -134,6 +134,68 @@ const EstadoFactura = {
   PAGADA: "Pagada"
 };
 
+/**
+ * Convierte un huésped al formato estándar requerido
+ * @param {Object} huesped - Huésped en cualquier formato (dominio, JSON, etc.)
+ * @returns {Object} Huésped en formato estándar
+ */
+function convertirHuespedAFormatoEstandar(huesped) {
+  if (!huesped) return null;
+  
+  // Obtener dirección - puede venir como objeto direccion o como campos planos
+  let direccion = null;
+  if (huesped.direccion && typeof huesped.direccion === 'object') {
+    // Dirección viene como objeto
+    const dir = huesped.direccion;
+    direccion = {
+      calle: dir.calle || '',
+      numero: dir.numero || '',
+      piso: dir.piso || '',
+      departamento: dir.departamento || '',
+      ciudad: dir.ciudad || dir.localidad || '',
+      provincia: dir.provincia || '',
+      codigoPostal: dir.codigoPostal || '',
+      pais: dir.pais || ''
+    };
+  } else if (huesped.calle || huesped.numeroCalle || huesped.localidad) {
+    // Dirección viene en formato plano (campos directos del huésped)
+    direccion = {
+      calle: huesped.calle || '',
+      numero: huesped.numero || huesped.numeroCalle || '',
+      piso: huesped.piso || '',
+      departamento: huesped.departamento || '',
+      ciudad: huesped.ciudad || huesped.localidad || '',
+      provincia: huesped.provincia || '',
+      codigoPostal: huesped.codigoPostal || '',
+      pais: huesped.pais || ''
+    };
+  } else {
+    // Si no hay dirección, crear una vacía
+    direccion = {
+      calle: '',
+      numero: '',
+      piso: '',
+      departamento: '',
+      ciudad: '',
+      provincia: '',
+      codigoPostal: '',
+      pais: ''
+    };
+  }
+  
+  return {
+    apellido: huesped.apellido || '',
+    nombre: huesped.nombre || huesped.nombres || '',
+    tipoDocumento: huesped.tipoDocumento || '',
+    numeroDocumento: huesped.numeroDocumento || huesped.nroDocumento || huesped.documento || '',
+    cuit: huesped.cuit || '',
+    email: huesped.email || '',
+    ocupacion: huesped.ocupacion || '',
+    nacionalidad: huesped.nacionalidad || '',
+    direccion: direccion
+  };
+}
+
 
 function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFactura = TipoFactura.B) {
   if (!estadia) {
@@ -160,9 +222,14 @@ function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFactura 
   const total = subtotal + iva;
   
   
+  // Crear responsable usando la clase ResponsableDePago
   let responsable = null;
-  if (responsableDePago.razonSocial) {
-    
+  
+  // Si ya es una instancia de ResponsableDePago, convertir a JSON
+  if (responsableDePago && responsableDePago.tipo && typeof responsableDePago.toJSON === 'function') {
+    responsable = responsableDePago.toJSON();
+  } else if (responsableDePago.razonSocial) {
+    // Es un tercero (persona jurídica) - crear objeto JSON directamente
     responsable = {
       tipo: 'tercero',
       razonSocial: responsableDePago.razonSocial,
@@ -171,16 +238,22 @@ function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFactura 
       direccion: responsableDePago.direccion
     };
   } else {
-    
+    // Es un huésped (persona física) - crear objeto JSON directamente
+    // NOTA: No incluir CUIT según las correcciones del usuario
     responsable = {
       tipo: 'huesped',
       apellido: responsableDePago.apellido || estadia.titular.apellido,
       nombres: responsableDePago.nombres || estadia.titular.nombres,
-      documento: responsableDePago.numeroDocumento || estadia.titular.numeroDocumento,
-      cuit: responsableDePago.cuit || estadia.titular.cuit
+      documento: responsableDePago.numeroDocumento || responsableDePago.documento || estadia.titular.numeroDocumento
     };
   }
   
+  
+  // Convertir titular y acompañantes al formato estándar
+  const titularEstandar = convertirHuespedAFormatoEstandar(estadia.titular);
+  const acompaniantesEstandar = (estadia.acompaniantes || []).map(acomp => 
+    convertirHuespedAFormatoEstandar(acomp)
+  ).filter(acomp => acomp !== null);
   
   const factura = {
     id: null, 
@@ -196,8 +269,8 @@ function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFactura 
       fechaCheckIn: estadia.fechaCheckIn,
       fechaCheckOut: estadia.fechaCheckOut || fechaActual,
       habitacion: estadia.reserva.habitaciones[0],
-      titular: estadia.titular,
-      acompaniantes: estadia.acompaniantes || []
+      titular: titularEstandar,
+      acompaniantes: acompaniantesEstandar
     },
     detalle: {
       valorEstadia: valorEstadia,

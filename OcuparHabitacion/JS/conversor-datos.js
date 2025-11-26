@@ -102,42 +102,44 @@ export function convertirReservaJSONADominio(reservaJSON, idReserva, habitacione
 
 export function convertirHuespedJSONADominio(huespedJSON) {
   
-  
-  const caracteristica = huespedJSON.caracteristica || '';
-  const telefonoNumero = huespedJSON.telefonoNumero || '';
-  const telefono = caracteristica && telefonoNumero 
-    ? `${caracteristica}-${telefonoNumero}` 
-    : (caracteristica || telefonoNumero || '');
-  
+  const direccionOrigen = huespedJSON.direccion || {};
   
   const direccion = new Direccion(
-    huespedJSON.calle || '',
-    huespedJSON.numeroCalle || '',
-    huespedJSON.piso || '',
-    huespedJSON.departamento || '',
-    huespedJSON.localidad || '',
-    huespedJSON.provincia || '',
-    huespedJSON.codigoPostal || '',
-    huespedJSON.pais || ''
+    direccionOrigen.calle || huespedJSON.calle || '',
+    direccionOrigen.numero || huespedJSON.numeroCalle || '',
+    direccionOrigen.piso || huespedJSON.piso || '',
+    direccionOrigen.departamento || huespedJSON.departamento || '',
+    direccionOrigen.ciudad || direccionOrigen.localidad || huespedJSON.localidad || '',
+    direccionOrigen.provincia || huespedJSON.provincia || '',
+    direccionOrigen.codigoPostal || huespedJSON.codigoPostal || '',
+    direccionOrigen.pais || huespedJSON.pais || ''
   );
   
   
+  const numeroDocumento = huespedJSON.numeroDocumento || huespedJSON.nroDocumento || '';
+  
   const huesped = new Huesped(
-    huespedJSON.nombres || '',
+    huespedJSON.nombre || huespedJSON.nombres || '',
     huespedJSON.apellido || '',
     huespedJSON.tipoDocumento || '',
-    huespedJSON.numeroDocumento || '',
+    numeroDocumento,
     huespedJSON.fechaNacimiento || '2000-01-01',
     huespedJSON.ocupacion || '',
     huespedJSON.nacionalidad || '',
     huespedJSON.cuit || '',
     huespedJSON.email || '',
     direccion,
-    huespedJSON.condicionIVA || null 
+    null 
   );
   
   
-  huesped.telefono = telefono;
+  if (huespedJSON.telefono) {
+    huesped.telefono = huespedJSON.telefono;
+  } else if (huespedJSON.caracteristica || huespedJSON.telefonoNumero) {
+    const prefijo = huespedJSON.caracteristica || '';
+    const numero = huespedJSON.telefonoNumero || '';
+    huesped.telefono = prefijo && numero ? `${prefijo}-${numero}` : (prefijo || numero || '');
+  }
   
   return huesped;
 }

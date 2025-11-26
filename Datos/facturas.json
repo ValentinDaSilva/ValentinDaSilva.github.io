@@ -11,8 +11,7 @@
         "tipo": "HUESPED",
         "apellido": "ALVAREZ",
         "nombres": "LUCÍA",
-        "documento": "66554433",
-        "cuit": "27-66554433-1"
+        "documento": "66554433"
       },
       "medioDePago": null,
       "estadia": {
@@ -27,67 +26,64 @@
         },
         "titular": {
           "apellido": "ALVAREZ",
-          "nombres": "LUCÍA",
+          "nombre": "LUCÍA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "66554433",
           "cuit": "27-66554433-1",
-          "fechaNacimiento": "1996-08-12",
-          "caracteristica": "351",
-          "telefonoNumero": "5432109",
           "email": "LUCIA.ALVAREZ@EXAMPLE.COM",
           "ocupacion": "ESTUDIANTE",
           "nacionalidad": "ARGENTINA",
-          "calle": "ENTRE RÍOS",
-          "numeroCalle": "234",
-          "departamento": "",
-          "piso": "",
-          "codigoPostal": "5000",
-          "localidad": "CÓRDOBA",
-          "provincia": "CÓRDOBA",
-          "pais": "ARGENTINA"
+          "direccion": {
+            "calle": "ENTRE RÍOS",
+            "numero": "234",
+            "piso": "",
+            "departamento": "",
+            "ciudad": "CÓRDOBA",
+            "provincia": "CÓRDOBA",
+            "codigoPostal": "5000",
+            "pais": "ARGENTINA"
+          }
         },
         "acompaniantes": [
           {
             "apellido": "SILVA",
-            "nombres": "MATÍAS JOSÉ",
+            "nombre": "MATÍAS JOSÉ",
             "tipoDocumento": "LE",
             "numeroDocumento": "66778899",
             "cuit": "",
-            "fechaNacimiento": "1984-09-23",
-            "caracteristica": "342",
-            "telefonoNumero": "8765432",
             "email": "MATIAS.SILVA@EXAMPLE.COM",
             "ocupacion": "CONTADOR",
             "nacionalidad": "ARGENTINA",
-            "calle": "3 DE FEBRERO",
-            "numeroCalle": "234",
-            "departamento": "",
-            "piso": "",
-            "codigoPostal": "3000",
-            "localidad": "SANTA FE",
-            "provincia": "SANTA FE",
-            "pais": "ARGENTINA"
+            "direccion": {
+              "calle": "3 DE FEBRERO",
+              "numero": "234",
+              "piso": "",
+              "departamento": "",
+              "ciudad": "SANTA FE",
+              "provincia": "SANTA FE",
+              "codigoPostal": "3000",
+              "pais": "ARGENTINA"
+            }
           },
           {
             "apellido": "LÓPEZ",
-            "nombres": "ANA MARÍA",
+            "nombre": "ANA MARÍA",
             "tipoDocumento": "DNI",
             "numeroDocumento": "55443322",
             "cuit": "27-55443322-5",
-            "fechaNacimiento": "1988-07-25",
-            "caracteristica": "342",
-            "telefonoNumero": "9876543",
             "email": "ANA.LOPEZ@EXAMPLE.COM",
             "ocupacion": "CONTADORA",
             "nacionalidad": "ARGENTINA",
-            "calle": "MITRE",
-            "numeroCalle": "345",
-            "departamento": "",
-            "piso": "",
-            "codigoPostal": "3000",
-            "localidad": "ROSARIO",
-            "provincia": "SANTA FE",
-            "pais": "ARGENTINA"
+            "direccion": {
+              "calle": "MITRE",
+              "numero": "345",
+              "piso": "",
+              "departamento": "",
+              "ciudad": "ROSARIO",
+              "provincia": "SANTA FE",
+              "codigoPostal": "3000",
+              "pais": "ARGENTINA"
+            }
           }
         ]
       },
@@ -128,8 +124,7 @@
         "tipo": "HUESPED",
         "apellido": "GONZALEZ",
         "nombres": "MARIA",
-        "documento": "23456789",
-        "cuit": ""
+        "documento": "23456789"
       },
       "medioDePago": null,
       "estadia": {
@@ -144,24 +139,23 @@
         },
         "titular": {
           "apellido": "GONZALEZ",
-          "nombres": "MARIA",
+          "nombre": "MARIA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "23456789",
           "cuit": "",
-          "fechaNacimiento": "1990-07-22",
-          "caracteristica": "342",
-          "telefonoNumero": "2222222",
           "email": "maria.gonzalez@email.com",
           "ocupacion": "Medica",
           "nacionalidad": "ARGENTINA",
-          "calle": "SAN MARTÍN",
-          "numeroCalle": "567",
-          "departamento": "",
-          "piso": "",
-          "codigoPostal": "2000",
-          "localidad": "ROSARIO",
-          "provincia": "SANTA FE",
-          "pais": "ARGENTINA"
+          "direccion": {
+            "calle": "SAN MARTÍN",
+            "numero": "567",
+            "piso": "",
+            "departamento": "",
+            "ciudad": "ROSARIO",
+            "provincia": "SANTA FE",
+            "codigoPostal": "2000",
+            "pais": "ARGENTINA"
+          }
         },
         "acompaniantes": []
       },
@@ -245,24 +239,23 @@
         },
         "titular": {
           "apellido": "SILVA",
-          "nombres": "MATÍAS JOSÉ",
+          "nombre": "MATÍAS JOSÉ",
           "tipoDocumento": "LE",
           "numeroDocumento": "66778899",
           "cuit": "",
-          "fechaNacimiento": "1984-09-23",
-          "caracteristica": "342",
-          "telefonoNumero": "8765432",
           "email": "MATIAS.SILVA@EXAMPLE.COM",
           "ocupacion": "CONTADOR",
           "nacionalidad": "ARGENTINA",
-          "calle": "3 DE FEBRERO",
-          "numeroCalle": "234",
-          "departamento": "",
-          "piso": "",
-          "codigoPostal": "3000",
-          "localidad": "SANTA FE",
-          "provincia": "SANTA FE",
-          "pais": "ARGENTINA"
+          "direccion": {
+            "calle": "3 DE FEBRERO",
+            "numero": "234",
+            "piso": "",
+            "departamento": "",
+            "ciudad": "SANTA FE",
+            "provincia": "SANTA FE",
+            "codigoPostal": "3000",
+            "pais": "ARGENTINA"
+          }
         },
         "acompaniantes": []
       },
@@ -323,8 +316,7 @@
         "tipo": "HUESPED",
         "apellido": "ALVAREZ",
         "nombres": "LUCÍA",
-        "documento": "66554433",
-        "cuit": "27-66554433-1"
+        "documento": "66554433"
       },
       "medioDePago": null,
       "estadia": {
@@ -339,24 +331,23 @@
         },
         "titular": {
           "apellido": "MARTÍNEZ",
-          "nombres": "LUIS ENRIQUE",
+          "nombre": "LUIS ENRIQUE",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "11123456",
           "cuit": "",
-          "fechaNacimiento": "1985-02-14",
-          "caracteristica": "11",
-          "telefonoNumero": "45678901",
           "email": "LUIS.MARTINEZ@EXAMPLE.COM",
           "ocupacion": "ARQUITECTO",
           "nacionalidad": "BRASIL",
-          "calle": "AVENIDA CORRIENTES",
-          "numeroCalle": "1234",
-          "departamento": "B",
-          "piso": "3",
-          "codigoPostal": "1043",
-          "localidad": "BUENOS AIRES",
-          "provincia": "BUENOS AIRES",
-          "pais": "ARGENTINA"
+          "direccion": {
+            "calle": "AVENIDA CORRIENTES",
+            "numero": "1234",
+            "piso": "3",
+            "departamento": "B",
+            "ciudad": "BUENOS AIRES",
+            "provincia": "BUENOS AIRES",
+            "codigoPostal": "1043",
+            "pais": "ARGENTINA"
+          }
         },
         "acompaniantes": []
       },
@@ -416,8 +407,7 @@
         "tipo": "HUESPED",
         "apellido": "MORENO",
         "nombres": "JUAN MARTÍN",
-        "documento": "44557788",
-        "cuit": ""
+        "documento": "44557788"
       },
       "medioDePago": null,
       "estadia": {
@@ -432,24 +422,23 @@
         },
         "titular": {
           "apellido": "MORENO",
-          "nombres": "JUAN MARTÍN",
+          "nombre": "JUAN MARTÍN",
           "tipoDocumento": "LC",
           "numeroDocumento": "44557788",
           "cuit": "",
-          "fechaNacimiento": "1986-12-31",
-          "caracteristica": "342",
-          "telefonoNumero": "9876543",
           "email": "JUAN.MORENO@EXAMPLE.COM",
           "ocupacion": "PERIODISTA",
           "nacionalidad": "ARGENTINA",
-          "calle": "JUNÍN",
-          "numeroCalle": "567",
-          "departamento": "",
-          "piso": "",
-          "codigoPostal": "3000",
-          "localidad": "SANTA FE",
-          "provincia": "SANTA FE",
-          "pais": "ARGENTINA"
+          "direccion": {
+            "calle": "JUNÍN",
+            "numero": "567",
+            "piso": "",
+            "departamento": "",
+            "ciudad": "SANTA FE",
+            "provincia": "SANTA FE",
+            "codigoPostal": "3000",
+            "pais": "ARGENTINA"
+          }
         },
         "acompaniantes": []
       },
@@ -515,8 +504,7 @@
         "tipo": "HUESPED",
         "apellido": "TORRES",
         "nombres": "LAURA",
-        "documento": "44556677",
-        "cuit": "27-44556677-9"
+        "documento": "44556677"
       },
       "medioDePago": null,
       "estadia": {
@@ -531,46 +519,44 @@
         },
         "titular": {
           "apellido": "TORRES",
-          "nombres": "LAURA",
+          "nombre": "LAURA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "44556677",
           "cuit": "27-44556677-9",
-          "fechaNacimiento": "1991-04-22",
-          "caracteristica": "342",
-          "telefonoNumero": "8765432",
           "email": "LAURA.TORRES@EXAMPLE.COM",
           "ocupacion": "DISEÑADORA",
           "nacionalidad": "ARGENTINA",
-          "calle": "SAN JERÓNIMO",
-          "numeroCalle": "890",
-          "departamento": "D",
-          "piso": "4",
-          "codigoPostal": "3000",
-          "localidad": "SANTA FE",
-          "provincia": "SANTA FE",
-          "pais": "ARGENTINA"
+          "direccion": {
+            "calle": "SAN JERÓNIMO",
+            "numero": "890",
+            "piso": "4",
+            "departamento": "D",
+            "ciudad": "SANTA FE",
+            "provincia": "SANTA FE",
+            "codigoPostal": "3000",
+            "pais": "ARGENTINA"
+          }
         },
         "acompaniantes": [
           {
             "apellido": "MARTÍNEZ",
-            "nombres": "LUIS ENRIQUE",
+            "nombre": "LUIS ENRIQUE",
             "tipoDocumento": "PASAPORTE",
             "numeroDocumento": "11123456",
             "cuit": "",
-            "fechaNacimiento": "1985-02-14",
-            "caracteristica": "11",
-            "telefonoNumero": "45678901",
             "email": "LUIS.MARTINEZ@EXAMPLE.COM",
             "ocupacion": "ARQUITECTO",
             "nacionalidad": "BRASIL",
-            "calle": "AVENIDA CORRIENTES",
-            "numeroCalle": "1234",
-            "departamento": "B",
-            "piso": "3",
-            "codigoPostal": "1043",
-            "localidad": "BUENOS AIRES",
-            "provincia": "BUENOS AIRES",
-            "pais": "ARGENTINA"
+            "direccion": {
+              "calle": "AVENIDA CORRIENTES",
+              "numero": "1234",
+              "piso": "3",
+              "departamento": "B",
+              "ciudad": "BUENOS AIRES",
+              "provincia": "BUENOS AIRES",
+              "codigoPostal": "1043",
+              "pais": "ARGENTINA"
+            }
           }
         ]
       },

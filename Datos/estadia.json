@@ -43,8 +43,7 @@
         "provincia": "BUENOS AIRES",
         "codigoPostal": "1043",
         "pais": "ARGENTINA"
-      },
-      "condicionIVA": "Responsable Inscripto"
+      }
     },
       "acompaniantes": [],
       "consumos": []
@@ -1010,8 +1009,7 @@
           "provincia": "BUENOS AIRES",
           "codigoPostal": "1043",
           "pais": "ARGENTINA"
-        },
-        "condicionIVA": "Responsable Inscripto"
+        }
       },
       "acompaniantes": [
         {
@@ -1033,8 +1031,7 @@
             "provincia": "SANTA FE",
             "codigoPostal": "2000",
             "pais": "ARGENTINA"
-          },
-          "condicionIVA": null
+          }
         }
       ],
       "consumos": []

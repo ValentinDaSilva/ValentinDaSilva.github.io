@@ -33,12 +33,12 @@ import { EstadoReserva } from "./Enums.js";
  */
 class Reserva {
   constructor(id, fechaInicio, fechaFin, titular, estado = EstadoReserva.PENDIENTE) {
-    this._id = id;
-    this._fechaInicio = new Date(fechaInicio);
-    this._fechaFin = new Date(fechaFin);
-    this._titular = titular;
-    this._estado = estado;
-    this._habitaciones = [];
+    this._id = id; //Tipo number
+    this._fechaInicio = new Date(fechaInicio); //Tipo Date
+    this._fechaFin = new Date(fechaFin); //Tipo Date
+    this._titular = titular; //Tipo Huesped
+    this._estado = estado; //Tipo EstadoReserva
+    this._habitaciones = []; //Tipo Habitacion
   }
 
   get id() { return this._id; }

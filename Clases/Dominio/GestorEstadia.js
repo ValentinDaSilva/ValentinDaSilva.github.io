@@ -5,26 +5,25 @@ import { EstadoEstadia } from "./Enums.js";
  * GestorEstadia - Coordinador central para todas las operaciones relacionadas con estadías.
  * 
  * MÉTODOS PÚBLICOS:
- * - async ocuparHabitacion(reservaSeleccionada, titularSeleccionado, acompaniantesSeleccionados)
- *   → Procesa la ocupación de una habitación creando una estadía a partir de una reserva.
- * 
- * - crearEstadia(reserva, titular, acompaniantes = [], fechaCheckIn, fechaCheckOut = null)
+ *  crearEstadia(reserva, titular, acompaniantes = [], fechaCheckIn, fechaCheckOut = null)
  *   → Crea una nueva instancia de estadía con los datos proporcionados.
  * 
- * - registrarCheckIn(fecha, habitaciones)
+ * - registrarCheckIn(Estadia,fecha, habitaciones)
  *   → Registra el check-in de una estadía en una fecha específica.
  * 
- * - registrarCheckOut(id, fecha)
+ * - registrarCheckOut(Estadia, id, fecha)
  *   → Registra el check-out de una estadía por ID.
  * 
- * - agregarConsumos(id, descripcion, monto)
- *   → Agrega consumos a una estadía existente por ID.
+ * - convertirEstadiaADTO(estadia)
+ *   → Convierte un objeto Estadia de dominio a un DTO para la persistencia/transferencia de datos.
  * 
- * - verConsumos(id)
- *   → Retorna los consumos asociados a una estadía por ID.
+ * - convertirDTOAEstadia(estadiaDTO)
+ *   → Convierte un DTO de estadía (desde la base de datos u origen externo) a un objeto Estadia de dominio.
  * 
  * - async guardarEstadiaEnBD(estadiaJSON)
  *   → Guarda una estadía en la base de datos.
+ * 
+ *  
  */
 class GestorEstadia {
   constructor() { 

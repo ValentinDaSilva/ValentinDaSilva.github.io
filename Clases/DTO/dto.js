@@ -36,7 +36,7 @@ class PersonaDTO {
 }
 
 class HuespedDTO extends PersonaDTO {
-  constructor(nombre, apellido, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null, condicionIVA = null) {
+  constructor(nombre, apellido, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null) {
     super(nombre, apellido, null); 
     this._tipoDocumento = tipoDocumento;
     this._nroDocumento = nroDocumento;
@@ -46,7 +46,6 @@ class HuespedDTO extends PersonaDTO {
     this._cuit = cuit;
     this._email = email;
     this._direccion = direccion;
-    this._condicionIVA = condicionIVA;
   }
 
   get tipoDocumento() { return this._tipoDocumento; } set tipoDocumento(v) { this._tipoDocumento = v; }
@@ -57,7 +56,6 @@ class HuespedDTO extends PersonaDTO {
   get cuit() { return this._cuit; } set cuit(v) { this._cuit = v; }
   get email() { return this._email; } set email(v) { this._email = v; }
   get direccion() { return this._direccion; } set direccion(v) { this._direccion = v; }
-  get condicionIVA() { return this._condicionIVA; } set condicionIVA(v) { this._condicionIVA = v; }
 }
 
 class HabitacionDTO {

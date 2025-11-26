@@ -2,17 +2,16 @@ import Persona from "./Persona.js";
 import Direccion from "./Direccion.js";
 
 class Huesped extends Persona {
-  constructor(nombre, apellido, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null, condicionIVA = null) {
+  constructor(nombre, apellido, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null) {
     super(nombre, apellido);
-    this._tipoDocumento = tipoDocumento;
-    this._nroDocumento = nroDocumento;
-    this._fechaNacimiento = new Date(fechaNacimiento);
-    this._ocupacion = ocupacion;
-    this._nacionalidad = nacionalidad;
-    this._cuit = cuit || '';
-    this._email = email || '';
-    this._direccion = direccion; 
-    this._condicionIVA = condicionIVA; 
+    this._tipoDocumento = tipoDocumento; //Tipo string
+    this._nroDocumento = nroDocumento; //Tipo string
+    this._fechaNacimiento = new Date(fechaNacimiento); //Tipo Date
+    this._ocupacion = ocupacion; //Tipo string
+    this._nacionalidad = nacionalidad; //Tipo string
+    this._cuit = cuit || ''; //Tipo string
+    this._email = email || ''; //Tipo string
+    this._direccion = direccion; //Tipo Direccion
   }
 
   get tipoDocumento() { return this._tipoDocumento; }
@@ -38,9 +37,6 @@ class Huesped extends Persona {
 
   get direccion() { return this._direccion; }
   set direccion(v) { this._direccion = v; }
-
-  get condicionIVA() { return this._condicionIVA; }
-  set condicionIVA(v) { this._condicionIVA = v; }
 
   calcularEdad() {
     if (!this._fechaNacimiento) {

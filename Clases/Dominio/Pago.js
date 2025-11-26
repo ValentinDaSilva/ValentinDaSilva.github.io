@@ -1,10 +1,10 @@
 class Pago {
   constructor(id, fecha, hora, montoTotal, medioDePago) {
-    this._id = id;
-    this._fecha = fecha;
-    this._hora = hora;
-    this._montoTotal = montoTotal;
-    this._medioDePago = medioDePago; 
+    this._id = id; //Tipo number
+    this._fecha = fecha; //Tipo Date
+    this._hora = hora; //Tipo Date
+    this._montoTotal = montoTotal; //Tipo real
+    this._medioDePago = medioDePago; //Tipo MedioDePago
   }
 
   get id() { return this._id; }

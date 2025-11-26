@@ -170,7 +170,7 @@ class GestorIngresarNotaCredito extends GestorFactura {
 
       
       const total = facturas.reduce((acc, factura) => {
-        return acc + (factura.detalle?.total || 0);
+        return acc + (factura.total || 0);
       }, 0);
 
       
@@ -226,15 +226,12 @@ class GestorIngresarNotaCredito extends GestorFactura {
   esResponsableInscripto(responsable) {
     if (!responsable) return false;
     
-    if (responsable.condicionIVA) {
-      const condicionNormalizada = (responsable.condicionIVA || '').toUpperCase().trim();
-      return condicionNormalizada === 'RESPONSABLE_INSCRIPTO' || 
-             condicionNormalizada === 'RESPONSABLE INSCRIPTO' ||
-             condicionNormalizada === 'INSCRIPTO';
-    }
-    
     if (responsable.tipo === 'tercero') {
       return true;
+    }
+    
+    if (responsable.tipo === 'huesped') {
+      return !!responsable.cuit;
     }
     
     return false;

@@ -6,7 +6,7 @@ import { GestorHuesped, Huesped, Direccion } from "../../Clases/Dominio/dominio.
 class GestorModificarHuesped extends GestorHuesped {
     constructor() {
         super();
-        this._rutaBD = '/Datos/huspedes.json';
+        this._rutaBD = '/Datos/huespedes.json';
         this._huespedOriginal = null; 
     }
 
@@ -56,9 +56,6 @@ class GestorModificarHuesped extends GestorHuesped {
     
     crearHuespedDominio(datos) {
         
-        const condicionIVA = this._huespedOriginal?.condicionIVA || null;
-
-        
         const direccion = this.crearDireccionDominio(datos);
 
         const huesped = new Huesped(
@@ -72,7 +69,7 @@ class GestorModificarHuesped extends GestorHuesped {
             datos.cuit || '',
             datos.email || '',
             direccion,
-            condicionIVA
+            null
         );
 
         
@@ -116,7 +113,7 @@ class GestorModificarHuesped extends GestorHuesped {
             huesped.cuit,
             huesped.email,
             direccionDTO,
-            huesped.condicionIVA
+            null
         );
         
         huespedDTO.telefono = huesped.telefono;
@@ -142,28 +139,27 @@ class GestorModificarHuesped extends GestorHuesped {
 
     
     convertirDTOAJSON(huespedDTO, direccionDTO, datosOriginales) {
-        const jsonData = {
-            
-            apellido: huespedDTO.apellido,
-            nombres: huespedDTO.nombre,
-            tipoDocumento: huespedDTO.tipoDocumento,
-            numeroDocumento: huespedDTO.nroDocumento,
-            cuit: huespedDTO.cuit || '',
-            fechaNacimiento: huespedDTO.fechaNacimiento,
-            caracteristica: datosOriginales.caracteristica,
-            telefonoNumero: datosOriginales.telefonoNumero,
-            email: huespedDTO.email || '',
-            ocupacion: huespedDTO.ocupacion,
-            nacionalidad: huespedDTO.nacionalidad,
-            
-            calle: direccionDTO.calle,
-            numeroCalle: direccionDTO.numero,
-            departamento: direccionDTO.departamento || '',
+        const direccion = {
+            calle: direccionDTO.calle || '',
+            numero: direccionDTO.numero || '',
             piso: direccionDTO.piso || '',
-            codigoPostal: direccionDTO.codigoPostal,
-            localidad: direccionDTO.localidad,
-            provincia: direccionDTO.provincia,
-            pais: datosOriginales.pais 
+            departamento: direccionDTO.departamento || '',
+            ciudad: direccionDTO.localidad || '',
+            provincia: direccionDTO.provincia || '',
+            codigoPostal: direccionDTO.codigoPostal || '',
+            pais: datosOriginales.pais || ''
+        };
+
+        const jsonData = {
+            apellido: huespedDTO.apellido || '',
+            nombre: huespedDTO.nombre || '',
+            tipoDocumento: huespedDTO.tipoDocumento || '',
+            numeroDocumento: huespedDTO.nroDocumento || '',
+            cuit: huespedDTO.cuit || '',
+            email: huespedDTO.email || '',
+            ocupacion: huespedDTO.ocupacion || '',
+            nacionalidad: huespedDTO.nacionalidad || '',
+            direccion: direccion
         };
 
         return jsonData;
@@ -213,8 +209,7 @@ class GestorModificarHuesped extends GestorHuesped {
                 nacionalidad: huespedDominio.nacionalidad,
                 cuit: huespedDominio.cuit,
                 email: huespedDominio.email,
-                direccion: huespedDominio.direccion,
-                condicionIVA: huespedDominio.condicionIVA
+                direccion: huespedDominio.direccion
             });
 
             return true;

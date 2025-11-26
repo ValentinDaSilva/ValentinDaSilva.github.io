@@ -40,72 +40,30 @@ function convertirEstadiaAJSON(estadia) {
     function convertirHuespedAJSON(huesped) {
         if (!huesped) return null;
         
+        const nombreNormalizado = (huesped.nombre || '').toString().trim();
         
-        
-        let caracteristica = '';
-        let telefonoNumero = '';
-        if (huesped.telefono) {
-            const telefonoStr = huesped.telefono.toString();
-            
-            if (telefonoStr.includes('-')) {
-                const partes = telefonoStr.split('-');
-                caracteristica = partes[0] || '';
-                telefonoNumero = partes.slice(1).join('-') || '';
-            } else {
-                
-                
-                if (telefonoStr.length >= 7) {
-                    caracteristica = telefonoStr.substring(0, 3);
-                    telefonoNumero = telefonoStr.substring(3);
-                } else {
-                    telefonoNumero = telefonoStr;
-                }
-            }
-        }
-        
+        const direccionJSON = {
+            calle: huesped.direccion?.calle || '',
+            numero: huesped.direccion?.numero || '',
+            piso: huesped.direccion?.piso || '',
+            departamento: huesped.direccion?.departamento || '',
+            ciudad: huesped.direccion?.localidad || huesped.direccion?.ciudad || '',
+            provincia: huesped.direccion?.provincia || '',
+            codigoPostal: huesped.direccion?.codigoPostal || '',
+            pais: huesped.direccion?.pais || ''
+        };
         
         const huespedJSON = {
             apellido: huesped.apellido || '',
-            nombres: huesped.nombre || '',
+            nombre: nombreNormalizado,
             tipoDocumento: huesped.tipoDocumento || '',
             numeroDocumento: huesped.nroDocumento || '',
             cuit: huesped.cuit || '',
-            fechaNacimiento: huesped.fechaNacimiento instanceof Date
-                ? huesped.fechaNacimiento.toISOString().split('T')[0]
-                : (typeof huesped.fechaNacimiento === 'string' ? huesped.fechaNacimiento : '2000-01-01'),
-            caracteristica: caracteristica,
-            telefonoNumero: telefonoNumero,
             email: huesped.email || '',
             ocupacion: huesped.ocupacion || '',
-            nacionalidad: huesped.nacionalidad || ''
+            nacionalidad: huesped.nacionalidad || '',
+            direccion: direccionJSON
         };
-        
-        
-        if (huesped.direccion) {
-            huespedJSON.calle = huesped.direccion.calle || '';
-            huespedJSON.numeroCalle = huesped.direccion.numero || '';
-            huespedJSON.departamento = huesped.direccion.departamento || '';
-            huespedJSON.piso = huesped.direccion.piso || '';
-            huespedJSON.codigoPostal = huesped.direccion.codigoPostal || '';
-            huespedJSON.localidad = huesped.direccion.localidad || '';
-            huespedJSON.provincia = huesped.direccion.provincia || '';
-            huespedJSON.pais = huesped.direccion.pais || '';
-        } else {
-            
-            huespedJSON.calle = '';
-            huespedJSON.numeroCalle = '';
-            huespedJSON.departamento = '';
-            huespedJSON.piso = '';
-            huespedJSON.codigoPostal = '';
-            huespedJSON.localidad = '';
-            huespedJSON.provincia = '';
-            huespedJSON.pais = '';
-        }
-        
-        
-        if (huesped.condicionIVA) {
-            huespedJSON.condicionIVA = huesped.condicionIVA;
-        }
         
         return huespedJSON;
     }

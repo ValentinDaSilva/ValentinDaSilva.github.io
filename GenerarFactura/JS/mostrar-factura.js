@@ -2,7 +2,7 @@
 
 
 
-function mostrarDatosFacturaEnPantalla(factura) {
+async function mostrarDatosFacturaEnPantalla(factura) {
   try {
     console.log('mostrarDatosFacturaEnPantalla - Recibida factura:', factura);
     
@@ -16,11 +16,6 @@ function mostrarDatosFacturaEnPantalla(factura) {
       throw new Error('La factura generada no tiene la estructura de estadía correcta');
     }
     
-    if (!factura.detalle) {
-      console.error('La factura no tiene detalle:', factura);
-      throw new Error('La factura generada no tiene la estructura de detalle correcta');
-    }
-    
     console.log('Actualizando elementos de la UI...');
     
     // Actualizar nombre del huésped
@@ -31,24 +26,53 @@ function mostrarDatosFacturaEnPantalla(factura) {
       console.log('Nombre del huésped actualizado');
     }
   
-  
+  // Calcular valor estadía y número de noches desde la estadía
   const valorEstadiaElement = document.querySelector('.valorEstadia p');
-  if (valorEstadiaElement && factura.detalle) {
-    valorEstadiaElement.textContent = `✔️ Valor de Estadia: $${factura.detalle.valorEstadia.toFixed(2)} × ${factura.detalle.numeroNoches} Noches`;
+  if (valorEstadiaElement && factura.estadia) {
+    try {
+      // Intentar calcular desde la estadía si tiene métodos
+      let valorEstadia = 0;
+      let numeroNoches = 0;
+      
+      if (factura.estadia.calcularValorEstadia && typeof factura.estadia.calcularValorEstadia === 'function') {
+        valorEstadia = factura.estadia.calcularValorEstadia();
+        numeroNoches = factura.estadia.calcularNumeroNoches();
+      } else if (factura.estadia.reserva && factura.estadia.reserva.habitaciones) {
+        // Calcular manualmente desde JSON
+        const habitacion = factura.estadia.reserva.habitaciones[0];
+        const costoPorNoche = habitacion.costoPorNoche || 0;
+        const fechaInicio = new Date(factura.estadia.fechaCheckIn);
+        const fechaFin = factura.estadia.fechaCheckOut ? new Date(factura.estadia.fechaCheckOut) : new Date();
+        fechaInicio.setHours(0, 0, 0, 0);
+        fechaFin.setHours(0, 0, 0, 0);
+        const diffTime = Math.abs(fechaFin - fechaInicio);
+        numeroNoches = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        valorEstadia = costoPorNoche * numeroNoches;
+      }
+      
+      if (valorEstadia > 0 && numeroNoches > 0) {
+        valorEstadiaElement.textContent = `✔️ Valor de Estadia: $${valorEstadia.toFixed(2)} × ${numeroNoches} Noches`;
+      }
+    } catch (error) {
+      console.error('Error al calcular valor estadía:', error);
+    }
   }
   
-  
+  // Mostrar consumos desde la estadía
   const consumosContainer = document.querySelector('.listaConsumos');
-  if (consumosContainer && factura.detalle.consumos) {
+  if (consumosContainer && factura.estadia) {
     consumosContainer.innerHTML = '';
+    const consumos = factura.estadia.consumos || [];
     
-    if (factura.detalle.consumos.length > 0) {
-      factura.detalle.consumos.forEach(consumo => {
+    if (consumos.length > 0) {
+      consumos.forEach(consumo => {
         const itemLista = document.createElement('div');
         itemLista.className = 'itemLista';
+        const precio = consumo.precio || consumo.monto || 0;
+        const descripcion = consumo.descripcion || 'Consumo';
         itemLista.innerHTML = `
-          <label><input type="checkbox" disabled /> ${consumo.descripcion || 'Consumo'}: </label>
-          <p>$${(consumo.precio || 0).toFixed(2)}</p>
+          <label><input type="checkbox" disabled /> ${descripcion}: </label>
+          <p>$${precio.toFixed(2)}</p>
         `;
         consumosContainer.appendChild(itemLista);
       });
@@ -62,63 +86,70 @@ function mostrarDatosFacturaEnPantalla(factura) {
     }
   }
   
-  
+  // Calcular recargo desde la factura si tiene horaSalida
   const recargoSection = document.getElementById('recargoCheckoutSection');
   const mensajeRecargo = document.getElementById('mensajeRecargo');
   const montoRecargo = document.getElementById('montoRecargo');
   const nuevaOcupacionWarning = document.getElementById('nuevaOcupacionWarning');
   
-  if (recargoSection && factura.detalle) {
-    const recargo = factura.detalle.recargoCheckout || 0;
-    const tipoRecargo = factura.detalle.tipoRecargoCheckout || 'normal';
-    const mensaje = factura.detalle.mensajeRecargoCheckout || '';
-    const requiereNuevaOcupacion = factura.detalle.requiereNuevaOcupacion || false;
-    
-    if (recargo > 0) {
+  if (recargoSection && factura.horaSalida && factura.estadia && factura.estadia.reserva) {
+    try {
+      // Importar Factura para usar su método calcularRecargoCheckout
+      const { default: Factura } = await import('../../Clases/Dominio/Factura.js');
+      const facturaTemp = new Factura(null, null, null, null, null, null, null, factura.estadia);
+      const habitacion = factura.estadia.reserva.habitaciones[0];
+      const costoPorNoche = habitacion ? (habitacion.costoPorNoche || 0) : 0;
+      const recargoCheckout = facturaTemp.calcularRecargoCheckout(factura.horaSalida, costoPorNoche);
       
-      recargoSection.style.display = 'block';
-      
-      if (mensajeRecargo) {
-        mensajeRecargo.textContent = mensaje;
-      }
-      
-      if (montoRecargo) {
-        montoRecargo.innerHTML = `<strong>Monto del recargo: $${recargo.toFixed(2)}</strong>`;
-      }
-      
-      
-      if (nuevaOcupacionWarning) {
-        if (requiereNuevaOcupacion) {
-          nuevaOcupacionWarning.style.display = 'block';
-        } else {
+      if (recargoCheckout.recargo > 0) {
+        recargoSection.style.display = 'block';
+        
+        if (mensajeRecargo) {
+          mensajeRecargo.textContent = recargoCheckout.mensaje;
+        }
+        
+        if (montoRecargo) {
+          montoRecargo.innerHTML = `<strong>Monto del recargo: $${recargoCheckout.recargo.toFixed(2)}</strong>`;
+        }
+        
+        if (nuevaOcupacionWarning) {
+          if (recargoCheckout.requiereNuevaOcupacion) {
+            nuevaOcupacionWarning.style.display = 'block';
+          } else {
+            nuevaOcupacionWarning.style.display = 'none';
+          }
+        }
+      } else {
+        recargoSection.style.display = 'none';
+        if (nuevaOcupacionWarning) {
           nuevaOcupacionWarning.style.display = 'none';
         }
       }
-    } else {
-      
+    } catch (error) {
+      console.error('Error al calcular recargo:', error);
       recargoSection.style.display = 'none';
-      if (nuevaOcupacionWarning) {
-        nuevaOcupacionWarning.style.display = 'none';
-      }
     }
+  } else {
+    recargoSection.style.display = 'none';
   }
   
-  
+  // Mostrar IVA directamente desde factura.iva
   const ivaElement = document.querySelector('.iva');
-  if (ivaElement && factura.detalle) {
+  if (ivaElement && factura.iva !== undefined) {
     ivaElement.innerHTML = `
       <strong>✔️ IVA (21%):</strong>
-      <strong>$${factura.detalle.iva.toFixed(2)}</strong>
+      <strong>$${factura.iva.toFixed(2)}</strong>
     `;
   }
   
-  
+  // Mostrar total directamente desde factura.total
   const tipoFacturaElement = document.querySelector('.tipoFactura');
-  if (tipoFacturaElement && factura.detalle) {
+  if (tipoFacturaElement) {
+    const totalFactura = factura.total || 0;
     tipoFacturaElement.innerHTML = `
       <strong>Tipo de Factura: ${factura.tipo || 'B'}</strong>
       <div class="total-box">
-        Monto Total: $${factura.detalle.total.toFixed(2)}
+        Monto Total: $${totalFactura.toFixed(2)}
       </div>
     `;
   }

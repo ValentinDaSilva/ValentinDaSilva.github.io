@@ -1,6 +1,7 @@
 import Huesped from "./Huesped.js";
 
 /**
+/**
  * GestorHuesped - Coordinador central para todas las operaciones relacionadas con huéspedes.
  * 
  * MÉTODOS PÚBLICOS:
@@ -13,45 +14,65 @@ import Huesped from "./Huesped.js";
  * - async modificarHuespedCompleto()
  *   → Procesa la modificación de un huésped existente con validaciones y persistencia.
  * 
- * - darDeAlta(huesped)
- *   → Agrega un huésped al listado interno (valida mayoría de edad).
- * 
- * - darDeBaja(nroDoc)
- *   → Elimina un huésped del listado por número de documento.
- * 
- * - buscarHuesped(nroDoc)
- *   → Busca y retorna un huésped por número de documento.
- * 
- * - modificarHuesped(nroDoc, datos)
- *   → Modifica los datos de un huésped existente.
- * 
  * - async guardarEnBD(jsonData, operacion = 'alta')
  *   → Guarda o actualiza un huésped en la base de datos (alta o modificación).
+ * 
+ * - convertirHuespedADTO(huesped)
+ *   → Convierte un objeto Huesped de dominio a un DTO para la persistencia/transferencia de datos.
+ * 
+ * - convertirDTOAHuesped(huespedDTO)
+ *   → Convierte un DTO de huésped (desde la base de datos u origen externo) a un objeto Huesped de dominio.
+ * 
  */
 class GestorHuesped {
   constructor() { 
     this.huespedes = []; 
-    this._rutaBD = '/Datos/huspedes.json';
+    this._rutaBD = '/Datos/huespedes.json';
     this._gestorAlta = null;
     this._gestorBuscar = null;
     this._gestorModificar = null;
   }
 
   
-  darDeAlta(huesped) {
-    if (!huesped.verificarMayorEdad()) throw new Error("El huésped debe ser mayor de edad");
-    this.huespedes.push(huesped);
+  normalizarHuesped(huesped) {
+    if (!huesped || typeof huesped !== 'object') {
+      return null;
+    }
+
+    const nombres = (huesped.nombres ?? huesped.nombre ?? '').toString().trim();
+    const numeroDocumentoRaw = huesped.numeroDocumento ?? huesped.nroDocumento ?? huesped.documento ?? '';
+    const numeroDocumento = numeroDocumentoRaw === null || numeroDocumentoRaw === undefined
+      ? ''
+      : String(numeroDocumentoRaw).trim();
+    const tipoDocumento = (huesped.tipoDocumento ?? huesped.tipoDoc ?? '').toString().trim();
+
+    return {
+      ...huesped,
+      apellido: (huesped.apellido ?? '').toString().trim(),
+      nombres,
+      nombre: huesped.nombre ?? nombres,
+      numeroDocumento,
+      nroDocumento: huesped.nroDocumento ?? numeroDocumento,
+      tipoDocumento
+    };
   }
 
-  darDeBaja(nroDoc) { this.huespedes = this.huespedes.filter(h => h.nroDocumento !== nroDoc); }
   
-  buscarHuesped(nroDoc) { return this.huespedes.find(h => h.nroDocumento === nroDoc) || null; }
+  normalizarDatosHuespedes(datosCrudos) {
+    if (!datosCrudos) {
+      return [];
+    }
 
-  modificarHuesped(nroDoc, datos) {
-    const h = this.buscarHuesped(nroDoc);
-    if (h) Object.assign(h, datos);
+    const lista = Array.isArray(datosCrudos)
+      ? datosCrudos
+      : (Array.isArray(datosCrudos.huespedes) ? datosCrudos.huespedes : []);
+
+    return lista
+      .map(huesped => this.normalizarHuesped(huesped))
+      .filter(Boolean);
   }
 
+  
   
   async guardarEnBD(jsonData, operacion = 'alta') {
     try {
@@ -59,7 +80,8 @@ class GestorHuesped {
       let huespedesExistentes = [];
       
       if (respuesta.ok) {
-        huespedesExistentes = await respuesta.json();
+        const datos = await respuesta.json();
+        huespedesExistentes = this.normalizarDatosHuespedes(datos);
       }
 
       if (operacion === 'alta') {
@@ -253,8 +275,7 @@ class GestorHuesped {
         nacionalidad: huespedDominio.nacionalidad,
         cuit: huespedDominio.cuit,
         email: huespedDominio.email,
-        direccion: huespedDominio.direccion,
-        condicionIVA: huespedDominio.condicionIVA
+        direccion: huespedDominio.direccion
       });
 
       return true;
@@ -264,6 +285,21 @@ class GestorHuesped {
       return false;
     }
   }
+  darDeAlta(huesped) {
+    if (!huesped.verificarMayorEdad()) throw new Error("El huésped debe ser mayor de edad");
+    this.huespedes.push(huesped);
+  }
+
+  darDeBaja(nroDoc) { this.huespedes = this.huespedes.filter(h => h.nroDocumento !== nroDoc); }
+  
+  buscarHuesped(nroDoc) { return this.huespedes.find(h => h.nroDocumento === nroDoc) || null; }
+
+  modificarHuesped(nroDoc, datos) {
+    const h = this.buscarHuesped(nroDoc);
+    if (h) Object.assign(h, datos);
+  }
+
+  
 }
 
 export default GestorHuesped;
