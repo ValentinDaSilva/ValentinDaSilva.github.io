@@ -45,7 +45,7 @@ function mostrarDatosFactura(factura) {
   if (responsableElement) {
     let responsableTexto = '-';
     if (factura.responsableDePago) {
-      if (factura.responsableDePago.tipo === 'tercero') {
+      if (factura.responsableDePago.tipo === 'juridica' || factura.responsableDePago.tipo === 'tercero' || factura.responsableDePago.tipo === 'personaJuridica') {
         responsableTexto = factura.responsableDePago.razonSocial || '-';
       } else {
         responsableTexto = `${factura.responsableDePago.apellido || ''}, ${factura.responsableDePago.nombres || ''}`.trim();

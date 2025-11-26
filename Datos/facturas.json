@@ -8,7 +8,7 @@
       "tipo": "B",
       "estado": "PENDIENTE",
       "responsableDePago": {
-        "tipo": "HUESPED",
+        "tipo": "huesped",
         "apellido": "ALVAREZ",
         "nombres": "LUCÍA",
         "documento": "66554433"
@@ -121,7 +121,7 @@
       "tipo": "B",
       "estado": "PAGADA",
       "responsableDePago": {
-        "tipo": "HUESPED",
+        "tipo": "huesped",
         "apellido": "GONZALEZ",
         "nombres": "MARIA",
         "documento": "23456789"
@@ -313,7 +313,7 @@
       "tipo": "B",
       "estado": "PENDIENTE",
       "responsableDePago": {
-        "tipo": "HUESPED",
+        "tipo": "huesped",
         "apellido": "ALVAREZ",
         "nombres": "LUCÍA",
         "documento": "66554433"
@@ -404,7 +404,7 @@
       "tipo": "B",
       "estado": "PAGADA",
       "responsableDePago": {
-        "tipo": "HUESPED",
+        "tipo": "huesped",
         "apellido": "MORENO",
         "nombres": "JUAN MARTÍN",
         "documento": "44557788"
@@ -501,7 +501,7 @@
       "tipo": "B",
       "estado": "PENDIENTE",
       "responsableDePago": {
-        "tipo": "HUESPED",
+        "tipo": "huesped",
         "apellido": "TORRES",
         "nombres": "LAURA",
         "documento": "44556677"

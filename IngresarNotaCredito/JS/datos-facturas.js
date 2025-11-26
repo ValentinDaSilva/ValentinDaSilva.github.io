@@ -58,7 +58,7 @@ export function obtenerFacturasNoAnuladasPorResponsable(dniCuit) {
     }
     
     
-    if (tipoNormalizado === 'HUESPED') {
+    if (tipoNormalizado === 'huesped') {
       const documentoNormalizado = (responsable.documento || '').replace(/[-\s]/g, '');
       const cuitNormalizado = (responsable.cuit || '').replace(/[-\s]/g, '');
       const coincide = documentoNormalizado === dniCuitNormalizado || cuitNormalizado === dniCuitNormalizado;

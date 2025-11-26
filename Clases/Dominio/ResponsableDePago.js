@@ -47,7 +47,8 @@ class ResponsableDePago {
         nombres: json.nombres,
         documento: json.documento
       });
-    } else if (json.tipo === 'tercero') {
+    } else if (json.tipo === 'juridica' || json.tipo === 'personaJuridica' || json.tipo === 'tercero') {
+      // Mantener compatibilidad con 'personaJuridica' y 'tercero' por si hay datos antiguos
       const PersonaJuridica = (await import('./PersonaJuridica.js')).default;
       return new PersonaJuridica({
         razonSocial: json.razonSocial,

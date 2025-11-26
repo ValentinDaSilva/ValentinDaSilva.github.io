@@ -197,57 +197,52 @@ function convertirHuespedAFormatoEstandar(huesped) {
 }
 
 
-function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFactura = TipoFactura.B) {
+async function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFactura = TipoFactura.B) {
   if (!estadia) {
     throw new Error('No se puede generar factura sin estadía');
   }
   
-  const fechaActual = obtenerFechaActual();
+  // Importar la clase Factura para usar sus métodos
+  const Factura = (await import('../../Clases/Dominio/Factura.js')).default;
+  const PersonaFisica = (await import('../../Clases/Dominio/PersonaFisica.js')).default;
+  const PersonaJuridica = (await import('../../Clases/Dominio/PersonaJuridica.js')).default;
+  
+  // Crear instancia de Factura temporal para usar sus métodos de cálculo
+  const facturaTemporal = new Factura(null, null, null, null, null, null, null, estadia);
+  const fechaActual = facturaTemporal.obtenerFechaActual();
   const horaActual = new Date().toTimeString().slice(0, 5);
   
-  
-  const valorEstadia = calcularValorEstadia(estadia);
-  const numeroNoches = calcularNumeroNoches(
-    estadia.fechaCheckIn,
-    estadia.fechaCheckOut || fechaActual
-  );
-  const totalConsumos = calcularTotalConsumos(estadia.consumos || []);
-  
-  
-  const costoPorNoche = estadia.reserva.habitaciones[0].costoPorNoche || 0;
-  const recargoCheckout = calcularRecargoCheckout(horaSalida, costoPorNoche);
-  
-  const subtotal = valorEstadia + totalConsumos + recargoCheckout.recargo;
-  const iva = calcularIVA(subtotal);
-  const total = subtotal + iva;
-  
+  // Usar métodos de la clase Factura para calcular IVA y total (ahora es async)
+  const resultado = await facturaTemporal.calcularDetalle(estadia, horaSalida);
   
   // Crear responsable usando la clase ResponsableDePago
   let responsable = null;
   
-  // Si ya es una instancia de ResponsableDePago, convertir a JSON
-  if (responsableDePago && responsableDePago.tipo && typeof responsableDePago.toJSON === 'function') {
-    responsable = responsableDePago.toJSON();
+  // Si ya es una instancia de ResponsableDePago (PersonaFisica o PersonaJuridica), usarla directamente
+  if (responsableDePago && (responsableDePago instanceof PersonaFisica || responsableDePago instanceof PersonaJuridica)) {
+    responsable = responsableDePago;
   } else if (responsableDePago.razonSocial) {
-    // Es un tercero (persona jurídica) - crear objeto JSON directamente
-    responsable = {
-      tipo: 'tercero',
+    // Es un tercero (persona jurídica)
+    responsable = new PersonaJuridica({
       razonSocial: responsableDePago.razonSocial,
       cuit: responsableDePago.cuit,
       telefono: responsableDePago.telefono,
       direccion: responsableDePago.direccion
-    };
+    });
   } else {
-    // Es un huésped (persona física) - crear objeto JSON directamente
-    // NOTA: No incluir CUIT según las correcciones del usuario
-    responsable = {
-      tipo: 'huesped',
+    // Es un huésped (persona física)
+    responsable = new PersonaFisica({
       apellido: responsableDePago.apellido || estadia.titular.apellido,
       nombres: responsableDePago.nombres || estadia.titular.nombres,
       documento: responsableDePago.numeroDocumento || responsableDePago.documento || estadia.titular.numeroDocumento
-    };
+    });
   }
   
+  // Generar JSON con la estructura completa de Factura (sin detalle)
+  // Convertir responsable a JSON si es una instancia de ResponsableDePago
+  const responsableJSON = (responsable instanceof PersonaFisica || responsable instanceof PersonaJuridica)
+    ? responsable.toJSON() 
+    : responsable;
   
   // Convertir titular y acompañantes al formato estándar
   const titularEstandar = convertirHuespedAFormatoEstandar(estadia.titular);
@@ -255,37 +250,27 @@ function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFactura 
     convertirHuespedAFormatoEstandar(acomp)
   ).filter(acomp => acomp !== null);
   
+  // Crear estadía con huéspedes en formato estándar
+  const estadiaEstandar = {
+    ...estadia,
+    titular: titularEstandar,
+    acompaniantes: acompaniantesEstandar
+  };
+  
+  // Generar JSON de Factura con solo los campos de la clase Factura
   const factura = {
     id: null, 
     hora: horaActual,
     fecha: fechaActual,
-    horaSalida: horaSalida,
     tipo: tipoFactura,
     estado: EstadoFactura.PENDIENTE,
-    responsableDePago: responsable,
+    responsableDePago: responsableJSON,
     medioDePago: null, 
-    estadia: {
-      id: estadia.id,
-      fechaCheckIn: estadia.fechaCheckIn,
-      fechaCheckOut: estadia.fechaCheckOut || fechaActual,
-      habitacion: estadia.reserva.habitaciones[0],
-      titular: titularEstandar,
-      acompaniantes: acompaniantesEstandar
-    },
-    detalle: {
-      valorEstadia: valorEstadia,
-      numeroNoches: numeroNoches,
-      costoPorNoche: estadia.reserva.habitaciones[0].costoPorNoche,
-      consumos: estadia.consumos || [],
-      totalConsumos: totalConsumos,
-      recargoCheckout: recargoCheckout.recargo,
-      tipoRecargoCheckout: recargoCheckout.tipo,
-      mensajeRecargoCheckout: recargoCheckout.mensaje,
-      requiereNuevaOcupacion: recargoCheckout.requiereNuevaOcupacion,
-      subtotal: subtotal,
-      iva: iva,
-      total: total
-    }
+    estadia: estadiaEstandar, // Estadía con huéspedes en formato estándar
+    pagos: [], // Array vacío inicialmente
+    total: resultado.total, // Total de la factura
+    iva: resultado.iva, // IVA calculado
+    horaSalida: horaSalida // Hora de salida para calcular recargos
   };
   
   facturaGenerada = factura;

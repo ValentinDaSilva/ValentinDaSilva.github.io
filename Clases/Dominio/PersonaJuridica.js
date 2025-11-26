@@ -117,7 +117,7 @@ class PersonaJuridica extends ResponsableDePago {
    */
   toJSON() {
     return {
-      tipo: 'tercero',
+      tipo: 'juridica',
       razonSocial: this._razonSocial,
       cuit: this._cuit,
       telefono: this._telefono,

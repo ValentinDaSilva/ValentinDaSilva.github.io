@@ -119,7 +119,7 @@ class GestorIngresarNotaCredito extends GestorFactura {
         }
         
         
-        if (tipoNormalizado === 'HUESPED') {
+        if (tipoNormalizado === 'huesped') {
           const documentoNormalizado = (responsable.documento || '').replace(/[-\s]/g, '');
           const cuitNormalizado = (responsable.cuit || '').replace(/[-\s]/g, '');
           return documentoNormalizado === dniCuitNormalizado || cuitNormalizado === dniCuitNormalizado;

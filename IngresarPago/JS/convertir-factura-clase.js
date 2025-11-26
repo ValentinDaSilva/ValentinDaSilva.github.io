@@ -18,7 +18,8 @@ export function convertirFacturaJSONAClase(facturaJSON) {
         nombres: responsableDePago.nombres,
         documento: responsableDePago.documento
       });
-    } else if (responsableDePago.tipo === 'tercero') {
+    } else if (responsableDePago.tipo === 'juridica' || responsableDePago.tipo === 'tercero' || responsableDePago.tipo === 'personaJuridica') {
+      // Mantener compatibilidad con 'tercero' y 'personaJuridica' por si hay datos antiguos
       responsableDePago = new PersonaJuridica({
         razonSocial: responsableDePago.razonSocial,
         cuit: responsableDePago.cuit,
@@ -78,8 +79,14 @@ function convertirPagoJSONAClase(pagoJSON) {
         cheque.fechaVencimiento || ''
       )
     );
-  } else if (medio.tipo === 'tarjetas' && medio.tarjetas) {
-    medioDePagoInstancia = medio.tarjetas.map(tarjeta => 
+  } else if ((medio.tipo === 'tarjeta' || medio.tipo === 'tarjetas') && (medio.tarjetas || medio.tipoTarjeta)) {
+    // Mantener compatibilidad con 'tarjetas' por si hay datos antiguos
+    const tarjetas = medio.tarjetas || [{
+      tipo: medio.tipoTarjeta || '',
+      numeroTarjeta: medio.numeroTarjeta || '',
+      monto: medio.monto || 0
+    }];
+    medioDePagoInstancia = tarjetas.map(tarjeta => 
       new Tarjeta(
         tarjeta.tipo || '',
         tarjeta.numeroTarjeta || '',

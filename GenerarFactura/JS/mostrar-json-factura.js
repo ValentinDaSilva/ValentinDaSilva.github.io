@@ -138,7 +138,7 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
   
   const infoAdicional = document.getElementById('info-adicional-factura');
   if (infoAdicional && factura) {
-    const responsableNombre = factura.responsableDePago.tipo === 'tercero'
+    const responsableNombre = factura.responsableDePago.tipo === 'juridica' || factura.responsableDePago.tipo === 'tercero' || factura.responsableDePago.tipo === 'personaJuridica'
       ? factura.responsableDePago.razonSocial
       : `${factura.responsableDePago.apellido}, ${factura.responsableDePago.nombres}`;
     

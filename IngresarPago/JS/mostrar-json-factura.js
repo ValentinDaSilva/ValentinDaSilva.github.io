@@ -2,18 +2,33 @@
 
 
 function convertirFacturaAJSON(factura) {
+  // Obtener pagos - puede ser getter o propiedad directa
+  // getPagos es un getter, así que se accede como propiedad
+  let pagos = [];
+  if (factura.pagos !== undefined) {
+    pagos = factura.pagos;
+  } else if (factura.getPagos !== undefined) {
+    // Si existe el getter, acceder a él (los getters se acceden como propiedades)
+    pagos = factura.getPagos;
+  }
+  if (!Array.isArray(pagos)) {
+    pagos = [];
+  }
   
-  const pagosJSON = factura.pagos.map(pago => {
+  const pagosJSON = pagos.map(pago => {
+    // Obtener montoTotal - puede ser propiedad directa o getter
+    const montoTotal = pago.montoTotal !== undefined ? pago.montoTotal : (pago.getMontoTotal ? pago.getMontoTotal() : 0);
+    
     const pagoJSON = {
-      id: pago.id,
-      fecha: pago.fecha,
-      hora: pago.hora,
-      montoTotal: pago.montoTotal,
+      id: pago.id !== undefined ? pago.id : (pago.getId ? pago.getId() : null),
+      fecha: pago.fecha !== undefined ? pago.fecha : (pago.getFecha ? pago.getFecha() : null),
+      hora: pago.hora !== undefined ? pago.hora : (pago.getHora ? pago.getHora() : null),
+      montoTotal: montoTotal,
       medioDePago: null
     };
     
     
-    const medio = pago.medioDePago;
+    const medio = pago.medioDePago !== undefined ? pago.medioDePago : (pago.getMedioDePago ? pago.getMedioDePago() : null);
     
     if (medio && medio.constructor.name === 'Efectivo') {
       pagoJSON.medioDePago = {
@@ -37,7 +52,7 @@ function convertirFacturaAJSON(factura) {
       };
     } else if (medio && medio.constructor.name === 'Tarjeta') {
       pagoJSON.medioDePago = {
-        tipo: 'tarjetas',
+        tipo: 'tarjeta',
         tipoTarjeta: medio.tipo,
         numeroTarjeta: medio.numeroTarjeta,
         monto: medio.monto
@@ -47,17 +62,40 @@ function convertirFacturaAJSON(factura) {
     return pagoJSON;
   });
   
+  // Obtener valores de la factura - puede ser getter o propiedad directa
+  const id = factura.id !== undefined ? factura.id : (factura.getId ? factura.getId() : null);
+  const hora = factura.hora !== undefined ? factura.hora : (factura.getHora ? factura.getHora() : null);
+  const fecha = factura.fecha !== undefined ? factura.fecha : (factura.getFecha ? factura.getFecha() : null);
+  const tipo = factura.tipo !== undefined ? factura.tipo : (factura.getTipo ? factura.getTipo() : null);
+  const estado = factura.estado !== undefined ? factura.estado : (factura.getEstado ? factura.getEstado() : null);
   
+  // Obtener responsableDePago y convertirlo a JSON si es una instancia de clase
+  let responsableDePago = factura.responsableDePago !== undefined ? factura.responsableDePago : null;
+  if (responsableDePago && typeof responsableDePago.toJSON === 'function') {
+    // Es una instancia de PersonaFisica o PersonaJuridica, convertir a JSON
+    responsableDePago = responsableDePago.toJSON();
+  }
+  
+  const medioDePago = factura.medioDePago !== undefined ? factura.medioDePago : null;
+  const estadia = factura.estadia !== undefined ? factura.estadia : null;
+  const total = factura.total !== undefined ? factura.total : (factura.getTotal ? factura.getTotal() : 0);
+  const iva = factura.iva !== undefined ? factura.iva : (factura.getIva ? factura.getIva() : 0);
+  const horaSalida = factura.horaSalida !== undefined ? factura.horaSalida : (factura.getHoraSalida ? factura.getHoraSalida() : null);
+  
+  // Generar JSON de Factura con todos los campos de la clase Factura
   const facturaJSON = {
-    id: factura.id,
-    hora: factura.hora,
-    fecha: factura.fecha,
-    tipo: factura.tipo,
-    estado: factura.estado,
-    responsableDePago: factura.responsableDePago,
-    medioDePago: factura.medioDePago,
-    estadia: factura.estadia,
-    pagos: pagosJSON
+    id: id,
+    hora: hora,
+    fecha: fecha,
+    tipo: tipo,
+    estado: estado,
+    responsableDePago: responsableDePago,
+    medioDePago: medioDePago,
+    estadia: estadia,
+    pagos: pagosJSON,
+    total: total,
+    iva: iva,
+    horaSalida: horaSalida
   };
   
   return facturaJSON;
@@ -167,7 +205,7 @@ export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
   
   const infoAdicional = document.getElementById('info-adicional-factura-pago');
   if (infoAdicional && factura) {
-    const responsableNombre = factura.responsableDePago?.tipo === 'tercero'
+    const responsableNombre = factura.responsableDePago?.tipo === 'juridica'
       ? factura.responsableDePago.razonSocial
       : `${factura.responsableDePago?.apellido || ''}, ${factura.responsableDePago?.nombres || ''}`.trim();
     
