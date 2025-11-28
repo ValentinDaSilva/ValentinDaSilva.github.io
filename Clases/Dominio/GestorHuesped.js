@@ -1,8 +1,3 @@
-import {Huesped} from "./Huesped.js";
-import {HuespedDTO} from "../DTO/dto.js";
-
-
-
 export default class GestorHuesped {
   constructor() { 
     this.huespedes = []; 

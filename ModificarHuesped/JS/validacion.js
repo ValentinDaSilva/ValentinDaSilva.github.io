@@ -1,3 +1,5 @@
+import GestorHuesped from "/Clases/Dominio/GestorHuesped.js";
+
 
 
 
@@ -16,41 +18,42 @@ function verificarCUIT(listaCUITS) {
 
 async function manejarGuardarFormulario(event) {
     event.preventDefault();
+
+    GestorHuesped.modificarHuespedCompleto(event);
+    
+    // if (hayModalAbierto && hayModalAbierto()) {
+    //     return;
+    // }
     
     
-    if (hayModalAbierto && hayModalAbierto()) {
-        return;
-    }
+    // const todosLosCamposValidos = validarTodosLosCampos();
     
-    
-    const todosLosCamposValidos = validarTodosLosCampos();
-    
-    if (!todosLosCamposValidos) {
-        mensajeError("Por favor, corrige los errores en los campos marcados antes de continuar");
+    // if (!todosLosCamposValidos) {
+    //     mensajeError("Por favor, corrige los errores en los campos marcados antes de continuar");
         
-        const primerError = document.querySelector('.campo-invalido');
-        if (primerError) {
-            primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            primerError.focus();
-        }
-        return;
-    }
+    //     const primerError = document.querySelector('.campo-invalido');
+    //     if (primerError) {
+    //         primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    //         primerError.focus();
+    //     }
+    //     return;
+    // }
     
     
     
-    let procesadoExitoso = false;
-    const nombre = document.getElementById("nombre").value.trim();
-    const apellido = document.getElementById("apellido").value.trim();
+    // let procesadoExitoso = false;
+    // const nombre = document.getElementById("nombre").value.trim();
+    // const apellido = document.getElementById("apellido").value.trim();
     
-    if (window.gestorHuesped) {
-        procesadoExitoso = await window.gestorHuesped.modificarHuespedCompleto(function() {
-            mensajeCorrecto(`El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
-        });
-    } else if (window.gestorModificarHuesped) {
-        procesadoExitoso = await window.gestorModificarHuesped.procesarModificacionHuesped(function() {
-            mensajeCorrecto(`El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
-        });
-    }
+    // if (window.gestorHuesped) {
+    //     procesadoExitoso = await window.gestorHuesped.modificarHuespedCompleto(function() {
+    //         mensajeCorrecto(`El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+    //     });
+    // } else if (window.gestorModificarHuesped) {
+    //     procesadoExitoso = await window.gestorModificarHuesped.procesarModificacionHuesped(function() {
+    //         mensajeCorrecto(`El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+    //     });
+    // }
 }
 
 

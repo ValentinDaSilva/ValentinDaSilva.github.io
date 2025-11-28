@@ -1,14 +1,9 @@
+import { Huesped } from '/Clases/Dominio/huesped.js';
+import { Direccion } from '/Clases/Dominio/direccion.js';
+import { HuespedDTO, DireccionDTO } from '/Clases/DTO/dto.js';
 
-
-import { GestorHuesped, Huesped, Direccion } from "../../Clases/Dominio/dominio.js";
-import { HuespedDTO, DireccionDTO } from "../../Clases/DTO/dto.js";
-
-
-class GestorModificarHuesped extends GestorHuesped {
+export class GestorModificarHuesped  {
     constructor() {
-        super();
-        this._rutaBD = '/Datos/huespedes.json';
-        this._huespedOriginal = null; 
     }
 
     
@@ -21,7 +16,122 @@ class GestorModificarHuesped extends GestorHuesped {
         return this._huespedOriginal;
     }
 
+    static extraerDatosFormulario() {
+            const formData = {
+                apellido: document.getElementById('apellido').value.trim(),
+                nombre: document.getElementById('nombre').value.trim(),
+                tipoDocumento: document.getElementById('tipoDocumento').value.trim(),
+                numeroDocumento: document.getElementById('numeroDocumento').value.trim(),
+                cuit: document.getElementById('cuit').value.trim() || null,
+                fechaNacimiento: document.getElementById('fechaNacimiento').value,
+                caracteristica: document.getElementById('caracteristica').value.trim(),
+                telefonoNumero: document.getElementById('telefonoNumero').value.trim(),
+                email: document.getElementById('email').value.trim() || null,
+                ocupacion: document.getElementById('ocupacion').value.trim(),
+                nacionalidad: document.getElementById('nacionalidad').value.trim(),
     
+                calle: document.getElementById('calle').value.trim(),
+                numero: document.getElementById('numeroCalle').value.trim(),
+                departamento: document.getElementById('departamento').value.trim() || '',
+                piso: document.getElementById('piso').value.trim() || '',
+                codigoPostal: document.getElementById('codigoPostal').value.trim(),
+                localidad: document.getElementById('localidad').value.trim(),
+                provincia: document.getElementById('provincia').value.trim(),
+                pais: document.getElementById('pais').value.trim()
+            };
+    
+            formData.telefono = `${formData.caracteristica}-${formData.telefonoNumero}`;
+            return formData;
+        }
+    
+        static validarTodosLosCampos() {
+            const todosLosCamposValidos = validarTodosLosCampos();
+            if (!todosLosCamposValidos) {
+                mensajeError("Por favor, corrige los errores en los campos marcados antes de continuar");
+    
+                const primerError = document.querySelector('.campo-invalido');
+                if (primerError) {
+                    primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    primerError.focus();
+                }
+                return false;
+            }
+            return true;
+        }
+    
+        // ======================================================
+        //  CREAR DOMINIO
+        // ======================================================
+        static crearHuespedDominio(datos) {
+            const direccion = GestorAltaHuesped.crearDireccionDominio(datos);
+    
+            return new Huesped(
+                datos.nombre,
+                datos.apellido,
+                datos.tipoDocumento,
+                datos.numeroDocumento,
+                datos.cuit || null,
+                datos.fechaNacimiento,
+                datos.telefono,
+                datos.email || null,
+                datos.ocupacion,
+                datos.nacionalidad,
+                direccion
+            );
+        }
+    
+        // ✔ TOTALMENTE ALINEADO CON TU CLASE DIRECCION (get/set métodos)
+        static crearDireccionDominio(datos) {
+            const direccion = new Direccion(
+                datos.calle,
+                datos.numero,
+                datos.piso,
+                datos.departamento,
+                datos.localidad,
+                datos.provincia,
+                datos.codigoPostal,
+                datos.pais
+            );
+            return direccion;
+        }
+    
+        // ======================================================
+        //  CREAR DTO
+        // ======================================================
+        static crearHuespedDTO(huesped) {
+            const direccionDTO = huesped.direccion
+                ? GestorAltaHuesped.crearDireccionDTO(huesped.direccion)
+                : null;
+    
+            return new HuespedDTO(
+                huesped.getNombre(),
+                huesped.getApellido(),
+                huesped.getTelefono(),
+                huesped.getTipoDocumento(),
+                huesped.getNumeroDocumento(),
+                huesped.getFechaNacimiento(),
+                huesped.getOcupacion(),
+                huesped.getNacionalidad(),
+                huesped.getCuit(),
+                huesped.getEmail(),
+                direccionDTO
+            );
+        }
+    
+        // ✔ USAMOS getCalle(), getNumero(), getProvincia(), etc.
+        static crearDireccionDTO(direccion) {
+            return new DireccionDTO(
+                direccion.getCalle(),
+                direccion.getNumero(),
+                direccion.getPiso(),
+                direccion.getDepartamento(),
+                direccion.getLocalidad(),
+                direccion.getProvincia(),
+                direccion.getCodigoPostal(),
+                direccion.getPais()
+            );
+        }
+
     static async enviarHuespedAAPIModificar(huesped) {
 
         try {
