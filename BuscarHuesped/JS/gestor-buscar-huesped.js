@@ -15,27 +15,6 @@ export default class GestorBuscarHuesped {
     }
 
     
-    // async cargarHuespedes() {
-    //     try {
-    //         const respuesta = await fetch(this._rutaBD);
-    //         if (!respuesta.ok) {
-    //             throw new Error(`Error al cargar los datos: ${respuesta.status}`);
-    //         }
-            
-    //         const datosCrudos = await respuesta.json();
-                
-    //         console.log(`Se cargaron ${this._datosHuespedes.length} huéspedes`);
-                
-    //         return this._datosHuespedes;
-    //     } catch (error) {
-    //         console.error('Error al cargar huéspedes:', error);
-    //         mensajeError('Error al cargar los datos de huéspedes. Por favor, recarga la página.');
-    //         this._datosHuespedes = [];
-    //         return [];
-    //     }
-    // }
-
-    
     static async buscarHuespedesEnAPI(apellido, nombre, tipoDocumento, numeroDocumento) {
         try {
             const params = new URLSearchParams({

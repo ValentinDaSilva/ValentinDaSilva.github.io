@@ -47,7 +47,7 @@ async function manejarGuardarFormulario(event) {
             mensajeCorrecto(`El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
         });
     } else if (window.gestorModificarHuesped) {
-        procesadoExitoso = window.gestorModificarHuesped.procesarModificacionHuesped(function() {
+        procesadoExitoso = await window.gestorModificarHuesped.procesarModificacionHuesped(function() {
             mensajeCorrecto(`El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
         });
     }
