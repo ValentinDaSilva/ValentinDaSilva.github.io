@@ -10,9 +10,9 @@ function verificarCUIT(listaCUITS) {
                 "¡CUIDADO! El tipo y número de documento ya existen en el sistema",
                 "ACEPTAR ✅",
                 "CORREGIR ✏️",
-                function() {
+                async function() {
                     
-                    const procesadoExitoso = gestorAltaHuesped.procesarAltaHuesped();
+                    const procesadoExitoso = await gestorAltaHuesped.procesarAltaHuesped();
                     
                     if (procesadoExitoso) {
                         
@@ -147,7 +147,7 @@ async function manejarEnvioFormulario(event) {
     if (window.gestorHuesped) {
         procesadoExitoso = await window.gestorHuesped.darAltaHuesped();
     } else if (window.gestorAltaHuesped) {
-        procesadoExitoso = window.gestorAltaHuesped.procesarAltaHuesped();
+        procesadoExitoso = await window.gestorAltaHuesped.procesarAltaHuesped();
     }
     
     if (procesadoExitoso) {

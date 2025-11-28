@@ -20,6 +20,9 @@ class Huesped extends Persona {
   get nroDocumento() { return this._nroDocumento; }
   set nroDocumento(v) { this._nroDocumento = v; }
 
+  get numeroDocumento() { return this._nroDocumento; }
+  set numeroDocumento(v) { this._nroDocumento = v; }
+
   get fechaNacimiento() { return this._fechaNacimiento; }
   set fechaNacimiento(v) { this._fechaNacimiento = new Date(v); }
 

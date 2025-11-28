@@ -19,6 +19,7 @@ class DireccionDTO {
   get piso() { return this._piso; } set piso(v) { this._piso = v; }
   get departamento() { return this._departamento; } set departamento(v) { this._departamento = v; }
   get localidad() { return this._localidad; } set localidad(v) { this._localidad = v; }
+  get ciudad() { return this._localidad; } set ciudad(v) { this._localidad = v; }
   get provincia() { return this._provincia; } set provincia(v) { this._provincia = v; }
   get codigoPostal() { return this._codigoPostal; } set codigoPostal(v) { this._codigoPostal = v; }
   get pais() { return this._pais; } set pais(v) { this._pais = v; }
@@ -50,6 +51,7 @@ class HuespedDTO extends PersonaDTO {
 
   get tipoDocumento() { return this._tipoDocumento; } set tipoDocumento(v) { this._tipoDocumento = v; }
   get nroDocumento() { return this._nroDocumento; } set nroDocumento(v) { this._nroDocumento = v; }
+  get numeroDocumento() { return this._nroDocumento; } set numeroDocumento(v) { this._nroDocumento = v; }
   get fechaNacimiento() { return this._fechaNacimiento; } set fechaNacimiento(v) { this._fechaNacimiento = v; }
   get ocupacion() { return this._ocupacion; } set ocupacion(v) { this._ocupacion = v; }
   get nacionalidad() { return this._nacionalidad; } set nacionalidad(v) { this._nacionalidad = v; }

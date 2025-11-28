@@ -25,6 +25,9 @@ class Direccion {
   get localidad() { return this._localidad; }
   set localidad(v) { this._localidad = v; }
 
+  get ciudad() { return this._localidad; }
+  set ciudad(v) { this._localidad = v; }
+
   get provincia() { return this._provincia; }
   set provincia(v) { this._provincia = v; }
 

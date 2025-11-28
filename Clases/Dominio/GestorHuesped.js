@@ -265,7 +265,7 @@ class GestorHuesped {
       await this.guardarEnBD(jsonParaBD, 'modificacion');
 
       
-      this.modificarHuesped(huespedDominio.nroDocumento, {
+      this.modificarHuesped(huespedDominio.numeroDocumento || huespedDominio.nroDocumento, {
         nombre: huespedDominio.nombre,
         apellido: huespedDominio.apellido,
         telefono: huespedDominio.telefono,
@@ -290,9 +290,13 @@ class GestorHuesped {
     this.huespedes.push(huesped);
   }
 
-  darDeBaja(nroDoc) { this.huespedes = this.huespedes.filter(h => h.nroDocumento !== nroDoc); }
+  darDeBaja(nroDoc) { 
+    this.huespedes = this.huespedes.filter(h => h.numeroDocumento !== nroDoc && h.nroDocumento !== nroDoc); 
+  }
   
-  buscarHuesped(nroDoc) { return this.huespedes.find(h => h.nroDocumento === nroDoc) || null; }
+  buscarHuesped(nroDoc) { 
+    return this.huespedes.find(h => h.numeroDocumento === nroDoc || h.nroDocumento === nroDoc) || null; 
+  }
 
   modificarHuesped(nroDoc, datos) {
     const h = this.buscarHuesped(nroDoc);

@@ -72,7 +72,7 @@ class GestorAltaHuesped extends GestorHuesped {
             datos.numeroCalle,
             datos.piso || '',
             datos.departamento || '',
-            datos.localidad,
+            datos.localidad || datos.ciudad,
             datos.provincia,
             datos.codigoPostal,
             datos.pais
@@ -94,7 +94,7 @@ class GestorAltaHuesped extends GestorHuesped {
             huesped.apellido,
             huesped.telefono,
             huesped.tipoDocumento,
-            huesped.nroDocumento,
+            huesped.numeroDocumento || huesped.nroDocumento,
             huesped.fechaNacimiento.toISOString().split('T')[0], 
             huesped.ocupacion,
             huesped.nacionalidad,
@@ -114,7 +114,7 @@ class GestorAltaHuesped extends GestorHuesped {
             direccion.numero,
             direccion.piso || '',
             direccion.departamento || '',
-            direccion.localidad,
+            direccion.ciudad || direccion.localidad,
             direccion.provincia,
             direccion.codigoPostal,
             direccion.pais
@@ -147,7 +147,7 @@ class GestorAltaHuesped extends GestorHuesped {
                 numero: String(direccionDTO.numero || ''),
                 piso: String(direccionDTO.piso || ''),
                 departamento: String(direccionDTO.departamento || ''),
-                ciudad: String(direccionDTO.localidad || ''),
+                ciudad: String(direccionDTO.ciudad || direccionDTO.localidad || ''),
                 provincia: String(direccionDTO.provincia || ''),
                 codigoPostal: String(direccionDTO.codigoPostal || ''),
                 pais: String(direccionDTO.pais || '')
@@ -158,11 +158,12 @@ class GestorAltaHuesped extends GestorHuesped {
         const nombre = huespedDTO?.nombre;
         const apellido = huespedDTO?.apellido;
         const tipoDocumento = huespedDTO?.tipoDocumento;
-        const nroDocumento = huespedDTO?.nroDocumento;
+        const nroDocumento = huespedDTO?.numeroDocumento || huespedDTO?.nroDocumento;
         const ocupacion = huespedDTO?.ocupacion;
         const nacionalidad = huespedDTO?.nacionalidad;
         const cuit = huespedDTO?.cuit;
         const email = huespedDTO?.email;
+        const fechaNacimiento = huespedDTO?.fechaNacimiento;
 
         // Función auxiliar para convertir a valor primitivo
         const toPrimitive = (value) => {
@@ -175,16 +176,34 @@ class GestorAltaHuesped extends GestorHuesped {
             return String(value);
         };
 
-        // Construir objeto JSON solo con valores primitivos según la estructura requerida
+        // Función auxiliar para manejar campos opcionales (null si está vacío)
+        const toOptional = (value) => {
+            const primitive = toPrimitive(value);
+            return primitive && primitive.trim() !== '' ? primitive : null;
+        };
+
+        // Limpiar dirección: convertir strings vacíos a null para campos opcionales
+        if (direccion) {
+            direccion.piso = direccion.piso && direccion.piso.trim() !== '' ? direccion.piso : null;
+            direccion.departamento = direccion.departamento && direccion.departamento.trim() !== '' ? direccion.departamento : null;
+            // Asegurar que se use 'ciudad' en lugar de 'localidad'
+            if (direccion.localidad && !direccion.ciudad) {
+                direccion.ciudad = direccion.localidad;
+                delete direccion.localidad;
+            }
+        }
+
+        // Construir objeto JSON según la estructura requerida por la API
         const jsonData = {
-            apellido: toPrimitive(apellido) || '',
             nombre: toPrimitive(nombre) || '',
+            apellido: toPrimitive(apellido) || '',
             tipoDocumento: toPrimitive(tipoDocumento) || '',
             numeroDocumento: toPrimitive(nroDocumento) || '',
-            cuit: toPrimitive(cuit) || '',
-            email: toPrimitive(email) || '',
+            cuit: toOptional(cuit),
+            email: toOptional(email),
             ocupacion: toPrimitive(ocupacion) || '',
             nacionalidad: toPrimitive(nacionalidad) || '',
+            fechaNacimiento: toPrimitive(fechaNacimiento) || '',
             direccion: direccion
         };
 
@@ -329,7 +348,7 @@ class GestorAltaHuesped extends GestorHuesped {
     }
 
     
-    procesarAltaHuesped() {
+    async procesarAltaHuesped() {
         try {
             
             const datosFormulario = this.extraerDatosFormulario();
@@ -364,6 +383,9 @@ class GestorAltaHuesped extends GestorHuesped {
             this.mostrarJSONEnPantalla(jsonParaBD);
 
             
+            await this.guardarEnBD(jsonParaBD, 'alta');
+
+            
             this.darDeAlta(huespedDominio);
 
             return true;
@@ -371,6 +393,54 @@ class GestorAltaHuesped extends GestorHuesped {
             console.error('Error al procesar el alta de huésped:', error);
             mensajeError('Error al procesar el alta de huésped: ' + error.message);
             return false;
+        }
+    }
+
+    
+    async enviarHuespedAAPI(jsonData) {
+        try {
+            const res = await fetch("http://localhost:8080/api/huesped", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(jsonData)
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                console.error('Error en la respuesta del servidor:', errorText);
+                return { error: errorText || 'Error al guardar el huésped en la base de datos' };
+            }
+
+            const data = await res.json();
+            console.log('Huésped guardado exitosamente:', data);
+            return { success: true, data };
+        } catch (error) {
+            console.error('Error al enviar huésped a la API:', error);
+            return { error: "Error inesperado de conexión. Por favor, verifica que el servidor esté corriendo." };
+        }
+    }
+
+    
+    async guardarEnBD(jsonData, operacion = 'alta') {
+        try {
+            if (operacion === 'alta') {
+                const resultado = await this.enviarHuespedAAPI(jsonData);
+                
+                if (resultado.error) {
+                    throw new Error(resultado.error);
+                }
+                
+                console.log('Huésped guardado exitosamente en la base de datos');
+                return true;
+            } else {
+                // Para modificaciones, mantener el comportamiento original si es necesario
+                // o implementar un endpoint PUT/PATCH
+                console.warn('Operación de modificación no implementada para API');
+                return false;
+            }
+        } catch (error) {
+            console.error('Error al guardar en BD:', error);
+            throw error;
         }
     }
 

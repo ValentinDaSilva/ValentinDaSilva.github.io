@@ -85,7 +85,7 @@ class GestorModificarHuesped extends GestorHuesped {
             datos.numeroCalle,
             datos.piso || '',
             datos.departamento || '',
-            datos.localidad,
+            datos.localidad || datos.ciudad,
             datos.provincia,
             datos.codigoPostal,
             datos.pais
@@ -106,7 +106,7 @@ class GestorModificarHuesped extends GestorHuesped {
             huesped.nombre,
             huesped.apellido,
             huesped.tipoDocumento,
-            huesped.nroDocumento,
+            huesped.numeroDocumento || huesped.nroDocumento,
             huesped.fechaNacimiento.toISOString().split('T')[0], 
             huesped.ocupacion,
             huesped.nacionalidad,
@@ -128,7 +128,7 @@ class GestorModificarHuesped extends GestorHuesped {
             direccion.numero,
             direccion.piso || '',
             direccion.departamento || '',
-            direccion.localidad,
+            direccion.ciudad || direccion.localidad,
             direccion.provincia,
             direccion.codigoPostal,
             direccion.pais
@@ -144,21 +144,22 @@ class GestorModificarHuesped extends GestorHuesped {
             numero: direccionDTO.numero || '',
             piso: direccionDTO.piso || '',
             departamento: direccionDTO.departamento || '',
-            ciudad: direccionDTO.localidad || '',
+            ciudad: direccionDTO.ciudad || direccionDTO.localidad || '',
             provincia: direccionDTO.provincia || '',
             codigoPostal: direccionDTO.codigoPostal || '',
             pais: datosOriginales.pais || ''
         };
 
         const jsonData = {
-            apellido: huespedDTO.apellido || '',
             nombre: huespedDTO.nombre || '',
+            apellido: huespedDTO.apellido || '',
             tipoDocumento: huespedDTO.tipoDocumento || '',
-            numeroDocumento: huespedDTO.nroDocumento || '',
-            cuit: huespedDTO.cuit || '',
-            email: huespedDTO.email || '',
+            numeroDocumento: huespedDTO.numeroDocumento || huespedDTO.nroDocumento || '',
+            cuit: huespedDTO.cuit || null,
+            email: huespedDTO.email || null,
             ocupacion: huespedDTO.ocupacion || '',
             nacionalidad: huespedDTO.nacionalidad || '',
+            fechaNacimiento: huespedDTO.fechaNacimiento || '',
             direccion: direccion
         };
 
@@ -199,7 +200,7 @@ class GestorModificarHuesped extends GestorHuesped {
             mostrarJSONModificacionEnPantalla(jsonParaBD, this._huespedOriginal, callbackCerrar);
 
             
-            this.modificarHuesped(huespedDominio.nroDocumento, {
+            this.modificarHuesped(huespedDominio.numeroDocumento || huespedDominio.nroDocumento, {
                 nombre: huespedDominio.nombre,
                 apellido: huespedDominio.apellido,
                 telefono: huespedDominio.telefono,
