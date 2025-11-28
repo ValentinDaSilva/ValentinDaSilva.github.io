@@ -6,6 +6,7 @@ class GestorAltaHuesped {
     constructor() {}
 
     static extraerDatosFormulario() {
+        
         const formData = {
             apellido: document.getElementById('apellido').value.trim(),
             nombre: document.getElementById('nombre').value.trim(),

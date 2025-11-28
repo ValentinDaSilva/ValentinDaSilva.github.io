@@ -1,10 +1,12 @@
 // [JS/reserva.js]
 // ==============================================================
-//  reserva.js — VERSIÓN FINAL DEFINITIVA
-//  ✔ Flujo completo de reserva
-//  ✔ Envía UNA RESERVA POR HABITACIÓN
-//  ✔ Integración perfecta con selección + filtros + backend
+//  reserva.js — VERSIÓN REORGANIZADA
+//  ✔ Maneja solo la interacción con la UI
+//  ✔ Llama a GestorReserva.realizarReserva(listaSeleccion, datosTitular)
+//  ✔ El fetch y el armado de DTO/dominio está en los Gestores
 // ==============================================================
+
+import GestorReserva from "../GestorReserva.js";
 
 // ------------------------------------------------------------
 // 1) MANEJAR BÚSQUEDA → cargar tabla
@@ -29,7 +31,10 @@ function manejarBusqueda() {
       return;
     }
 
-    limpiarHabitacionesSeleccionadas();
+    // Limpio selección anterior, cargo datos y genero grilla
+    if (typeof limpiarHabitacionesSeleccionadas === "function") {
+      limpiarHabitacionesSeleccionadas();
+    }
 
     await asegurarHabitaciones();
     await cargarReservasEntre(desde, hasta);
@@ -93,8 +98,8 @@ function mostrarConfirmacion(lista) {
   lista.forEach(sel => {
     panel.innerHTML += `
       <p style="margin:8px 0;">
-        <strong>${sel.habitacion}</strong> — 
-        Desde <strong>${sel.fechaDesde}</strong> 
+        <strong>${sel.habitacion}</strong> —
+        Desde <strong>${sel.fechaDesde}</strong>
         hasta <strong>${sel.fechaHasta}</strong>
       </p>
     `;
@@ -114,7 +119,9 @@ function mostrarConfirmacion(lista) {
   btnCancelar.onclick = () => {
     overlay.remove();
     if (base) base.style.display = "block";
-    limpiarHabitacionesSeleccionadas();
+    if (typeof limpiarHabitacionesSeleccionadas === "function") {
+      limpiarHabitacionesSeleccionadas();
+    }
   };
 
   const btnOk = document.createElement("button");
@@ -204,53 +211,12 @@ function mostrarFormularioTitular(listaSeleccion) {
       return;
     }
 
-    await enviarReserva(listaSeleccion, { nombre, apellido, telefono });
+    // Acá delegamos TODO al director GestorReserva
+    await GestorReserva.realizarReserva(listaSeleccion, { nombre, apellido, telefono });
+
+    // Cierro el formulario (el resto de la UI se maneja desde los gestores)
     overlay.remove();
   };
-}
-
-// ------------------------------------------------------------
-// 5) POST — ENVIAR UNA RESERVA POR HABITACIÓN
-// ------------------------------------------------------------
-async function enviarReserva(lista, titular) {
-  try {
-    const reservas = lista.map(sel => ({
-      fechaInicio: sel.fechaDesde,
-      fechaFin: sel.fechaHasta,
-      titular: titular,
-      habitaciones: [
-        {
-          numero: obtenerNumeroDesdeNombre(sel.habitacion)
-        }
-      ]
-    }));
-
-    console.log("Reservas generadas:", reservas);
-
-    // enviar una por una
-    for (const reserva of reservas) {
-      const res = await fetch("http://localhost:8080/api/reservas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reserva)
-      });
-
-      if (!res.ok) {
-        mensajeError("No se pudo crear la reserva.");
-        return;
-      }
-    }
-
-    mensajeCorrecto("Reservas creadas correctamente.");
-
-    limpiarHabitacionesSeleccionadas();
-    const cont = document.querySelector(".contenedor-resultados");
-    if (cont) cont.style.display = "none";
-
-  } catch (err) {
-    console.error(err);
-    mensajeError("Error enviando reservas al backend.");
-  }
 }
 
 // ------------------------------------------------------------
@@ -266,4 +232,3 @@ if (document.readyState === "loading") {
 } else {
   inicializarReserva();
 }
-
