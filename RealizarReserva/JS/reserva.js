@@ -487,25 +487,17 @@ function manejarBusqueda() {
     }
     
     
-    asegurarDatosCargados().then(() => {
-      
-      if (typeof establecerTipoFiltro === 'function') {
+    asegurarDatosCargados()
+      .then(() => cargarReservasEntreFechas(fechaDesde, fechaHasta))
+      .then(() => {
         establecerTipoFiltro('');
-      }
-      generarTablaHabitaciones(fechaDesde, fechaHasta);
-      
-      const fondoReserva = document.querySelector('.fondo-reserva');
-      if (fondoReserva) {
-        fondoReserva.classList.add('opaco');
-      }
-      const resultadoDiv = document.querySelector('.contenedor-resultados');
-      if (resultadoDiv) {
-        resultadoDiv.style.display = 'block';
-      }
-    }).catch(error => {
-      console.error('Error al generar tabla:', error);
-      mensajeError('Error al generar la tabla de habitaciones.');
-    });
+        generarTablaHabitaciones(fechaDesde, fechaHasta);
+      })
+      .catch(error => {
+        console.error("Error al generar tabla:", error);
+        mensajeError("Error al generar la tabla de habitaciones.");
+      });
+
   });
 }
 
@@ -513,6 +505,7 @@ function manejarBusqueda() {
 function inicializarReserva() {
   manejarBusqueda();
   manejarClickReservar();
+  console.log('hola estoy aca');
 }
 
 

@@ -1,6 +1,7 @@
 import {Huesped} from "./Huesped.js";
 import {HuespedDTO} from "../DTO/dto.js";
-
+import {GestorRealizarReserva} from "../../RealizarReserva/JS/gestor-realizar-reserva.js";
+  
 
 
 export default class GestorHuesped {
@@ -126,6 +127,7 @@ export default class GestorHuesped {
       } else {
         throw new Error('No se pasó un evento válido');
       }
+
 
       await GestorModificarHuesped.guardarEnBD(huespedDTO, operacion);
 

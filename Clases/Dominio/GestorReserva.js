@@ -26,7 +26,7 @@ import Habitacion from "./Habitacion.js";
  */
 
 
-class GestorReserva {
+export class GestorReserva {
   constructor() { 
     this.reservas = [];
     this._rutaBD = '/Datos/reservas.json';
@@ -349,22 +349,22 @@ class GestorReserva {
   
   async guardarReservasEnBD(reservasJSON) {
     try {
-      const respuesta = await fetch(this._rutaBD);
-      let datos = { reservas: [] };
-      
-      if (respuesta.ok) {
-        datos = await respuesta.json();
+      const respuesta = await fetch("http://localhost:8080/api/reservas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(jsonReserva)
+      });
+  
+      if (!respuesta.ok) {
+        mensajeError("No se pudo registrar la reserva.");
+        return false;
       }
-
-      datos.reservas.push(...reservasJSON);
-
-      console.log('Simulando guardado en BD. Total de reservas:', datos.reservas.length);
-      console.log('Nuevas reservas a guardar:', reservasJSON.length);
-
-      
-    } catch (error) {
-      console.error('Error al guardar reservas en BD:', error);
-      throw error;
+  
+      return true;
+    } catch (e) {
+      console.error(e);
+      mensajeError("Error al intentar crear la reserva.");
+      return false;
     }
   }
 

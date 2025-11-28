@@ -11,7 +11,7 @@ export { default as Direccion } from "./Direccion.js";
 export { default as Persona } from "./Persona.js";
 
 
-export { default as Huesped } from "./Huesped.js";
+export { Huesped } from "./Huesped.js";
 
 
 export { default as Habitacion } from "./Habitacion.js";
