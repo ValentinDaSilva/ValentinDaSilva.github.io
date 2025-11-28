@@ -56,7 +56,6 @@ export function generarNotaCredito() {
     idNota: null, 
     fecha: fecha,
     tipo: tipo,
-    total: total,
     subtotal: subtotal,
     iva: iva,
     responsable: responsable,
@@ -127,7 +126,8 @@ export function mostrarNotaCreditoEnPantalla(notaCredito) {
   
   const ncTotal = document.getElementById('ncTotal');
   if (ncTotal) {
-    ncTotal.textContent = `$${notaCredito.total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const totalCalculado = (notaCredito.subtotal || 0) + (notaCredito.iva || 0);
+    ncTotal.textContent = `$${totalCalculado.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 }
 

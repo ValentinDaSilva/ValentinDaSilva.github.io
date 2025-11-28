@@ -198,7 +198,6 @@ class GestorIngresarNotaCredito extends GestorFactura {
         idNota: null, 
         fecha: fecha,
         tipo: tipo,
-        total: total,
         subtotal: subtotal,
         iva: iva,
         responsable: responsable,

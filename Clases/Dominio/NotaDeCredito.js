@@ -4,7 +4,6 @@ class NotaDeCredito {
         this.fecha = new Date(); //Tipo Date
         this.responsable = responsable; //Tipo ResponsableDePago
         this.facturas = []; //Tipo Factura
-        this.total = 0; //Tipo number
         this.tipo = null; //Tipo TipoFactura
     }
 
@@ -38,11 +37,6 @@ class NotaDeCredito {
 
     set setFacturas(facturas) {
         this.facturas = facturas;
-        this.calcularTotal();
-    }
-
-    get getTotal() {
-        return this.total;
     }
 
     get getTipo() {
@@ -56,11 +50,6 @@ class NotaDeCredito {
     agregarFactura(factura) {
         this.facturas.push(factura);
         factura.notaDeCredito = this;  
-        this.calcularTotal();
-    }
-
-    calcularTotal() {
-        this.total = this.facturas.reduce((acc, f) => acc + (f.total || 0), 0);
     }
 }
 

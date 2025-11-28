@@ -96,7 +96,7 @@ async function mostrarDatosFacturaEnPantalla(factura) {
     try {
       // Importar Factura para usar su método calcularRecargoCheckout
       const { default: Factura } = await import('../../Clases/Dominio/Factura.js');
-      const facturaTemp = new Factura(null, null, null, null, null, null, null, factura.estadia);
+      const facturaTemp = new Factura(null, null, null, null, null, null, factura.estadia);
       const habitacion = factura.estadia.reserva.habitaciones[0];
       const costoPorNoche = habitacion ? (habitacion.costoPorNoche || 0) : 0;
       const recargoCheckout = facturaTemp.calcularRecargoCheckout(factura.horaSalida, costoPorNoche);

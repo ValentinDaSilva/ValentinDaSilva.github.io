@@ -19,14 +19,13 @@
  * 
  */
 class Factura {
-    constructor(id, hora, fecha, tipo, estado, responsableDePago, medioDePago, estadia) {
+    constructor(id, hora, fecha, tipo, estado, responsableDePago, estadia) {
         this.id = id;
         this.hora = hora; //Tipo Date
         this.fecha = fecha; //Tipo Date 
         this.tipo = tipo; //Tipo TipoFactura
         this.estado = estado; //Tipo EstadoFactura
         this.responsableDePago = responsableDePago; //Tipo ResponsableDePago
-        this.medioDePago = medioDePago; //Tipo MedioDePago
         this.estadia = estadia; //Tipo Estadia
         this.pagos = []; //Tipo Pago
         this.total = 0; //Tipo number

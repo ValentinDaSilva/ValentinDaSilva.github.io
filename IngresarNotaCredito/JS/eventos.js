@@ -1,15 +1,15 @@
 
 
 import { validarDniCuit } from './validaciones.js';
-import { buscarResponsable } from './buscar-responsable.js';
+import { buscarResponsable, guardarResponsableActual } from './buscar-responsable.js';
 import { buscarFacturasNoAnuladas, mostrarFacturasEnTabla } from './buscar-facturas.js';
 import { obtenerResponsableActual } from './buscar-responsable.js';
 import { validarFacturasSeleccionadas } from './validaciones.js';
 import { generarNotaCredito, mostrarNotaCreditoEnPantalla } from './generar-nota-credito.js';
 import { mostrarPantallaBuscarResponsable, mostrarPantallaListaFacturas, mostrarPantallaResumenNotaCredito } from './navegacion-pantallas.js';
 import { guardarNotaCredito, guardarNotasCreditoFactura } from './datos-nota-credito.js';
-import { actualizarFacturas } from './datos-facturas.js';
-import { mensajeExito } from './modales.js';
+import { actualizarFacturas, cargarFacturas, obtenerFacturasNoAnuladasPorResponsable, extraerResponsableDesdeFacturas } from './datos-facturas.js';
+import { mensajeExito, mensajeError } from './modales.js';
 import { obtenerNotaCreditoActual } from './generar-nota-credito.js';
 import { limpiarSeleccionFacturas } from './seleccion-facturas.js';
 import { limpiarResponsableActual } from './buscar-responsable.js';
@@ -30,34 +30,28 @@ export function inicializarEventos() {
         return;
       }
       
-      let responsable = null;
-      let facturas = [];
+      await cargarFacturas();
+      const facturas = obtenerFacturasNoAnuladasPorResponsable(dniCuit);
       
-      if (window.gestorFactura) {
-        responsable = await window.gestorFactura.buscarResponsableParaNotaCredito(dniCuit);
-        facturas = await window.gestorFactura.buscarFacturasParaNotaCredito(dniCuit);
-      } else if (window.gestorIngresarNotaCredito) {
-        responsable = await window.gestorIngresarNotaCredito.buscarResponsable(dniCuit);
-        facturas = await window.gestorIngresarNotaCredito.buscarFacturasNoAnuladas(dniCuit);
-      } else {
-        responsable = await buscarResponsable(dniCuit);
-        
-        if (responsable) {
-          const { cargarFacturas } = await import('./datos-facturas.js');
-          await cargarFacturas();
-          facturas = buscarFacturasNoAnuladas(dniCuit);
-        }
+      if (facturas.length === 0) {
+        mensajeError('No se encontraron facturas para el DNI o CUIT ingresado.');
+        return;
       }
       
-      if (responsable) {
-        console.log('Facturas encontradas:', facturas.length);
-        
-        
-        mostrarFacturasEnTabla(facturas, responsable);
-        
-        
-        mostrarPantallaListaFacturas();
+      const responsable = extraerResponsableDesdeFacturas(facturas);
+      
+      if (!responsable) {
+        mensajeError('No se pudo extraer la información del responsable desde las facturas.');
+        return;
       }
+      
+      guardarResponsableActual(responsable);
+      
+      console.log('Facturas encontradas:', facturas.length);
+      console.log('Responsable extraído:', responsable);
+      
+      mostrarFacturasEnTabla(facturas, responsable);
+      mostrarPantallaListaFacturas();
     });
   }
   
@@ -130,7 +124,6 @@ export function inicializarEventos() {
             idNota: null,
             fecha: notaCreditoGuardada.fecha,
             tipo: notaCreditoGuardada.tipo,
-            total: notaCreditoGuardada.total,
             responsable: notaCreditoGuardada.responsable
           };
           
@@ -155,7 +148,6 @@ export function inicializarEventos() {
             idNota: null,
             fecha: notaCredito.fecha,
             tipo: notaCredito.tipo,
-            total: notaCredito.total,
             responsable: notaCredito.responsable
           });
           

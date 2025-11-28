@@ -76,7 +76,6 @@ function convertirFacturaAJSON(factura) {
     responsableDePago = responsableDePago.toJSON();
   }
   
-  const medioDePago = factura.medioDePago !== undefined ? factura.medioDePago : null;
   const estadia = factura.estadia !== undefined ? factura.estadia : null;
   const total = factura.total !== undefined ? factura.total : (factura.getTotal ? factura.getTotal() : 0);
   const iva = factura.iva !== undefined ? factura.iva : (factura.getIva ? factura.getIva() : 0);
@@ -90,7 +89,6 @@ function convertirFacturaAJSON(factura) {
     tipo: tipo,
     estado: estado,
     responsableDePago: responsableDePago,
-    medioDePago: medioDePago,
     estadia: estadia,
     pagos: pagosJSON,
     total: total,

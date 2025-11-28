@@ -117,12 +117,11 @@ class EstadiaDTO {
 }
 
 class NotaDeCreditoDTO {
-  constructor(idNota = null, fecha = null, responsable = null, facturas = [], total = 0, tipo = null) {
+  constructor(idNota = null, fecha = null, responsable = null, facturas = [], tipo = null) {
     this._idNota = idNota;
     this._fecha = fecha;
     this._responsable = responsable;
     this._facturas = facturas;
-    this._total = total;
     this._tipo = tipo;
   }
 
@@ -130,19 +129,17 @@ class NotaDeCreditoDTO {
   get fecha() { return this._fecha; } set fecha(v) { this._fecha = v; }
   get responsable() { return this._responsable; } set responsable(v) { this._responsable = v; }
   get facturas() { return this._facturas; } set facturas(v) { this._facturas = v; }
-  get total() { return this._total; } set total(v) { this._total = v; }
   get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
 }
 
 class FacturaDTO {
-  constructor(id, hora, fecha, tipo, estado, responsableDePago, medioDePago, estadia, pagos = [], total = 0) {
+  constructor(id, hora, fecha, tipo, estado, responsableDePago, estadia, pagos = [], total = 0) {
     this._id = id;
     this._hora = hora;
     this._fecha = fecha;
     this._tipo = tipo;
     this._estado = estado;
     this._responsableDePago = responsableDePago;
-    this._medioDePago = medioDePago;
     this._estadia = estadia;
     this._pagos = pagos;
     this._total = total;
@@ -154,7 +151,6 @@ class FacturaDTO {
   get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
   get estado() { return this._estado; } set estado(v) { this._estado = v; }
   get responsableDePago() { return this._responsableDePago; } set responsableDePago(v) { this._responsableDePago = v; }
-  get medioDePago() { return this._medioDePago; } set medioDePago(v) { this._medioDePago = v; }
   get estadia() { return this._estadia; } set estadia(v) { this._estadia = v; }
   get pagos() { return this._pagos; } set pagos(v) { this._pagos = v; }
   get total() { return this._total; } set total(v) { this._total = v; }

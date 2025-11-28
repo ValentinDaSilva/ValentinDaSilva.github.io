@@ -100,7 +100,6 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
     idNota: notaCredito.idNota,
     fecha: notaCredito.fecha,
     tipo: notaCredito.tipo,
-    total: notaCredito.total,
     responsable: notaCredito.responsable,
     facturas: facturas.map(factura => ({
       id: factura.id,
@@ -112,7 +111,6 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
       estadia: factura.estadia,
       iva: factura.iva,
       total: factura.total,
-      medioDePago: factura.medioDePago,
       pagos: factura.pagos || []
     }))
   };
@@ -127,13 +125,14 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
       ? notaCredito.responsable.razonSocial
       : `${notaCredito.responsable.apellido || ''}, ${notaCredito.responsable.nombres || ''}`.trim();
     
+    const totalCalculado = (notaCredito.subtotal || 0) + (notaCredito.iva || 0);
     infoAdicional.innerHTML = `
       <strong>Información de la Nota de Crédito:</strong><br>
       • ID Nota: ${notaCredito.idNota || 'N/A'}<br>
       • Fecha: ${notaCredito.fecha || 'N/A'}<br>
       • Tipo: ${notaCredito.tipo || 'N/A'}<br>
       • Responsable: ${responsableNombre}<br>
-      • Total: $${notaCredito.total.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}<br>
+      • Total: $${totalCalculado.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}<br>
       • <strong>Facturas Anuladas:</strong> ${facturas.length}
     `;
   }

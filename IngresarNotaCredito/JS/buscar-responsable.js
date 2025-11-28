@@ -35,6 +35,11 @@ export function obtenerResponsableActual() {
 }
 
 
+export function guardarResponsableActual(responsable) {
+  responsableActual = responsable;
+}
+
+
 export function limpiarResponsableActual() {
   responsableActual = null;
 }

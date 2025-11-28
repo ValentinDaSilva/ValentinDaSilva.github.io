@@ -114,7 +114,7 @@ class GestorGenerarFactura extends GestorFactura {
     }
     
     // Crear instancia de Factura temporal para usar sus métodos de cálculo
-    const facturaTemporal = new Factura(null, null, null, null, null, null, null, estadia);
+    const facturaTemporal = new Factura(null, null, null, null, null, null, estadia);
     const fechaActual = facturaTemporal.obtenerFechaActual();
     const horaActual = new Date().toTimeString().slice(0, 5);
     
@@ -170,7 +170,6 @@ class GestorGenerarFactura extends GestorFactura {
       tipo: tipoFactura,
       estado: EstadoFactura.PENDIENTE,
       responsableDePago: responsableJSON,
-      medioDePago: null, 
       estadia: estadiaEstandar, // Estadía con huéspedes en formato estándar
       pagos: [], // Array vacío inicialmente
       total: resultado.total, // Total de la factura

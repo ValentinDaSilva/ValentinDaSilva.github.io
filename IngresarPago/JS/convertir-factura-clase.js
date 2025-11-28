@@ -36,7 +36,6 @@ export function convertirFacturaJSONAClase(facturaJSON) {
     facturaJSON.tipo,
     facturaJSON.estado,
     responsableDePago,
-    facturaJSON.medioDePago,
     facturaJSON.estadia
   );
   

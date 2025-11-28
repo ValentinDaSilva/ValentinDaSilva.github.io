@@ -13,7 +13,7 @@
         "nombres": "LUCÍA",
         "documento": "66554433"
       },
-      "medioDePago": null,
+      
       "estadia": {
         "id": 31,
         "fechaCheckIn": "2025-11-03",
@@ -126,7 +126,7 @@
         "nombres": "MARIA",
         "documento": "23456789"
       },
-      "medioDePago": null,
+      
       "estadia": {
         "id": 2,
         "fechaCheckIn": "2025-11-03",
@@ -226,7 +226,7 @@
           "pais": "ARGENTINA"
         }
       },
-      "medioDePago": null,
+      
       "estadia": {
         "id": 20,
         "fechaCheckIn": "2025-11-03",
@@ -318,7 +318,7 @@
         "nombres": "LUCÍA",
         "documento": "66554433"
       },
-      "medioDePago": null,
+      
       "estadia": {
         "id": 5,
         "fechaCheckIn": "2025-11-08",
@@ -409,7 +409,7 @@
         "nombres": "JUAN MARTÍN",
         "documento": "44557788"
       },
-      "medioDePago": null,
+      
       "estadia": {
         "id": 18,
         "fechaCheckIn": "2025-11-03",
@@ -506,7 +506,7 @@
         "nombres": "LAURA",
         "documento": "44556677"
       },
-      "medioDePago": null,
+      
       "estadia": {
         "id": 29,
         "fechaCheckIn": "2025-11-03",
