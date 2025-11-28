@@ -51,62 +51,49 @@ export default class GestorHuesped {
   }
 
   
-  async buscarHuespedes() {
-    try {
-      
-      if (!this._gestorBuscar) {
-        if (window.gestorBuscarHuesped) {
-          this._gestorBuscar = window.gestorBuscarHuesped;
-        } else {
-          const { GestorBuscarHuesped } = await import('../../BuscarHuesped/JS/gestor-buscar-huesped.js');
-          this._gestorBuscar = new GestorBuscarHuesped();
-        }
-      }
+  static async buscarHuespedes() {
+        try {
+                
+          const datosFormulario = GestorBuscarHuesped.extraerDatosFormulario();
+          console.log('Datos extraídos del formulario:', datosFormulario);
+          
+          
+          const resultado = await GestorBuscarHuesped.buscarHuespedesEnAPI(
+              datosFormulario.apellido,
+              datosFormulario.nombre,
+              datosFormulario.tipoDocumento,
+              datosFormulario.numeroDocumento
+          );
 
-      
-      if (this._gestorBuscar._datosHuespedes.length === 0) {
-        await this._gestorBuscar.cargarHuespedes();
-        if (this._gestorBuscar._datosHuespedes.length === 0) {
-          mensajeError('No se pudieron cargar los datos. Por favor, recarga la página.');
+          if (resultado.error) {
+              throw new Error(resultado.error);
+          }
+
+          
+          const resultados = Array.isArray(resultado.data) ? resultado.data : [];
+          console.log(`Se encontraron ${resultados.length} resultados`);
+          
+          
+          GestorBuscarHuesped.renderizarResultados(resultados);
+          
+          
+          GestorBuscarHuesped.mostrarResultados();
+          
+          
+          setTimeout(() => {
+              if (typeof inicializarTablaResultados === 'function') {
+                  inicializarTablaResultados();
+              } else {
+                  console.error('La función inicializarTablaResultados no está disponible');
+              }
+          }, 200);
+          
+          return true;
+      } catch (error) {
+          console.error('Error al procesar la búsqueda:', error);
+          mensajeError('Error al procesar la búsqueda: ' + error.message);
           return false;
-        }
       }
-
-      
-      const datosFormulario = this._gestorBuscar.extraerDatosFormulario();
-      console.log('Datos extraídos del formulario:', datosFormulario);
-
-      
-      const resultados = this._gestorBuscar.filtrarHuespedes(
-        datosFormulario.apellido,
-        datosFormulario.nombre,
-        datosFormulario.tipoDocumento,
-        datosFormulario.numeroDocumento
-      );
-
-      console.log(`Se encontraron ${resultados.length} resultados`);
-
-      
-      this._gestorBuscar.renderizarResultados(resultados);
-
-      
-      this._gestorBuscar.mostrarResultados();
-
-      
-      setTimeout(() => {
-        if (typeof inicializarTablaResultados === 'function') {
-          inicializarTablaResultados();
-        } else {
-          console.error('La función inicializarTablaResultados no está disponible');
-        }
-      }, 200);
-
-      return true;
-    } catch (error) {
-      console.error('Error al procesar la búsqueda:', error);
-      mensajeError('Error al procesar la búsqueda: ' + error.message);
-      return false;
-    }
   }
 
   

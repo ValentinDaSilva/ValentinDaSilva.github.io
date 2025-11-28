@@ -1,17 +1,9 @@
-
-
-import { GestorHuesped } from "../../Clases/Dominio/dominio.js";
-
-
-class GestorBuscarHuesped extends GestorHuesped {
+export default class GestorBuscarHuesped {
     constructor() {
-        super();
-        this._rutaBD = '/Datos/huespedes.json';
-        this._datosHuespedes = [];
     }
 
     
-    extraerDatosFormulario() {
+    static extraerDatosFormulario() {
         const formData = {
             apellido: document.getElementById('apellido')?.value.trim() || '',
             nombre: document.getElementById('nombre')?.value.trim() || '',
@@ -23,73 +15,57 @@ class GestorBuscarHuesped extends GestorHuesped {
     }
 
     
-    async cargarHuespedes() {
+    // async cargarHuespedes() {
+    //     try {
+    //         const respuesta = await fetch(this._rutaBD);
+    //         if (!respuesta.ok) {
+    //             throw new Error(`Error al cargar los datos: ${respuesta.status}`);
+    //         }
+            
+    //         const datosCrudos = await respuesta.json();
+                
+    //         console.log(`Se cargaron ${this._datosHuespedes.length} huéspedes`);
+                
+    //         return this._datosHuespedes;
+    //     } catch (error) {
+    //         console.error('Error al cargar huéspedes:', error);
+    //         mensajeError('Error al cargar los datos de huéspedes. Por favor, recarga la página.');
+    //         this._datosHuespedes = [];
+    //         return [];
+    //     }
+    // }
+
+    
+    static async buscarHuespedesEnAPI(apellido, nombre, tipoDocumento, numeroDocumento) {
         try {
-            const respuesta = await fetch(this._rutaBD);
-            if (!respuesta.ok) {
-                throw new Error(`Error al cargar los datos: ${respuesta.status}`);
+            const params = new URLSearchParams({
+                apellido: apellido || '',
+                nombre: nombre || '',
+                tipoDocumento: tipoDocumento || '',
+                numeroDocumento: numeroDocumento || ''
+            });
+
+            const url = `http://localhost:8080/api/huespedes/buscar?${params.toString()}`;
+            console.log('URL de búsqueda:', url);
+
+            const res = await fetch(url);
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || data || 'Error al buscar huéspedes');
             }
-      const datosCrudos = await respuesta.json();
-      this._datosHuespedes = this.normalizarDatosHuespedes(datosCrudos);
-            console.log(`Se cargaron ${this._datosHuespedes.length} huéspedes`);
-            return this._datosHuespedes;
+
+            console.log('Resultados de la búsqueda:', data);
+            return { success: true, data };
         } catch (error) {
-            console.error('Error al cargar huéspedes:', error);
-            mensajeError('Error al cargar los datos de huéspedes. Por favor, recarga la página.');
-            this._datosHuespedes = [];
-            return [];
+            console.error('Error al buscar huéspedes en la API:', error);
+            return {
+                error: error.message || "Error inesperado de conexión. Por favor, verifica que el servidor esté corriendo."
+            };
         }
     }
 
-    
-    filtrarHuespedes(apellido, nombre, tipoDocumento, numeroDocumento) {
-        
-        const apellidoTrim = apellido ? apellido.trim() : '';
-        const nombreTrim = nombre ? nombre.trim() : '';
-        const tipoDoc = tipoDocumento ? tipoDocumento.trim() : '';
-        const numDoc = numeroDocumento ? numeroDocumento.trim() : '';
-        
-        if (!apellidoTrim && !nombreTrim && !tipoDoc && !numDoc) {
-            return this._datosHuespedes; 
-        }
-        
-        let resultados = this._datosHuespedes;
-        
-        
-        if (apellidoTrim !== '') {
-            const apellidoLower = apellidoTrim.toLowerCase();
-            resultados = resultados.filter(huesped => 
-        (huesped.apellido || '').toLowerCase().startsWith(apellidoLower)
-            );
-        }
-        
-        
-        if (nombreTrim !== '') {
-            const nombreLower = nombreTrim.toLowerCase();
-            resultados = resultados.filter(huesped => 
-        (huesped.nombre || '').toLowerCase().startsWith(nombreLower)
-            );
-        }
-        
-        
-        if (tipoDoc !== '') {
-            resultados = resultados.filter(huesped => 
-                huesped.tipoDocumento === tipoDoc
-            );
-        }
-        
-        
-        if (numDoc !== '') {
-            resultados = resultados.filter(huesped => 
-        (huesped.numeroDocumento || '').toString().startsWith(numDoc)
-            );
-        }
-        
-        return resultados;
-    }
-
-    
-    renderizarResultados(resultados) {
+    static renderizarResultados(resultados) {
         const tbody = document.querySelector(".tabla-resultados tbody");
         if (!tbody) {
             console.error('No se encontró el tbody de la tabla');
@@ -150,7 +126,7 @@ class GestorBuscarHuesped extends GestorHuesped {
     }
 
     
-    mostrarResultados() {
+    static mostrarResultados() {
         const contenedorResultados = document.querySelector('.contenedor-resultados');
         const contenedorPrincipal = document.querySelector('.contenedor-principal');
         
@@ -159,69 +135,9 @@ class GestorBuscarHuesped extends GestorHuesped {
             contenedorResultados.style.display = 'block';
         }
     }
-
-    
-    async procesarBusqueda() {
-        try {
-            
-            if (this._datosHuespedes.length === 0) {
-                await this.cargarHuespedes();
-                if (this._datosHuespedes.length === 0) {
-                    mensajeError('No se pudieron cargar los datos. Por favor, recarga la página.');
-                    return false;
-                }
-            }
-            
-            
-            const datosFormulario = this.extraerDatosFormulario();
-            console.log('Datos extraídos del formulario:', datosFormulario);
-            
-            
-            const resultados = this.filtrarHuespedes(
-                datosFormulario.apellido,
-                datosFormulario.nombre,
-                datosFormulario.tipoDocumento,
-                datosFormulario.numeroDocumento
-            );
-            
-            console.log(`Se encontraron ${resultados.length} resultados`);
-            
-            
-            this.renderizarResultados(resultados);
-            
-            
-            this.mostrarResultados();
-            
-            
-            setTimeout(() => {
-                if (typeof inicializarTablaResultados === 'function') {
-                    inicializarTablaResultados();
-                } else {
-                    console.error('La función inicializarTablaResultados no está disponible');
-                }
-            }, 200);
-            
-            return true;
-        } catch (error) {
-            console.error('Error al procesar la búsqueda:', error);
-            mensajeError('Error al procesar la búsqueda: ' + error.message);
-            return false;
-        }
-    }
-
-    
-    obtenerDatosHuespedes() {
-        return this._datosHuespedes;
-    }
 }
 
-
-export { GestorBuscarHuesped };
-
-const gestorBuscarHuesped = new GestorBuscarHuesped();
-
-
-window.gestorBuscarHuesped = gestorBuscarHuesped;
+window.GestorBuscarHuesped = GestorBuscarHuesped;
 
 
 

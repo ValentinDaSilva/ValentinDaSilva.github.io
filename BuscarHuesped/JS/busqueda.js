@@ -17,15 +17,7 @@ async function manejarBusqueda(event) {
         return;
     }
     
-    
-    if (window.gestorHuesped) {
-        await window.gestorHuesped.buscarHuespedes();
-    } else if (window.gestorBuscarHuesped) {
-        await window.gestorBuscarHuesped.procesarBusqueda();
-    } else {
-        console.error('El gestor de búsqueda de huéspedes no está disponible');
-        mensajeError('Error al procesar la búsqueda. Por favor, recarga la página.');
-        }
+    GestorHuesped.buscarHuespedes();
 }
 
 

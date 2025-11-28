@@ -1,7 +1,7 @@
 import Reserva from "./Reserva.js";
 import { EstadoReserva, EstadoHabitacion } from "./Enums.js";
 import Persona from "./Persona.js";
-import Huesped from "./Huesped.js";
+import {Huesped} from "./Huesped.js";
 import Habitacion from "./Habitacion.js";
 
 /**
