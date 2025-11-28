@@ -165,16 +165,16 @@ class GestorAltaHuesped {
                             }
 
                             const data = await res2.json();
-                            console.log("Huésped guardado exitosamente (forzado):", data);
+                            
                             resolve({ success: true, data });
                         },
 
                         // CORREGIR
+                        
                         function () {
                             resolve({ cancelado: true });
                         }
                     );
-
                 });
             }
 
@@ -208,7 +208,37 @@ class GestorAltaHuesped {
                     throw new Error(resultado.error);
                 }
 
-                console.log('Huésped guardado exitosamente en la base de datos');
+                
+                const nombre = document.getElementById("nombre").value.trim();
+                const apellido = document.getElementById("apellido").value.trim();
+                pregunta(
+                    `El huésped\n${nombre} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
+                    "SI ✅",
+                    "NO ❌",
+                    function() { 
+                        
+                        const modalPregunta = document.getElementById('modalPregunta');
+                        if (modalPregunta) {
+                            modalPregunta.style.display = 'none';
+                        }
+                        
+                        
+                        reiniciarFormulario();
+                        
+                        
+                        mensajeCorrecto("Huésped cargado correctamente. El formulario ha sido reiniciado.");
+                    },
+                    function() {
+                        
+                        const modalPregunta = document.getElementById('modalPregunta');
+                        if (modalPregunta) {
+                            modalPregunta.style.display = 'none';
+                        }
+                        
+                        
+                        window.location.href = '../index.html';
+                    }
+                );
                 return true;
             } else {
                 console.warn('Operación de modificación no implementada para API');
