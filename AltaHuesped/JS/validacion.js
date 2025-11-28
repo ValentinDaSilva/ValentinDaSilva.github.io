@@ -24,12 +24,6 @@ function verificarCUIT(listaCUITS) {
                             "NO ❌",
                             function() { 
                                 
-                                const contenedorJSON = document.getElementById('contenedor-json');
-                                if (contenedorJSON) {
-                                    contenedorJSON.style.display = 'none';
-                                }
-                                
-                                
                                 const modalPregunta = document.getElementById('modalPregunta');
                                 if (modalPregunta) {
                                     modalPregunta.style.display = 'none';
@@ -42,12 +36,6 @@ function verificarCUIT(listaCUITS) {
                                 mensajeCorrecto("Huésped cargado correctamente. El formulario ha sido reiniciado.");
                             },
                             function() {
-                                
-                                const contenedorJSON = document.getElementById('contenedor-json');
-                                if (contenedorJSON) {
-                                    contenedorJSON.style.display = 'none';
-                                }
-                                
                                 
                                 const modalPregunta = document.getElementById('modalPregunta');
                                 if (modalPregunta) {
@@ -95,12 +83,6 @@ function reiniciarFormulario() {
             campo.classList.remove('campo-invalido');
             campo.classList.remove('campo-valido');
         });
-        
-        
-        const contenedorJSON = document.getElementById('contenedor-json');
-        if (contenedorJSON) {
-            contenedorJSON.style.display = 'none';
-        }
         
         
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -160,12 +142,6 @@ async function manejarEnvioFormulario(event) {
             "NO ❌",
             function() { 
                 
-                const contenedorJSON = document.getElementById('contenedor-json');
-                if (contenedorJSON) {
-                    contenedorJSON.style.display = 'none';
-                }
-                
-                
                 const modalPregunta = document.getElementById('modalPregunta');
                 if (modalPregunta) {
                     modalPregunta.style.display = 'none';
@@ -178,12 +154,6 @@ async function manejarEnvioFormulario(event) {
                 mensajeCorrecto("Huésped cargado correctamente. El formulario ha sido reiniciado.");
             },
             function() {
-                
-                const contenedorJSON = document.getElementById('contenedor-json');
-                if (contenedorJSON) {
-                    contenedorJSON.style.display = 'none';
-                }
-                
                 
                 const modalPregunta = document.getElementById('modalPregunta');
                 if (modalPregunta) {

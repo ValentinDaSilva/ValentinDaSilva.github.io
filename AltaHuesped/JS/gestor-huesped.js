@@ -6,7 +6,6 @@ import { GestorHuesped, Huesped, Direccion } from "../../Clases/Dominio/dominio.
 class GestorAltaHuesped extends GestorHuesped {
     constructor() {
         super();
-        this._rutaBD = '/Datos/huespedes.json';
     }
 
     
@@ -210,142 +209,6 @@ class GestorAltaHuesped extends GestorHuesped {
         return jsonData;
     }
 
-    
-    mostrarJSONEnPantalla(jsonData) {
-        
-        let fondoJSON = document.getElementById('fondo-json');
-        if (!fondoJSON) {
-            fondoJSON = document.createElement('div');
-            fondoJSON.id = 'fondo-json';
-            fondoJSON.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.45);
-                backdrop-filter: blur(1px);
-                z-index: 9999;
-                display: none;
-            `;
-            document.body.appendChild(fondoJSON);
-        }
-
-        let contenedorJSON = document.getElementById('contenedor-json');
-        let botonCerrar = null;
-        
-        if (!contenedorJSON) {
-            
-            contenedorJSON = document.createElement('div');
-            contenedorJSON.id = 'contenedor-json';
-            contenedorJSON.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 20px;
-                border: 2px solid #333;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                max-width: 90%;
-                max-height: 90%;
-                overflow: auto;
-                z-index: 10000;
-                font-family: Arial, sans-serif;
-            `;
-
-            
-            const titulo = document.createElement('h2');
-            titulo.textContent = 'Datos a enviar al servidor backend';
-            titulo.style.cssText = 'margin-top: 0; margin-bottom: 15px; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;';
-            contenedorJSON.appendChild(titulo);
-
-            
-            const textarea = document.createElement('textarea');
-            textarea.id = 'json-display';
-            textarea.readOnly = true;
-            textarea.style.cssText = `
-                width: 100%;
-                min-height: 400px;
-                padding: 15px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-family: 'Courier New', monospace;
-                font-size: 13px;
-                resize: vertical;
-                box-sizing: border-box;
-                background: #f8f9fa;
-                line-height: 1.5;
-            `;
-            contenedorJSON.appendChild(textarea);
-
-            
-            botonCerrar = document.createElement('button');
-            botonCerrar.textContent = 'Cerrar';
-            botonCerrar.style.cssText = `
-                margin-top: 15px;
-                padding: 10px 30px;
-                background: #007bff;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 14px;
-                font-weight: bold;
-                transition: background 0.3s;
-            `;
-            contenedorJSON.appendChild(botonCerrar);
-
-            
-            document.body.appendChild(contenedorJSON);
-        } else {
-            botonCerrar = contenedorJSON.querySelector('button');
-        }
-
-        const cerrarModalJSON = () => {
-            contenedorJSON.style.display = 'none';
-            if (fondoJSON) {
-                fondoJSON.style.display = 'none';
-            }
-        };
-
-        if (botonCerrar) {
-            botonCerrar.onclick = cerrarModalJSON;
-            botonCerrar.onmouseover = function() {
-                this.style.background = '#0056b3';
-            };
-            botonCerrar.onmouseout = function() {
-                this.style.background = '#007bff';
-            };
-        }
-        if (fondoJSON) {
-            fondoJSON.onclick = cerrarModalJSON;
-        }
-
-        
-        const jsonFormateado = JSON.stringify(jsonData, null, 2);
-        
-        
-        const textarea = document.getElementById('json-display');
-        if (textarea) {
-            textarea.value = jsonFormateado;
-            
-            textarea.scrollTop = 0;
-        }
-
-        
-        contenedorJSON.style.display = 'block';
-        if (fondoJSON) {
-            fondoJSON.style.display = 'block';
-        }
-
-        
-        console.log('=== DATOS A ENVIAR A LA BASE DE DATOS ===');
-        console.log('Objeto completo:', jsonData);
-        console.log('JSON formateado:', jsonFormateado);
-        console.log('==========================================');
-    }
 
     
     async procesarAltaHuesped() {
@@ -380,9 +243,6 @@ class GestorAltaHuesped extends GestorHuesped {
             const jsonParaBD = this.convertirDTOAJSON(huespedDTO, direccionDTO, datosFormulario);
             
             
-            this.mostrarJSONEnPantalla(jsonParaBD);
-
-            
             await this.guardarEnBD(jsonParaBD, 'alta');
 
             
@@ -398,6 +258,7 @@ class GestorAltaHuesped extends GestorHuesped {
 
     
     async enviarHuespedAAPI(jsonData) {
+        console.log('JSON a enviar a la API:', jsonData);
         try {
             const res = await fetch("http://localhost:8080/api/huesped", {
                 method: "POST",
@@ -444,31 +305,6 @@ class GestorAltaHuesped extends GestorHuesped {
         }
     }
 
-    
-    async simularGuardadoEnBD(jsonData) {
-        try {
-            
-            const respuesta = await fetch(this._rutaBD);
-            let huespedesExistentes = [];
-            
-            if (respuesta.ok) {
-                huespedesExistentes = await respuesta.json();
-            }
-
-            
-            huespedesExistentes.push(jsonData);
-
-            
-            
-            console.log('Simulando guardado en BD. Total de huéspedes:', huespedesExistentes.length);
-            console.log('Nuevo huésped a guardar:', jsonData);
-
-            
-        } catch (error) {
-            console.error('Error al simular guardado en BD:', error);
-            throw error;
-        }
-    }
 }
 
 

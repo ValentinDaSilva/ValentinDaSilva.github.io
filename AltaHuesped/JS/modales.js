@@ -141,8 +141,7 @@ function hayModalAbierto() {
         document.getElementById('modalError'),
         document.getElementById('modalCorrecto'),
         document.getElementById('modalAdvertencia'),
-        document.getElementById('modalPregunta'),
-        document.getElementById('contenedor-json') 
+        document.getElementById('modalPregunta')
     ];
     
     return modales.some(modal => {
@@ -184,11 +183,6 @@ function inicializarEnterModalError() {
             if (hayModalAbierto()) {
                 event.preventDefault();
                 event.stopPropagation();
-                
-                const contenedorJSON = document.getElementById('contenedor-json');
-                if (contenedorJSON && contenedorJSON.style.display !== 'none' && contenedorJSON.style.display !== '') {
-                    return; 
-                }
                 return;
             }
         }
