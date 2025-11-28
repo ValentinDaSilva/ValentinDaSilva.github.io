@@ -1,8 +1,4 @@
-
-
-
-
-class DireccionDTO {
+export class DireccionDTO {
   constructor(calle, numero, piso, departamento, localidad, provincia, codigoPostal, pais) {
     this._calle = calle;
     this._numero = numero;
@@ -25,7 +21,7 @@ class DireccionDTO {
   get pais() { return this._pais; } set pais(v) { this._pais = v; }
 }
 
-class PersonaDTO {
+export class PersonaDTO {
   constructor(nombre, apellido, telefono) {
     this._nombre = nombre;
     this._apellido = apellido;
@@ -36,31 +32,63 @@ class PersonaDTO {
   get telefono() { return this._telefono; } set telefono(v) { this._telefono = v; }
 }
 
-class HuespedDTO extends PersonaDTO {
-  constructor(nombre, apellido, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null) {
-    super(nombre, apellido, null); 
-    this._tipoDocumento = tipoDocumento;
-    this._nroDocumento = nroDocumento;
-    this._fechaNacimiento = fechaNacimiento;
-    this._ocupacion = ocupacion;
-    this._nacionalidad = nacionalidad;
-    this._cuit = cuit;
-    this._email = email;
-    this._direccion = direccion;
+export class HuespedDTO {
+  constructor(
+      apellido,
+      nombre,
+      tipoDocumento,
+      numeroDocumento,
+      cuit,
+      fechaNacimiento,
+      telefono,
+      email,
+      ocupacion,
+      nacionalidad,
+      direccion = null
+  ) {
+      this._apellido = apellido;
+      this._nombre = nombre;
+      this._tipoDocumento = tipoDocumento;
+      this._nroDocumento = numeroDocumento;
+      this._cuit = cuit || '';
+      this._fechaNacimiento = fechaNacimiento;
+      this._telefono = telefono || '';
+      this._email = email || '';
+      this._ocupacion = ocupacion;
+      this._nacionalidad = nacionalidad;
+      this._direccion = direccion; // DireccionDTO
   }
 
-  get tipoDocumento() { return this._tipoDocumento; } set tipoDocumento(v) { this._tipoDocumento = v; }
-  get nroDocumento() { return this._nroDocumento; } set nroDocumento(v) { this._nroDocumento = v; }
-  get numeroDocumento() { return this._nroDocumento; } set numeroDocumento(v) { this._nroDocumento = v; }
-  get fechaNacimiento() { return this._fechaNacimiento; } set fechaNacimiento(v) { this._fechaNacimiento = v; }
-  get ocupacion() { return this._ocupacion; } set ocupacion(v) { this._ocupacion = v; }
-  get nacionalidad() { return this._nacionalidad; } set nacionalidad(v) { this._nacionalidad = v; }
-  get cuit() { return this._cuit; } set cuit(v) { this._cuit = v; }
-  get email() { return this._email; } set email(v) { this._email = v; }
-  get direccion() { return this._direccion; } set direccion(v) { this._direccion = v; }
+  // ======== GETTERS ========
+  getApellido() { return this._apellido; }
+  getNombre() { return this._nombre; }
+  getTipoDocumento() { return this._tipoDocumento; }
+  getNumeroDocumento() { return this._nroDocumento; }
+  getNroDocumento() { return this._nroDocumento; }
+  getCuit() { return this._cuit; }
+  getFechaNacimiento() { return this._fechaNacimiento; }
+  getTelefono() { return this._telefono; }
+  getEmail() { return this._email; }
+  getOcupacion() { return this._ocupacion; }
+  getNacionalidad() { return this._nacionalidad; }
+  getDireccion() { return this._direccion; }
+
+  // ======== SETTERS ========
+  setApellido(v) { this._apellido = v; }
+  setNombre(v) { this._nombre = v; }
+  setTipoDocumento(v) { this._tipoDocumento = v; }
+  setNumeroDocumento(v) { this._nroDocumento = v; }
+  setNroDocumento(v) { this._nroDocumento = v; }
+  setCuit(v) { this._cuit = v; }
+  setFechaNacimiento(v) { this._fechaNacimiento = v; }
+  setTelefono(v) { this._telefono = v; }
+  setEmail(v) { this._email = v; }
+  setOcupacion(v) { this._ocupacion = v; }
+  setNacionalidad(v) { this._nacionalidad = v; }
+  setDireccion(v) { this._direccion = v; }
 }
 
-class HabitacionDTO {
+export class HabitacionDTO {
   constructor(numero, tipo, categoria, costoPorNoche, estadoHabitacion) {
     this._numero = numero;
     this._tipo = tipo;
@@ -76,7 +104,7 @@ class HabitacionDTO {
   get estadoHabitacion() { return this._estadoHabitacion; } set estadoHabitacion(v) { this._estadoHabitacion = v; }
 }
 
-class ReservaDTO {
+export class ReservaDTO {
   constructor(id, fechaInicio, fechaFin, titular, estado, habitaciones, estadia = null) {
     this._id = id;
     this._fechaInicio = fechaInicio;
@@ -96,7 +124,7 @@ class ReservaDTO {
   get estadia() { return this._estadia; } set estadia(v) { this._estadia = v; }
 }
 
-class EstadiaDTO {
+export class EstadiaDTO {
   constructor(id, fechaCheckIn, fechaCheckOut, estado, reserva, titular, acompaniantes, consumos = []) {
     this._id = id;
     this._fechaCheckIn = fechaCheckIn;
@@ -118,7 +146,7 @@ class EstadiaDTO {
   get acompaniantes() { return this._acompaniantes; } set acompaniantes(v) { this._acompaniantes = v; }
 }
 
-class NotaDeCreditoDTO {
+export class NotaDeCreditoDTO {
   constructor(idNota = null, fecha = null, responsable = null, facturas = [], tipo = null) {
     this._idNota = idNota;
     this._fecha = fecha;
@@ -134,7 +162,7 @@ class NotaDeCreditoDTO {
   get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
 }
 
-class FacturaDTO {
+export class FacturaDTO {
   constructor(id, hora, fecha, tipo, estado, responsableDePago, estadia, pagos = [], total = 0) {
     this._id = id;
     this._hora = hora;
@@ -158,7 +186,7 @@ class FacturaDTO {
   get total() { return this._total; } set total(v) { this._total = v; }
 }
 
-class PagoDTO {
+export class PagoDTO {
   constructor(id, fecha, hora, montoTotal, medioDePago) {
     this._id = id;
     this._fecha = fecha;
@@ -172,18 +200,5 @@ class PagoDTO {
   get hora() { return this._hora; } set hora(v) { this._hora = v; }
   get montoTotal() { return this._montoTotal; } set montoTotal(v) { this._montoTotal = v; }
   get medioDePago() { return this._medioDePago; } set medioDePago(v) { this._medioDePago = v; }
-}
-
-
-if (typeof window !== 'undefined') {
-  window.ReservaDTO = ReservaDTO;
-  window.HuespedDTO = HuespedDTO;
-  window.DireccionDTO = DireccionDTO;
-  window.PersonaDTO = PersonaDTO;
-  window.HabitacionDTO = HabitacionDTO;
-  window.EstadiaDTO = EstadiaDTO;
-  window.NotaDeCreditoDTO = NotaDeCreditoDTO;
-  window.FacturaDTO = FacturaDTO;
-  window.PagoDTO = PagoDTO;
 }
 

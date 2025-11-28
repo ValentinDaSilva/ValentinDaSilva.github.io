@@ -1,4 +1,4 @@
-class Direccion {
+export class Direccion {
   constructor(calle, numero, piso, departamento, localidad, provincia, codigoPostal, pais) {
     this._calle = calle;
     this._numero = numero;
@@ -10,33 +10,25 @@ class Direccion {
     this._pais = pais;
   }
 
-  get calle() { return this._calle; }
-  set calle(v) { this._calle = v; }
+  // MÉTODOS GET
+  getCalle() { return this._calle; }
+  getNumero() { return this._numero; }
+  getPiso() { return this._piso; }
+  getDepartamento() { return this._departamento; }
+  getLocalidad() { return this._localidad; }
+  getProvincia() { return this._provincia; }
+  getCodigoPostal() { return this._codigoPostal; }
+  getPais() { return this._pais; }
 
-  get numero() { return this._numero; }
-  set numero(v) { this._numero = v; }
-
-  get piso() { return this._piso; }
-  set piso(v) { this._piso = v; }
-
-  get departamento() { return this._departamento; }
-  set departamento(v) { this._departamento = v; }
-
-  get localidad() { return this._localidad; }
-  set localidad(v) { this._localidad = v; }
-
-  get ciudad() { return this._localidad; }
-  set ciudad(v) { this._localidad = v; }
-
-  get provincia() { return this._provincia; }
-  set provincia(v) { this._provincia = v; }
-
-  get codigoPostal() { return this._codigoPostal; }
-  set codigoPostal(v) { this._codigoPostal = v; }
-
-  get pais() { return this._pais; }
-  set pais(v) { this._pais = v; }
+  // MÉTODOS SET
+  setCalle(v) { this._calle = v; }
+  setNumero(v) { this._numero = v; }
+  setPiso(v) { this._piso = v; }
+  setDepartamento(v) { this._departamento = v; }
+  setLocalidad(v) { this._localidad = v; }
+  setProvincia(v) { this._provincia = v; }
+  setCodigoPostal(v) { this._codigoPostal = v; }
+  setPais(v) { this._pais = v; }
 }
 
 export default Direccion;
-

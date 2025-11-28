@@ -1,73 +1,87 @@
-import Persona from "./Persona.js";
-import Direccion from "./Direccion.js";
+import { Direccion } from "./Direccion.js";
 
-class Huesped extends Persona {
-  constructor(nombre, apellido, tipoDocumento, nroDocumento, fechaNacimiento, ocupacion, nacionalidad, cuit, email, direccion = null) {
-    super(nombre, apellido);
-    this._tipoDocumento = tipoDocumento; //Tipo string
-    this._nroDocumento = nroDocumento; //Tipo string
-    this._fechaNacimiento = new Date(fechaNacimiento); //Tipo Date
-    this._ocupacion = ocupacion; //Tipo string
-    this._nacionalidad = nacionalidad; //Tipo string
-    this._cuit = cuit || ''; //Tipo string
-    this._email = email || ''; //Tipo string
-    this._direccion = direccion; //Tipo Direccion
-  }
-
-  get tipoDocumento() { return this._tipoDocumento; }
-  set tipoDocumento(v) { this._tipoDocumento = v; }
-
-  get nroDocumento() { return this._nroDocumento; }
-  set nroDocumento(v) { this._nroDocumento = v; }
-
-  get numeroDocumento() { return this._nroDocumento; }
-  set numeroDocumento(v) { this._nroDocumento = v; }
-
-  get fechaNacimiento() { return this._fechaNacimiento; }
-  set fechaNacimiento(v) { this._fechaNacimiento = new Date(v); }
-
-  get ocupacion() { return this._ocupacion; }
-  set ocupacion(v) { this._ocupacion = v; }
-
-  get nacionalidad() { return this._nacionalidad; }
-  set nacionalidad(v) { this._nacionalidad = v; }
-
-  get cuit() { return this._cuit; }
-  set cuit(v) { this._cuit = v; }
-
-  get email() { return this._email; }
-  set email(v) { this._email = v; }
-
-  get direccion() { return this._direccion; }
-  set direccion(v) { this._direccion = v; }
-
-  calcularEdad() {
-    if (!this._fechaNacimiento) {
-      return 0;
+export class Huesped {
+    constructor(
+        nombre,
+        apellido,
+        tipoDocumento,
+        numeroDocumento,
+        cuit,
+        fechaNacimiento,
+        telefono,
+        email,
+        ocupacion,
+        nacionalidad,
+        direccion = null
+    ) {
+        this._apellido = apellido;
+        this._nombre = nombre;
+        this._tipoDocumento = tipoDocumento;
+        this._nroDocumento = numeroDocumento;
+        this._cuit = cuit || '';
+        this._fechaNacimiento = new Date(fechaNacimiento);
+        this._telefono = telefono || '';
+        this._email = email || '';
+        this._ocupacion = ocupacion;
+        this._nacionalidad = nacionalidad;
+        this._direccion = direccion;  // Direccion o null
     }
-    
-    const hoy = new Date();
-    const fechaNac = new Date(this._fechaNacimiento);
-    
-    let edad = hoy.getFullYear() - fechaNac.getFullYear();
-    const mes = hoy.getMonth() - fechaNac.getMonth();
-    
-    // Ajustar si aún no cumplió años este año
-    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
-      edad--;
-    }
-    
-    return edad;
-  }
 
-  /**
-   * Verifica si el huésped es mayor de edad (18 años o más)
-   * @returns {boolean} true si es mayor de edad, false en caso contrario
-   */
-  verificarMayorEdad() {
-    return this.calcularEdad() >= 18;
-  }
+    // ==========================
+    // GETTERS (métodos)
+    // ==========================
+    getApellido() { return this._apellido; }
+    getNombre() { return this._nombre; }
+    getTipoDocumento() { return this._tipoDocumento; }
+    getNumeroDocumento() { return this._nroDocumento; }
+    getNroDocumento() { return this._nroDocumento; }
+    getCuit() { return this._cuit; }
+    getFechaNacimiento() { return this._fechaNacimiento; }
+    getTelefono() { return this._telefono; }
+    getEmail() { return this._email; }
+    getOcupacion() { return this._ocupacion; }
+    getNacionalidad() { return this._nacionalidad; }
+    getDireccion() { return this._direccion; }
+
+    // ==========================
+    // SETTERS (métodos)
+    // ==========================
+    setApellido(v) { this._apellido = v; }
+    setNombre(v) { this._nombre = v; }
+    setTipoDocumento(v) { this._tipoDocumento = v; }
+    setNumeroDocumento(v) { this._nroDocumento = v; }
+    setNroDocumento(v) { this._nroDocumento = v; }
+    setCuit(v) { this._cuit = v; }
+    setFechaNacimiento(v) { this._fechaNacimiento = new Date(v); }
+    setTelefono(v) { this._telefono = v; }
+    setEmail(v) { this._email = v; }
+    setOcupacion(v) { this._ocupacion = v; }
+    setNacionalidad(v) { this._nacionalidad = v; }
+    setDireccion(v) { this._direccion = v; }
+
+    // ==========================
+    // MÉTODOS DE LÓGICA
+    // ==========================
+    calcularEdad() {
+        if (!this._fechaNacimiento) return 0;
+
+        const hoy = new Date();
+        const fechaNac = new Date(this._fechaNacimiento);
+
+        let edad = hoy.getFullYear() - fechaNac.getFullYear();
+        const mes = hoy.getMonth() - fechaNac.getMonth();
+
+        if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+            edad--;
+        }
+        return edad;
+    }
+
+    /**
+     * Verifica si el huésped es mayor de edad
+     * @returns {boolean}
+     */
+    verificarMayorEdad() {
+        return this.calcularEdad() >= 18;
+    }
 }
-
-export default Huesped;
-

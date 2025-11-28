@@ -1,30 +1,9 @@
-import Huesped from "./Huesped.js";
+import {Huesped} from "./Huesped.js";
+import {HuespedDTO} from "../DTO/dto.js";
 
-/**
-/**
- * GestorHuesped - Coordinador central para todas las operaciones relacionadas con huéspedes.
- * 
- * MÉTODOS PÚBLICOS:
- * - async darAltaHuesped()
- *   → Procesa el alta de un nuevo huésped extrayendo datos de la UI y guardándolos.
- * 
- * - async buscarHuespedes()
- *   → Busca huéspedes según los criterios ingresados en el formulario de búsqueda.
- * 
- * - async modificarHuespedCompleto()
- *   → Procesa la modificación de un huésped existente con validaciones y persistencia.
- * 
- * - async guardarEnBD(jsonData, operacion = 'alta')
- *   → Guarda o actualiza un huésped en la base de datos (alta o modificación).
- * 
- * - convertirHuespedADTO(huesped)
- *   → Convierte un objeto Huesped de dominio a un DTO para la persistencia/transferencia de datos.
- * 
- * - convertirDTOAHuesped(huespedDTO)
- *   → Convierte un DTO de huésped (desde la base de datos u origen externo) a un objeto Huesped de dominio.
- * 
- */
-class GestorHuesped {
+
+
+export default class GestorHuesped {
   constructor() { 
     this.huespedes = []; 
     this._rutaBD = '/Datos/huespedes.json';
@@ -34,134 +13,42 @@ class GestorHuesped {
   }
 
   
-  normalizarHuesped(huesped) {
-    if (!huesped || typeof huesped !== 'object') {
-      return null;
-    }
-
-    const nombres = (huesped.nombres ?? huesped.nombre ?? '').toString().trim();
-    const numeroDocumentoRaw = huesped.numeroDocumento ?? huesped.nroDocumento ?? huesped.documento ?? '';
-    const numeroDocumento = numeroDocumentoRaw === null || numeroDocumentoRaw === undefined
-      ? ''
-      : String(numeroDocumentoRaw).trim();
-    const tipoDocumento = (huesped.tipoDocumento ?? huesped.tipoDoc ?? '').toString().trim();
-
-    return {
-      ...huesped,
-      apellido: (huesped.apellido ?? '').toString().trim(),
-      nombres,
-      nombre: huesped.nombre ?? nombres,
-      numeroDocumento,
-      nroDocumento: huesped.nroDocumento ?? numeroDocumento,
-      tipoDocumento
-    };
-  }
-
   
-  normalizarDatosHuespedes(datosCrudos) {
-    if (!datosCrudos) {
-      return [];
-    }
+  static async darAltaHuesped() {
+      try {
+          
 
-    const lista = Array.isArray(datosCrudos)
-      ? datosCrudos
-      : (Array.isArray(datosCrudos.huespedes) ? datosCrudos.huespedes : []);
+          if(!GestorAltaHuesped.validarTodosLosCampos()) return;
 
-    return lista
-      .map(huesped => this.normalizarHuesped(huesped))
-      .filter(Boolean);
-  }
+          const datosFormulario = GestorAltaHuesped.extraerDatosFormulario();
+          console.log('Datos extraídos del formulario:', datosFormulario);
 
-  
-  
-  async guardarEnBD(jsonData, operacion = 'alta') {
-    try {
-      const respuesta = await fetch(this._rutaBD);
-      let huespedesExistentes = [];
-      
-      if (respuesta.ok) {
-        const datos = await respuesta.json();
-        huespedesExistentes = this.normalizarDatosHuespedes(datos);
+          
+          const huespedDominio = GestorAltaHuesped.crearHuespedDominio(datosFormulario);
+          
+          
+          console.log('Huesped de dominio creado:', huespedDominio);
+
+          
+          const huespedDTO = GestorAltaHuesped.crearHuespedDTO(huespedDominio);
+          
+          
+          console.log('HuespedDTO creado:', huespedDTO);
+
+          
+          const jsonParaBD = JSON.stringify(huespedDTO);
+          
+          
+          await GestorAltaHuesped.guardarEnBD(jsonParaBD, 'alta');
+
+          
+
+          return true;
+      } catch (error) {
+          console.error('Error al procesar el alta de huésped:', error);
+          mensajeError('Error al procesar el alta de huésped: ' + error.message);
+          return false;
       }
-
-      if (operacion === 'alta') {
-        huespedesExistentes.push(jsonData);
-        console.log('Simulando guardado en BD. Total de huéspedes:', huespedesExistentes.length);
-        console.log('Nuevo huésped a guardar:', jsonData);
-      } else if (operacion === 'modificacion') {
-        const indice = huespedesExistentes.findIndex(h => 
-          h.tipoDocumento === jsonData.tipoDocumento && 
-          h.numeroDocumento === jsonData.numeroDocumento
-        );
-
-        if (indice !== -1) {
-          huespedesExistentes[indice] = jsonData;
-          console.log('Simulando guardado en BD. Total de huéspedes:', huespedesExistentes.length);
-          console.log('Huésped modificado a guardar:', jsonData);
-        } else {
-          huespedesExistentes.push(jsonData);
-          console.log('Huésped no encontrado, se agregó como nuevo:', jsonData);
-    }
-      }
-
-      
-      
-    } catch (error) {
-      console.error('Error al guardar en BD:', error);
-      throw error;
-  }
-  }
-  
-  
-  async darAltaHuesped() {
-    try {
-      
-      if (!this._gestorAlta) {
-        if (window.gestorAltaHuesped) {
-          this._gestorAlta = window.gestorAltaHuesped;
-        } else {
-          const { GestorAltaHuesped } = await import('../../AltaHuesped/JS/gestor-huesped.js');
-          this._gestorAlta = new GestorAltaHuesped();
-        }
-      }
-
-      
-      const datosFormulario = this._gestorAlta.extraerDatosFormulario();
-      console.log('Datos extraídos del formulario:', datosFormulario);
-
-      
-      const huespedDominio = this._gestorAlta.crearHuespedDominio(datosFormulario);
-      console.log('Huesped de dominio creado:', huespedDominio);
-
-      
-      if (!huespedDominio.verificarMayorEdad()) {
-        mensajeError('El huésped debe ser mayor de edad');
-        return false;
-      }
-
-      
-      const huespedDTO = this._gestorAlta.crearHuespedDTO(huespedDominio);
-      const direccionDTO = huespedDTO.direccion;
-      console.log('HuespedDTO creado:', huespedDTO);
-
-      
-      const jsonParaBD = this._gestorAlta.convertirDTOAJSON(huespedDTO, direccionDTO, datosFormulario);
-
-      
-      this._gestorAlta.mostrarJSONEnPantalla(jsonParaBD);
-
-      
-      await this.guardarEnBD(jsonParaBD, 'alta');
-
-      
-      this.darDeAlta(huespedDominio);
-
-      return true;
-    } catch (error) {
-      console.error('Error al procesar el alta de huésped:', error);
-      mensajeError('Error al procesar el alta de huésped: ' + error.message);
-      return false;
-    }
   }
 
   
@@ -306,11 +193,4 @@ class GestorHuesped {
   
 }
 
-export default GestorHuesped;
-
-
-const gestorHuesped = new GestorHuesped();
-
-
-window.gestorHuesped = gestorHuesped;
-
+window.GestorHuesped = GestorHuesped;

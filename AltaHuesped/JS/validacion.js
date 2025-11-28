@@ -104,67 +104,50 @@ async function manejarEnvioFormulario(event) {
         return;
     }
     
+    GestorHuesped.darAltaHuesped();
     
-    const todosLosCamposValidos = validarTodosLosCampos();
     
-    if (!todosLosCamposValidos) {
-        mensajeError("Por favor, corrige los errores en los campos marcados antes de continuar");
+    
+    // let procesadoExitoso = false;
+    // if (window.gestorHuesped) {
+    //     procesadoExitoso = await window.gestorHuesped.darAltaHuesped();
+    // } else if (window.gestorAltaHuesped) {
+    //     procesadoExitoso = await window.gestorAltaHuesped.procesarAltaHuesped();
+    // }
+    
+    // if (procesadoExitoso) {
         
-        const primerError = document.querySelector('.campo-invalido');
-        if (primerError) {
-            primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            primerError.focus();
-        }
-        return;
-    }
-    
-    
-    if(verificarCUIT()) {
-        return;
-    }
-    
-    
-    
-    let procesadoExitoso = false;
-    if (window.gestorHuesped) {
-        procesadoExitoso = await window.gestorHuesped.darAltaHuesped();
-    } else if (window.gestorAltaHuesped) {
-        procesadoExitoso = await window.gestorAltaHuesped.procesarAltaHuesped();
-    }
-    
-    if (procesadoExitoso) {
-        
-        const nombres = document.getElementById("nombres").value.trim();
-        const apellido = document.getElementById("apellido").value.trim();
-        pregunta(
-            `El huésped\n${nombres} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
-            "SI ✅",
-            "NO ❌",
-            function() { 
+    //     const nombres = document.getElementById("nombres").value.trim();
+    //     const apellido = document.getElementById("apellido").value.trim();
+    //     pregunta(
+    //         `El huésped\n${nombres} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
+    //         "SI ✅",
+    //         "NO ❌",
+    //         function() { 
                 
-                const modalPregunta = document.getElementById('modalPregunta');
-                if (modalPregunta) {
-                    modalPregunta.style.display = 'none';
-                }
+    //             const modalPregunta = document.getElementById('modalPregunta');
+    //             if (modalPregunta) {
+    //                 modalPregunta.style.display = 'none';
+    //             }
                 
                 
-                reiniciarFormulario();
+    //             reiniciarFormulario();
                 
                 
-                mensajeCorrecto("Huésped cargado correctamente. El formulario ha sido reiniciado.");
-            },
-            function() {
+    //             mensajeCorrecto("Huésped cargado correctamente. El formulario ha sido reiniciado.");
+    //         },
+    //         function() {
                 
-                const modalPregunta = document.getElementById('modalPregunta');
-                if (modalPregunta) {
-                    modalPregunta.style.display = 'none';
-                }
+    //             const modalPregunta = document.getElementById('modalPregunta');
+    //             if (modalPregunta) {
+    //                 modalPregunta.style.display = 'none';
+    //             }
                 
                 
-                window.location.href = '../index.html';
-            }
-        );
-    }
+    //             window.location.href = '../index.html';
+    //         }
+    //     );
+    // }
 }
 
 

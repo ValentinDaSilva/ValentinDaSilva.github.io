@@ -181,21 +181,17 @@
     
     <script src="../Login/JS/navegacion-volver.js"></script>
     
-    <script type="module" src="../Clases/Dominio/dominio.js"></script>
-    <script type="module">
-      import GestorHuesped from '../Clases/Dominio/GestorHuesped.js';
-      if (!window.gestorHuesped) {
-        window.gestorHuesped = new GestorHuesped();
-      }
-    </script>
-    <script src="../Clases/DTO/dto.js"></script>
-    
+   
     <script src="JS/paises.js"></script>
     <script src="JS/modales.js"></script>
     <script src="JS/validaciones-campos.js"></script>
-    <script type="module" src="JS/gestor-huesped.js"></script>
     <script src="JS/validacion.js"></script>
     <script src="JS/utilidades.js"></script>
     <script src="../JS/general.js"></script>
+    <script type="module" src="/Clases/Dominio/GestorHuesped.js"></script>
+    <script type="module" src="../Clases/Dominio/Huesped.js"></script>
+    <script type="module" src="../Clases/Dominio/Direccion.js"></script>
+    <script type="module" src="../Clases/DTO/dto.js"></script>
+    <script type="module" src="JS/gestor-huesped.js"></script>
 </body>
 </html>
