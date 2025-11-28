@@ -1,4 +1,6 @@
 
+// [JS/validaciones-campos.js]
+
 
 
 function validarFecha(campoFecha, nombreCampo) {
@@ -70,4 +72,3 @@ if (document.readyState === 'loading') {
 } else {
   inicializarValidacionesCampos();
 }
-

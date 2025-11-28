@@ -1,289 +1,192 @@
 
 
+// [JS/seleccion-habitaciones.js]
+// ===========================================================
+//   seleccion-habitaciones.js — VERSIÓN FINAL
+//   ✔ Selección por rangos sin desplazar fechas
+//   ✔ Compatible con códigos IND/DOBE/DOBS/FAM/SUITE
+//   ✔ Sin alias (usa texto EXACTO de generar-tabla: "TIPO-101")
+// ===========================================================
 
-let habitacionesSeleccionadas = [];
+let HAB_SELECCIONADAS = [];
+let inicioSeleccion = null;
 
-
-let celdaInicioSeleccion = null; 
-let seleccionEnProgreso = false;
-
-
+// ===========================================================
+//   Obtener lista actual
+// ===========================================================
 function obtenerHabitacionesSeleccionadas() {
-  return habitacionesSeleccionadas;
+  return HAB_SELECCIONADAS;
 }
-
 
 function limpiarHabitacionesSeleccionadas() {
-  habitacionesSeleccionadas = [];
-  celdaInicioSeleccion = null;
-  seleccionEnProgreso = false;
-  
-  document.querySelectorAll('.estado-seleccionada').forEach(celda => {
-    const estadoOriginal = celda.getAttribute('data-estado-original');
-    celda.style.backgroundColor = '';
-    celda.classList.remove('estado-seleccionada');
-    celda.classList.add(estadoOriginal === 'reservada' ? 'estado-reservada' : 'estado-libre');
-    aplicarEstilosCeldas();
-  });
-}
+  HAB_SELECCIONADAS = [];
+  inicioSeleccion = null;
 
+  document.querySelectorAll(".tabla-habitaciones td").forEach(celda => {
+    if (!celda.dataset.estadoOriginal) return;
 
-function obtenerCeldasHabitacion(numeroHabitacion) {
-  const celdas = [];
-  document.querySelectorAll('.tabla-habitaciones tbody tr').forEach(fila => {
-    const celdasFila = Array.from(fila.cells);
-    
-    celdasFila.slice(1).forEach((celda, index) => {
-      const numeroHabCelda = celda.getAttribute('data-numero-habitacion');
-      if (numeroHabCelda === numeroHabitacion) {
-        celdas.push(celda);
-      }
-    });
-  });
-  return celdas;
-}
+    celda.classList.remove("estado-seleccionada");
+    celda.style.backgroundColor = "";
 
-
-function obtenerIndiceColumnaHabitacion(numeroHabitacion) {
-  const headers = document.querySelectorAll('.tabla-habitaciones thead th');
-  for (let i = 1; i < headers.length; i++) {
-    const headerText = headers[i].textContent.trim();
-    const partes = headerText.split('-');
-    if (partes.length === 2) {
-      const numHab = parseInt(partes[1], 10);
-      if (numHab.toString() === numeroHabitacion) {
-        return i;
-      }
-    }
-  }
-  return -1;
-}
-
-
-function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
-  
-  if (compararFechas(fechaDesde, fechaHasta) > 0) {
-    [fechaDesde, fechaHasta] = [fechaHasta, fechaDesde]; 
-  }
-
-  const numeroHabitacion = obtenerNumeroDesdeNombre(habitacion);
-  if (!numeroHabitacion) return;
-
-  
-  const fechaDesdeForm = document.getElementById('fecha-desde').value;
-  const fechaHastaForm = document.getElementById('fecha-hasta').value;
-  const todasLasFechas = generarArrayFechas(fechaDesdeForm, fechaHastaForm);
-
-  
-  if (compararFechas(fechaDesde, fechaDesdeForm) < 0 || compararFechas(fechaHasta, fechaHastaForm) > 0) {
-    mensajeError("El rango seleccionado debe estar dentro de las fechas del formulario");
-    return;
-  }
-
-  
-  const fechasRango = generarArrayFechas(fechaDesde, fechaHasta);
-  const todasLibres = fechasRango.every(fecha => {
-    return !estaHabitacionReservada(numeroHabitacion, fecha);
-  });
-
-  if (!todasLibres) {
-    mensajeError("No se puede seleccionar el rango porque hay días reservados");
-    return;
-  }
-
-  
-  const indiceExistente = habitacionesSeleccionadas.findIndex(
-    h => h.habitacion === habitacion
-  );
-
-  
-  if (indiceExistente !== -1) {
-    deseleccionarRangoHabitacion(habitacion);
-  }
-
-  
-  habitacionesSeleccionadas.push({
-    habitacion: habitacion,
-    fechaDesde: fechaDesde,
-    fechaHasta: fechaHasta
-  });
-
-  
-  todasLasFechas.forEach(fecha => {
-    if (compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0) {
-      const celda = document.querySelector(
-        `.tabla-habitaciones td[data-numero-habitacion="${numeroHabitacion}"][data-fecha="${fecha}"]`
-      );
-      if (celda && celda.getAttribute('data-estado-original') === 'libre') {
-        celda.style.backgroundColor = 'yellow';
-        celda.classList.add('estado-seleccionada');
-        celda.classList.remove('estado-libre');
-      }
-    }
-  });
-}
-
-
-function deseleccionarRangoHabitacion(habitacion) {
-  const indice = habitacionesSeleccionadas.findIndex(h => h.habitacion === habitacion);
-  if (indice === -1) return;
-
-  const seleccion = habitacionesSeleccionadas[indice];
-  habitacionesSeleccionadas.splice(indice, 1);
-
-  const numeroHabitacion = obtenerNumeroDesdeNombre(habitacion);
-  if (!numeroHabitacion) return;
-
-  const fechasRango = generarArrayFechas(seleccion.fechaDesde, seleccion.fechaHasta);
-  fechasRango.forEach(fecha => {
-    const celda = document.querySelector(
-      `.tabla-habitaciones td[data-numero-habitacion="${numeroHabitacion}"][data-fecha="${fecha}"]`
+    celda.classList.add(
+      celda.dataset.estadoOriginal === "reservada"
+        ? "estado-reservada"
+        : "estado-libre"
     );
-    if (celda) {
-      const estadoOriginal = celda.getAttribute('data-estado-original');
-      celda.style.backgroundColor = '';
-      celda.classList.remove('estado-seleccionada');
-      celda.classList.add(estadoOriginal === 'reservada' ? 'estado-reservada' : 'estado-libre');
-      aplicarEstilosCeldas();
+  });
+
+  aplicarEstilosCeldas();
+}
+
+// ===========================================================
+//   Seleccionar rango
+// ===========================================================
+function seleccionarRango(nombreHabitacion, fechaDesde, fechaHasta) {
+  if (compararFechas(fechaDesde, fechaHasta) > 0)
+    [fechaDesde, fechaHasta] = [fechaHasta, fechaDesde];
+
+  const numero = obtenerNumeroDesdeNombre(nombreHabitacion);
+  const fechasRango = generarArrayFechas(fechaDesde, fechaHasta);
+
+  // validar disponibilidad
+  const todosLibres = fechasRango.every(fecha =>
+    !estaHabitacionReservada(numero, fecha)
+  );
+  if (!todosLibres) {
+    mensajeError("La habitación tiene días reservados en ese rango.");
+    return;
+  }
+
+  // si ya existe → borrar antes
+  deseleccionarRango(nombreHabitacion);
+
+  HAB_SELECCIONADAS.push({ habitacion: nombreHabitacion, fechaDesde, fechaHasta });
+
+  fechasRango.forEach(f => {
+    const celda = document.querySelector(
+      `.tabla-habitaciones td[data-numero-habitacion="${numero}"][data-fecha="${f}"]`
+    );
+
+    if (!celda) return;
+
+    if (celda.dataset.estadoOriginal === "libre") {
+      celda.classList.add("estado-seleccionada");
+      celda.style.backgroundColor = "yellow";
     }
   });
 }
 
+function deseleccionarRango(nombreHabitacion) {
+  const idx = HAB_SELECCIONADAS.findIndex(s => s.habitacion === nombreHabitacion);
+  if (idx === -1) return;
 
+  const seleccion = HAB_SELECCIONADAS[idx];
+  HAB_SELECCIONADAS.splice(idx, 1);
+
+  const numero = obtenerNumeroDesdeNombre(nombreHabitacion);
+  const fechas = generarArrayFechas(seleccion.fechaDesde, seleccion.fechaHasta);
+
+  fechas.forEach(f => {
+    const celda = document.querySelector(
+      `.tabla-habitaciones td[data-numero-habitacion="${numero}"][data-fecha="${f}"]`
+    );
+    if (!celda) return;
+
+    celda.classList.remove("estado-seleccionada");
+    celda.style.backgroundColor = "";
+
+    celda.classList.add(
+      celda.dataset.estadoOriginal === "reservada"
+        ? "estado-reservada"
+        : "estado-libre"
+    );
+  });
+
+  aplicarEstilosCeldas();
+}
+
+// ===========================================================
+//   Click en celda
+// ===========================================================
 function manejarClickCelda(celda) {
-  
-  if (celda.getAttribute('data-estado-original') === 'reservada') {
-    return;
-  }
+  if (celda.dataset.estadoOriginal === "reservada") return;
 
-  const numeroHabitacion = celda.getAttribute('data-numero-habitacion');
-  const fecha = celda.getAttribute('data-fecha');
-  
-  if (!numeroHabitacion || !fecha) return;
+  const numero = celda.dataset.numeroHabitacion;
+  const fecha = celda.dataset.fecha;
 
-  
-  const headers = document.querySelectorAll('.tabla-habitaciones thead th');
-  let nombreHabitacion = null;
+  // Obtener nombre TIPO-101 desde el header
+  let nombreHab = null;
+  const headers = document.querySelectorAll(".tabla-habitaciones thead th");
+
   for (let i = 1; i < headers.length; i++) {
-    const headerText = headers[i].textContent.trim();
-    const partes = headerText.split('-');
-    if (partes.length === 2) {
-      const numHab = parseInt(partes[1], 10);
-      if (numHab.toString() === numeroHabitacion) {
-        nombreHabitacion = headerText;
-        break;
-      }
+    const texto = headers[i].textContent.trim(); // "IND-101"
+    const partes = texto.split("-");
+    if (partes.length === 2 && partes[1] === numero) {
+      nombreHab = texto;
+      break;
     }
   }
 
-  if (!nombreHabitacion) return;
+  if (!nombreHab) return;
 
-  
-  const seleccionExistente = habitacionesSeleccionadas.find(
-    h => h.habitacion === nombreHabitacion
-  );
-  
-  if (seleccionExistente) {
-    const fechaDesde = seleccionExistente.fechaDesde;
-    const fechaHasta = seleccionExistente.fechaHasta;
-    
-    
-    if (compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0) {
-      deseleccionarRangoHabitacion(nombreHabitacion);
-      celdaInicioSeleccion = null;
-      seleccionEnProgreso = false;
+  const seleccionado = HAB_SELECCIONADAS.find(s => s.habitacion === nombreHab);
+
+  // si ya estaba seleccionado y clic dentro → deselecciona
+  if (seleccionado) {
+    if (
+      compararFechas(fecha, seleccionado.fechaDesde) >= 0 &&
+      compararFechas(fecha, seleccionado.fechaHasta) <= 0
+    ) {
+      deseleccionarRango(nombreHab);
+      inicioSeleccion = null;
       return;
     }
   }
 
-  
-  if (seleccionEnProgreso && celdaInicioSeleccion) {
-    if (celdaInicioSeleccion.habitacion === nombreHabitacion) {
-      
-      seleccionarRangoHabitacion(
-        nombreHabitacion,
-        celdaInicioSeleccion.fecha,
-        fecha
-      );
-      celdaInicioSeleccion = null;
-      seleccionEnProgreso = false;
-    } else {
-      
-      
-      const indiceExistente = habitacionesSeleccionadas.findIndex(
-        h => h.habitacion === nombreHabitacion
-      );
-      if (indiceExistente !== -1) {
-        deseleccionarRangoHabitacion(nombreHabitacion);
-      }
-      
-      celdaInicioSeleccion = { celda, habitacion: nombreHabitacion, fecha };
-      seleccionEnProgreso = true;
-      
-      celda.style.backgroundColor = 'lightblue';
-      setTimeout(() => {
-        if (celdaInicioSeleccion && celdaInicioSeleccion.celda === celda) {
-          aplicarEstilosCeldas();
-        }
-      }, 300);
-    }
-  } else {
-    
-    
-    const indiceExistente = habitacionesSeleccionadas.findIndex(
-      h => h.habitacion === nombreHabitacion
-    );
-    if (indiceExistente !== -1) {
-      deseleccionarRangoHabitacion(nombreHabitacion);
-    }
-
-    celdaInicioSeleccion = { celda, habitacion: nombreHabitacion, fecha };
-    seleccionEnProgreso = true;
-    
-    celda.style.backgroundColor = 'lightblue';
-    setTimeout(() => {
-      if (celdaInicioSeleccion && celdaInicioSeleccion.celda === celda) {
-        aplicarEstilosCeldas();
-      }
-    }, 300);
+  // si ya hay un inicio en la misma habitación → cerrar rango
+  if (inicioSeleccion && inicioSeleccion.habitacion === nombreHab) {
+    seleccionarRango(nombreHab, inicioSeleccion.fecha, fecha);
+    inicioSeleccion = null;
+    return;
   }
+
+  // iniciar selección
+  inicioSeleccion = { habitacion: nombreHab, fecha };
 }
 
-
+// ===========================================================
+//   Inicialización
+// ===========================================================
 function inicializarSeleccionHabitaciones() {
-  
   limpiarHabitacionesSeleccionadas();
 
-  
-  document.querySelectorAll('.tabla-habitaciones tbody td').forEach(celda => {
-    
-    if (celda.cellIndex === 0) return;
-    
-    
-    const nuevaCelda = celda.cloneNode(true);
-    celda.parentNode.replaceChild(nuevaCelda, celda);
+  const celdas = document.querySelectorAll(".tabla-habitaciones tbody td");
+  celdas.forEach(c => {
+    if (c.cellIndex === 0) return;
+
+    const nuevo = c.cloneNode(true);
+    nuevo.dataset.numeroHabitacion = c.dataset.numeroHabitacion;
+    nuevo.dataset.fecha = c.dataset.fecha;
+    nuevo.dataset.estadoOriginal = c.dataset.estadoOriginal;
+    nuevo.className = c.className;
+
+    c.parentNode.replaceChild(nuevo, c);
   });
 
-  
-  document.querySelectorAll('.tabla-habitaciones tbody td').forEach(celda => {
-    
-    if (celda.cellIndex === 0) return;
-    
-    celda.addEventListener('click', () => {
-      manejarClickCelda(celda);
-    });
+  document.querySelectorAll(".tabla-habitaciones tbody td").forEach(c => {
+    if (c.cellIndex === 0) return;
 
-    
-    if (celda.getAttribute('data-estado-original') !== 'reservada') {
-      celda.style.cursor = 'pointer';
+    if (c.dataset.estadoOriginal !== "reservada") {
+      c.addEventListener("click", () => manejarClickCelda(c));
+      c.style.cursor = "pointer";
     }
   });
 }
 
+// Exponer
+window.obtenerHabitacionesSeleccionadas = obtenerHabitacionesSeleccionadas;
+window.limpiarHabitacionesSeleccionadas = limpiarHabitacionesSeleccionadas;
+window.inicializarSeleccionHabitaciones = inicializarSeleccionHabitaciones;
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', inicializarSeleccionHabitaciones);
-} else {
-  inicializarSeleccionHabitaciones();
-}
+
 

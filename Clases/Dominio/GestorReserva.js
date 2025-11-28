@@ -78,12 +78,12 @@ export class GestorReserva {
 
       
       if (typeof window.mostrarJSONReservaEnPantalla === 'function') {
-        window.mostrarJSONReservaEnPantalla(jsonParaBD, reservaDTO, function() {
+        // window.mostrarJSONReservaEnPantalla(jsonParaBD, reservaDTO, function() {
           
-          if (typeof window.mostrarModalExitoReserva === 'function') {
-            window.mostrarModalExitoReserva(nombre, apellido);
-          }
-        });
+        //   if (typeof window.mostrarModalExitoReserva === 'function') {
+        //     window.mostrarModalExitoReserva(nombre, apellido);
+        //   }
+        // });
       } else {
         
         if (typeof window.mostrarModalExitoReserva === 'function') {
@@ -427,4 +427,3 @@ const gestorReserva = new GestorReserva();
 
 
 window.gestorReserva = gestorReserva;
-

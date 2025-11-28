@@ -9,6 +9,7 @@ async function cargarHabitaciones() {
     const respuesta = await fetch('/Datos/habitaciones.json');
     const datos = await respuesta.json();
     habitaciones = datos.habitaciones || [];
+    console.log('Habitaciones cargadas:', habitaciones);
   } catch (error) {
     console.error('Error al cargar habitaciones:', error);
     mensajeError('Error al cargar los datos de habitaciones.');

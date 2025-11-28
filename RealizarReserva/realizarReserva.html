@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Realizar Reserva - Hotel Premier</title>
-  
-  
+
+  <!-- CSS -->
   <link rel="stylesheet" href="CSS/estilos-base.css">
   <link rel="stylesheet" href="CSS/fondo.css">
   <link rel="stylesheet" href="CSS/formulario-reserva.css">
@@ -15,28 +15,32 @@
   <link rel="stylesheet" href="CSS/modales.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
+
 <body>
   <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
-  
+
+  <!-- FORMULARIO DE BÚSQUEDA -->
   <div class="fondo-reserva">
     <div class="formulario-busqueda">
       <h2 class="titulo-formulario">Habitaciones Disponibles</h2>
       <form novalidate>
         <label for="fecha-desde" class="etiqueta-campo requerido">Desde fecha</label>
-        <input type="date" id="fecha-desde" name="fecha-desde" class="campo-fecha" required>
+        <input type="date" id="fecha-desde" class="campo-fecha" required>
 
         <label for="fecha-hasta" class="etiqueta-campo requerido">Hasta fecha</label>
-        <input type="date" id="fecha-hasta" name="fecha-hasta" class="campo-fecha" required>
-        
+        <input type="date" id="fecha-hasta" class="campo-fecha" required>
+
         <button type="submit" class="boton-buscar">Buscar</button>
       </form>
     </div>
   </div>
-  
+
+  <!-- RESULTADOS -->
   <div class="contenedor-resultados animate__animated animate__fadeIn" style="display: none;">
-    <img src="/assets/image/Pregunta.png" alt="Icono de información" class="icono-informacion">
-    <div class="contenedor-filtro" id="contenedor-filtro" style="display: none;">
-      <label for="filtro-tipo-habitacion" class="etiqueta-filtro">Filtrar:</label>
+    <img src="/assets/image/Pregunta.png" alt="info" class="icono-informacion">
+
+    <div id="contenedor-filtro" class="contenedor-filtro" style="display: none;">
+      <label class="etiqueta-filtro">Filtrar:</label>
       <select id="filtro-tipo-habitacion" class="select-filtro">
         <option value="">Todos</option>
         <option value="IND">IND</option>
@@ -46,45 +50,42 @@
         <option value="SUITE">SUITE</option>
       </select>
     </div>
+
     <h2 class="titulo-resultados">Resultados de la búsqueda</h2>
+
     <div class="contenedor-tabla-scroll">
       <table class="tabla-habitaciones">
-        <thead>
-          
-        </thead>
-        <tbody>
-          
-        </tbody>
+        <thead></thead>
+        <tbody></tbody>
       </table>
     </div>
+
     <div class="boton-reservar">Reservar</div>
   </div>
-  
-  
+
+  <!-- MODALES -->
   <div id="modal-error" class="modal" style="display: none;">
     <div class="contenido-modal-error">
       <h2 class="titulo-error">ERROR</h2>
-      <img src="/assets/image/Error.png" alt="Icono de error" class="imagen-modal">
-      <p id="mensaje-error" class="mensaje-modal">Por favor, completa todos los campos requeridos.</p>
+      <img src="/assets/image/Error.png" class="imagen-modal">
+      <p id="mensaje-error" class="mensaje-modal">Mensaje</p>
       <button id="boton-ok" class="boton-ok">OK👍</button>
     </div>
   </div>
-  
-  
+
   <div id="modal-correcto" class="modal" style="display: none;">
     <div class="contenido-modal-correcto">
-      <h2 class="titulo-correcto">EXITO</h2>
-      <img src="/assets/image/Correcto.png" alt="Icono de éxito" class="imagen-modal">
-      <p id="mensaje-correcto" class="mensaje-modal">Acción ejecutada con éxito</p>
+      <h2 class="titulo-correcto">ÉXITO</h2>
+      <img src="/assets/image/Correcto.png" class="imagen-modal">
+      <p id="mensaje-correcto" class="mensaje-modal"></p>
     </div>
   </div>
-  
-  
+
   <div id="modal-advertencia" class="modal" style="display: none;">
     <div class="contenido-modal-advertencia">
       <h2 class="titulo-advertencia">ADVERTENCIA</h2>
-      <img src="/assets/image/Advertencia.png" alt="Icono de advertencia" class="imagen-modal">
-      <p id="mensaje-advertencia" class="mensaje-modal">El numero de documento ya existe</p>
+      <img src="/assets/image/Advertencia.png" class="imagen-modal">
+      <p id="mensaje-advertencia" class="mensaje-modal"></p>
       <div class="botones-advertencia">
         <button id="boton-advertencia-aceptar" class="boton-advertencia boton-advertencia-aceptar">ACEPTAR</button>
         <button id="boton-advertencia-corregir" class="boton-advertencia boton-advertencia-corregir">CORREGIR</button>
@@ -92,29 +93,41 @@
     </div>
   </div>
 
-  
-  
+  <!-- ============================================================ -->
+  <!--                     SCRIPTS                                  -->
+  <!-- ============================================================ -->
+
+  <!-- Login -->
   <script src="../Login/JS/validar-sesion.js"></script>
-  
   <script src="../Login/JS/navegacion-volver.js"></script>
-  <script type="module" src="/Clases/DTO/dto.js"></script>
-  <script type="module">
-    import GestorReserva from '../Clases/Dominio/GestorReserva.js';
-    if (!window.gestorReserva) {
-      window.gestorReserva = new GestorReserva();
-    }
-  </script>
-  <script type="module" src="JS/gestor-realizar-reserva.js"></script>
+
+  <!-- Modales -->
   <script src="JS/modales.js"></script>
+
+  <!-- Backend real: habitaciones + reservas -->
   <script src="JS/datos-habitaciones.js"></script>
+
+  <!-- Validación fechas -->
   <script src="JS/validaciones-campos.js"></script>
+
+  <!-- Estilos de la tabla -->
   <script src="JS/tabla-habitaciones.js"></script>
+
+  <!-- Filtro -->
   <script src="JS/filtro-habitaciones.js"></script>
+
+  <!-- Generar tabla -->
   <script src="JS/generar-tabla.js"></script>
+
+  <!-- Selección de habitaciones -->
   <script src="JS/seleccion-habitaciones.js"></script>
+
+  <!-- Leyenda -->
   <script src="JS/leyenda.js"></script>
-  <script src="JS/mostrar-json-reserva.js"></script>
+
+  <!-- Flujo completo de reserva -->
   <script type="module" src="JS/reserva.js"></script>
-  <script src="/JS/general.js"></script>
+
+  <script src="JS/test.js"></script>
 </body>
 </html>

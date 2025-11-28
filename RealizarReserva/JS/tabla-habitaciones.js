@@ -1,55 +1,50 @@
+// [JS/tabla-habitaciones.js]
+// ====================================================
+//   tabla-habitaciones.js  (Opción B - versión nueva)
+// ====================================================
 
-
-
+// Aplica colores según la clase asignada a cada celda
 function aplicarEstilosCeldas() {
-  const celdas = document.querySelectorAll('.tabla-habitaciones td');
+  const celdas = document.querySelectorAll(".tabla-habitaciones td");
+
   celdas.forEach(celda => {
-    
-    if (celda.classList.contains('estado-seleccionada') || celda.style.backgroundColor === 'yellow') {
-      celda.style.backgroundColor = 'yellow';
+    celda.style.color = "#000"; // color base seguro
+
+    if (celda.classList.contains("estado-seleccionada")) {
+      celda.style.backgroundColor = "yellow";
       return;
     }
-    
-    const claseEstado = celda.className.trim();
-    
-    switch (claseEstado) {
-      case 'estado-libre':
-        celda.style.backgroundColor = '#c3e6cb';
-        celda.style.color = '#155724';
+
+    const estado = celda.dataset.estadoOriginal;
+
+    switch (estado) {
+      case "libre":
+        celda.style.backgroundColor = "#c3e6cb"; // verde suave
         break;
-      case 'estado-ocupada':
-        celda.style.backgroundColor = '#f5c6cb';
-        celda.style.color = '#721c24';
+
+      case "reservada":
+        celda.style.backgroundColor = "#ffeeba"; // amarillo suave
         break;
-      case 'estado-reservada':
-        celda.style.backgroundColor = '#ffeeba';
-        celda.style.color = '#856404';
+
+      case "ocupada":
+        celda.style.backgroundColor = "#f5c6cb"; // rojo suave
         break;
-      case 'estado-fuera-servicio':
-        celda.style.backgroundColor = '#c6c8ca';
-        celda.style.color = '#383d41';
+
+      case "fuera-servicio":
+        celda.style.backgroundColor = "#c6c8ca"; // gris
         break;
     }
   });
 }
 
+// ----------------------------------------------------
+// Exponer a window
+// ----------------------------------------------------
+window.aplicarEstilosCeldas = aplicarEstilosCeldas;
 
-function obtenerCeldasColumna(indiceColumna) {
-  const filas = document.querySelectorAll('.tabla-habitaciones tbody tr');
-  const celdasColumna = [];
-  filas.forEach(fila => {
-    const celda = fila.cells[indiceColumna];
-    if (celda) {
-      celdasColumna.push(celda);
-    }
-  });
-  return celdasColumna;
-}
-
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', aplicarEstilosCeldas);
+// Ejecutar al inicio
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", aplicarEstilosCeldas);
 } else {
   aplicarEstilosCeldas();
 }
-

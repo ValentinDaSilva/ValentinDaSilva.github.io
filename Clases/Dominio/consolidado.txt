@@ -1,0 +1,2381 @@
+📂 Estructura del proyecto (.):
+-----------------------------------
+.
+├── consolidado.txt
+├── Direccion.js
+├── dominio.js
+├── Enums.js
+├── Estadia.js
+├── Factura.js
+├── GestorEstadia.js
+├── GestorFactura.js
+├── GestorHabitacion.js
+├── GestorHuesped.js
+├── GestorReserva.js
+├── Habitacion.js
+├── Huesped.js
+├── MedioDePago
+│   ├── Cheque.js
+│   ├── Efectivo.js
+│   ├── index.js
+│   ├── MonedaExtranjera.js
+│   └── Tarjeta.js
+├── NotaDeCredito.js
+├── Pago.js
+├── PersonaFisica.js
+├── Persona.js
+├── PersonaJuridica.js
+├── Reserva.js
+└── ResponsableDePago.js
+
+2 directories, 25 files
+
+-----------------------------------
+
+// [Direccion.js]
+export class Direccion {
+  constructor(calle, numero, piso, departamento, localidad, provincia, codigoPostal, pais) {
+    this.calle = calle;
+    this.numero = numero;
+    this.piso = piso || '';
+    this.departamento = departamento || '';
+    this.localidad = localidad;
+    this.provincia = provincia;
+    this.codigoPostal = codigoPostal;
+    this.pais = pais;
+  }
+
+  // MÉTODOS GET
+  getCalle() { return this.calle; }
+  getNumero() { return this.numero; }
+  getPiso() { return this.piso; }
+  getDepartamento() { return this.departamento; }
+  getLocalidad() { return this.localidad; }
+  getProvincia() { return this.provincia; }
+  getCodigoPostal() { return this.codigoPostal; }
+  getPais() { return this.pais; }
+
+  // MÉTODOS SET
+  setCalle(v) { this.calle = v; }
+  setNumero(v) { this.numero = v; }
+  setPiso(v) { this.piso = v; }
+  setDepartamento(v) { this.departamento = v; }
+  setLocalidad(v) { this.localidad = v; }
+  setProvincia(v) { this.provincia = v; }
+  setCodigoPostal(v) { this.codigoPostal = v; }
+  setPais(v) { this.pais = v; }
+}
+
+export default Direccion;
+
+
+
+// [dominio.js]
+
+
+
+
+
+
+export { EstadoHabitacion, EstadoReserva, EstadoEstadia, TipoDocumento, EstadoFactura, TipoFactura } from "./Enums.js";
+
+
+export { default as Direccion } from "./Direccion.js";
+export { default as Persona } from "./Persona.js";
+
+
+export { Huesped } from "./Huesped.js";
+
+
+export { default as Habitacion } from "./Habitacion.js";
+export { default as Reserva } from "./Reserva.js";
+export { default as Estadia } from "./Estadia.js";
+export { default as Factura } from "./Factura.js";
+export { default as NotaDeCredito } from "./NotaDeCredito.js";
+export { default as Pago } from "./Pago.js";
+export { Efectivo, MonedaExtranjera, Cheque, Tarjeta } from "./MedioDePago/index.js";
+
+
+export { default as GestorHuesped } from "./GestorHuesped.js";
+export { default as GestorReserva } from "./GestorReserva.js";
+export { default as GestorHabitacion } from "./GestorHabitacion.js";
+export { default as GestorEstadia } from "./GestorEstadia.js";
+
+
+
+// [Enums.js]
+const EstadoReserva = {
+  PENDIENTE: "Pendiente",
+  CONFIRMADA: "Confirmada",
+  CANCELADA: "Cancelada",
+  FINALIZADA: "Finalizada"
+};
+
+const EstadoFactura = {
+  PENDIENTE: "Pendiente",
+  PAGADA: "Pagada",
+  ANULADA: "Anulada"
+};
+
+const EstadoEstadia = {
+  EN_CURSO: "EnCurso",
+  FINALIZADA: "Finalizada"
+};
+
+const EstadoHabitacion = {
+  DISPONIBLE: "Disponible",
+  RESERVADA: "Reservada",
+  OCUPADA: "Ocupada",
+  FUERA_DE_SERVICIO: "FueraDeServicio"
+};
+
+const TipoFactura = {
+  A: "A",
+  B: "B"
+};
+
+const TipoDocumento = {
+  DNI: "DNI",
+  PASAPORTE: "Pasaporte",
+  CUIL: "CUIL",
+  LIBRETA_CIVICA: "LibretaCivica"
+};
+
+export {
+  EstadoReserva,
+  EstadoFactura,
+  EstadoEstadia,
+  EstadoHabitacion,
+  TipoFactura,
+  TipoDocumento
+};
+
+export default {
+  EstadoReserva,
+  EstadoFactura,
+  EstadoEstadia,
+  EstadoHabitacion,
+  TipoFactura,
+  TipoDocumento
+};
+
+
+
+
+
+// [Estadia.js]
+import { EstadoEstadia } from "./Enums.js";
+
+/**
+ * Estadia - Clase que representa una estadía en el hotel.
+ * 
+ * MÉTODOS PÚBLICOS (sin getters y setters):
+ * - registrarCheckIn(fecha)
+ *   → Registra el check-in de la estadía en una fecha específica.
+ * 
+ * - registrarCheckOut(fecha)
+ *   → Registra el check-out de la estadía y finaliza la estadía.
+ * 
+ * - agregarConsumos(descripcion, monto)
+ *   → Agrega un consumo a la estadía con descripción y monto.
+ * 
+ * - verConsumos()
+ *   → Retorna la lista de consumos de la estadía.
+ * 
+ * - calcularNumeroNoches(fechaFin = null)
+ *   → Calcula el número de noches entre fechaCheckIn y fechaCheckOut.
+ * 
+ * - calcularValorEstadia()
+ *   → Calcula el valor total de la estadía basado en el costo por noche y número de noches.
+ * 
+ * - obtenerCostoPorNoche()
+ *   → Obtiene el costo por noche de la habitación asociada.
+ */
+class Estadia {
+  constructor(id, fechaCheckIn, fechaCheckOut, estado = EstadoEstadia.EN_CURSO, reserva, titular, acompaniantes) {
+    this._id = id;
+    this._fechaCheckIn = new Date(fechaCheckIn); //Tipo Date
+    this._fechaCheckOut = new Date(fechaCheckOut); //Tipo Date
+    this._estado = estado; //Tipo EstadoEstadia
+    this._consumos = []; //Tipo Consumo
+    this._reserva = reserva; //Tipo Reserva
+    this._titular = titular; //Tipo Huesped
+    this._acompaniantes = acompaniantes; //Tipo Huesped
+  }
+
+  get id() { return this._id; }
+  set id(v) { this._id = v; }
+
+  get fechaCheckIn() { return this._fechaCheckIn; }
+  set fechaCheckIn(v) { this._fechaCheckIn = new Date(v); }
+
+  get fechaCheckOut() { return this._fechaCheckOut; }
+  set fechaCheckOut(v) { this._fechaCheckOut = new Date(v); }
+
+  get estado() { return this._estado; }
+  set estado(v) { this._estado = v; }
+
+  get consumos() { return this._consumos; }
+  set consumos(v) { this._consumos = v; }
+
+
+  get reserva() { return this._reserva; }
+  set reserva(v) { this._reserva = v; }
+
+  get titular() { return this._titular; }
+  set titular(v) { this._titular = v; }
+
+  get acompaniantes() { return this._acompaniantes; }
+  set acompaniantes(v) { this._acompaniantes = v; }
+
+  
+  registrarCheckIn(fecha) {
+    this._fechaCheckIn = new Date(fecha);
+    this._estado = EstadoEstadia.EN_CURSO;
+  }
+
+  registrarCheckOut(fecha) {
+    this._fechaCheckOut = new Date(fecha);
+    this._estado = EstadoEstadia.FINALIZADA;
+  }
+
+  agregarConsumos(descripcion, monto) {
+    this._consumos.push({ descripcion, monto, fecha: new Date() });
+  }
+
+  verConsumos() {
+    return this._consumos;
+  }
+
+  /**
+   * Calcula el número de noches entre fechaCheckIn y fechaCheckOut
+   * @param {string|Date} fechaFin - Fecha de fin (opcional, usa fechaCheckOut si no se proporciona)
+   * @returns {number} Número de noches
+   */
+  calcularNumeroNoches(fechaFin = null) {
+    if (!this._fechaCheckIn) return 0;
+    
+    const inicio = new Date(this._fechaCheckIn);
+    const fin = fechaFin ? new Date(fechaFin) : (this._fechaCheckOut ? new Date(this._fechaCheckOut) : new Date());
+    
+    inicio.setHours(0, 0, 0, 0);
+    fin.setHours(0, 0, 0, 0);
+    
+    const diffTime = Math.abs(fin - inicio);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays;
+  }
+
+  /**
+   * Calcula el valor de la estadía basado en el costo por noche y número de noches
+   * @returns {number} Valor total de la estadía
+   */
+  calcularValorEstadia() {
+    if (!this._reserva || !this._reserva.habitaciones || this._reserva.habitaciones.length === 0) {
+      return 0;
+    }
+    
+    const habitacion = this._reserva.habitaciones[0];
+    const costoPorNoche = habitacion.costoPorNoche || habitacion.costoNoche || 0;
+    const numeroNoches = this.calcularNumeroNoches();
+    
+    return costoPorNoche * numeroNoches;
+  }
+
+  /**
+   * Obtiene el costo por noche de la habitación asociada
+   * @returns {number} Costo por noche
+   */
+  obtenerCostoPorNoche() {
+    if (!this._reserva || !this._reserva.habitaciones || this._reserva.habitaciones.length === 0) {
+      return 0;
+    }
+    
+    const habitacion = this._reserva.habitaciones[0];
+    return habitacion.costoPorNoche || habitacion.costoNoche || 0;
+  }
+}
+
+export default Estadia;
+
+
+
+
+// [Factura.js]
+/**
+ * Factura - Clase que representa una factura del hotel.
+ * 
+ * MÉTODOS PÚBLICOS (sin getters y setters):
+ * - agregarPago(pago)
+ *   → Agrega un pago a la factura.
+ * 
+ * - calcularTotalConsumos(consumos)
+ *   → Calcula el total de consumos de la estadía basado en un array de consumos.
+ * 
+ * - calcularRecargoCheckout(horaSalida, costoPorNoche)
+ *   → Calcula el recargo por checkout tardío según la hora de salida y costo por noche.
+ * 
+ * - calcularIVA(subtotal)
+ *   → Calcula el IVA (21%) sobre un subtotal.
+ * 
+ * - async calcularDetalle(estadia, horaSalida)
+ *   → Calcula y actualiza el IVA y total de la factura.
+ * 
+ */
+class Factura {
+    constructor(id, hora, fecha, tipo, estado, responsableDePago, estadia) {
+        this.id = id;
+        this.hora = hora; //Tipo Date
+        this.fecha = fecha; //Tipo Date 
+        this.tipo = tipo; //Tipo TipoFactura
+        this.estado = estado; //Tipo EstadoFactura
+        this.responsableDePago = responsableDePago; //Tipo ResponsableDePago
+        this.estadia = estadia; //Tipo Estadia
+        this.pagos = []; //Tipo Pago
+        this.total = 0; //Tipo number
+        this.iva = 0; // IVA calculado sobre el subtotal
+        this.horaSalida = null; // Tipo Date
+    }
+
+
+    /**
+     * Calcula el total de consumos de la estadía
+     * @param {Array} consumos - Array de consumos con propiedad 'precio'
+     * @returns {number} Total de consumos
+     */
+    calcularTotalConsumos(consumos) {
+        if (!consumos || !Array.isArray(consumos)) {
+            return 0;
+        }
+        
+        return consumos.reduce((total, consumo) => {
+            return total + (consumo.precio || 0);
+        }, 0);
+    }
+
+    /**
+     * Calcula el recargo por checkout tardío
+     * @param {string} horaSalida - Hora de salida en formato HH:MM
+     * @param {number} costoPorNoche - Costo por noche de la habitación
+     * @returns {Object} Objeto con recargo, tipo, mensaje y si requiere nueva ocupación
+     */
+    calcularRecargoCheckout(horaSalida, costoPorNoche) {
+        if (!horaSalida || !costoPorNoche) {
+            return {
+                recargo: 0,
+                tipo: 'normal',
+                mensaje: '',
+                requiereNuevaOcupacion: false
+            };
+        }
+
+        const [horas, minutos] = horaSalida.split(':').map(Number);
+        const minutosDesdeMedianoche = horas * 60 + minutos;
+        
+        const limiteTolerancia = 11 * 60; // 11:00
+        const limiteRecargoCompleto = 18 * 60; // 18:00
+
+        if (minutosDesdeMedianoche <= limiteTolerancia) {
+            return {
+                recargo: 0,
+                tipo: 'normal',
+                mensaje: 'Check-out normal (antes de las 11:00)',
+                requiereNuevaOcupacion: false
+            };
+        } else if (minutosDesdeMedianoche <= limiteRecargoCompleto) {
+            const recargo = costoPorNoche * 0.5;
+            return {
+                recargo: recargo,
+                tipo: 'recargo_parcial',
+                mensaje: `Recargo por checkout tardío (11:01 - 18:00): 50% del valor de la habitación`,
+                requiereNuevaOcupacion: false
+            };
+        } else {
+            const recargo = costoPorNoche;
+            return {
+                recargo: recargo,
+                tipo: 'recargo_completo',
+                mensaje: `Recargo por checkout tardío (después de las 18:00): día completo`,
+                requiereNuevaOcupacion: true
+            };
+        }
+    }
+
+    /**
+     * Calcula el IVA sobre un subtotal (21%)
+     * @param {number} subtotal - Subtotal sobre el cual calcular IVA
+     * @returns {number} Monto de IVA
+     */
+    calcularIVA(subtotal) {
+        return subtotal * 0.21;
+    }
+
+    /**
+     * Calcula y actualiza el IVA y total de la factura
+     * @param {Object} estadia - Objeto estadía con reserva, consumos, etc.
+     * @param {string} horaSalida - Hora de salida para calcular recargos
+     * @returns {Promise<Object>} Objeto con iva y total calculados
+     */
+    async calcularDetalle(estadia, horaSalida) {
+        if (!estadia) {
+            throw new Error('No se puede calcular el detalle sin estadía');
+        }
+
+        // Asignar la estadía a la factura para poder usar sus métodos
+        this.estadia = estadia;
+        this.horaSalida = horaSalida;
+
+        // Usar métodos de la estadía si es una instancia de Estadia
+        let valorEstadia = 0;
+        let numeroNoches = 0;
+        let costoPorNoche = 0;
+        let consumos = [];
+
+        if (estadia.calcularValorEstadia && typeof estadia.calcularValorEstadia === 'function') {
+            // Es una instancia de Estadia - usar sus métodos
+            valorEstadia = estadia.calcularValorEstadia();
+            numeroNoches = estadia.calcularNumeroNoches();
+            costoPorNoche = estadia.obtenerCostoPorNoche();
+            consumos = estadia.consumos || (estadia.getConsumos ? estadia.getConsumos() : []);
+        } else {
+            // Es un objeto JSON - convertir a instancia de Estadia para usar sus métodos
+            // Para mantener compatibilidad, crear una instancia temporal
+            const Estadia = (await import('./Estadia.js')).default;
+            const estadiaInstancia = new Estadia(
+                estadia.id,
+                estadia.fechaCheckIn,
+                estadia.fechaCheckOut || this.obtenerFechaActual(),
+                estadia.estado,
+                estadia.reserva,
+                estadia.titular,
+                estadia.acompaniantes || []
+            );
+            if (estadia.consumos) {
+                estadiaInstancia.consumos = estadia.consumos;
+            }
+            
+            valorEstadia = estadiaInstancia.calcularValorEstadia();
+            numeroNoches = estadiaInstancia.calcularNumeroNoches();
+            costoPorNoche = estadiaInstancia.obtenerCostoPorNoche();
+            consumos = estadiaInstancia.consumos || [];
+        }
+
+        const totalConsumos = this.calcularTotalConsumos(consumos);
+        const recargoCheckout = this.calcularRecargoCheckout(horaSalida, costoPorNoche);
+
+        const subtotal = valorEstadia + totalConsumos + recargoCheckout.recargo;
+        const iva = this.calcularIVA(subtotal);
+        const total = subtotal + iva;
+
+        // Actualizar solo iva y total como atributos directos
+        this.iva = iva;
+        this.total = total;
+
+        return { iva: iva, total: total };
+    }
+
+    /**
+     * Obtiene la fecha actual en formato YYYY-MM-DD
+     * @returns {string} Fecha actual formateada
+     */
+    obtenerFechaActual() {
+        const hoy = new Date();
+        const año = hoy.getFullYear();
+        const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+        const día = String(hoy.getDate()).padStart(2, '0');
+        return `${año}-${mes}-${día}`;
+    }
+
+    /**
+     * Obtiene el IVA de la factura
+     * @returns {number} IVA de la factura
+     */
+    get getIva() {
+        return this.iva;
+    }
+
+    /**
+     * Establece el IVA de la factura
+     * @param {number} iva - IVA de la factura
+     */
+    set setIva(iva) {
+        this.iva = iva;
+    }
+    get getId() {
+        return this.id;
+    }
+    set setId(id) {
+        this.id = id;
+    }
+
+    get getHora() {
+        return this.hora;
+    }
+    set setHora(hora) {
+        this.hora = hora;
+    }
+
+    get getFecha() {
+        return this.fecha;
+    }
+    set setFecha(fecha) {
+        this.fecha = fecha;
+    }
+
+    get getTipo() {
+        return this.tipo;
+    }
+    set setTipo(tipo) {
+        this.tipo = tipo;
+    }
+
+    get getEstado() {
+        return this.estado;
+    }
+    set setEstado(estado) {
+        this.estado = estado;
+    }
+
+    agregarPago(pago) {
+        this.pagos.push(pago);
+    }
+
+    get getPagos() {
+        return this.pagos;
+    }
+
+    set setPagos(pagos) {
+        this.pagos = pagos;
+    }
+
+    get getNotaDeCredito() {
+        return this.notaDeCredito;
+    }
+
+
+    get getTotal() {
+        return this.total;
+    }
+
+    set setTotal(total) {
+        this.total = total;
+    }
+
+    /**
+     * Obtiene la hora de salida
+     * @returns {string} Hora de salida
+     */
+    get getHoraSalida() {
+        return this.horaSalida;
+    }
+
+    /**
+     * Establece la hora de salida
+     * @param {string} horaSalida - Hora de salida en formato HH:MM
+     */
+    set setHoraSalida(horaSalida) {
+        this.horaSalida = horaSalida;
+    }
+}
+
+export default Factura;
+
+
+// [GestorEstadia.js]
+import Estadia from "./Estadia.js";
+import { EstadoEstadia } from "./Enums.js";
+
+/**
+ * GestorEstadia - Coordinador central para todas las operaciones relacionadas con estadías.
+ * 
+ * MÉTODOS PÚBLICOS:
+ *  crearEstadia(reserva, titular, acompaniantes = [], fechaCheckIn, fechaCheckOut = null)
+ *   → Crea una nueva instancia de estadía con los datos proporcionados.
+ * 
+ * - registrarCheckIn(Estadia,fecha, habitaciones)
+ *   → Registra el check-in de una estadía en una fecha específica.
+ * 
+ * - registrarCheckOut(Estadia, id, fecha)
+ *   → Registra el check-out de una estadía por ID.
+ * 
+ * - convertirEstadiaADTO(estadia)
+ *   → Convierte un objeto Estadia de dominio a un DTO para la persistencia/transferencia de datos.
+ * 
+ * - convertirDTOAEstadia(estadiaDTO)
+ *   → Convierte un DTO de estadía (desde la base de datos u origen externo) a un objeto Estadia de dominio.
+ * 
+ * - async guardarEstadiaEnBD(estadiaJSON)
+ *   → Guarda una estadía en la base de datos.
+ * 
+ *  
+ */
+class GestorEstadia {
+  constructor() { 
+    this.estadias = [];
+    this._rutaBD = '/Datos/estadia.json';
+    this._gestorOcupar = null;
+  }
+
+  
+  _obtenerSiguienteId() {
+    if (this.estadias.length === 0) {
+      return 1;
+    }
+    const maxId = Math.max(...this.estadias.map(e => e.id));
+    return maxId + 1;
+  }
+
+  
+  crearEstadia(reserva, titular, acompaniantes = [], fechaCheckIn, fechaCheckOut = null) {
+    const siguienteId = this._obtenerSiguienteId();
+    const estadia = new Estadia(
+      siguienteId,
+      fechaCheckIn,
+      fechaCheckOut,
+      EstadoEstadia.EN_CURSO,
+      reserva,
+      titular,
+      acompaniantes
+    );
+    this.estadias.push(estadia);
+    return estadia;
+  }
+
+  registrarCheckIn(fecha, habitaciones) {
+    const e = new Estadia(this.estadias.length + 1, fecha, null);
+    e.habitaciones = habitaciones;
+    this.estadias.push(e);
+  }
+
+  registrarCheckOut(id, fecha) {
+    const e = this.estadias.find(est => est.id === id);
+    if (e) e.registrarCheckOut(fecha);
+  }
+
+  agregarConsumos(id, descripcion, monto) {
+    const e = this.estadias.find(est => est.id === id);
+    if (e) e.agregarConsumos(descripcion, monto);
+  }
+
+  verConsumos(id) {
+    const e = this.estadias.find(est => est.id === id);
+    return e ? e.verConsumos() : [];
+  }
+
+  
+  async guardarEstadiaEnBD(estadiaJSON) {
+    try {
+      const respuesta = await fetch(this._rutaBD);
+      let estadiasExistentes = [];
+      
+      if (respuesta.ok) {
+        const datos = await respuesta.json();
+        estadiasExistentes = datos.estadias || [];
+      }
+
+      estadiasExistentes.push(estadiaJSON);
+
+      console.log('Simulando guardado en BD. Total de estadías:', estadiasExistentes.length);
+      console.log('Nueva estadía a guardar:', estadiaJSON);
+
+      
+    } catch (error) {
+      console.error('Error al guardar estadía en BD:', error);
+      throw error;
+    }
+  }
+
+  
+  async ocuparHabitacion(reservaSeleccionada, titularSeleccionado, acompaniantesSeleccionados) {
+    try {
+      
+      if (!this._gestorOcupar) {
+        if (window.gestorOcuparHabitacion) {
+          this._gestorOcupar = window.gestorOcuparHabitacion;
+        } else {
+          const { GestorOcuparHabitacion } = await import('../../OcuparHabitacion/JS/gestor-ocupar-habitacion.js');
+          this._gestorOcupar = new GestorOcuparHabitacion();
+        }
+      }
+
+      
+      await this._gestorOcupar.cargarReservas();
+
+      
+      const datosEstadia = this._gestorOcupar.procesarDatosEstadia(
+        reservaSeleccionada,
+        titularSeleccionado,
+        acompaniantesSeleccionados || []
+      );
+
+      
+      const estadia = this.crearEstadia(
+        datosEstadia.reserva,
+        datosEstadia.titular,
+        datosEstadia.acompaniantes,
+        datosEstadia.fechaCheckIn,
+        datosEstadia.fechaCheckOut
+      );
+
+      
+      if (typeof window.convertirEstadiaAJSON === 'function') {
+        const estadiaJSON = window.convertirEstadiaAJSON(estadia);
+        
+        if (typeof window.mostrarJSONEstadiaEnPantalla === 'function') {
+          window.mostrarJSONEstadiaEnPantalla(estadia, function() {
+            mensajeCorrecto(`Estadía creada exitosamente.<br>Presione cualquier tecla para continuar.`);
+            
+            document.addEventListener('keydown', function limpiarEstadia() {
+              const modalCorrecto = document.getElementById('modal-correcto');
+              if (modalCorrecto) {
+                modalCorrecto.style.display = 'none';
+              }
+              
+              const contenedorJSON = document.getElementById('contenedor-json-estadia');
+              if (contenedorJSON) {
+                contenedorJSON.style.display = 'none';
+              }
+              
+              location.reload();
+              document.removeEventListener('keydown', limpiarEstadia);
+            }, { once: true });
+          });
+        }
+
+        
+        await this.guardarEstadiaEnBD(estadiaJSON);
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error al ocupar habitación:', error);
+      mensajeError('Error al ocupar la habitación: ' + error.message);
+      return false;
+    }
+  }
+}
+
+export default GestorEstadia;
+
+
+const gestorEstadia = new GestorEstadia();
+
+
+window.gestorEstadia = gestorEstadia;
+
+
+
+
+// [GestorFactura.js]
+import Factura from "./Factura.js";
+import NotaDeCredito from "./NotaDeCredito.js";
+import { EstadoFactura, TipoFactura } from "./Enums.js";
+
+/**
+ * GestorFactura - Coordinador central para todas las operaciones relacionadas con facturas.
+ * 
+ * MÉTODOS PÚBLICOS:
+ * - async generarFactura(estadia, responsableDePago, horaSalida, tipoFactura = 'B')
+ *   → Genera 
+ *  nueva factura a partir de una estadía y responsable de pago.
+ * 
+ * - async ingresarNotaCredito(facturas, responsable)
+ *   → Procesa el ingreso de una nota de crédito para facturas anuladas.
+ * 
+ * - async ingresarPago(factura, datosPago)
+ *   → Registra un pago asociado a una factura y actualiza su estado.
+ * 
+ * - async guardarFacturasEnBD(facturasJSON)
+ *   → Guarda o actualiza facturas en la base de datos.
+ * 
+ * - async guardarNotaCreditoEnBD(notaCreditoJSON, idsFacturas)
+ *   → Guarda una nota de crédito y sus relaciones con facturas.
+ * 
+ * - async guardarPagosEnBD(pagosJSON) [DEPRECADO]
+ *   → Deprecado: Los pagos se guardan como parte de las facturas.
+ * 
+ * - convertirFacturaADTO(factura)
+ *   → Convierte un objeto Factura de dominio a un DTO para la persistencia/transferencia de datos.
+ * 
+ * - convertirDTOAFactura(facturaDTO)
+ *   → Convierte un DTO de factura (desde la base de datos u origen externo) a un objeto Factura de dominio.
+ */
+class GestorFactura {
+  constructor() {
+    this._rutaBDFacturas = '/Datos/facturas.json';
+    this._rutaBDNotasCredito = '/Datos/nota_credito.json';
+    this._rutaBDNotasCreditoFactura = '/Datos/nota_credito_factura.json';
+    this._rutaBDPagos = '/Datos/pagos.json';
+    this._gestorGenerar = null;
+    this._gestorNotaCredito = null;
+    this._gestorPago = null;
+  }
+
+  async generarFactura(estadia, responsableDePago, horaSalida, tipoFactura = 'B') {
+    try {
+      console.log('GestorFactura.generarFactura - Iniciando con:', { 
+        estadia: estadia ? { id: estadia.id, tieneReserva: !!estadia.reserva } : null, 
+        responsableDePago: responsableDePago ? { tipo: responsableDePago.razonSocial ? 'tercero' : 'huesped' } : null, 
+        horaSalida, 
+        tipoFactura 
+      });
+      
+      if (!this._gestorGenerar) {
+        console.log('Cargando GestorGenerarFactura...');
+        try {
+          const module = await import('../../GenerarFactura/JS/gestor-generar-factura.js');
+          const { GestorGenerarFactura } = module;
+          console.log('GestorGenerarFactura importado:', GestorGenerarFactura);
+          this._gestorGenerar = new GestorGenerarFactura();
+          console.log('Instancia de GestorGenerarFactura creada:', this._gestorGenerar);
+        } catch (importError) {
+          console.error('Error al importar GestorGenerarFactura:', importError);
+          throw new Error('No se pudo cargar el módulo de generación de factura: ' + importError.message);
+        }
+      }
+
+      console.log('Llamando a procesarFactura...');
+      const factura = await this._gestorGenerar.procesarFactura(estadia, responsableDePago, horaSalida, tipoFactura);
+      
+      if (!factura) {
+        console.error('La factura generada es null o undefined');
+        throw new Error('No se pudo generar la factura - resultado nulo');
+      }
+
+      console.log('Factura generada exitosamente:', factura);
+
+      // Guardar en BD (esto es simulado, solo loguea)
+      try {
+        await this.guardarFacturasEnBD([factura]);
+        console.log('Factura guardada en BD (simulado)');
+      } catch (errorBD) {
+        console.warn('Error al guardar en BD (continuando):', errorBD);
+        // No lanzar error, solo loguear
+      }
+
+      return factura;
+    } catch (error) {
+      console.error('Error completo en GestorFactura.generarFactura:', error);
+      console.error('Tipo de error:', error.constructor.name);
+      console.error('Mensaje:', error.message);
+      console.error('Stack:', error.stack);
+      throw error;
+    }
+  }
+
+  async ingresarNotaCredito(facturas, responsable) {
+    try {
+      if (!this._gestorNotaCredito) {
+        const { GestorIngresarNotaCredito } = await import('../../IngresarNotaCredito/JS/gestor-ingresar-nota-credito.js');
+        this._gestorNotaCredito = new GestorIngresarNotaCredito();
+      }
+
+      const notaCredito = await this._gestorNotaCredito.procesarNotaCredito(facturas, responsable);
+      
+      if (notaCredito) {
+        const idsFacturas = facturas.map(f => f.id);
+        await this.guardarNotaCreditoEnBD(notaCredito, idsFacturas);
+        
+        
+        const facturasActualizadas = facturas.map(factura => ({
+          ...factura,
+          estado: EstadoFactura.ANULADA,
+          notaDeCredito: {
+            idNota: notaCredito.idNota,
+            fecha: notaCredito.fecha
+          }
+        }));
+        await this.guardarFacturasEnBD(facturasActualizadas);
+      }
+
+      return notaCredito;
+    } catch (error) {
+      console.error('Error al ingresar nota de crédito:', error);
+      throw error;
+    }
+  }
+
+  
+  async ingresarPago(factura, datosPago) {
+    try {
+      if (!this._gestorPago) {
+        const { GestorIngresarPago } = await import('../../IngresarPago/JS/gestor-ingresar-pago.js');
+        this._gestorPago = new GestorIngresarPago();
+      }
+
+      // Los pagos se procesan y se agregan directamente a la factura (instancia de clase)
+      // No se guardan en un JSON separado
+      const pagos = await this._gestorPago.procesarPago(factura, datosPago);
+      
+      if (pagos && pagos.length > 0) {
+        // Los pagos son instancias de la clase Pago y se agregan a la factura
+        // No necesitamos guardarlos en un JSON separado
+        
+        // Actualizar la factura en BD con los nuevos pagos
+        const facturaActual = await this._obtenerFacturaActualizada(factura.id);
+        
+        if (facturaActual) {
+          // Convertir pagos a formato JSON para guardar en BD
+          const pagosJSON = pagos.map(pago => {
+            // Si es instancia de Pago, convertir a JSON
+            if (pago.montoTotal !== undefined || pago.getMontoTotal) {
+              const monto = pago.montoTotal || (pago.getMontoTotal ? pago.getMontoTotal() : 0);
+              const fecha = pago.fecha || (pago.getFecha ? pago.getFecha() : new Date().toISOString().split('T')[0]);
+              const hora = pago.hora || (pago.getHora ? pago.getHora() : new Date().toTimeString().slice(0, 5));
+              const medioDePago = pago.medioDePago || (pago.getMedioDePago ? pago.getMedioDePago() : null);
+              
+              return {
+                id: pago.id || (pago.getId ? pago.getId() : null),
+                idFactura: factura.id,
+                fecha: fecha,
+                hora: hora,
+                monto: monto,
+                medioDePago: medioDePago
+              };
+            }
+            // Si ya es JSON, retornarlo tal cual
+            return pago;
+          });
+          
+          // Obtener pagos previos de la factura
+          const pagosPrevios = facturaActual.pagos || [];
+          
+          // Calcular totales
+          const total = facturaActual.detalle?.total || 0;
+          const totalPagadoPrevios = pagosPrevios.reduce((sum, p) => sum + (p.monto || p.montoTotal || 0), 0);
+          const totalNuevosPagos = pagosJSON.reduce((sum, p) => sum + (p.monto || 0), 0);
+          const nuevoTotalPagado = totalPagadoPrevios + totalNuevosPagos;
+          
+          // Actualizar estado si está pagada
+          if (nuevoTotalPagado >= total) {
+            facturaActual.estado = EstadoFactura.PAGADA;
+          }
+          
+          // Agregar nuevos pagos a los existentes
+          facturaActual.pagos = [...pagosPrevios, ...pagosJSON];
+          
+          // Guardar factura actualizada en BD
+          await this.guardarFacturasEnBD([facturaActual]);
+        }
+      }
+
+      return pagos;
+    } catch (error) {
+      console.error('Error al ingresar pago:', error);
+      throw error;
+    }
+  }
+
+  
+  async guardarFacturasEnBD(facturasJSON) {
+    try {
+      let facturasExistentes = [];
+      try {
+        const respuesta = await fetch(this._rutaBDFacturas);
+        if (respuesta.ok) {
+          const datos = await respuesta.json();
+          facturasExistentes = datos.facturas || [];
+        }
+      } catch (error) {
+        console.warn('No se pudieron cargar facturas existentes, se creará un nuevo archivo');
+      }
+
+      
+      const facturasActualizadas = [...facturasExistentes];
+      
+      
+      facturasJSON.forEach(facturaNueva => {
+        if (!facturaNueva.id) {
+          
+          const maxId = facturasActualizadas.length > 0
+            ? Math.max(...facturasActualizadas.map(f => f.id || 0))
+            : 0;
+          facturaNueva.id = maxId + 1;
+        }
+        
+        const indiceExistente = facturasActualizadas.findIndex(f => f.id === facturaNueva.id);
+        if (indiceExistente !== -1) {
+          facturasActualizadas[indiceExistente] = facturaNueva;
+        } else {
+          facturasActualizadas.push(facturaNueva);
+        }
+      });
+
+      console.log('Facturas a guardar en BD:', facturasActualizadas);
+      
+      
+      
+    } catch (error) {
+      console.error('Error al guardar facturas en BD:', error);
+      throw error;
+    }
+  }
+  
+
+  
+  async guardarNotaCreditoEnBD(notaCreditoJSON, idsFacturas) {
+    try {
+      
+      let notasCreditoExistentes = [];
+      try {
+        const respuesta = await fetch(this._rutaBDNotasCredito);
+        if (respuesta.ok) {
+          const datos = await respuesta.json();
+          notasCreditoExistentes = datos.notasCredito || [];
+        }
+      } catch (error) {
+        console.warn('No se pudieron cargar notas de crédito existentes');
+      }
+
+      
+      if (!notaCreditoJSON.idNota) {
+        const maxId = notasCreditoExistentes.length > 0
+          ? Math.max(...notasCreditoExistentes.map(nc => nc.idNota || 0))
+          : 0;
+        notaCreditoJSON.idNota = maxId + 1;
+      }
+
+      notasCreditoExistentes.push(notaCreditoJSON);
+
+      
+      let relacionesExistentes = [];
+      try {
+        const respuesta = await fetch(this._rutaBDNotasCreditoFactura);
+        if (respuesta.ok) {
+          const datos = await respuesta.json();
+          relacionesExistentes = datos.nota_credito_factura || [];
+        }
+      } catch (error) {
+        console.warn('No se pudieron cargar relaciones nota_credito_factura existentes');
+      }
+
+      idsFacturas.forEach(idFactura => {
+        relacionesExistentes.push({
+          idNotaCredito: notaCreditoJSON.idNota,
+          idFactura: idFactura
+        });
+      });
+
+      console.log('Nota de crédito a guardar en BD:', notaCreditoJSON);
+      console.log('Relaciones nota_credito_factura a guardar:', relacionesExistentes.length);
+      
+      
+      
+    } catch (error) {
+      console.error('Error al guardar nota de crédito en BD:', error);
+      throw error;
+    }
+  }
+
+  
+  // DEPRECADO: Los pagos se guardan como parte de las facturas
+  // Este método se mantiene por compatibilidad pero ya no se usa
+  async guardarPagosEnBD(pagosJSON) {
+    console.warn('guardarPagosEnBD() está deprecado. Los pagos se guardan como parte de las facturas.');
+    // Los pagos se guardan junto con las facturas, no en un JSON separado
+  }
+
+  
+  
+  
+  
+
+  
+  async _obtenerFacturaActualizada(idFactura) {
+    try {
+      const respuesta = await fetch(this._rutaBDFacturas);
+      if (!respuesta.ok) {
+        return null;
+      }
+      const datos = await respuesta.json();
+      const facturas = datos.facturas || [];
+      return facturas.find(f => f.id === idFactura) || null;
+    } catch (error) {
+      console.error('Error al obtener factura actualizada:', error);
+      return null;
+    }
+  }
+
+  
+  async buscarFacturasParaNotaCredito(dniCuit) {
+    try {
+      if (!this._gestorNotaCredito) {
+        const { GestorIngresarNotaCredito } = await import('../../IngresarNotaCredito/JS/gestor-ingresar-nota-credito.js');
+        this._gestorNotaCredito = new GestorIngresarNotaCredito();
+      }
+
+      return await this._gestorNotaCredito.buscarFacturasNoAnuladas(dniCuit);
+    } catch (error) {
+      console.error('Error al buscar facturas para nota de crédito:', error);
+      throw error;
+    }
+  }
+
+  
+  async buscarResponsableParaNotaCredito(dniCuit) {
+    try {
+      if (!this._gestorNotaCredito) {
+        const { GestorIngresarNotaCredito } = await import('../../IngresarNotaCredito/JS/gestor-ingresar-nota-credito.js');
+        this._gestorNotaCredito = new GestorIngresarNotaCredito();
+      }
+
+      return await this._gestorNotaCredito.buscarResponsable(dniCuit);
+    } catch (error) {
+      console.error('Error al buscar responsable para nota de crédito:', error);
+      throw error;
+    }
+  }
+
+  
+  async buscarFacturasParaPago(numeroHabitacion) {
+    try {
+      if (!this._gestorPago) {
+        const { GestorIngresarPago } = await import('../../IngresarPago/JS/gestor-ingresar-pago.js');
+        this._gestorPago = new GestorIngresarPago();
+      }
+
+      return await this._gestorPago.buscarFacturasPendientes(numeroHabitacion);
+    } catch (error) {
+      console.error('Error al buscar facturas para pago:', error);
+      throw error;
+    }
+  }
+}
+
+
+const gestorFactura = new GestorFactura();
+if (typeof window !== 'undefined') {
+  window.gestorFactura = gestorFactura;
+}
+
+export default GestorFactura;
+
+
+
+
+// [GestorHabitacion.js]
+import Habitacion from "./Habitacion.js";
+import { EstadoHabitacion } from "./Enums.js";
+
+
+class GestorHabitacion {
+  constructor() {
+    this._rutaBD = '/Datos/habitaciones.json';
+  }
+
+  
+  _convertirHabitacionADTO(habitacion) {
+    return new HabitacionDTO(
+      habitacion.numero,
+      habitacion.tipo,
+      habitacion.categoria,
+      habitacion.costoPorNoche,
+      habitacion.estadoHabitacion
+    );
+  }
+
+  
+  _convertirDTOAHabitacion(habitacionDTO) {
+    return new Habitacion(
+      habitacionDTO.numero,
+      habitacionDTO.tipo,
+      habitacionDTO.categoria || '',
+      habitacionDTO.costoPorNoche,
+      habitacionDTO.estadoHabitacion || EstadoHabitacion.DISPONIBLE
+    );
+  }
+
+  
+  async _leerHabitacionesDesdeBD() {
+    try {
+      const respuesta = await fetch(this._rutaBD);
+      if (!respuesta.ok) {
+        throw new Error(`Error al leer habitaciones: ${respuesta.status}`);
+      }
+      const datos = await respuesta.json();
+      return datos.habitaciones || [];
+    } catch (error) {
+      console.error('Error al leer habitaciones desde BD:', error);
+      throw error;
+    }
+  }
+
+  
+  async cargarHabitacionesDesdeBD() {
+    try {
+      const habitacionesDTO = await this._leerHabitacionesDesdeBD();
+      return habitacionesDTO.map(dto => this._convertirDTOAHabitacion(dto));
+    } catch (error) {
+      console.error('Error al cargar habitaciones desde BD:', error);
+      throw error;
+    }
+  }
+}
+
+export default GestorHabitacion;
+
+
+
+
+// [GestorHuesped.js]
+import {Huesped} from "./Huesped.js";
+import {HuespedDTO} from "../DTO/dto.js";
+import {GestorRealizarReserva} from "../../RealizarReserva/JS/gestor-realizar-reserva.js";
+  
+
+
+export default class GestorHuesped {
+  constructor() { 
+    this.huespedes = []; 
+    this._rutaBD = '/Datos/huespedes.json';
+    this._gestorAlta = null;
+    this._gestorBuscar = null;
+    this._gestorModificar = null;
+  }
+
+  
+  
+  static async darAltaHuesped() {
+      try {
+          
+
+          if(!GestorAltaHuesped.validarTodosLosCampos()) return;
+
+          const datosFormulario = GestorAltaHuesped.extraerDatosFormulario();
+          console.log('Datos extraídos del formulario:', datosFormulario);
+
+          
+          const huespedDominio = GestorAltaHuesped.crearHuespedDominio(datosFormulario);
+          
+          
+          console.log('Huesped de dominio creado:', huespedDominio);
+
+          
+          const huespedDTO = GestorAltaHuesped.crearHuespedDTO(huespedDominio);
+          
+          
+          console.log('HuespedDTO creado:', huespedDTO);
+
+          
+          
+          
+          await GestorAltaHuesped.guardarEnBD(huespedDTO, 'alta');
+
+          
+
+          return true;
+      } catch (error) {
+          console.error('Error al procesar el alta de huésped:', error);
+          mensajeError('Error al procesar el alta de huésped: ' + error.message);
+          return false;
+      }
+  }
+
+  
+  static async buscarHuespedes() {
+        try {
+                
+          const datosFormulario = GestorBuscarHuesped.extraerDatosFormulario();
+          console.log('Datos extraídos del formulario:', datosFormulario);
+          
+          
+          const resultado = await GestorBuscarHuesped.buscarHuespedesEnAPI(
+              datosFormulario.apellido,
+              datosFormulario.nombre,
+              datosFormulario.tipoDocumento,
+              datosFormulario.numeroDocumento
+          );
+
+          if (resultado.error) {
+              throw new Error(resultado.error);
+          }
+
+          
+          const resultados = Array.isArray(resultado.data) ? resultado.data : [];
+          console.log(`Se encontraron ${resultados.length} resultados`);
+          
+          
+          GestorBuscarHuesped.renderizarResultados(resultados);
+          
+          
+          GestorBuscarHuesped.mostrarResultados();
+          
+          
+          setTimeout(() => {
+              if (typeof inicializarTablaResultados === 'function') {
+                  inicializarTablaResultados();
+              } else {
+                  console.error('La función inicializarTablaResultados no está disponible');
+              }
+          }, 200);
+          
+          return true;
+      } catch (error) {
+          console.error('Error al procesar la búsqueda:', error);
+          mensajeError('Error al procesar la búsqueda: ' + error.message);
+          return false;
+      }
+  }
+
+  
+  static async modificarHuespedCompleto(event) {
+    try {
+      // Determinar qué botón generó el evento
+      const botonGuardar = document.getElementById('boton-guardar');
+      const botonBorrar = document.getElementById('boton-borrar');
+      let operacion = null;
+
+      
+      const datosFormulario = GestorModificarHuesped.extraerDatosFormulario();
+      console.log('Datos extraídos del formulario:', datosFormulario);
+
+      const huespedDominio = GestorModificarHuesped.crearHuespedDominio(datosFormulario);
+      console.log('Huesped de dominio creado:', huespedDominio);
+
+      const huespedDTO = GestorModificarHuesped.crearHuespedDTO(huespedDominio);
+      console.log('HuespedDTO creado:', huespedDTO);
+
+      
+      if (event && event.target) {
+        if (botonGuardar && event.target === botonGuardar) {
+          operacion = 'modificacion';
+        } else if (botonBorrar && event.target === botonBorrar) {
+          operacion = 'eliminar';
+        } else {
+          throw new Error('Evento generado por un botón desconocido');
+        }
+      } else {
+        throw new Error('No se pasó un evento válido');
+      }
+
+
+      await GestorModificarHuesped.guardarEnBD(huespedDTO, operacion);
+
+      return true;
+    } catch (error) {
+      console.error('Error al procesar la operación de huésped:', error);
+      mensajeError('Error al procesar la operación de huésped: ' + error.message);
+      return false;
+    }
+  }
+}
+
+window.GestorHuesped = GestorHuesped;
+
+
+
+// [GestorReserva.js]
+// =====================================================================
+//  GestorReserva.js
+//  ✔ Orquestador del proceso de reserva
+//  ✔ Solo tiene un método: realizarReserva()
+//  ✔ Toda la lógica REAL la hace GestorRealizarReserva
+// =====================================================================
+
+import { GestorRealizarReserva } from "/RealizarReserva/JS/gestor-realizar-reserva.js";
+
+export default class GestorReserva {
+
+  /**
+   * Método ÚNICO del orquestador.
+   * Dirige todo el camino de la reserva siguiendo este flujo:
+   *
+   * 1) extraerDatosSeleccion()
+   * 2) crearReservaDominio()
+   * 3) crearReservaDTO()
+   * 4) guardarEnBD()
+   *
+   * @param {Array} listaSeleccion  [{habitacion: 'IND-101', fechaDesde:..., fechaHasta:...}, ...]
+   * @param {Object} datosTitular   {nombre, apellido, telefono}
+   */
+  static async realizarReserva(listaSeleccion, datosTitular) {
+    try {
+      console.log("▶ Iniciando GestorReserva.realizarReserva()");
+
+      // Instancia del gestor lógico
+      const gestor = new GestorRealizarReserva();
+
+      // ------------------------------------------------------------
+      // 1) Extraer datos desde la selección de la UI
+      // ------------------------------------------------------------
+      const datosSeleccion = gestor.extraerDatosSeleccion(listaSeleccion);
+      console.log("1️⃣ Datos de selección:", datosSeleccion);
+
+      // ------------------------------------------------------------
+      // 2) Crear dominio interno
+      // ------------------------------------------------------------
+      const reservasDominio = gestor.crearReservaDominio(datosSeleccion, datosTitular);
+      console.log("2️⃣ Modelo de dominio:", reservasDominio);
+
+      // ------------------------------------------------------------
+      // 3) Crear DTO final para el backend
+      // ------------------------------------------------------------
+      const reservasDTO = gestor.crearReservaDTO(reservasDominio);
+      console.log("3️⃣ DTO final:", reservasDTO);
+
+      // ------------------------------------------------------------
+      // 4) Guardar cada reserva en el backend
+      // ------------------------------------------------------------
+      await gestor.guardarEnBD(reservasDTO);
+
+      console.log("✔ Reserva(s) creada(s) correctamente.");
+      return true;
+
+    } catch (error) {
+      console.error("❌ Error en realizarReserva():", error);
+      mensajeError("No se pudo completar la reserva: " + error.message);
+      return false;
+    }
+  }
+
+}
+
+window.GestorReserva = GestorReserva;
+
+
+
+// [Habitacion.js]
+import { EstadoHabitacion } from "./Enums.js";
+
+/**
+ * Habitacion - Clase que representa una habitación del hotel.
+ * 
+ * MÉTODOS PÚBLICOS (sin getters y setters):
+ * - formatearNombre()
+ *   → Formatea el nombre de la habitación en formato "TIPO-NUMERO" (ej: "IND-101").
+ * 
+ * - esDisponible()
+ *   → Verifica si la habitación está disponible.
+ * 
+ * - estaReservada()
+ *   → Verifica si la habitación está reservada.
+ * 
+ * - estaOcupada()
+ *   → Verifica si la habitación está ocupada.
+ * 
+ * - estaFueraDeServicio()
+ *   → Verifica si la habitación está fuera de servicio.
+ * 
+ * - cambiarEstado(nuevoEstado)
+ *   → Cambia el estado de la habitación al estado especificado.
+ * 
+ * - calcularCostoTotal(numeroNoches)
+ *   → Calcula el costo total de la habitación para un número específico de noches.
+ * 
+ * - coincideConTipo(tipo)
+ *   → Verifica si la habitación coincide con un tipo específico.
+ * 
+ * - coincideConNumero(numero)
+ *   → Verifica si la habitación coincide con un número específico.
+ * 
+ * - devolverEstado()
+ *   → Retorna el estado actual de la habitación (método de compatibilidad).
+ */
+class Habitacion {
+  constructor(numero, tipo, categoria, costoPorNoche, estadoHabitacion = EstadoHabitacion.DISPONIBLE) {
+    this._numero = numero; //Tipo number
+    this._tipo = tipo; //Tipo string
+    this._categoria = categoria; //Tipo string
+    this._costoPorNoche = costoPorNoche; //Tipo number
+    this._estadoHabitacion = estadoHabitacion; //Tipo EstadoHabitacion
+  }
+
+  get numero() { return this._numero; }
+  set numero(v) { this._numero = v; }
+
+  get tipo() { return this._tipo; }
+  set tipo(v) { this._tipo = v; }
+
+  get categoria() { return this._categoria; }
+  set categoria(v) { this._categoria = v; }
+
+  get costoPorNoche() { return this._costoPorNoche; }
+  set costoPorNoche(v) { this._costoPorNoche = v; }
+
+  get estadoHabitacion() { return this._estadoHabitacion; }
+  set estadoHabitacion(v) { this._estadoHabitacion = v; }
+
+  /**
+   * Formatea el nombre de la habitación en formato "TIPO-NUMERO"
+   * @returns {string} Nombre formateado (ej: "IND-101")
+   */
+  formatearNombre() {
+    return `${this._tipo}-${this._numero}`;
+  }
+
+  /**
+   * Verifica si la habitación está disponible
+   * @returns {boolean} true si está disponible
+   */
+  esDisponible() {
+    return this._estadoHabitacion === EstadoHabitacion.DISPONIBLE;
+  }
+
+  /**
+   * Verifica si la habitación está reservada
+   * @returns {boolean} true si está reservada
+   */
+  estaReservada() {
+    return this._estadoHabitacion === EstadoHabitacion.RESERVADA;
+  }
+
+  /**
+   * Verifica si la habitación está ocupada
+   * @returns {boolean} true si está ocupada
+   */
+  estaOcupada() {
+    return this._estadoHabitacion === EstadoHabitacion.OCUPADA;
+  }
+
+  /**
+   * Verifica si la habitación está fuera de servicio
+   * @returns {boolean} true si está fuera de servicio
+   */
+  estaFueraDeServicio() {
+    return this._estadoHabitacion === EstadoHabitacion.FUERA_DE_SERVICIO;
+  }
+
+  /**
+   * Cambia el estado de la habitación al estado especificado
+   * @param {string} nuevoEstado - Nuevo estado (debe ser un valor de EstadoHabitacion)
+   * @returns {boolean} true si el estado se cambió correctamente
+   */
+  cambiarEstado(nuevoEstado) {
+    // Validar que el estado sea uno de los estados válidos
+    const estadosValidos = Object.values(EstadoHabitacion);
+    if (!estadosValidos.includes(nuevoEstado)) {
+      console.warn(`Estado inválido: ${nuevoEstado}. Estados válidos: ${estadosValidos.join(', ')}`);
+      return false;
+    }
+    
+    this._estadoHabitacion = nuevoEstado;
+    return true;
+  }
+
+  /**
+   * Calcula el costo total de la habitación para un número específico de noches
+   * @param {number} numeroNoches - Número de noches
+   * @returns {number} Costo total (costoPorNoche * numeroNoches)
+   */
+  calcularCostoTotal(numeroNoches) {
+    if (!numeroNoches || numeroNoches <= 0) return 0;
+    if (!this._costoPorNoche || this._costoPorNoche <= 0) return 0;
+    
+    return this._costoPorNoche * numeroNoches;
+  }
+
+  /**
+   * Verifica si la habitación coincide con un tipo específico
+   * @param {string} tipo - Tipo a comparar
+   * @returns {boolean} true si coincide el tipo
+   */
+  coincideConTipo(tipo) {
+    if (!tipo) return false;
+    return this._tipo && this._tipo.toString().toUpperCase() === tipo.toString().toUpperCase();
+  }
+
+  /**
+   * Verifica si la habitación coincide con un número específico
+   * @param {number|string} numero - Número a comparar
+   * @returns {boolean} true si coincide el número
+   */
+  coincideConNumero(numero) {
+    if (!numero) return false;
+    const numeroHabitacion = typeof this._numero === 'number' ? this._numero : parseInt(this._numero, 10);
+    const numeroComparar = typeof numero === 'number' ? numero : parseInt(numero, 10);
+    
+    if (isNaN(numeroHabitacion) || isNaN(numeroComparar)) return false;
+    
+    return numeroHabitacion === numeroComparar;
+  }
+
+  /**
+   * Retorna el estado actual de la habitación (método de compatibilidad)
+   * @returns {string} Estado actual
+   */
+  devolverEstado() { 
+    return this._estadoHabitacion; 
+  }
+}
+
+export default Habitacion;
+
+
+
+
+// [Huesped.js]
+import { Direccion } from "./Direccion.js";
+
+export class Huesped {
+    constructor(
+        nombre,
+        apellido,
+        tipoDocumento,
+        numeroDocumento,
+        cuit,
+        fechaNacimiento,
+        telefono,
+        email,
+        ocupacion,
+        nacionalidad,
+        direccion = null
+    ) {
+        this.apellido = apellido;
+        this.nombre = nombre;
+        this.tipoDocumento = tipoDocumento;
+        this.nroDocumento = numeroDocumento;
+        this.cuit = cuit || '';
+        this.fechaNacimiento = new Date(fechaNacimiento);
+        this.telefono = telefono || '';
+        this.email = email || '';
+        this.ocupacion = ocupacion;
+        this.nacionalidad = nacionalidad;
+        this.direccion = direccion;  // Direccion o null
+    }
+
+    // ==========================
+    // GETTERS (métodos)
+    // ==========================
+    getApellido() { return this.apellido; }
+    getNombre() { return this.nombre; }
+    getTipoDocumento() { return this.tipoDocumento; }
+    getNumeroDocumento() { return this.nroDocumento; }
+    getNroDocumento() { return this.nroDocumento; }
+    getCuit() { return this.cuit; }
+    getFechaNacimiento() { return this.fechaNacimiento; }
+    getTelefono() { return this.telefono; }
+    getEmail() { return this.email; }
+    getOcupacion() { return this.ocupacion; }
+    getNacionalidad() { return this.nacionalidad; }
+    getDireccion() { return this.direccion; }
+
+    // ==========================
+    // SETTERS (métodos)
+    // ==========================
+    setApellido(v) { this.apellido = v; }
+    setNombre(v) { this.nombre = v; }
+    setTipoDocumento(v) { this.tipoDocumento = v; }
+    setNumeroDocumento(v) { this.nroDocumento = v; }
+    setNroDocumento(v) { this.nroDocumento = v; }
+    setCuit(v) { this.cuit = v; }
+    setFechaNacimiento(v) { this.fechaNacimiento = new Date(v); }
+    setTelefono(v) { this.telefono = v; }
+    setEmail(v) { this.email = v; }
+    setOcupacion(v) { this.ocupacion = v; }
+    setNacionalidad(v) { this.nacionalidad = v; }
+    setDireccion(v) { this.direccion = v; }
+
+    // ==========================
+    // MÉTODOS DE LÓGICA
+    // ==========================
+    calcularEdad() {
+        if (!this.fechaNacimiento) return 0;
+
+        const hoy = new Date();
+        const fechaNac = new Date(this.fechaNacimiento);
+
+        let edad = hoy.getFullYear() - fechaNac.getFullYear();
+        const mes = hoy.getMonth() - fechaNac.getMonth();
+
+        if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+            edad--;
+        }
+        return edad;
+    }
+
+    /**
+     * Verifica si el huésped es mayor de edad
+     * @returns {boolean}
+     */
+    verificarMayorEdad() {
+        return this.calcularEdad() >= 18;
+    }
+}
+
+
+
+// [NotaDeCredito.js]
+class NotaDeCredito {
+    constructor(responsable = null) {
+        this.idNota = null; //Tipo number
+        this.fecha = new Date(); //Tipo Date
+        this.responsable = responsable; //Tipo ResponsableDePago
+        this.facturas = []; //Tipo Factura
+        this.tipo = null; //Tipo TipoFactura
+    }
+
+    get getIdNota() {
+        return this.idNota;
+    }
+
+    set setIdNota(idNota) {
+        this.idNota = idNota;
+    }
+
+    get getFecha() {
+        return this.fecha;
+    }
+
+    set setFecha(fecha) {
+        this.fecha = fecha;
+    }
+
+    get getResponsable() {
+        return this.responsable;
+    }
+
+    set setResponsable(responsable) {
+        this.responsable = responsable;
+    }
+
+    get getFacturas() {
+        return this.facturas;
+    }
+
+    set setFacturas(facturas) {
+        this.facturas = facturas;
+    }
+
+    get getTipo() {
+        return this.tipo;
+    }
+
+    set setTipo(tipo) {
+        this.tipo = tipo;
+    }
+
+    agregarFactura(factura) {
+        this.facturas.push(factura);
+        factura.notaDeCredito = this;  
+    }
+}
+
+export default NotaDeCredito;
+
+
+
+
+
+
+
+
+
+
+// [Pago.js]
+class Pago {
+  constructor(id, fecha, hora, montoTotal, medioDePago) {
+    this._id = id; //Tipo number
+    this._fecha = fecha; //Tipo Date
+    this._hora = hora; //Tipo Date
+    this._montoTotal = montoTotal; //Tipo real
+    this._medioDePago = medioDePago; //Tipo MedioDePago
+  }
+
+  get id() { return this._id; }
+  set id(v) { this._id = v; }
+
+  get fecha() { return this._fecha; }
+  set fecha(v) { this._fecha = v; }
+
+  get hora() { return this._hora; }
+  set hora(v) { this._hora = v; }
+
+  get montoTotal() { return this._montoTotal; }
+  set montoTotal(v) { this._montoTotal = v; }
+
+  get medioDePago() { return this._medioDePago; }
+  set medioDePago(v) { this._medioDePago = v; }
+}
+
+export default Pago;
+
+
+
+
+// [Persona.js]
+class Persona {
+  constructor(nombre, apellido, telefono) {
+    this._nombre = nombre; //Tipo string
+    this._apellido = apellido; //Tipo string
+    this._telefono = telefono; //Tipo string
+  }
+
+  get nombre() { return this._nombre; }
+  set nombre(v) { this._nombre = v; }
+
+  get apellido() { return this._apellido; }
+  set apellido(v) { this._apellido = v; }
+
+  get telefono() { return this._telefono; }
+  set telefono(v) { this._telefono = v; }
+}
+
+export default Persona;
+
+
+
+
+// [PersonaFisica.js]
+import ResponsableDePago from './ResponsableDePago.js';
+
+/**
+ * PersonaFisica - Clase que representa un responsable de pago que es una persona física (huésped).
+ * 
+ * Hereda de ResponsableDePago.
+ */
+class PersonaFisica extends ResponsableDePago {
+  
+  constructor(datos) {
+    super();
+    
+    if (!datos.apellido || !datos.nombre || !datos.documento) {
+      throw new Error('Para una PersonaFisica se requieren: apellido, nombre y documento');
+    }
+
+    this._apellido = datos.apellido;
+    this._nombre = datos.nombre;
+    this._documento = datos.documento;
+  }
+
+  // Getters y Setters
+  get apellido() {
+    return this._apellido;
+  }
+
+  set apellido(v) {
+    if (!v || v.trim() === '') {
+      throw new Error('El apellido no puede estar vacío');
+    }
+    this._apellido = v;
+  }
+
+  get nombre() {
+    return this._nombre;
+  }
+
+  set nombre(v) {
+    if (!v || v.trim() === '') {
+      throw new Error('Los nombre no pueden estar vacíos');
+    }
+    this._nombre = v;
+  }
+
+  get documento() {
+    return this._documento;
+  }
+
+  set documento(v) {
+    if (!v || v.trim() === '') {
+      throw new Error('El documento no puede estar vacío');
+    }
+    this._documento = v;
+  }
+
+  /**
+   * Obtiene el nombre completo de la persona física
+   * @returns {string} Nombre completo en formato "apellido, nombre"
+   */
+  obtenerNombreCompleto() {
+    return `${this._apellido || ''}, ${this._nombre || ''}`.trim();
+  }
+
+  /**
+   * Convierte la persona física a un objeto JSON
+   * @returns {Object} Objeto JSON con los datos de la persona física
+   */
+  toJSON() {
+    return {
+      tipo: 'huesped',
+      apellido: this._apellido,
+      nombre: this._nombre,
+      documento: this._documento
+    };
+  }
+}
+
+export default PersonaFisica;
+
+
+
+
+// [PersonaJuridica.js]
+import ResponsableDePago from './ResponsableDePago.js';
+import Direccion from './Direccion.js';
+
+/**
+ * PersonaJuridica - Clase que representa un responsable de pago que es una persona jurídica (tercero).
+ * 
+ * Hereda de ResponsableDePago.
+ * 
+ */
+class PersonaJuridica extends ResponsableDePago {
+  /**
+   * Constructor para PersonaJuridica
+   * @param {Object} datos - Datos de la persona jurídica
+   * @param {string} datos.razonSocial - Razón social (requerido)
+   * @param {string} datos.cuit - CUIT (requerido)
+   * @param {string} datos.telefono - Teléfono (requerido)
+   * @param {Direccion|Object} datos.direccion - Dirección (requerido)
+   */
+  constructor(datos) {
+    super();
+    
+    if (!datos.razonSocial || !datos.cuit || !datos.telefono || !datos.direccion) {
+      throw new Error('Para una PersonaJuridica se requieren: razonSocial, cuit, telefono y direccion');
+    }
+
+    this._razonSocial = datos.razonSocial;
+    this._cuit = datos.cuit;
+    this._telefono = datos.telefono;
+    
+    // Convertir direccion a instancia de Direccion si es necesario
+    if (datos.direccion instanceof Direccion) {
+      this._direccion = datos.direccion;
+    } else {
+      // Crear instancia de Direccion desde objeto
+      this._direccion = new Direccion(
+        datos.direccion.calle,
+        datos.direccion.numero,
+        datos.direccion.piso,
+        datos.direccion.departamento,
+        datos.direccion.localidad,
+        datos.direccion.provincia,
+        datos.direccion.codigoPostal,
+        datos.direccion.pais
+      );
+    }
+  }
+
+  // Getters y Setters
+  get razonSocial() {
+    return this._razonSocial;
+  }
+
+  set razonSocial(v) {
+    if (!v || v.trim() === '') {
+      throw new Error('La razón social no puede estar vacía');
+    }
+    this._razonSocial = v;
+  }
+
+  get cuit() {
+    return this._cuit;
+  }
+
+  set cuit(v) {
+    if (!v || v.trim() === '') {
+      throw new Error('El CUIT no puede estar vacío');
+    }
+    this._cuit = v;
+  }
+
+  get telefono() {
+    return this._telefono;
+  }
+
+  set telefono(v) {
+    if (!v || v.trim() === '') {
+      throw new Error('El teléfono no puede estar vacío');
+    }
+    this._telefono = v;
+  }
+
+  get direccion() {
+    return this._direccion;
+  }
+
+  set direccion(v) {
+    if (!v) {
+      throw new Error('La dirección es requerida');
+    }
+    if (v instanceof Direccion) {
+      this._direccion = v;
+    } else {
+      this._direccion = new Direccion(
+        v.calle,
+        v.numero,
+        v.piso,
+        v.departamento,
+        v.localidad,
+        v.provincia,
+        v.codigoPostal,
+        v.pais
+      );
+    }
+  }
+
+  /**
+   * Obtiene el nombre completo de la persona jurídica (razón social)
+   * @returns {string} Razón social
+   */
+  obtenerNombreCompleto() {
+    return this._razonSocial || '';
+  }
+
+  /**
+   * Convierte la persona jurídica a un objeto JSON
+   * @returns {Object} Objeto JSON con los datos de la persona jurídica
+   */
+  toJSON() {
+    return {
+      tipo: 'juridica',
+      razonSocial: this._razonSocial,
+      cuit: this._cuit,
+      telefono: this._telefono,
+      direccion: this._direccion ? {
+        calle: this._direccion.calle,
+        numero: this._direccion.numero,
+        piso: this._direccion.piso,
+        departamento: this._direccion.departamento,
+        localidad: this._direccion.localidad,
+        provincia: this._direccion.provincia,
+        codigoPostal: this._direccion.codigoPostal,
+        pais: this._direccion.pais
+      } : null
+    };
+  }
+}
+
+export default PersonaJuridica;
+
+
+
+
+// [Reserva.js]
+import { EstadoReserva } from "./Enums.js";
+
+/**
+ * Reserva - Clase que representa una reserva del hotel.
+ * 
+ * MÉTODOS PÚBLICOS (sin getters y setters):
+ * - calcularNumeroNoches()
+ *   → Calcula el número de noches entre fechaInicio y fechaFin.
+ * 
+ * - generarArrayFechas()
+ *   → Genera un array con todas las fechas entre fechaInicio y fechaFin en formato YYYY-MM-DD.
+ * 
+ * - incluyeFecha(fecha)
+ *   → Verifica si una fecha específica está dentro del rango de la reserva.
+ * 
+ * - seSolapaCon(fechaInicioOtra, fechaFinOtra)
+ *   → Verifica si la reserva se solapa con otro rango de fechas.
+ * 
+ * - incluyeHabitacion(numeroHabitacion)
+ *   → Verifica si la reserva incluye una habitación específica por su número.
+ * 
+ * - agregarHabitacion(habitacion)
+ *   → Agrega una habitación a la lista de habitaciones de la reserva.
+ * 
+ * - formatearFechaInicio(formato = 'YYYY-MM-DD')
+ *   → Formatea la fecha de inicio según el formato especificado.
+ * 
+ * - formatearFechaFin(formato = 'YYYY-MM-DD')
+ *   → Formatea la fecha de fin según el formato especificado.
+ * 
+ * - compararFechas(fecha1, fecha2)
+ *   → Método estático para comparar dos fechas en formato YYYY-MM-DD.
+ */
+class Reserva {
+  constructor(id, fechaInicio, fechaFin, titular, estado = EstadoReserva.PENDIENTE) {
+    this._id = id; //Tipo number
+    this._fechaInicio = new Date(fechaInicio); //Tipo Date
+    this._fechaFin = new Date(fechaFin); //Tipo Date
+    this._titular = titular; //Tipo Huesped
+    this._estado = estado; //Tipo EstadoReserva
+    this._habitaciones = []; //Tipo Habitacion
+  }
+
+  get id() { return this._id; }
+  set id(v) { this._id = v; }
+
+  get fechaInicio() { return this._fechaInicio; }
+  set fechaInicio(v) { this._fechaInicio = new Date(v); }
+
+  get fechaFin() { return this._fechaFin; }
+  set fechaFin(v) { this._fechaFin = new Date(v); }
+
+  get titular() { return this._titular; }
+  set titular(v) { this._titular = v; }
+
+  get estado() { return this._estado; }
+  set estado(v) { this._estado = v; }
+
+  get habitaciones() { return this._habitaciones; }
+  set habitaciones(v) { this._habitaciones = v; }
+
+  /**
+   * Calcula el número de noches entre fechaInicio y fechaFin
+   * @returns {number} Número de noches
+   */
+  calcularNumeroNoches() {
+    if (!this._fechaInicio || !this._fechaFin) return 0;
+    
+    const inicio = new Date(this._fechaInicio);
+    const fin = new Date(this._fechaFin);
+    
+    inicio.setHours(0, 0, 0, 0);
+    fin.setHours(0, 0, 0, 0);
+    
+    const diffTime = Math.abs(fin - inicio);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays;
+  }
+
+  /**
+   * Genera un array con todas las fechas entre fechaInicio y fechaFin
+   * @returns {Array<string>} Array de fechas en formato YYYY-MM-DD
+   */
+  generarArrayFechas() {
+    if (!this._fechaInicio || !this._fechaFin) return [];
+    
+    const fechas = [];
+    const inicio = new Date(this._fechaInicio);
+    const fin = new Date(this._fechaFin);
+    
+    inicio.setHours(0, 0, 0, 0);
+    fin.setHours(0, 0, 0, 0);
+    
+    const fechaActual = new Date(inicio);
+    
+    while (fechaActual <= fin) {
+      const año = fechaActual.getFullYear();
+      const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+      const dia = String(fechaActual.getDate()).padStart(2, '0');
+      fechas.push(`${año}-${mes}-${dia}`);
+      
+      fechaActual.setDate(fechaActual.getDate() + 1);
+    }
+    
+    return fechas;
+  }
+
+  /**
+   * Verifica si una fecha específica está dentro del rango de la reserva
+   * @param {string|Date} fecha - Fecha a verificar en formato YYYY-MM-DD o Date
+   * @returns {boolean} true si la fecha está dentro del rango
+   */
+  incluyeFecha(fecha) {
+    if (!this._fechaInicio || !this._fechaFin || !fecha) return false;
+    
+    const fechaInicio = new Date(this._fechaInicio);
+    const fechaFin = new Date(this._fechaFin);
+    const fechaVerificar = fecha instanceof Date ? fecha : new Date(fecha);
+    
+    fechaInicio.setHours(0, 0, 0, 0);
+    fechaFin.setHours(0, 0, 0, 0);
+    fechaVerificar.setHours(0, 0, 0, 0);
+    
+    return fechaVerificar >= fechaInicio && fechaVerificar <= fechaFin;
+  }
+
+  /**
+   * Verifica si la reserva se solapa con otro rango de fechas
+   * @param {string|Date} fechaInicioOtra - Fecha de inicio del otro rango
+   * @param {string|Date} fechaFinOtra - Fecha de fin del otro rango
+   * @returns {boolean} true si hay solapamiento
+   */
+  seSolapaCon(fechaInicioOtra, fechaFinOtra) {
+    if (!this._fechaInicio || !this._fechaFin || !fechaInicioOtra || !fechaFinOtra) return false;
+    
+    const inicio1 = new Date(this._fechaInicio);
+    const fin1 = new Date(this._fechaFin);
+    const inicio2 = fechaInicioOtra instanceof Date ? fechaInicioOtra : new Date(fechaInicioOtra);
+    const fin2 = fechaFinOtra instanceof Date ? fechaFinOtra : new Date(fechaFinOtra);
+    
+    inicio1.setHours(0, 0, 0, 0);
+    fin1.setHours(0, 0, 0, 0);
+    inicio2.setHours(0, 0, 0, 0);
+    fin2.setHours(0, 0, 0, 0);
+    
+    // Verificar solapamiento: las fechas se solapan si hay intersección
+    return (inicio1 <= fin2 && fin1 >= inicio2);
+  }
+
+  /**
+   * Verifica si la reserva incluye una habitación específica
+   * @param {number|string} numeroHabitacion - Número de la habitación a verificar
+   * @returns {boolean} true si la habitación está incluida
+   */
+  incluyeHabitacion(numeroHabitacion) {
+    if (!this._habitaciones || this._habitaciones.length === 0) return false;
+    
+    const numero = typeof numeroHabitacion === 'string' ? parseInt(numeroHabitacion, 10) : numeroHabitacion;
+    
+    return this._habitaciones.some(hab => {
+      const numHab = typeof hab === 'object' ? (hab.numero || hab.getNumero) : null;
+      if (numHab) {
+        const num = typeof numHab === 'function' ? numHab() : numHab;
+        return num === numero;
+      }
+      return false;
+    });
+  }
+
+  /**
+   * Agrega una habitación a la lista de habitaciones de la reserva
+   * @param {Object} habitacion - Instancia de Habitacion o objeto habitación
+   */
+  agregarHabitacion(habitacion) {
+    if (habitacion) {
+      this._habitaciones.push(habitacion);
+    }
+  }
+
+  /**
+   * Formatea la fecha de inicio según el formato especificado
+   * @param {string} formato - Formato deseado: 'YYYY-MM-DD' o 'DD/MM/YYYY'
+   * @returns {string} Fecha formateada
+   */
+  formatearFechaInicio(formato = 'YYYY-MM-DD') {
+    if (!this._fechaInicio) return '';
+    
+    const fecha = new Date(this._fechaInicio);
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    
+    if (formato === 'DD/MM/YYYY') {
+      return `${dia}/${mes}/${año}`;
+    }
+    
+    return `${año}-${mes}-${dia}`;
+  }
+
+  /**
+   * Formatea la fecha de fin según el formato especificado
+   * @param {string} formato - Formato deseado: 'YYYY-MM-DD' o 'DD/MM/YYYY'
+   * @returns {string} Fecha formateada
+   */
+  formatearFechaFin(formato = 'YYYY-MM-DD') {
+    if (!this._fechaFin) return '';
+    
+    const fecha = new Date(this._fechaFin);
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    
+    if (formato === 'DD/MM/YYYY') {
+      return `${dia}/${mes}/${año}`;
+    }
+    
+    return `${año}-${mes}-${dia}`;
+  }
+
+  /**
+   * Método estático para comparar dos fechas en formato YYYY-MM-DD o DD/MM/YYYY
+   * @param {string} fecha1 - Primera fecha
+   * @param {string} fecha2 - Segunda fecha
+   * @returns {number} Negativo si fecha1 < fecha2, 0 si son iguales, positivo si fecha1 > fecha2
+   */
+  static compararFechas(fecha1, fecha2) {
+    if (!fecha1 || !fecha2) return 0;
+    
+    // Detectar formato
+    const formato1 = fecha1.includes('/') ? 'DD/MM/YYYY' : 'YYYY-MM-DD';
+    const formato2 = fecha2.includes('/') ? 'DD/MM/YYYY' : 'YYYY-MM-DD';
+    
+    let partes1, partes2;
+    
+    if (formato1 === 'DD/MM/YYYY') {
+      partes1 = fecha1.split('/').map(Number);
+    } else {
+      partes1 = fecha1.split('-').map(Number);
+    }
+    
+    if (formato2 === 'DD/MM/YYYY') {
+      partes2 = fecha2.split('/').map(Number);
+    } else {
+      partes2 = fecha2.split('-').map(Number);
+    }
+    
+    // Normalizar a YYYY-MM-DD para comparar
+    const año1 = formato1 === 'DD/MM/YYYY' ? partes1[2] : partes1[0];
+    const mes1 = formato1 === 'DD/MM/YYYY' ? partes1[1] : partes1[1];
+    const dia1 = formato1 === 'DD/MM/YYYY' ? partes1[0] : partes1[2];
+    
+    const año2 = formato2 === 'DD/MM/YYYY' ? partes2[2] : partes2[0];
+    const mes2 = formato2 === 'DD/MM/YYYY' ? partes2[1] : partes2[1];
+    const dia2 = formato2 === 'DD/MM/YYYY' ? partes2[0] : partes2[2];
+    
+    if (año1 !== año2) return año1 - año2;
+    if (mes1 !== mes2) return mes1 - mes2;
+    return dia1 - dia2;
+  }
+}
+
+export default Reserva;
+
+
+
+
+// [ResponsableDePago.js]
+/**
+ * ResponsableDePago - Clase base abstracta que representa un responsable de pago de una factura.
+ * 
+ * Esta es una clase base que debe ser extendida por:
+ * - PersonaFisica: Persona física (huésped)
+ * - PersonaJuridica: Persona jurídica (tercero)
+ */
+class ResponsableDePago {
+  constructor() {
+    if (this.constructor === ResponsableDePago) {
+      throw new Error('ResponsableDePago es una clase abstracta y no puede ser instanciada directamente');
+    }
+  }
+
+  /**
+   * Obtiene el nombre completo del responsable
+   * Debe ser implementado por las clases hijas
+   * @returns {string} Nombre completo del responsable
+   */
+  obtenerNombreCompleto() {
+    throw new Error('El método obtenerNombreCompleto() debe ser implementado por la clase hija');
+  }
+
+  /**
+   * Convierte el responsable a un objeto JSON
+   * Debe ser implementado por las clases hijas
+   * @returns {Object} Objeto JSON con los datos del responsable
+   */
+  toJSON() {
+    throw new Error('El método toJSON() debe ser implementado por la clase hija');
+  }
+
+  /**
+   * Crea una instancia de ResponsableDePago desde un objeto JSON
+   * @param {Object} json - Objeto JSON con los datos del responsable
+   * @returns {Promise<ResponsableDePago>} Instancia de PersonaFisica o PersonaJuridica
+   */
+  static async fromJSON(json) {
+    if (!json || !json.tipo) {
+      throw new Error('El objeto JSON debe tener un campo "tipo"');
+    }
+
+    if (json.tipo === 'huesped') {
+      const PersonaFisica = (await import('./PersonaFisica.js')).default;
+      return new PersonaFisica({
+        apellido: json.apellido,
+        nombre: json.nombre,
+        documento: json.documento
+      });
+    } else if (json.tipo === 'juridica' || json.tipo === 'personaJuridica' || json.tipo === 'tercero') {
+      // Mantener compatibilidad con 'personaJuridica' y 'tercero' por si hay datos antiguos
+      const PersonaJuridica = (await import('./PersonaJuridica.js')).default;
+      return new PersonaJuridica({
+        razonSocial: json.razonSocial,
+        cuit: json.cuit,
+        telefono: json.telefono,
+        direccion: json.direccion
+      });
+    } else {
+      throw new Error('Tipo de responsable no válido');
+    }
+  }
+}
+
+export default ResponsableDePago;
+
+
+

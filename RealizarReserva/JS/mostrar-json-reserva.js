@@ -1,3 +1,4 @@
+// [JS/mostrar-json-reserva.js]
 
 
 
@@ -266,4 +267,7 @@ function mostrarJSONReservaEnPantalla(nuevasReservas, reservaDTO, callbackCerrar
 
 window.convertirReservaDTOAJSONConFechasIndividuales = convertirReservaDTOAJSONConFechasIndividuales;
 window.mostrarJSONReservaEnPantalla = mostrarJSONReservaEnPantalla;
+
+
+
 
