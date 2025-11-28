@@ -54,7 +54,7 @@ function mostrarResultados() {
   reservas.forEach((reserva, index) => {
     const fila = document.createElement('tr');
     const apellido = extraerApellido(reserva);
-    const nombres = extraerNombre(reserva);
+    const nombre = extraerNombre(reserva);
     
     
     const habitaciones = reserva.habitaciones || [];
@@ -72,7 +72,7 @@ function mostrarResultados() {
         <input type="checkbox" id="check_${index}" onchange="toggleSeleccion(${index})">
       </td>
       <td>${apellido}</td>
-      <td>${nombres}</td>
+      <td>${nombre}</td>
       <td>${numeroHabitacionFormateado}${habitaciones.length > 1 ? ` (+${habitaciones.length - 1})` : ''}</td>
       <td>${tipoHabitacion}</td>
       <td>${formatearFecha(fechaDesde)}</td>

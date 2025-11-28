@@ -12,9 +12,9 @@ class GestorCancelarReserva extends GestorReserva {
     
     extraerDatosFormulario() {
         const apellido = document.getElementById('apellido')?.value.trim().toUpperCase() || '';
-        const nombres = document.getElementById('nombres')?.value.trim().toUpperCase() || '';
+        const nombre = document.getElementById('nombre')?.value.trim().toUpperCase() || '';
         
-        return { apellido, nombres };
+        return { apellido, nombre };
     }
 
     
@@ -81,19 +81,19 @@ class GestorCancelarReserva extends GestorReserva {
     }
 
     
-    filtrarReservas(apellido, nombres) {
-        if (!apellido && !nombres) {
+    filtrarReservas(apellido, nombre) {
+        if (!apellido && !nombre) {
             return [];
         }
 
         return this._reservas.filter(reserva => {
             const apellidoReserva = this.extraerApellido(reserva);
-            const nombresReserva = this.extraerNombre(reserva);
+            const nombreReserva = this.extraerNombre(reserva);
             
             const cumpleApellido = !apellido || apellidoReserva.startsWith(apellido);
-            const cumpleNombres = !nombres || nombresReserva.startsWith(nombres);
+            const cumplenombre = !nombre || nombreReserva.startsWith(nombre);
             
-            return cumpleApellido && cumpleNombres;
+            return cumpleApellido && cumplenombre;
         });
     }
 
@@ -170,7 +170,7 @@ class GestorCancelarReserva extends GestorReserva {
             const datosFormulario = this.extraerDatosFormulario();
 
             
-            const reservasFiltradas = this.filtrarReservas(datosFormulario.apellido, datosFormulario.nombres);
+            const reservasFiltradas = this.filtrarReservas(datosFormulario.apellido, datosFormulario.nombre);
 
             console.log(`Se encontraron ${reservasFiltradas.length} reservas`);
 

@@ -123,7 +123,7 @@ export function mostrarJSONNotaCreditoEnPantalla(notaCredito, facturas, callback
   if (infoAdicional && notaCredito) {
     const responsableNombre = notaCredito.responsable.tipo === 'tercero'
       ? notaCredito.responsable.razonSocial
-      : `${notaCredito.responsable.apellido || ''}, ${notaCredito.responsable.nombres || ''}`.trim();
+      : `${notaCredito.responsable.apellido || ''}, ${notaCredito.responsable.nombre || ''}`.trim();
     
     const totalCalculado = (notaCredito.subtotal || 0) + (notaCredito.iva || 0);
     infoAdicional.innerHTML = `

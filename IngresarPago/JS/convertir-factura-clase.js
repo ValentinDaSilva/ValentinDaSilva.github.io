@@ -15,7 +15,7 @@ export function convertirFacturaJSONAClase(facturaJSON) {
     if (responsableDePago.tipo === 'huesped') {
       responsableDePago = new PersonaFisica({
         apellido: responsableDePago.apellido,
-        nombres: responsableDePago.nombres,
+        nombre: responsableDePago.nombre,
         documento: responsableDePago.documento
       });
     } else if (responsableDePago.tipo === 'juridica' || responsableDePago.tipo === 'tercero' || responsableDePago.tipo === 'personaJuridica') {

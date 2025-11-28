@@ -16,10 +16,10 @@ function verificarCUIT(listaCUITS) {
                     
                     if (procesadoExitoso) {
                         
-                        const nombres = document.getElementById("nombres").value.trim();
+                        const nombre = document.getElementById("nombre").value.trim();
                         const apellido = document.getElementById("apellido").value.trim();
                         pregunta(
-                            `El huésped\n${nombres} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
+                            `El huésped\n${nombre} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
                             "SI ✅",
                             "NO ❌",
                             function() { 
@@ -117,10 +117,10 @@ async function manejarEnvioFormulario(event) {
     
     // if (procesadoExitoso) {
         
-    //     const nombres = document.getElementById("nombres").value.trim();
+    //     const nombre = document.getElementById("nombre").value.trim();
     //     const apellido = document.getElementById("apellido").value.trim();
     //     pregunta(
-    //         `El huésped\n${nombres} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
+    //         `El huésped\n${nombre} ${apellido} ha sido\nsatisfactoriamente cargado al\nsistema. ¿Desea cargar otro?\n`,
     //         "SI ✅",
     //         "NO ❌",
     //         function() { 

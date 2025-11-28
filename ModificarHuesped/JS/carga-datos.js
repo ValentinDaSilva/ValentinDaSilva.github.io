@@ -27,9 +27,9 @@ function cargarDatosEnFormulario(huesped) {
         if (campoApellido) campoApellido.value = huesped.apellido;
     }
     
-    if (huesped.nombres) {
-        const campoNombres = document.getElementById('nombres');
-        if (campoNombres) campoNombres.value = huesped.nombres;
+    if (huesped.nombre) {
+        const camponombre = document.getElementById('nombre');
+        if (camponombre) camponombre.value = huesped.nombre;
     }
     
     if (huesped.tipoDocumento) {

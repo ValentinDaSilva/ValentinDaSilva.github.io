@@ -136,15 +136,15 @@ export function extraerResponsableDesdeFacturas(facturasEncontradas) {
       if (!responsableFactura.apellido && primeraFactura.estadia.titular.apellido) {
         responsableFactura.apellido = primeraFactura.estadia.titular.apellido;
       }
-      if (!responsableFactura.nombres && primeraFactura.estadia.titular.nombre) {
-        responsableFactura.nombres = primeraFactura.estadia.titular.nombre;
+      if (!responsableFactura.nombre && primeraFactura.estadia.titular.nombre) {
+        responsableFactura.nombre = primeraFactura.estadia.titular.nombre;
       }
     }
     
     return {
       tipo: 'huesped',
       apellido: responsableFactura.apellido || '',
-      nombres: responsableFactura.nombres || '',
+      nombre: responsableFactura.nombre || '',
       documento: documento,
       cuit: cuit
     };

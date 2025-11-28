@@ -22,7 +22,7 @@ function normalizarDatosLocales(datosCrudos) {
     const lista = asegurarLista(datosCrudos);
 
     return lista.map(huesped => {
-        const nombres = (huesped.nombres ?? huesped.nombre ?? '').toString().trim();
+        const nombre = (huesped.nombre ?? huesped.nombre ?? '').toString().trim();
         const numeroDocumentoRaw = huesped.numeroDocumento ?? huesped.nroDocumento ?? huesped.documento ?? '';
         const numeroDocumento = numeroDocumentoRaw === null || numeroDocumentoRaw === undefined
             ? ''
@@ -32,8 +32,8 @@ function normalizarDatosLocales(datosCrudos) {
         return {
             ...huesped,
             apellido: (huesped.apellido ?? '').toString().trim(),
-            nombres,
-            nombre: huesped.nombre ?? nombres,
+            nombre,
+            nombre: huesped.nombre ?? nombre,
             numeroDocumento,
             nroDocumento: huesped.nroDocumento ?? numeroDocumento,
             tipoDocumento
@@ -59,14 +59,14 @@ async function cargarHuespedes() {
     }
 }
 
-function filtrarHuespedes(apellido, nombres, tipoDocumento, numeroDocumento) {
+function filtrarHuespedes(apellido, nombre, tipoDocumento, numeroDocumento) {
     
     const apellidoTrim = apellido ? apellido.trim() : '';
-    const nombresTrim = nombres ? nombres.trim() : '';
+    const nombreTrim = nombre ? nombre.trim() : '';
     const tipoDoc = tipoDocumento ? tipoDocumento.trim() : '';
     const numDoc = numeroDocumento ? numeroDocumento.trim() : '';
     
-    if (!apellidoTrim && !nombresTrim && !tipoDoc && !numDoc) {
+    if (!apellidoTrim && !nombreTrim && !tipoDoc && !numDoc) {
         return datosHuespedes; 
     }
     
@@ -81,10 +81,10 @@ function filtrarHuespedes(apellido, nombres, tipoDocumento, numeroDocumento) {
     }
     
     
-    if (nombresTrim !== '') {
-        const nombresLower = nombresTrim.toLowerCase();
+    if (nombreTrim !== '') {
+        const nombreLower = nombreTrim.toLowerCase();
         resultados = resultados.filter(huesped => 
-            (huesped.nombres || '').toLowerCase().startsWith(nombresLower)
+            (huesped.nombre || '').toLowerCase().startsWith(nombreLower)
         );
     }
     

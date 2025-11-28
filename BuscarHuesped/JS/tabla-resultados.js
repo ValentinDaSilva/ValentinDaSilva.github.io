@@ -171,8 +171,8 @@ function renderizarResultados(resultados) {
         celdaApellido.textContent = huesped.apellido;
         
         
-        const celdaNombres = document.createElement('td');
-        celdaNombres.textContent = huesped.nombres;
+        const celdanombre = document.createElement('td');
+        celdanombre.textContent = huesped.nombre;
         
         
         const celdaTipoDoc = document.createElement('td');
@@ -184,7 +184,7 @@ function renderizarResultados(resultados) {
         
         
         fila.appendChild(celdaApellido);
-        fila.appendChild(celdaNombres);
+        fila.appendChild(celdanombre);
         fila.appendChild(celdaTipoDoc);
         fila.appendChild(celdaNumDoc);
         

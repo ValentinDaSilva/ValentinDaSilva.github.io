@@ -25,8 +25,8 @@ export function obtenerNombreResponsable(responsableDePago) {
   
   if (responsableDePago.tipo === 'huesped') {
     const apellido = responsableDePago.apellido || '';
-    const nombres = responsableDePago.nombres || '';
-    return `${apellido}, ${nombres}`.trim() || '-';
+    const nombre = responsableDePago.nombre || '';
+    return `${apellido}, ${nombre}`.trim() || '-';
   } else if (responsableDePago.tipo === 'tercero') {
     return responsableDePago.razonSocial || '-';
   }

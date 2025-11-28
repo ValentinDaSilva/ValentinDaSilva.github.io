@@ -185,7 +185,7 @@ function convertirHuespedAFormatoEstandar(huesped) {
   
   return {
     apellido: huesped.apellido || '',
-    nombre: huesped.nombre || huesped.nombres || '',
+    nombre: huesped.nombre || huesped.nombre || '',
     tipoDocumento: huesped.tipoDocumento || '',
     numeroDocumento: huesped.numeroDocumento || huesped.nroDocumento || huesped.documento || '',
     cuit: huesped.cuit || '',
@@ -233,7 +233,7 @@ async function generarJSONFactura(estadia, responsableDePago, horaSalida, tipoFa
     // Es un huésped (persona física)
     responsable = new PersonaFisica({
       apellido: responsableDePago.apellido || estadia.titular.apellido,
-      nombres: responsableDePago.nombres || estadia.titular.nombres,
+      nombre: responsableDePago.nombre || estadia.titular.nombre,
       documento: responsableDePago.numeroDocumento || responsableDePago.documento || estadia.titular.numeroDocumento
     });
   }

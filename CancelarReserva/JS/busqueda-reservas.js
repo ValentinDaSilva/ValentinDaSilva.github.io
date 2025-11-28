@@ -21,19 +21,19 @@ async function buscarReservas() {
     await asegurarReservasCargadas();
     
     const apellido = document.getElementById('apellido').value.trim().toUpperCase();
-    const nombres = document.getElementById('nombres').value.trim().toUpperCase();
+    const nombre = document.getElementById('nombre').value.trim().toUpperCase();
 
   const todasLasReservas = obtenerReservas();
 
   
   reservasFiltradas = todasLasReservas.filter(reserva => {
     const apellidoReserva = extraerApellido(reserva);
-    const nombresReserva = extraerNombre(reserva);
+    const nombreReserva = extraerNombre(reserva);
     
     const cumpleApellido = apellidoReserva.startsWith(apellido);
-    const cumpleNombres = !nombres || nombresReserva.startsWith(nombres);
+    const cumplenombre = !nombre || nombreReserva.startsWith(nombre);
     
-    return cumpleApellido && cumpleNombres;
+    return cumpleApellido && cumplenombre;
   });
 
   mostrarResultados();

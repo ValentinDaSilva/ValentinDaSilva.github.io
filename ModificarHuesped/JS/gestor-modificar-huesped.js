@@ -24,7 +24,7 @@ class GestorModificarHuesped extends GestorHuesped {
     extraerDatosFormulario() {
         const formData = {
             apellido: document.getElementById('apellido').value.trim(),
-            nombres: document.getElementById('nombres').value.trim(),
+            nombre: document.getElementById('nombre').value.trim(),
             tipoDocumento: document.getElementById('tipoDocumento').value.trim(),
             numeroDocumento: document.getElementById('numeroDocumento').value.trim(),
             cuit: document.getElementById('cuit').value.trim() || null,
@@ -59,7 +59,7 @@ class GestorModificarHuesped extends GestorHuesped {
         const direccion = this.crearDireccionDominio(datos);
 
         const huesped = new Huesped(
-            datos.nombres,
+            datos.nombre,
             datos.apellido,
             datos.tipoDocumento,
             datos.numeroDocumento,

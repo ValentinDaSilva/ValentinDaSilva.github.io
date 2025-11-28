@@ -10,7 +10,7 @@
       "responsableDePago": {
         "tipo": "huesped",
         "apellido": "ALVAREZ",
-        "nombres": "LUCÍA",
+        "nombre": "LUCÍA",
         "documento": "66554433"
       },
       
@@ -123,7 +123,7 @@
       "responsableDePago": {
         "tipo": "huesped",
         "apellido": "GONZALEZ",
-        "nombres": "MARIA",
+        "nombre": "MARIA",
         "documento": "23456789"
       },
       
@@ -315,7 +315,7 @@
       "responsableDePago": {
         "tipo": "huesped",
         "apellido": "ALVAREZ",
-        "nombres": "LUCÍA",
+        "nombre": "LUCÍA",
         "documento": "66554433"
       },
       
@@ -406,7 +406,7 @@
       "responsableDePago": {
         "tipo": "huesped",
         "apellido": "MORENO",
-        "nombres": "JUAN MARTÍN",
+        "nombre": "JUAN MARTÍN",
         "documento": "44557788"
       },
       
@@ -503,7 +503,7 @@
       "responsableDePago": {
         "tipo": "huesped",
         "apellido": "TORRES",
-        "nombres": "LAURA",
+        "nombre": "LAURA",
         "documento": "44556677"
       },
       

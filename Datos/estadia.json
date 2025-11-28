@@ -74,7 +74,7 @@
       },
       "titular": {
         "apellido": "GONZALEZ",
-        "nombres": "MARIA",
+        "nombre": "MARIA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "23456789",
         "cuit": "",
@@ -122,7 +122,7 @@
       },
       "titular": {
         "apellido": "RODRIGUEZ",
-        "nombres": "CARLOS",
+        "nombre": "CARLOS",
         "tipoDocumento": "DNI",
         "numeroDocumento": "34567890",
         "cuit": "20-34567890-1",
@@ -170,7 +170,7 @@
       },
       "titular": {
         "apellido": "LOPEZ",
-        "nombres": "ANA",
+        "nombre": "ANA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "45678901",
         "cuit": "27-45678901-2",
@@ -218,7 +218,7 @@
       },
       "titular": {
         "apellido": "MARTÍNEZ",
-        "nombres": "LUIS ENRIQUE",
+        "nombre": "LUIS ENRIQUE",
         "tipoDocumento": "PASAPORTE",
         "numeroDocumento": "11123456",
         "cuit": "",
@@ -266,7 +266,7 @@
       },
       "titular": {
         "apellido": "FERNÁNDEZ",
-        "nombres": "SOFÍA",
+        "nombre": "SOFÍA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "98765432",
         "cuit": "27-98765432-1",
@@ -314,7 +314,7 @@
       },
       "titular": {
         "apellido": "GARCÍA",
-        "nombres": "DIEGO",
+        "nombre": "DIEGO",
         "tipoDocumento": "LE",
         "numeroDocumento": "33445566",
         "cuit": "",
@@ -362,7 +362,7 @@
       },
       "titular": {
         "apellido": "PÉREZ",
-        "nombres": "MARÍA ELENA",
+        "nombre": "MARÍA ELENA",
         "tipoDocumento": "PASAPORTE",
         "numeroDocumento": "22789012",
         "cuit": "",
@@ -384,7 +384,7 @@
       "acompaniantes": [
         {
           "apellido": "MORENO",
-          "nombres": "JUAN MARTÍN",
+          "nombre": "JUAN MARTÍN",
           "tipoDocumento": "LC",
           "numeroDocumento": "44557788",
           "cuit": "",
@@ -432,7 +432,7 @@
       },
       "titular": {
         "apellido": "SÁNCHEZ",
-        "nombres": "ROBERTO",
+        "nombre": "ROBERTO",
         "tipoDocumento": "DNI",
         "numeroDocumento": "22334455",
         "cuit": "20-22334455-7",
@@ -454,7 +454,7 @@
       "acompaniantes": [
         {
           "apellido": "RODRÍGUEZ",
-          "nombres": "CARLOS ALBERTO",
+          "nombre": "CARLOS ALBERTO",
           "tipoDocumento": "LC",
           "numeroDocumento": "11223344",
           "cuit": "",
@@ -502,7 +502,7 @@
       },
       "titular": {
         "apellido": "TORRES",
-        "nombres": "LAURA",
+        "nombre": "LAURA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "44556677",
         "cuit": "27-44556677-9",
@@ -524,7 +524,7 @@
       "acompaniantes": [
         {
           "apellido": "GARCÍA",
-          "nombres": "DIEGO",
+          "nombre": "DIEGO",
           "tipoDocumento": "LE",
           "numeroDocumento": "33445566",
           "cuit": "",
@@ -572,7 +572,7 @@
       },
       "titular": {
         "apellido": "ALVAREZ",
-        "nombres": "LUCÍA",
+        "nombre": "LUCÍA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "66554433",
         "cuit": "27-66554433-1",
@@ -594,7 +594,7 @@
       "acompaniantes": [
         {
           "apellido": "RAMÍREZ",
-          "nombres": "GABRIEL ERNESTO",
+          "nombre": "GABRIEL ERNESTO",
           "tipoDocumento": "LC",
           "numeroDocumento": "55667788",
           "cuit": "",
@@ -642,7 +642,7 @@
       },
       "titular": {
         "apellido": "RAMÍREZ",
-        "nombres": "GABRIEL ERNESTO",
+        "nombre": "GABRIEL ERNESTO",
         "tipoDocumento": "LC",
         "numeroDocumento": "55667788",
         "cuit": "",
@@ -664,7 +664,7 @@
       "acompaniantes": [
         {
           "apellido": "TORRES",
-          "nombres": "LAURA",
+          "nombre": "LAURA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "44556677",
           "cuit": "27-44556677-9",
@@ -712,7 +712,7 @@
       },
       "titular": {
         "apellido": "MÉNDEZ",
-        "nombres": "PAULA ANDREA",
+        "nombre": "PAULA ANDREA",
         "tipoDocumento": "PASAPORTE",
         "numeroDocumento": "33345678",
         "cuit": "",
@@ -734,7 +734,7 @@
       "acompaniantes": [
         {
           "apellido": "GONZÁLEZ",
-          "nombres": "MARÍA FERNANDA",
+          "nombre": "MARÍA FERNANDA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "87654321",
           "cuit": "27-87654321-3",
@@ -782,7 +782,7 @@
       },
       "titular": {
         "apellido": "DOMÍNGUEZ",
-        "nombres": "JORGE MARIO",
+        "nombre": "JORGE MARIO",
         "tipoDocumento": "LE",
         "numeroDocumento": "77889911",
         "cuit": "",
@@ -804,7 +804,7 @@
       "acompaniantes": [
         {
           "apellido": "GONZÁLEZ",
-          "nombres": "MARÍA FERNANDA",
+          "nombre": "MARÍA FERNANDA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "87654321",
           "cuit": "27-87654321-3",
@@ -852,7 +852,7 @@
       },
       "titular": {
         "apellido": "VEGA",
-        "nombres": "NATALIA MARCELA",
+        "nombre": "NATALIA MARCELA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "99887766",
         "cuit": "27-99887766-3",
@@ -874,7 +874,7 @@
       "acompaniantes": [
         {
           "apellido": "GARCÍA",
-          "nombres": "DIEGO",
+          "nombre": "DIEGO",
           "tipoDocumento": "LE",
           "numeroDocumento": "33445566",
           "cuit": "",
@@ -922,7 +922,7 @@
       },
       "titular": {
         "apellido": "CASTRO",
-        "nombres": "ESTEBAN",
+        "nombre": "ESTEBAN",
         "tipoDocumento": "DNI",
         "numeroDocumento": "23456789",
         "cuit": "20-23456789-5",
@@ -944,7 +944,7 @@
       "acompaniantes": [
         {
           "apellido": "RODRÍGUEZ",
-          "nombres": "CARLOS ALBERTO",
+          "nombre": "CARLOS ALBERTO",
           "tipoDocumento": "LC",
           "numeroDocumento": "11223344",
           "cuit": "",
@@ -1062,7 +1062,7 @@
       },
       "titular": {
         "apellido": "MORENO",
-        "nombres": "JUAN MARTÍN",
+        "nombre": "JUAN MARTÍN",
         "tipoDocumento": "LC",
         "numeroDocumento": "44557788",
         "cuit": "",
@@ -1084,7 +1084,7 @@
       "acompaniantes": [
         {
           "apellido": "RUIZ",
-          "nombres": "CAMILA SOLEDAD",
+          "nombre": "CAMILA SOLEDAD",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "44901234",
           "cuit": "",
@@ -1132,7 +1132,7 @@
       },
       "titular": {
         "apellido": "FLORES",
-        "nombres": "CAROLINA BELÉN",
+        "nombre": "CAROLINA BELÉN",
         "tipoDocumento": "DNI",
         "numeroDocumento": "33221100",
         "cuit": "27-33221100-7",
@@ -1154,7 +1154,7 @@
       "acompaniantes": [
         {
           "apellido": "TORRES",
-          "nombres": "LAURA",
+          "nombre": "LAURA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "44556677",
           "cuit": "27-44556677-9",
@@ -1202,7 +1202,7 @@
       },
       "titular": {
         "apellido": "SILVA",
-        "nombres": "MATÍAS JOSÉ",
+        "nombre": "MATÍAS JOSÉ",
         "tipoDocumento": "LE",
         "numeroDocumento": "66778899",
         "cuit": "",
@@ -1224,7 +1224,7 @@
       "acompaniantes": [
         {
           "apellido": "RODRÍGUEZ",
-          "nombres": "CARLOS ALBERTO",
+          "nombre": "CARLOS ALBERTO",
           "tipoDocumento": "LC",
           "numeroDocumento": "11223344",
           "cuit": "",
@@ -1272,7 +1272,7 @@
       },
       "titular": {
         "apellido": "PÉREZ",
-        "nombres": "JUAN CARLOS",
+        "nombre": "JUAN CARLOS",
         "tipoDocumento": "DNI",
         "numeroDocumento": "12345678",
         "cuit": "20-12345678-9",
@@ -1294,7 +1294,7 @@
       "acompaniantes": [
         {
           "apellido": "RODRÍGUEZ",
-          "nombres": "CARLOS ALBERTO",
+          "nombre": "CARLOS ALBERTO",
           "tipoDocumento": "LC",
           "numeroDocumento": "11223344",
           "cuit": "",
@@ -1342,7 +1342,7 @@
       },
       "titular": {
         "apellido": "GONZÁLEZ",
-        "nombres": "MARÍA FERNANDA",
+        "nombre": "MARÍA FERNANDA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "87654321",
         "cuit": "27-87654321-3",
@@ -1364,7 +1364,7 @@
       "acompaniantes": [
         {
           "apellido": "MÉNDEZ",
-          "nombres": "PAULA ANDREA",
+          "nombre": "PAULA ANDREA",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "33345678",
           "cuit": "",
@@ -1412,7 +1412,7 @@
       },
       "titular": {
         "apellido": "RODRÍGUEZ",
-        "nombres": "CARLOS ALBERTO",
+        "nombre": "CARLOS ALBERTO",
         "tipoDocumento": "LC",
         "numeroDocumento": "11223344",
         "cuit": "",
@@ -1434,7 +1434,7 @@
       "acompaniantes": [
         {
           "apellido": "FERNÁNDEZ",
-          "nombres": "SOFÍA",
+          "nombre": "SOFÍA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "98765432",
           "cuit": "27-98765432-1",
@@ -1482,7 +1482,7 @@
       },
       "titular": {
         "apellido": "LÓPEZ",
-        "nombres": "ANA MARÍA",
+        "nombre": "ANA MARÍA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "55443322",
         "cuit": "27-55443322-5",
@@ -1504,7 +1504,7 @@
       "acompaniantes": [
         {
           "apellido": "GONZÁLEZ",
-          "nombres": "MARÍA FERNANDA",
+          "nombre": "MARÍA FERNANDA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "87654321",
           "cuit": "27-87654321-3",
@@ -1552,7 +1552,7 @@
       },
       "titular": {
         "apellido": "MARTÍNEZ",
-        "nombres": "LUIS ENRIQUE",
+        "nombre": "LUIS ENRIQUE",
         "tipoDocumento": "PASAPORTE",
         "numeroDocumento": "11123456",
         "cuit": "",
@@ -1574,7 +1574,7 @@
       "acompaniantes": [
         {
           "apellido": "PÉREZ",
-          "nombres": "MARÍA ELENA",
+          "nombre": "MARÍA ELENA",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "22789012",
           "cuit": "",
@@ -1622,7 +1622,7 @@
       },
       "titular": {
         "apellido": "FERNÁNDEZ",
-        "nombres": "SOFÍA",
+        "nombre": "SOFÍA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "98765432",
         "cuit": "27-98765432-1",
@@ -1644,7 +1644,7 @@
       "acompaniantes": [
         {
           "apellido": "GARCÍA",
-          "nombres": "DIEGO",
+          "nombre": "DIEGO",
           "tipoDocumento": "LE",
           "numeroDocumento": "33445566",
           "cuit": "",
@@ -1665,7 +1665,7 @@
         },
         {
           "apellido": "FLORES",
-          "nombres": "CAROLINA BELÉN",
+          "nombre": "CAROLINA BELÉN",
           "tipoDocumento": "DNI",
           "numeroDocumento": "33221100",
           "cuit": "27-33221100-7",
@@ -1713,7 +1713,7 @@
       },
       "titular": {
         "apellido": "GARCÍA",
-        "nombres": "DIEGO",
+        "nombre": "DIEGO",
         "tipoDocumento": "LE",
         "numeroDocumento": "33445566",
         "cuit": "",
@@ -1735,7 +1735,7 @@
       "acompaniantes": [
         {
           "apellido": "RUIZ",
-          "nombres": "CAMILA SOLEDAD",
+          "nombre": "CAMILA SOLEDAD",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "44901234",
           "cuit": "",
@@ -1756,7 +1756,7 @@
         },
         {
           "apellido": "PÉREZ",
-          "nombres": "MARÍA ELENA",
+          "nombre": "MARÍA ELENA",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "22789012",
           "cuit": "",
@@ -1804,7 +1804,7 @@
       },
       "titular": {
         "apellido": "PÉREZ",
-        "nombres": "MARÍA ELENA",
+        "nombre": "MARÍA ELENA",
         "tipoDocumento": "PASAPORTE",
         "numeroDocumento": "22789012",
         "cuit": "",
@@ -1826,7 +1826,7 @@
       "acompaniantes": [
         {
           "apellido": "TORRES",
-          "nombres": "LAURA",
+          "nombre": "LAURA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "44556677",
           "cuit": "27-44556677-9",
@@ -1874,7 +1874,7 @@
       },
       "titular": {
         "apellido": "SÁNCHEZ",
-        "nombres": "ROBERTO",
+        "nombre": "ROBERTO",
         "tipoDocumento": "DNI",
         "numeroDocumento": "22334455",
         "cuit": "20-22334455-7",
@@ -1896,7 +1896,7 @@
       "acompaniantes": [
         {
           "apellido": "MARTÍNEZ",
-          "nombres": "LUIS ENRIQUE",
+          "nombre": "LUIS ENRIQUE",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "11123456",
           "cuit": "",
@@ -1917,7 +1917,7 @@
         },
         {
           "apellido": "RUIZ",
-          "nombres": "CAMILA SOLEDAD",
+          "nombre": "CAMILA SOLEDAD",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "44901234",
           "cuit": "",
@@ -1965,7 +1965,7 @@
       },
       "titular": {
         "apellido": "TORRES",
-        "nombres": "LAURA",
+        "nombre": "LAURA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "44556677",
         "cuit": "27-44556677-9",
@@ -1987,7 +1987,7 @@
       "acompaniantes": [
         {
           "apellido": "GARCÍA",
-          "nombres": "DIEGO",
+          "nombre": "DIEGO",
           "tipoDocumento": "LE",
           "numeroDocumento": "33445566",
           "cuit": "",
@@ -2008,7 +2008,7 @@
         },
         {
           "apellido": "SILVA",
-          "nombres": "MATÍAS JOSÉ",
+          "nombre": "MATÍAS JOSÉ",
           "tipoDocumento": "LE",
           "numeroDocumento": "66778899",
           "cuit": "",
@@ -2029,7 +2029,7 @@
         },
         {
           "apellido": "PÉREZ",
-          "nombres": "MARÍA ELENA",
+          "nombre": "MARÍA ELENA",
           "tipoDocumento": "PASAPORTE",
           "numeroDocumento": "22789012",
           "cuit": "",
@@ -2050,7 +2050,7 @@
         },
         {
           "apellido": "PÉREZ",
-          "nombres": "JUAN CARLOS",
+          "nombre": "JUAN CARLOS",
           "tipoDocumento": "DNI",
           "numeroDocumento": "12345678",
           "cuit": "20-12345678-9",
@@ -2098,7 +2098,7 @@
       },
       "titular": {
         "apellido": "ALVAREZ",
-        "nombres": "LUCÍA",
+        "nombre": "LUCÍA",
         "tipoDocumento": "DNI",
         "numeroDocumento": "66554433",
         "cuit": "27-66554433-1",
@@ -2120,7 +2120,7 @@
       "acompaniantes": [
         {
           "apellido": "SILVA",
-          "nombres": "MATÍAS JOSÉ",
+          "nombre": "MATÍAS JOSÉ",
           "tipoDocumento": "LE",
           "numeroDocumento": "66778899",
           "cuit": "",
@@ -2141,7 +2141,7 @@
         },
         {
           "apellido": "LÓPEZ",
-          "nombres": "ANA MARÍA",
+          "nombre": "ANA MARÍA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "55443322",
           "cuit": "27-55443322-5",
@@ -2162,7 +2162,7 @@
         },
         {
           "apellido": "DOMÍNGUEZ",
-          "nombres": "JORGE MARIO",
+          "nombre": "JORGE MARIO",
           "tipoDocumento": "LE",
           "numeroDocumento": "77889911",
           "cuit": "",
@@ -2210,7 +2210,7 @@
       },
       "titular": {
         "apellido": "RAMÍREZ",
-        "nombres": "GABRIEL ERNESTO",
+        "nombre": "GABRIEL ERNESTO",
         "tipoDocumento": "LC",
         "numeroDocumento": "55667788",
         "cuit": "",
@@ -2232,7 +2232,7 @@
       "acompaniantes": [
         {
           "apellido": "SILVA",
-          "nombres": "MATÍAS JOSÉ",
+          "nombre": "MATÍAS JOSÉ",
           "tipoDocumento": "LE",
           "numeroDocumento": "66778899",
           "cuit": "",
@@ -2253,7 +2253,7 @@
         },
         {
           "apellido": "GONZÁLEZ",
-          "nombres": "MARÍA FERNANDA",
+          "nombre": "MARÍA FERNANDA",
           "tipoDocumento": "DNI",
           "numeroDocumento": "87654321",
           "cuit": "27-87654321-3",
@@ -2274,7 +2274,7 @@
         },
         {
           "apellido": "MORENO",
-          "nombres": "JUAN MARTÍN",
+          "nombre": "JUAN MARTÍN",
           "tipoDocumento": "LC",
           "numeroDocumento": "44557788",
           "cuit": "",

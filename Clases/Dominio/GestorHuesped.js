@@ -36,10 +36,9 @@ export default class GestorHuesped {
           console.log('HuespedDTO creado:', huespedDTO);
 
           
-          const jsonParaBD = JSON.stringify(huespedDTO);
           
           
-          await GestorAltaHuesped.guardarEnBD(jsonParaBD, 'alta');
+          await GestorAltaHuesped.guardarEnBD(huespedDTO, 'alta');
 
           
 
@@ -80,7 +79,7 @@ export default class GestorHuesped {
       
       const resultados = this._gestorBuscar.filtrarHuespedes(
         datosFormulario.apellido,
-        datosFormulario.nombres,
+        datosFormulario.nombre,
         datosFormulario.tipoDocumento,
         datosFormulario.numeroDocumento
       );

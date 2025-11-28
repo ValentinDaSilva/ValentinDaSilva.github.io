@@ -44,7 +44,7 @@ class ResponsableDePago {
       const PersonaFisica = (await import('./PersonaFisica.js')).default;
       return new PersonaFisica({
         apellido: json.apellido,
-        nombres: json.nombres,
+        nombre: json.nombre,
         documento: json.documento
       });
     } else if (json.tipo === 'juridica' || json.tipo === 'personaJuridica' || json.tipo === 'tercero') {

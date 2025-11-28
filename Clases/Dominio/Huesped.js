@@ -14,59 +14,59 @@ export class Huesped {
         nacionalidad,
         direccion = null
     ) {
-        this._apellido = apellido;
-        this._nombre = nombre;
-        this._tipoDocumento = tipoDocumento;
-        this._nroDocumento = numeroDocumento;
-        this._cuit = cuit || '';
-        this._fechaNacimiento = new Date(fechaNacimiento);
-        this._telefono = telefono || '';
-        this._email = email || '';
-        this._ocupacion = ocupacion;
-        this._nacionalidad = nacionalidad;
-        this._direccion = direccion;  // Direccion o null
+        this.apellido = apellido;
+        this.nombre = nombre;
+        this.tipoDocumento = tipoDocumento;
+        this.nroDocumento = numeroDocumento;
+        this.cuit = cuit || '';
+        this.fechaNacimiento = new Date(fechaNacimiento);
+        this.telefono = telefono || '';
+        this.email = email || '';
+        this.ocupacion = ocupacion;
+        this.nacionalidad = nacionalidad;
+        this.direccion = direccion;  // Direccion o null
     }
 
     // ==========================
     // GETTERS (métodos)
     // ==========================
-    getApellido() { return this._apellido; }
-    getNombre() { return this._nombre; }
-    getTipoDocumento() { return this._tipoDocumento; }
-    getNumeroDocumento() { return this._nroDocumento; }
-    getNroDocumento() { return this._nroDocumento; }
-    getCuit() { return this._cuit; }
-    getFechaNacimiento() { return this._fechaNacimiento; }
-    getTelefono() { return this._telefono; }
-    getEmail() { return this._email; }
-    getOcupacion() { return this._ocupacion; }
-    getNacionalidad() { return this._nacionalidad; }
-    getDireccion() { return this._direccion; }
+    getApellido() { return this.apellido; }
+    getNombre() { return this.nombre; }
+    getTipoDocumento() { return this.tipoDocumento; }
+    getNumeroDocumento() { return this.nroDocumento; }
+    getNroDocumento() { return this.nroDocumento; }
+    getCuit() { return this.cuit; }
+    getFechaNacimiento() { return this.fechaNacimiento; }
+    getTelefono() { return this.telefono; }
+    getEmail() { return this.email; }
+    getOcupacion() { return this.ocupacion; }
+    getNacionalidad() { return this.nacionalidad; }
+    getDireccion() { return this.direccion; }
 
     // ==========================
     // SETTERS (métodos)
     // ==========================
-    setApellido(v) { this._apellido = v; }
-    setNombre(v) { this._nombre = v; }
-    setTipoDocumento(v) { this._tipoDocumento = v; }
-    setNumeroDocumento(v) { this._nroDocumento = v; }
-    setNroDocumento(v) { this._nroDocumento = v; }
-    setCuit(v) { this._cuit = v; }
-    setFechaNacimiento(v) { this._fechaNacimiento = new Date(v); }
-    setTelefono(v) { this._telefono = v; }
-    setEmail(v) { this._email = v; }
-    setOcupacion(v) { this._ocupacion = v; }
-    setNacionalidad(v) { this._nacionalidad = v; }
-    setDireccion(v) { this._direccion = v; }
+    setApellido(v) { this.apellido = v; }
+    setNombre(v) { this.nombre = v; }
+    setTipoDocumento(v) { this.tipoDocumento = v; }
+    setNumeroDocumento(v) { this.nroDocumento = v; }
+    setNroDocumento(v) { this.nroDocumento = v; }
+    setCuit(v) { this.cuit = v; }
+    setFechaNacimiento(v) { this.fechaNacimiento = new Date(v); }
+    setTelefono(v) { this.telefono = v; }
+    setEmail(v) { this.email = v; }
+    setOcupacion(v) { this.ocupacion = v; }
+    setNacionalidad(v) { this.nacionalidad = v; }
+    setDireccion(v) { this.direccion = v; }
 
     // ==========================
     // MÉTODOS DE LÓGICA
     // ==========================
     calcularEdad() {
-        if (!this._fechaNacimiento) return 0;
+        if (!this.fechaNacimiento) return 0;
 
         const hoy = new Date();
-        const fechaNac = new Date(this._fechaNacimiento);
+        const fechaNac = new Date(this.fechaNacimiento);
 
         let edad = hoy.getFullYear() - fechaNac.getFullYear();
         const mes = hoy.getMonth() - fechaNac.getMonth();

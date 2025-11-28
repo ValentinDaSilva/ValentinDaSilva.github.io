@@ -22,7 +22,7 @@ async function mostrarDatosFacturaEnPantalla(factura) {
     const nombreHuespedElement = document.querySelector('.nombreHusped h3');
     if (nombreHuespedElement && factura.estadia && factura.estadia.titular) {
       const titular = factura.estadia.titular;
-      nombreHuespedElement.innerHTML = `<strong>${titular.apellido || ''}, ${titular.nombres || ''}</strong>`;
+      nombreHuespedElement.innerHTML = `<strong>${titular.apellido || ''}, ${titular.nombre || ''}</strong>`;
       console.log('Nombre del huésped actualizado');
     }
   

@@ -1,204 +1,214 @@
+// =====================================================
+// DIRECCION DTO
+// =====================================================
 export class DireccionDTO {
   constructor(calle, numero, piso, departamento, localidad, provincia, codigoPostal, pais) {
-    this._calle = calle;
-    this._numero = numero;
-    this._piso = piso;
-    this._departamento = departamento;
-    this._localidad = localidad;
-    this._provincia = provincia;
-    this._codigoPostal = codigoPostal;
-    this._pais = pais;
+    this.calle = calle;
+    this.numero = numero;
+    this.piso = piso;
+    this.departamento = departamento;
+    this.localidad = localidad;
+    this.provincia = provincia;
+    this.codigoPostal = codigoPostal;
+    this.pais = pais;
   }
 
-  get calle() { return this._calle; } set calle(v) { this._calle = v; }
-  get numero() { return this._numero; } set numero(v) { this._numero = v; }
-  get piso() { return this._piso; } set piso(v) { this._piso = v; }
-  get departamento() { return this._departamento; } set departamento(v) { this._departamento = v; }
-  get localidad() { return this._localidad; } set localidad(v) { this._localidad = v; }
-  get ciudad() { return this._localidad; } set ciudad(v) { this._localidad = v; }
-  get provincia() { return this._provincia; } set provincia(v) { this._provincia = v; }
-  get codigoPostal() { return this._codigoPostal; } set codigoPostal(v) { this._codigoPostal = v; }
-  get pais() { return this._pais; } set pais(v) { this._pais = v; }
+  getCalle() { return this.calle; }       setCalle(v) { this.calle = v; }
+  getNumero() { return this.numero; }     setNumero(v) { this.numero = v; }
+  getPiso() { return this.piso; }         setPiso(v) { this.piso = v; }
+  getDepartamento() { return this.departamento; } setDepartamento(v) { this.departamento = v; }
+  getLocalidad() { return this.localidad; } setLocalidad(v) { this.localidad = v; }
+  getProvincia() { return this.provincia; } setProvincia(v) { this.provincia = v; }
+  getCodigoPostal() { return this.codigoPostal; } setCodigoPostal(v) { this.codigoPostal = v; }
+  getPais() { return this.pais; } setPais(v) { this.pais = v; }
 }
 
+// =====================================================
+// PERSONA DTO
+// =====================================================
 export class PersonaDTO {
   constructor(nombre, apellido, telefono) {
-    this._nombre = nombre;
-    this._apellido = apellido;
-    this._telefono = telefono;
+    this.nombre = nombre;
+    this.apellido = apellido;
+    this.telefono = telefono;
   }
-  get nombre() { return this._nombre; } set nombre(v) { this._nombre = v; }
-  get apellido() { return this._apellido; } set apellido(v) { this._apellido = v; }
-  get telefono() { return this._telefono; } set telefono(v) { this._telefono = v; }
+
+  getNombre() { return this.nombre; }     setNombre(v) { this.nombre = v; }
+  getApellido() { return this.apellido; } setApellido(v) { this.apellido = v; }
+  getTelefono() { return this.telefono; } setTelefono(v) { this.telefono = v; }
 }
 
+// =====================================================
+// HUESPED DTO
+// =====================================================
 export class HuespedDTO {
   constructor(
-      apellido,
       nombre,
+      apellido,
+      telefono,
       tipoDocumento,
       numeroDocumento,
-      cuit,
       fechaNacimiento,
-      telefono,
-      email,
       ocupacion,
       nacionalidad,
+      cuit,
+      email,
       direccion = null
   ) {
-      this._apellido = apellido;
-      this._nombre = nombre;
-      this._tipoDocumento = tipoDocumento;
-      this._nroDocumento = numeroDocumento;
-      this._cuit = cuit || '';
-      this._fechaNacimiento = fechaNacimiento;
-      this._telefono = telefono || '';
-      this._email = email || '';
-      this._ocupacion = ocupacion;
-      this._nacionalidad = nacionalidad;
-      this._direccion = direccion; // DireccionDTO
+      this.apellido = apellido;
+      this.nombre = nombre;
+      this.tipoDocumento = tipoDocumento;
+      this.numeroDocumento = numeroDocumento;
+      this.cuit = cuit || "";
+      this.fechaNacimiento = fechaNacimiento;
+      this.telefono = telefono || "";
+      this.email = email || "";
+      this.ocupacion = ocupacion;
+      this.nacionalidad = nacionalidad;
+      this.direccion = direccion;
   }
 
-  // ======== GETTERS ========
-  getApellido() { return this._apellido; }
-  getNombre() { return this._nombre; }
-  getTipoDocumento() { return this._tipoDocumento; }
-  getNumeroDocumento() { return this._nroDocumento; }
-  getNroDocumento() { return this._nroDocumento; }
-  getCuit() { return this._cuit; }
-  getFechaNacimiento() { return this._fechaNacimiento; }
-  getTelefono() { return this._telefono; }
-  getEmail() { return this._email; }
-  getOcupacion() { return this._ocupacion; }
-  getNacionalidad() { return this._nacionalidad; }
-  getDireccion() { return this._direccion; }
-
-  // ======== SETTERS ========
-  setApellido(v) { this._apellido = v; }
-  setNombre(v) { this._nombre = v; }
-  setTipoDocumento(v) { this._tipoDocumento = v; }
-  setNumeroDocumento(v) { this._nroDocumento = v; }
-  setNroDocumento(v) { this._nroDocumento = v; }
-  setCuit(v) { this._cuit = v; }
-  setFechaNacimiento(v) { this._fechaNacimiento = v; }
-  setTelefono(v) { this._telefono = v; }
-  setEmail(v) { this._email = v; }
-  setOcupacion(v) { this._ocupacion = v; }
-  setNacionalidad(v) { this._nacionalidad = v; }
-  setDireccion(v) { this._direccion = v; }
+  getApellido() { return this.apellido; }     setApellido(v) { this.apellido = v; }
+  getNombre() { return this.nombre; }         setNombre(v) { this.nombre = v; }
+  getTipoDocumento() { return this.tipoDocumento; } setTipoDocumento(v) { this.tipoDocumento = v; }
+  getNumeroDocumento() { return this.numeroDocumento; } setNumeroDocumento(v) { this.numeroDocumento = v; }
+  getCuit() { return this.cuit; }             setCuit(v) { this.cuit = v; }
+  getFechaNacimiento() { return this.fechaNacimiento; } setFechaNacimiento(v) { this.fechaNacimiento = v; }
+  getTelefono() { return this.telefono; }     setTelefono(v) { this.telefono = v; }
+  getEmail() { return this.email; }           setEmail(v) { this.email = v; }
+  getOcupacion() { return this.ocupacion; }   setOcupacion(v) { this.ocupacion = v; }
+  getNacionalidad() { return this.nacionalidad; } setNacionalidad(v) { this.nacionalidad = v; }
+  getDireccion() { return this.direccion; }   setDireccion(v) { this.direccion = v; }
 }
 
+// =====================================================
+// HABITACION DTO
+// =====================================================
 export class HabitacionDTO {
   constructor(numero, tipo, categoria, costoPorNoche, estadoHabitacion) {
-    this._numero = numero;
-    this._tipo = tipo;
-    this._categoria = categoria;
-    this._costoPorNoche = costoPorNoche;
-    this._estadoHabitacion = estadoHabitacion;
+    this.numero = numero;
+    this.tipo = tipo;
+    this.categoria = categoria;
+    this.costoPorNoche = costoPorNoche;
+    this.estadoHabitacion = estadoHabitacion;
   }
 
-  get numero() { return this._numero; } set numero(v) { this._numero = v; }
-  get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
-  get categoria() { return this._categoria; } set categoria(v) { this._categoria = v; }
-  get costoPorNoche() { return this._costoPorNoche; } set costoPorNoche(v) { this._costoPorNoche = v; }
-  get estadoHabitacion() { return this._estadoHabitacion; } set estadoHabitacion(v) { this._estadoHabitacion = v; }
+  getNumero() { return this.numero; }     setNumero(v) { this.numero = v; }
+  getTipo() { return this.tipo; }         setTipo(v) { this.tipo = v; }
+  getCategoria() { return this.categoria; } setCategoria(v) { this.categoria = v; }
+  getCostoPorNoche() { return this.costoPorNoche; } setCostoPorNoche(v) { this.costoPorNoche = v; }
+  getEstadoHabitacion() { return this.estadoHabitacion; } setEstadoHabitacion(v) { this.estadoHabitacion = v; }
 }
 
+// =====================================================
+// RESERVA DTO
+// =====================================================
 export class ReservaDTO {
   constructor(id, fechaInicio, fechaFin, titular, estado, habitaciones, estadia = null) {
-    this._id = id;
-    this._fechaInicio = fechaInicio;
-    this._fechaFin = fechaFin;
-    this._titular = titular;
-    this._estado = estado;
-    this._habitaciones = habitaciones;
-    this._estadia = estadia;
+    this.id = id;
+    this.fechaInicio = fechaInicio;
+    this.fechaFin = fechaFin;
+    this.titular = titular;
+    this.estado = estado;
+    this.habitaciones = habitaciones;
+    this.estadia = estadia;
   }
 
-  get id() { return this._id; } set id(v) { this._id = v; }
-  get fechaInicio() { return this._fechaInicio; } set fechaInicio(v) { this._fechaInicio = v; }
-  get fechaFin() { return this._fechaFin; } set fechaFin(v) { this._fechaFin = v; }
-  get titular() { return this._titular; } set titular(v) { this._titular = v; }
-  get estado() { return this._estado; } set estado(v) { this._estado = v; }
-  get habitaciones() { return this._habitaciones; } set habitaciones(v) { this._habitaciones = v; }
-  get estadia() { return this._estadia; } set estadia(v) { this._estadia = v; }
+  getId() { return this.id; }             setId(v) { this.id = v; }
+  getFechaInicio() { return this.fechaInicio; } setFechaInicio(v) { this.fechaInicio = v; }
+  getFechaFin() { return this.fechaFin; } setFechaFin(v) { this.fechaFin = v; }
+  getTitular() { return this.titular; }   setTitular(v) { this.titular = v; }
+  getEstado() { return this.estado; }     setEstado(v) { this.estado = v; }
+  getHabitaciones() { return this.habitaciones; } setHabitaciones(v) { this.habitaciones = v; }
+  getEstadia() { return this.estadia; }   setEstadia(v) { this.estadia = v; }
 }
 
+// =====================================================
+// ESTADIA DTO
+// =====================================================
 export class EstadiaDTO {
   constructor(id, fechaCheckIn, fechaCheckOut, estado, reserva, titular, acompaniantes, consumos = []) {
-    this._id = id;
-    this._fechaCheckIn = fechaCheckIn;
-    this._fechaCheckOut = fechaCheckOut;
-    this._estado = estado;
-    this._reserva = reserva;
-    this._titular = titular;
-    this._acompaniantes = acompaniantes;
-    this._consumos = consumos;
+    this.id = id;
+    this.fechaCheckIn = fechaCheckIn;
+    this.fechaCheckOut = fechaCheckOut;
+    this.estado = estado;
+    this.reserva = reserva;
+    this.titular = titular;
+    this.acompaniantes = acompaniantes;
+    this.consumos = consumos;
   }
 
-  get id() { return this._id; } set id(v) { this._id = v; }
-  get fechaCheckIn() { return this._fechaCheckIn; } set fechaCheckIn(v) { this._fechaCheckIn = v; }
-  get fechaCheckOut() { return this._fechaCheckOut; } set fechaCheckOut(v) { this._fechaCheckOut = v; }
-  get estado() { return this._estado; } set estado(v) { this._estado = v; }
-  get consumos() { return this._consumos; } set consumos(v) { this._consumos = v; }
-  get reserva() { return this._reserva; } set reserva(v) { this._reserva = v; }
-  get titular() { return this._titular; } set titular(v) { this._titular = v; }
-  get acompaniantes() { return this._acompaniantes; } set acompaniantes(v) { this._acompaniantes = v; }
+  getId() { return this.id; }                 setId(v) { this.id = v; }
+  getFechaCheckIn() { return this.fechaCheckIn; } setFechaCheckIn(v) { this.fechaCheckIn = v; }
+  getFechaCheckOut() { return this.fechaCheckOut; } setFechaCheckOut(v) { this.fechaCheckOut = v; }
+  getEstado() { return this.estado; }         setEstado(v) { this.estado = v; }
+  getConsumos() { return this.consumos; }     setConsumos(v) { this.consumos = v; }
+  getReserva() { return this.reserva; }       setReserva(v) { this.reserva = v; }
+  getTitular() { return this.titular; }       setTitular(v) { this.titular = v; }
+  getAcompaniantes() { return this.acompaniantes; } setAcompaniantes(v) { this.acompaniantes = v; }
 }
 
+// =====================================================
+// NOTA DE CREDITO DTO
+// =====================================================
 export class NotaDeCreditoDTO {
   constructor(idNota = null, fecha = null, responsable = null, facturas = [], tipo = null) {
-    this._idNota = idNota;
-    this._fecha = fecha;
-    this._responsable = responsable;
-    this._facturas = facturas;
-    this._tipo = tipo;
+    this.idNota = idNota;
+    this.fecha = fecha;
+    this.responsable = responsable;
+    this.facturas = facturas;
+    this.tipo = tipo;
   }
 
-  get idNota() { return this._idNota; } set idNota(v) { this._idNota = v; }
-  get fecha() { return this._fecha; } set fecha(v) { this._fecha = v; }
-  get responsable() { return this._responsable; } set responsable(v) { this._responsable = v; }
-  get facturas() { return this._facturas; } set facturas(v) { this._facturas = v; }
-  get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
+  getIdNota() { return this.idNota; }       setIdNota(v) { this.idNota = v; }
+  getFecha() { return this.fecha; }         setFecha(v) { this.fecha = v; }
+  getResponsable() { return this.responsable; } setResponsable(v) { this.responsable = v; }
+  getFacturas() { return this.facturas; }   setFacturas(v) { this.facturas = v; }
+  getTipo() { return this.tipo; }           setTipo(v) { this.tipo = v; }
 }
 
+// =====================================================
+// FACTURA DTO
+// =====================================================
 export class FacturaDTO {
   constructor(id, hora, fecha, tipo, estado, responsableDePago, estadia, pagos = [], total = 0) {
-    this._id = id;
-    this._hora = hora;
-    this._fecha = fecha;
-    this._tipo = tipo;
-    this._estado = estado;
-    this._responsableDePago = responsableDePago;
-    this._estadia = estadia;
-    this._pagos = pagos;
-    this._total = total;
+    this.id = id;
+    this.hora = hora;
+    this.fecha = fecha;
+    this.tipo = tipo;
+    this.estado = estado;
+    this.responsableDePago = responsableDePago;
+    this.estadia = estadia;
+    this.pagos = pagos;
+    this.total = total;
   }
 
-  get id() { return this._id; } set id(v) { this._id = v; }
-  get hora() { return this._hora; } set hora(v) { this._hora = v; }
-  get fecha() { return this._fecha; } set fecha(v) { this._fecha = v; }
-  get tipo() { return this._tipo; } set tipo(v) { this._tipo = v; }
-  get estado() { return this._estado; } set estado(v) { this._estado = v; }
-  get responsableDePago() { return this._responsableDePago; } set responsableDePago(v) { this._responsableDePago = v; }
-  get estadia() { return this._estadia; } set estadia(v) { this._estadia = v; }
-  get pagos() { return this._pagos; } set pagos(v) { this._pagos = v; }
-  get total() { return this._total; } set total(v) { this._total = v; }
+  getId() { return this.id; } setId(v) { this.id = v; }
+  getHora() { return this.hora; } setHora(v) { this.hora = v; }
+  getFecha() { return this.fecha; } setFecha(v) { this.fecha = v; }
+  getTipo() { return this.tipo; } setTipo(v) { this.tipo = v; }
+  getEstado() { return this.estado; } setEstado(v) { this.estado = v; }
+  getResponsableDePago() { return this.responsableDePago; } setResponsableDePago(v) { this.responsableDePago = v; }
+  getEstadia() { return this.estadia; } setEstadia(v) { this.estadia = v; }
+  getPagos() { return this.pagos; } setPagos(v) { this.pagos = v; }
+  getTotal() { return this.total; } setTotal(v) { this.total = v; }
 }
 
+// =====================================================
+// PAGO DTO
+// =====================================================
 export class PagoDTO {
   constructor(id, fecha, hora, montoTotal, medioDePago) {
-    this._id = id;
-    this._fecha = fecha;
-    this._hora = hora;
-    this._montoTotal = montoTotal;
-    this._medioDePago = medioDePago;
+    this.id = id;
+    this.fecha = fecha;
+    this.hora = hora;
+    this.montoTotal = montoTotal;
+    this.medioDePago = medioDePago;
   }
 
-  get id() { return this._id; } set id(v) { this._id = v; }
-  get fecha() { return this._fecha; } set fecha(v) { this._fecha = v; }
-  get hora() { return this._hora; } set hora(v) { this._hora = v; }
-  get montoTotal() { return this._montoTotal; } set montoTotal(v) { this._montoTotal = v; }
-  get medioDePago() { return this._medioDePago; } set medioDePago(v) { this._medioDePago = v; }
+  getId() { return this.id; }             setId(v) { this.id = v; }
+  getFecha() { return this.fecha; }       setFecha(v) { this.fecha = v; }
+  getHora() { return this.hora; }         setHora(v) { this.hora = v; }
+  getMontoTotal() { return this.montoTotal; } setMontoTotal(v) { this.montoTotal = v; }
+  getMedioDePago() { return this.medioDePago; } setMedioDePago(v) { this.medioDePago = v; }
 }
-

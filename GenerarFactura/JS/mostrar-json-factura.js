@@ -140,7 +140,7 @@ function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
   if (infoAdicional && factura) {
     const responsableNombre = factura.responsableDePago.tipo === 'juridica' || factura.responsableDePago.tipo === 'tercero' || factura.responsableDePago.tipo === 'personaJuridica'
       ? factura.responsableDePago.razonSocial
-      : `${factura.responsableDePago.apellido}, ${factura.responsableDePago.nombres}`;
+      : `${factura.responsableDePago.apellido}, ${factura.responsableDePago.nombre}`;
     
     const totalFactura = factura.total || 0;
     const idEstadia = factura.estadia && factura.estadia.id ? factura.estadia.id : 'N/A';

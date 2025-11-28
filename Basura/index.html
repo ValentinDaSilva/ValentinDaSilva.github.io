@@ -261,11 +261,11 @@
     document.getElementById("tituloMes").textContent = 
       `${primerDiaMes.toLocaleString('es-ES', { month: 'long' })} ${anio}`;
 
-    const nombresDias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    const nombreDias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     for (let i = 0; i < 7; i++) {
       const nombreDia = document.createElement('div');
       nombreDia.classList.add('dia', 'inactivo');
-      nombreDia.textContent = nombresDias[i];
+      nombreDia.textContent = nombreDias[i];
       calendario.appendChild(nombreDia);
     }
 

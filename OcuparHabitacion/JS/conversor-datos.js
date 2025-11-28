@@ -119,7 +119,7 @@ export function convertirHuespedJSONADominio(huespedJSON) {
   const numeroDocumento = huespedJSON.numeroDocumento || huespedJSON.nroDocumento || '';
   
   const huesped = new Huesped(
-    huespedJSON.nombre || huespedJSON.nombres || '',
+    huespedJSON.nombre || huespedJSON.nombre || '',
     huespedJSON.apellido || '',
     huespedJSON.tipoDocumento || '',
     numeroDocumento,

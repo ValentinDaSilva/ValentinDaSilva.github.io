@@ -14,7 +14,7 @@ class GestorBuscarHuesped extends GestorHuesped {
     extraerDatosFormulario() {
         const formData = {
             apellido: document.getElementById('apellido')?.value.trim() || '',
-            nombres: document.getElementById('nombres')?.value.trim() || '',
+            nombre: document.getElementById('nombre')?.value.trim() || '',
             tipoDocumento: document.getElementById('tipoDocumento')?.value || '',
             numeroDocumento: document.getElementById('numeroDocumento')?.value.trim() || ''
         };
@@ -42,14 +42,14 @@ class GestorBuscarHuesped extends GestorHuesped {
     }
 
     
-    filtrarHuespedes(apellido, nombres, tipoDocumento, numeroDocumento) {
+    filtrarHuespedes(apellido, nombre, tipoDocumento, numeroDocumento) {
         
         const apellidoTrim = apellido ? apellido.trim() : '';
-        const nombresTrim = nombres ? nombres.trim() : '';
+        const nombreTrim = nombre ? nombre.trim() : '';
         const tipoDoc = tipoDocumento ? tipoDocumento.trim() : '';
         const numDoc = numeroDocumento ? numeroDocumento.trim() : '';
         
-        if (!apellidoTrim && !nombresTrim && !tipoDoc && !numDoc) {
+        if (!apellidoTrim && !nombreTrim && !tipoDoc && !numDoc) {
             return this._datosHuespedes; 
         }
         
@@ -64,10 +64,10 @@ class GestorBuscarHuesped extends GestorHuesped {
         }
         
         
-        if (nombresTrim !== '') {
-            const nombresLower = nombresTrim.toLowerCase();
+        if (nombreTrim !== '') {
+            const nombreLower = nombreTrim.toLowerCase();
             resultados = resultados.filter(huesped => 
-        (huesped.nombres || '').toLowerCase().startsWith(nombresLower)
+        (huesped.nombre || '').toLowerCase().startsWith(nombreLower)
             );
         }
         
@@ -122,8 +122,8 @@ class GestorBuscarHuesped extends GestorHuesped {
             celdaApellido.textContent = huesped.apellido;
             
             
-            const celdaNombres = document.createElement('td');
-            celdaNombres.textContent = huesped.nombres;
+            const celdanombre = document.createElement('td');
+            celdanombre.textContent = huesped.nombre;
             
             
             const celdaTipoDoc = document.createElement('td');
@@ -135,7 +135,7 @@ class GestorBuscarHuesped extends GestorHuesped {
             
             
             fila.appendChild(celdaApellido);
-            fila.appendChild(celdaNombres);
+            fila.appendChild(celdanombre);
             fila.appendChild(celdaTipoDoc);
             fila.appendChild(celdaNumDoc);
             
@@ -179,7 +179,7 @@ class GestorBuscarHuesped extends GestorHuesped {
             
             const resultados = this.filtrarHuespedes(
                 datosFormulario.apellido,
-                datosFormulario.nombres,
+                datosFormulario.nombre,
                 datosFormulario.tipoDocumento,
                 datosFormulario.numeroDocumento
             );

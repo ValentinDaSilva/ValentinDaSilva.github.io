@@ -205,7 +205,7 @@ export function mostrarJSONFacturaEnPantalla(factura, callbackCerrar) {
   if (infoAdicional && factura) {
     const responsableNombre = factura.responsableDePago?.tipo === 'juridica'
       ? factura.responsableDePago.razonSocial
-      : `${factura.responsableDePago?.apellido || ''}, ${factura.responsableDePago?.nombres || ''}`.trim();
+      : `${factura.responsableDePago?.apellido || ''}, ${factura.responsableDePago?.nombre || ''}`.trim();
     
     const totalPagos = factura.pagos.reduce((sum, p) => sum + p.montoTotal, 0);
     

@@ -22,7 +22,7 @@ function normalizarPersonaEstadia(persona) {
     return null;
   }
 
-  const nombres = (persona.nombres ?? persona.nombre ?? '').toString().trim();
+  const nombre = (persona.nombre ?? persona.nombre ?? '').toString().trim();
   const numeroDocumentoRaw = persona.numeroDocumento ?? persona.nroDocumento ?? persona.documento ?? '';
   const numeroDocumento = numeroDocumentoRaw === null || numeroDocumentoRaw === undefined
     ? ''
@@ -34,8 +34,8 @@ function normalizarPersonaEstadia(persona) {
       : persona.telefonoNumero || '');
 
   return {
-    nombre: persona.nombre ?? nombres,
-    nombres,
+    nombre: persona.nombre ?? nombre,
+    nombre,
     apellido: (persona.apellido ?? '').toString().trim(),
     tipoDocumento,
     numeroDocumento,
@@ -80,7 +80,7 @@ function obtenerHuespedesDeEstadia(estadia) {
   if (titularNormalizado) {
     huespedes.push({
       apellido: titularNormalizado.apellido,
-      nombres: titularNormalizado.nombres,
+      nombre: titularNormalizado.nombre,
       edad: calcularEdad(titularNormalizado.fechaNacimiento),
       documento: titularNormalizado.numeroDocumento,
       esTitular: true,
@@ -97,7 +97,7 @@ function obtenerHuespedesDeEstadia(estadia) {
 
       huespedes.push({
         apellido: acompananteNormalizado.apellido,
-        nombres: acompananteNormalizado.nombres,
+        nombre: acompananteNormalizado.nombre,
         edad: calcularEdad(acompananteNormalizado.fechaNacimiento),
         documento: acompananteNormalizado.numeroDocumento,
         esTitular: false,
@@ -122,7 +122,7 @@ function cargarHuespedesEnTabla(huespedes) {
     const fila = document.createElement('tr');
     fila.innerHTML = `
       <td>${huesped.apellido || ''}</td>
-      <td>${huesped.nombres || ''}</td>
+      <td>${huesped.nombre || ''}</td>
       <td>${huesped.edad ?? ''}</td>
       <td>${huesped.documento || ''}</td>
     `;

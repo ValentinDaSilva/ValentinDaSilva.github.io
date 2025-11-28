@@ -10,12 +10,12 @@ class PersonaFisica extends ResponsableDePago {
   constructor(datos) {
     super();
     
-    if (!datos.apellido || !datos.nombres || !datos.documento) {
-      throw new Error('Para una PersonaFisica se requieren: apellido, nombres y documento');
+    if (!datos.apellido || !datos.nombre || !datos.documento) {
+      throw new Error('Para una PersonaFisica se requieren: apellido, nombre y documento');
     }
 
     this._apellido = datos.apellido;
-    this._nombres = datos.nombres;
+    this._nombre = datos.nombre;
     this._documento = datos.documento;
   }
 
@@ -31,15 +31,15 @@ class PersonaFisica extends ResponsableDePago {
     this._apellido = v;
   }
 
-  get nombres() {
-    return this._nombres;
+  get nombre() {
+    return this._nombre;
   }
 
-  set nombres(v) {
+  set nombre(v) {
     if (!v || v.trim() === '') {
-      throw new Error('Los nombres no pueden estar vacíos');
+      throw new Error('Los nombre no pueden estar vacíos');
     }
-    this._nombres = v;
+    this._nombre = v;
   }
 
   get documento() {
@@ -55,10 +55,10 @@ class PersonaFisica extends ResponsableDePago {
 
   /**
    * Obtiene el nombre completo de la persona física
-   * @returns {string} Nombre completo en formato "apellido, nombres"
+   * @returns {string} Nombre completo en formato "apellido, nombre"
    */
   obtenerNombreCompleto() {
-    return `${this._apellido || ''}, ${this._nombres || ''}`.trim();
+    return `${this._apellido || ''}, ${this._nombre || ''}`.trim();
   }
 
   /**
@@ -69,7 +69,7 @@ class PersonaFisica extends ResponsableDePago {
     return {
       tipo: 'huesped',
       apellido: this._apellido,
-      nombres: this._nombres,
+      nombre: this._nombre,
       documento: this._documento
     };
   }

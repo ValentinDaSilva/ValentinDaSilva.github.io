@@ -75,7 +75,7 @@ export function mostrarNotaCreditoEnPantalla(notaCredito) {
     if (notaCredito.responsable.tipo === 'tercero') {
       ncResponsableNombre.textContent = notaCredito.responsable.razonSocial || '-';
     } else {
-      ncResponsableNombre.textContent = `${notaCredito.responsable.apellido || ''}, ${notaCredito.responsable.nombres || ''}`.trim();
+      ncResponsableNombre.textContent = `${notaCredito.responsable.apellido || ''}, ${notaCredito.responsable.nombre || ''}`.trim();
     }
   }
   

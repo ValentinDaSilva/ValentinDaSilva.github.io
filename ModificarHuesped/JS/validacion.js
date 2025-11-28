@@ -39,16 +39,16 @@ async function manejarGuardarFormulario(event) {
     
     
     let procesadoExitoso = false;
-    const nombres = document.getElementById("nombres").value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
     
     if (window.gestorHuesped) {
         procesadoExitoso = await window.gestorHuesped.modificarHuespedCompleto(function() {
-            mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+            mensajeCorrecto(`El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
         });
     } else if (window.gestorModificarHuesped) {
         procesadoExitoso = window.gestorModificarHuesped.procesarModificacionHuesped(function() {
-            mensajeCorrecto(`El huésped<br>${nombres} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
+            mensajeCorrecto(`El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`);
         });
     }
 }
@@ -57,7 +57,7 @@ async function manejarGuardarFormulario(event) {
 function manejarBotonBorrar(event) {
     event.preventDefault();
     
-    const nombre = document.getElementById("nombres").value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
     const tipoDocumento = document.getElementById("tipoDocumento").value.trim();
     const numeroDocumento = document.getElementById("numeroDocumento").value.trim();
     const apellido = document.getElementById("apellido").value.trim();
@@ -72,7 +72,7 @@ function manejarBotonBorrar(event) {
     const botonEliminar = document.getElementById("boton-advertencia-corregir");
     if (botonEliminar) {
         botonEliminar.addEventListener("click", function manejarEliminar() {
-            const nombre = document.getElementById("nombres").value.trim();
+            const nombre = document.getElementById("nombre").value.trim();
             const apellido = document.getElementById("apellido").value.trim();
             const tipoDocumento = document.getElementById("tipoDocumento").value.trim();
             const numeroDocumento = document.getElementById("numeroDocumento").value.trim();
@@ -100,7 +100,7 @@ function manejarBotonBorrar(event) {
 function crearJSONHuespedBorrar() {
     const datosFormulario = {
         apellido: document.getElementById('apellido').value.trim(),
-        nombres: document.getElementById('nombres').value.trim(),
+        nombre: document.getElementById('nombre').value.trim(),
         tipoDocumento: document.getElementById('tipoDocumento').value.trim(),
         numeroDocumento: document.getElementById('numeroDocumento').value.trim(),
         cuit: document.getElementById('cuit').value.trim() || '',

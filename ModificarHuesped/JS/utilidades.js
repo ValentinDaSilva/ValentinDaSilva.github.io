@@ -3,7 +3,7 @@
 
 function completarFormulario() {
     document.getElementById("apellido").value = "GONZÁLEZ";
-    document.getElementById("nombres").value = "MARÍA FERNANDA";
+    document.getElementById("nombre").value = "MARÍA FERNANDA";
     document.getElementById("tipoDocumento").value = "DNI";
     document.getElementById("numeroDocumento").value = "12345678";
     document.getElementById("cuit").value = "20-98765432-1";

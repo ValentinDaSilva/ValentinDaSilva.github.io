@@ -74,7 +74,7 @@ export async function buscarResponsablePorDniCuit(dniCuit) {
     return {
       tipo: 'huesped',
       apellido: huespedEncontrado.apellido,
-      nombres: huespedEncontrado.nombres,
+      nombre: huespedEncontrado.nombre,
       documento: huespedEncontrado.numeroDocumento,
       cuit: huespedEncontrado.cuit || null
     };

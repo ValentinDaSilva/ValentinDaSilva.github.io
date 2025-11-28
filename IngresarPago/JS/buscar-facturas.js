@@ -60,7 +60,7 @@ export function mostrarFacturasEnTabla(facturas) {
       if (factura.responsableDePago.tipo === 'juridica' || factura.responsableDePago.tipo === 'tercero' || factura.responsableDePago.tipo === 'personaJuridica') {
         responsableTexto = factura.responsableDePago.razonSocial || '-';
       } else {
-        responsableTexto = `${factura.responsableDePago.apellido || ''}, ${factura.responsableDePago.nombres || ''}`.trim();
+        responsableTexto = `${factura.responsableDePago.apellido || ''}, ${factura.responsableDePago.nombre || ''}`.trim();
       }
     }
     tdResponsable.textContent = responsableTexto;

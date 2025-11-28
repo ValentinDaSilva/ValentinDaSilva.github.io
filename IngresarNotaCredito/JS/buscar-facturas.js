@@ -25,7 +25,7 @@ export function mostrarFacturasEnTabla(facturas, responsable) {
     if (responsable.tipo === 'tercero') {
       responsableNombre.textContent = responsable.razonSocial || '-';
     } else {
-      responsableNombre.textContent = `${responsable.apellido || ''}, ${responsable.nombres || ''}`.trim();
+      responsableNombre.textContent = `${responsable.apellido || ''}, ${responsable.nombre || ''}`.trim();
     }
   }
   

@@ -36,8 +36,8 @@ function renderizarResultadosHuespedes(resultados) {
         celdaApellido.textContent = huesped.apellido;
         
         
-        const celdaNombres = document.createElement('td');
-        celdaNombres.textContent = huesped.nombres;
+        const celdanombre = document.createElement('td');
+        celdanombre.textContent = huesped.nombre;
         
         
         const celdaTipoDoc = document.createElement('td');
@@ -49,7 +49,7 @@ function renderizarResultadosHuespedes(resultados) {
         
         
         fila.appendChild(celdaApellido);
-        fila.appendChild(celdaNombres);
+        fila.appendChild(celdanombre);
         fila.appendChild(celdaTipoDoc);
         fila.appendChild(celdaNumDoc);
         
@@ -125,12 +125,12 @@ async function inicializarBusquedaHuesped() {
         
         
         const apellido = document.getElementById('apellido').value.trim();
-        const nombres = document.getElementById('nombres').value.trim();
+        const nombre = document.getElementById('nombre').value.trim();
         const tipoDocumento = document.getElementById('tipoDocumento').value;
         const numeroDocumento = document.getElementById('numeroDocumento').value.trim();
         
         
-        const resultados = filtrarHuespedes(apellido, nombres, tipoDocumento, numeroDocumento);
+        const resultados = filtrarHuespedes(apellido, nombre, tipoDocumento, numeroDocumento);
         
         
         renderizarResultadosHuespedes(resultados);

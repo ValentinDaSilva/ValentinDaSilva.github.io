@@ -48,7 +48,7 @@ function mostrarDatosFactura(factura) {
       if (factura.responsableDePago.tipo === 'juridica' || factura.responsableDePago.tipo === 'tercero' || factura.responsableDePago.tipo === 'personaJuridica') {
         responsableTexto = factura.responsableDePago.razonSocial || '-';
       } else {
-        responsableTexto = `${factura.responsableDePago.apellido || ''}, ${factura.responsableDePago.nombres || ''}`.trim();
+        responsableTexto = `${factura.responsableDePago.apellido || ''}, ${factura.responsableDePago.nombre || ''}`.trim();
       }
     }
     responsableElement.textContent = responsableTexto;
@@ -173,21 +173,21 @@ export function mostrarPagosRealizados(factura) {
     
     if (medioDePago) {
       const nombreClase = medioDePago.constructor.name;
-      const nombresMedios = {
+      const nombreMedios = {
         'Efectivo': 'Efectivo',
         'MonedaExtranjera': 'Moneda Extranjera',
         'Cheque': 'Cheques',
         'Tarjeta': 'Tarjetas'
       };
-      nombreMedio = nombresMedios[nombreClase] || nombreClase;
+      nombreMedio = nombreMedios[nombreClase] || nombreClase;
     } else if (pago.medioPago) {
-      const nombresMedios = {
+      const nombreMedios = {
         'efectivo': 'Efectivo',
         'monedaExtranjera': 'Moneda Extranjera',
         'cheques': 'Cheques',
         'tarjetas': 'Tarjetas'
       };
-      nombreMedio = nombresMedios[pago.medioPago] || pago.medioPago;
+      nombreMedio = nombreMedios[pago.medioPago] || pago.medioPago;
     }
     tdMedio.textContent = nombreMedio;
     

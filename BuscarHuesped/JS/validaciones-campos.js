@@ -59,15 +59,15 @@ function validarApellido(valor) {
 }
 
 
-function validarNombres(valor) {
+function validarnombre(valor) {
     if (!valor || valor.trim() === '') {
         return { valido: true, mensaje: '' }; 
     }
     if (valor.trim().length < 1) {
-        return { valido: false, mensaje: 'Los nombres deben tener al menos 1 carácter' };
+        return { valido: false, mensaje: 'Los nombre deben tener al menos 1 carácter' };
     }
     if (!esSoloLetras(valor.trim())) {
-        return { valido: false, mensaje: 'Los nombres solo pueden contener letras y espacios' };
+        return { valido: false, mensaje: 'Los nombre solo pueden contener letras y espacios' };
     }
     return { valido: true, mensaje: '' };
 }
@@ -102,8 +102,8 @@ function validarCampo(campoId) {
         case 'apellido':
             resultado = validarApellido(valor);
             break;
-        case 'nombres':
-            resultado = validarNombres(valor);
+        case 'nombre':
+            resultado = validarnombre(valor);
             break;
         case 'numeroDocumento':
             resultado = validarNumeroDocumento(valor);
@@ -127,7 +127,7 @@ function validarCampo(campoId) {
 
 
 function validarTodosLosCampos() {
-    const camposAValidar = ['apellido', 'nombres', 'numeroDocumento'];
+    const camposAValidar = ['apellido', 'nombre', 'numeroDocumento'];
     
     let todosValidos = true;
     camposAValidar.forEach(campoId => {
@@ -144,7 +144,7 @@ function validarTodosLosCampos() {
 
 
 function inicializarValidacionTiempoReal() {
-    const camposAValidar = ['apellido', 'nombres', 'numeroDocumento'];
+    const camposAValidar = ['apellido', 'nombre', 'numeroDocumento'];
     
     camposAValidar.forEach(campoId => {
         const campo = document.getElementById(campoId);
