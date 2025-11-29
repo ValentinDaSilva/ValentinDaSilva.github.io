@@ -18,31 +18,7 @@ function manejarBusqueda() {
   form.addEventListener("submit", async e => {
     e.preventDefault();
 
-    const desde = document.getElementById("fecha-desde").value;
-    const hasta = document.getElementById("fecha-hasta").value;
-
-    if (!desde || !hasta) {
-      mensajeError("Debes completar ambas fechas.");
-      return;
-    }
-
-    if (new Date(desde) >= new Date(hasta)) {
-      mensajeError("La fecha de salida debe ser posterior a la de entrada.");
-      return;
-    }
-
-    // Limpio selección anterior, cargo datos y genero grilla
-    if (typeof limpiarHabitacionesSeleccionadas === "function") {
-      limpiarHabitacionesSeleccionadas();
-    }
-
-    await asegurarHabitaciones();
-    await cargarReservasEntre(desde, hasta);
-
-    generarTablaHabitaciones(desde, hasta);
-
-    const cont = document.querySelector(".contenedor-resultados");
-    if (cont) cont.style.display = "block";
+    GestorReserva.buscarReservaEntreDosFechas();
   });
 }
 
@@ -223,6 +199,7 @@ function mostrarFormularioTitular(listaSeleccion) {
 // Inicialización
 // ------------------------------------------------------------
 function inicializarReserva() {
+  console.log("Estoy aca");
   manejarBusqueda();
   manejarClickReservar();
 }

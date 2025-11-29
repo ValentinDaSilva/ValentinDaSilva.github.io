@@ -1,0 +1,1112 @@
+📂 Estructura del proyecto (.):
+-----------------------------------
+.
+├── buscarHuesped.html
+├── consolidado.txt
+├── CSS
+│   ├── botones.css
+│   ├── errores.css
+│   ├── estilos-base.css
+│   ├── fondo.css
+│   ├── formulario.css
+│   └── resultados.css
+└── JS
+    ├── busqueda.js
+    ├── datos-huespedes.js
+    ├── gestor-buscar-huesped.js
+    ├── modales.js
+    ├── tabla-resultados.js
+    └── validaciones-campos.js
+
+3 directories, 14 files
+
+-----------------------------------
+
+// [buscarHuesped.html]
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buscar Huésped</title>
+  
+  
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario.css">
+  <link rel="stylesheet" href="CSS/resultados.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+  <link rel="stylesheet" href="CSS/errores.css">
+</head>
+<body>
+  <img src="/assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="imagen-fondo">
+  <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
+  
+  <div class="contenedor-principal">
+    <div class="contenedor-formulario">
+        <h1 class="titulo-busqueda">Buscar Huésped</h1>
+        <form>
+          <div class="grupo-campo contenedor-campo">
+            <label for="apellido" class="etiqueta-campo">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" placeholder="Perez"/>
+          </div>
+          <div class="grupo-campo contenedor-campo">
+            <label for="nombre" class="etiqueta-campo">nombre:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Juan Carlos"/>
+          </div>
+          <div class="grupo-campo contenedor-campo">
+            <label for="tipoDocumento" class="etiqueta-campo">Tipo de documento:</label>
+            <select id="tipoDocumento" name="tipoDocumento">
+              <option value="">Seleccione</option>
+              <option value="DNI">DNI</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="CUIL">CUIL</option>
+              <option value="LibretaCivica">Libreta Cívica</option>
+            </select>
+          </div>
+          <div class="grupo-campo contenedor-campo">
+            <label for="numeroDocumento" class="etiqueta-campo">Número de documento:</label>
+            <input type="text" id="numeroDocumento" name="numeroDocumento" placeholder="12345678"/>
+          </div>
+          <div class="grupo-campo">
+            <button type="submit" class="boton-buscar">Buscar</button>
+          </div>
+        </form>
+    </div>
+  </div>
+  
+  <div class="contenedor-resultados" style="display: none;">
+    <h2 class="titulo-resultados">Resultados de la búsqueda</h2>
+    <div class="contenedor-tabla">
+      <table class="tabla-resultados">
+        <thead>
+          <tr>
+            <th>Apellido</th>
+            <th>nombre</th>
+            <th>Tipo de documento</th>
+            <th>Número de documento</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+    <div class="boton-siguiente">Siguiente</div>
+  </div>
+
+  
+  
+  <script src="../Login/JS/validar-sesion.js"></script>
+  
+  <script src="../Login/JS/navegacion-volver.js"></script>
+  <script src="JS/modales.js"></script>
+  
+  <script src="JS/datos-huespedes.js"></script>
+  <script src="JS/validaciones-campos.js"></script>
+  <script src="JS/tabla-resultados.js"></script>
+  <script type="module" src="JS/gestor-buscar-huesped.js"></script>
+  <script src="JS/busqueda.js"></script>
+  <script src="../JS/general.js"></script>
+  <script type="module" src="/Clases/Dominio/GestorHuesped.js"></script>
+</body>
+</html>
+
+
+
+// [CSS/botones.css]
+
+
+.boton-buscar {
+    width: 100%;
+    background-color: #64443a;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-buscar:hover {
+    background-color: #49312a;
+}
+
+.boton-siguiente {
+    width: 30%;
+    height: 7%;
+    background-color: #412c26;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.boton-siguiente:hover {
+    background-color: #49312a;
+}
+
+
+
+
+// [CSS/errores.css]
+
+
+.contenedor-campo {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.mensaje-error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+    padding: 5px 0;
+    min-height: 20px;
+    line-height: 1.4;
+}
+
+.mensaje-error.mostrar {
+    display: block;
+}
+
+.campo-invalido {
+    border: 2px solid #ff4646 !important;
+    background-color: #ffe6e6 !important;
+}
+
+.campo-valido {
+    border: 2px solid #4caf50 !important;
+}
+
+
+
+
+// [CSS/estilos-base.css]
+
+
+body {
+    display: flex;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+
+
+// [CSS/fondo.css]
+
+
+.imagen-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.contenedor-principal {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    transition: width 0.5s, height 0.5s;
+}
+
+.enlace-volver {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 24px;
+    color: #64443a;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.enlace-volver:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+
+
+
+// [CSS/formulario.css]
+
+
+.contenedor-formulario {
+    width: 60%;
+    max-width: 500px;
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+    margin: 50px;
+    position: relative;
+    left: 0;
+}
+
+.titulo-busqueda {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.grupo-campo {
+    margin-bottom: 18px;
+}
+
+.grupo-campo.contenedor-campo {
+    margin-bottom: 15px;
+}
+
+.etiqueta-campo {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+.etiqueta-campo.requerido::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
+
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+
+
+// [CSS/resultados.css]
+
+
+.contenedor-resultados {
+    width: 60vw;
+    max-width: 60vw;
+    margin: 50px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
+    border: 2px solid #6b493ed0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 600px;
+    min-height: 600px; 
+    height: 600px; 
+}
+
+.titulo-resultados {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.contenedor-tabla {
+    overflow-y: auto;
+    flex: 1;
+    max-height: calc(60vh - 7%); 
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.tabla-resultados {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.tabla-resultados thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #412c26;
+}
+
+.tabla-resultados th,
+.tabla-resultados td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    color: black;
+}
+
+.tabla-resultados th {
+    background-color: #412c26;
+    font-weight: bold;
+    color: white;
+}
+
+.tabla-resultados tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tabla-resultados tr:hover {
+    background-color: #f9f9f9;
+}
+
+.fila-seleccionada {
+    background-color: yellow !important;
+}
+
+
+
+
+// [JS/busqueda.js]
+
+
+
+async function manejarBusqueda(event) {
+    event.preventDefault(); 
+    
+    
+    const todosLosCamposValidos = validarTodosLosCampos();
+    
+    if (!todosLosCamposValidos) {
+        
+        const primerError = document.querySelector('.campo-invalido');
+        if (primerError) {
+            primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            primerError.focus();
+        }
+        return;
+    }
+    
+    GestorHuesped.buscarHuespedes();
+}
+
+
+function inicializarBusqueda() {
+    const formulario = document.querySelector('form');
+    if (formulario) {
+        formulario.addEventListener('submit', manejarBusqueda);
+    }
+}
+
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarBusqueda);
+} else {
+    inicializarBusqueda();
+}
+
+
+
+
+// [JS/datos-huespedes.js]
+
+
+let datosHuespedes = [];
+
+
+function asegurarLista(valores) {
+    if (Array.isArray(valores)) {
+        return valores;
+    }
+
+    if (valores && Array.isArray(valores.huespedes)) {
+        return valores.huespedes;
+    }
+
+    return [];
+}
+
+
+function normalizarDatosLocales(datosCrudos) {
+    if (window.gestorHuesped && typeof window.gestorHuesped.normalizarDatosHuespedes === 'function') {
+        return window.gestorHuesped.normalizarDatosHuespedes(datosCrudos);
+    }
+
+    if (!datosCrudos) {
+        return [];
+    }
+
+    const lista = asegurarLista(datosCrudos);
+
+    return lista.map(huesped => {
+        const nombre = (huesped.nombre ?? huesped.nombre ?? '').toString().trim();
+        const numeroDocumentoRaw = huesped.numeroDocumento ?? huesped.nroDocumento ?? huesped.documento ?? '';
+        const numeroDocumento = numeroDocumentoRaw === null || numeroDocumentoRaw === undefined
+            ? ''
+            : String(numeroDocumentoRaw).trim();
+        const tipoDocumento = (huesped.tipoDocumento ?? huesped.tipoDoc ?? '').toString().trim();
+
+        return {
+            ...huesped,
+            apellido: (huesped.apellido ?? '').toString().trim(),
+            nombre,
+            nombre: huesped.nombre ?? nombre,
+            numeroDocumento,
+            nroDocumento: huesped.nroDocumento ?? numeroDocumento,
+            tipoDocumento
+        };
+    });
+}
+
+
+async function cargarHuespedes() {
+    
+    if (window.gestorBuscarHuesped) {
+        return await window.gestorBuscarHuesped.cargarHuespedes();
+    }
+    
+    
+    try {
+        const respuesta = await fetch('../Datos/huespedes.json');
+        if (!respuesta.ok) {
+            throw new Error(`Error al cargar los datos: ${respuesta.status}`);
+        }
+        const datosCrudos = await respuesta.json();
+        datosHuespedes = asegurarLista(normalizarDatosLocales(datosCrudos));
+        console.log(`Se cargaron ${datosHuespedes.length} huéspedes`);
+        return datosHuespedes;
+    } catch (error) {
+        console.error('Error al cargar huéspedes:', error);
+        mensajeError('Error al cargar los datos de huéspedes. Por favor, recarga la página.');
+        return [];
+    }
+}
+
+
+function filtrarHuespedes(apellido, nombre, tipoDocumento, numeroDocumento) {
+    
+    if (window.gestorBuscarHuesped) {
+        return window.gestorBuscarHuesped.filtrarHuespedes(apellido, nombre, tipoDocumento, numeroDocumento);
+    }
+    
+    
+    const apellidoTrim = apellido ? apellido.trim() : '';
+    const nombreTrim = nombre ? nombre.trim() : '';
+    const tipoDoc = tipoDocumento ? tipoDocumento.trim() : '';
+    const numDoc = numeroDocumento ? numeroDocumento.trim() : '';
+    
+    if (!apellidoTrim && !nombreTrim && !tipoDoc && !numDoc) {
+        return datosHuespedes; 
+    }
+    
+    let resultados = asegurarLista(datosHuespedes);
+    
+    
+    if (apellidoTrim !== '') {
+        const apellidoLower = apellidoTrim.toLowerCase();
+        resultados = resultados.filter(huesped => 
+            (huesped.apellido || '').toLowerCase().startsWith(apellidoLower)
+        );
+    }
+    
+    
+    if (nombreTrim !== '') {
+        const nombreLower = nombreTrim.toLowerCase();
+        resultados = resultados.filter(huesped => 
+            (huesped.nombre || '').toLowerCase().startsWith(nombreLower)
+        );
+    }
+    
+    
+    if (tipoDoc !== '') {
+        resultados = resultados.filter(huesped => 
+            huesped.tipoDocumento === tipoDoc
+        );
+    }
+    
+    
+    if (numDoc !== '') {
+        resultados = resultados.filter(huesped => 
+            (huesped.numeroDocumento || '').toString().startsWith(numDoc)
+        );
+    }
+    
+    return resultados;
+}
+
+
+function obtenerTodosLosHuespedes() {
+    
+    if (window.gestorBuscarHuesped) {
+        return window.gestorBuscarHuesped.obtenerDatosHuespedes();
+    }
+    return datosHuespedes;
+}
+
+
+window.cargarHuespedes = cargarHuespedes;
+window.filtrarHuespedes = filtrarHuespedes;
+window.obtenerTodosLosHuespedes = obtenerTodosLosHuespedes;
+
+
+
+
+// [JS/gestor-buscar-huesped.js]
+export default class GestorBuscarHuesped {
+    constructor() {
+    }
+
+    
+    static extraerDatosFormulario() {
+        const formData = {
+            apellido: document.getElementById('apellido')?.value.trim() || '',
+            nombre: document.getElementById('nombre')?.value.trim() || '',
+            tipoDocumento: document.getElementById('tipoDocumento')?.value || '',
+            numeroDocumento: document.getElementById('numeroDocumento')?.value.trim() || ''
+        };
+
+        return formData;
+    }
+
+    
+    static async buscarHuespedesEnAPI(apellido, nombre, tipoDocumento, numeroDocumento) {
+        try {
+            const params = new URLSearchParams({
+                apellido: apellido || '',
+                nombre: nombre || '',
+                tipoDocumento: tipoDocumento || '',
+                numeroDocumento: numeroDocumento || ''
+            });
+
+            const url = `http://localhost:8080/api/huespedes/buscar?${params.toString()}`;
+            console.log('URL de búsqueda:', url);
+
+            const res = await fetch(url);
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || data || 'Error al buscar huéspedes');
+            }
+
+            console.log('Resultados de la búsqueda:', data);
+            return { success: true, data };
+        } catch (error) {
+            console.error('Error al buscar huéspedes en la API:', error);
+            return {
+                error: error.message || "Error inesperado de conexión. Por favor, verifica que el servidor esté corriendo."
+            };
+        }
+    }
+
+    static renderizarResultados(resultados) {
+        const tbody = document.querySelector(".tabla-resultados tbody");
+        if (!tbody) {
+            console.error('No se encontró el tbody de la tabla');
+            return;
+        }
+        
+        
+        tbody.innerHTML = '';
+        
+        
+        if (resultados.length === 0) {
+            const filaVacia = document.createElement('tr');
+            const celdaVacia = document.createElement('td');
+            celdaVacia.colSpan = 4;
+            celdaVacia.textContent = 'No se encontraron resultados';
+            celdaVacia.style.textAlign = 'center';
+            celdaVacia.style.padding = '20px';
+            celdaVacia.style.color = '#666';
+            filaVacia.appendChild(celdaVacia);
+            tbody.appendChild(filaVacia);
+            return;
+        }
+        
+        
+        resultados.forEach(huesped => {
+            const fila = document.createElement('tr');
+            
+            
+            const celdaApellido = document.createElement('td');
+            celdaApellido.textContent = huesped.apellido;
+            
+            
+            const celdanombre = document.createElement('td');
+            celdanombre.textContent = huesped.nombre;
+            
+            
+            const celdaTipoDoc = document.createElement('td');
+            celdaTipoDoc.textContent = huesped.tipoDocumento;
+            
+            
+            const celdaNumDoc = document.createElement('td');
+            celdaNumDoc.textContent = huesped.numeroDocumento;
+            
+            
+            fila.appendChild(celdaApellido);
+            fila.appendChild(celdanombre);
+            fila.appendChild(celdaTipoDoc);
+            fila.appendChild(celdaNumDoc);
+            
+            
+            fila.setAttribute('data-huesped', JSON.stringify(huesped));
+            
+            
+            tbody.appendChild(fila);
+        });
+        
+        console.log(`Se renderizaron ${resultados.length} resultados`);
+    }
+
+    
+    static mostrarResultados() {
+        const contenedorResultados = document.querySelector('.contenedor-resultados');
+        const contenedorPrincipal = document.querySelector('.contenedor-principal');
+        
+        if (contenedorResultados && contenedorPrincipal) {
+            contenedorPrincipal.style.width = '40vw';
+            contenedorResultados.style.display = 'block';
+        }
+    }
+}
+
+window.GestorBuscarHuesped = GestorBuscarHuesped;
+
+
+
+
+
+
+// [JS/modales.js]
+
+
+
+function mensajeError(mensaje) {
+    
+    alert(mensaje);
+}
+
+
+
+
+// [JS/tabla-resultados.js]
+
+
+let filasTabla = [];
+let datosResultados = [];
+
+
+function obtenerFilasTabla() {
+    const tbody = document.querySelector(".tabla-resultados tbody");
+    if (!tbody) {
+        return [];
+    }
+    const todasLasFilas = tbody.querySelectorAll("tr");
+    return Array.from(todasLasFilas);
+}
+
+
+function inicializarSeleccionFilas() {
+    
+    filasTabla = [];
+    
+    
+    const tbody = document.querySelector(".tabla-resultados tbody");
+    if (!tbody) {
+        console.warn('No se encontró el tbody de la tabla');
+        return;
+    }
+    
+    const filas = tbody.querySelectorAll("tr");
+    
+    if (filas.length === 0) {
+        console.warn('No se encontraron filas en la tabla');
+        return;
+    }
+    
+    
+    const filasArray = Array.from(filas);
+    
+    filasArray.forEach((fila) => {
+        
+        
+        const manejarClick = function(e) {
+            e.stopPropagation();
+            
+            
+            filasTabla.forEach((r) => {
+                if (r !== fila) {
+                    r.classList.remove('fila-seleccionada');
+                    r.style.backgroundColor = "";
+                }
+            });
+            
+            
+            if (fila.classList.contains('fila-seleccionada')) {
+                fila.classList.remove('fila-seleccionada');
+                fila.style.backgroundColor = "";
+            } else {
+                fila.classList.add('fila-seleccionada');
+                fila.style.backgroundColor = "yellow";
+            }
+        };
+        
+        
+        fila.addEventListener("click", manejarClick);
+        
+        
+        filasTabla.push(fila);
+    });
+    
+    console.log(`Se inicializaron ${filasTabla.length} filas`);
+}
+
+
+function obtenerFilaSeleccionada() {
+    return filasTabla.find(fila => fila.classList.contains('fila-seleccionada')) || null;
+}
+
+
+function guardarHuespedEnSessionStorage(huesped) {
+    try {
+        sessionStorage.setItem('huespedSeleccionado', JSON.stringify(huesped));
+        console.log('Huésped guardado en sessionStorage:', huesped);
+    } catch (error) {
+        console.error('Error al guardar en sessionStorage:', error);
+        mensajeError('Error al guardar los datos del huésped. Por favor, intente nuevamente.');
+    }
+}
+
+
+function manejarBotonSiguiente() {
+    const filaSeleccionada = obtenerFilaSeleccionada();
+    
+    if (filaSeleccionada) {
+        
+        const datosHuesped = obtenerDatosHuespedSeleccionado();
+        
+        if (datosHuesped) {
+            
+            guardarHuespedEnSessionStorage(datosHuesped);
+            
+            
+            window.location.href = '../ModificarHuesped/modificarHuesped.html';
+        } else {
+            console.error('No se pudieron obtener los datos del huésped seleccionado');
+            mensajeError('Error al obtener los datos del huésped. Por favor, seleccione nuevamente.');
+        }
+    } else {
+        
+        window.location.href = '../AltaHuesped/altaHuesped.html';
+    }
+}
+
+
+function inicializarBotonSiguiente() {
+   
+}
+
+
+function inicializarTablaResultados() {
+    console.log('Inicializando tabla de resultados...');
+    
+    
+    const tabla = document.querySelector('.tabla-resultados');
+    if (!tabla) {
+        console.error('No se encontró la tabla de resultados');
+        return;
+    }
+    
+    
+    inicializarSeleccionFilas();
+    inicializarBotonSiguiente();
+    
+    console.log('Tabla de resultados inicializada correctamente');
+}
+
+
+function renderizarResultados(resultados) {
+    datosResultados = resultados;
+    
+    const tbody = document.querySelector(".tabla-resultados tbody");
+    if (!tbody) {
+        console.error('No se encontró el tbody de la tabla');
+        return;
+    }
+    
+    
+    tbody.innerHTML = '';
+    
+    
+    if (resultados.length === 0) {
+        const filaVacia = document.createElement('tr');
+        const celdaVacia = document.createElement('td');
+        celdaVacia.colSpan = 4;
+        celdaVacia.textContent = 'No se encontraron resultados';
+        celdaVacia.style.textAlign = 'center';
+        celdaVacia.style.padding = '20px';
+        celdaVacia.style.color = '#666';
+        filaVacia.appendChild(celdaVacia);
+        tbody.appendChild(filaVacia);
+        return;
+    }
+    
+    
+    resultados.forEach(huesped => {
+        const fila = document.createElement('tr');
+        
+        
+        const celdaApellido = document.createElement('td');
+        celdaApellido.textContent = huesped.apellido;
+        
+        
+        const celdanombre = document.createElement('td');
+        celdanombre.textContent = huesped.nombre;
+        
+        
+        const celdaTipoDoc = document.createElement('td');
+        celdaTipoDoc.textContent = huesped.tipoDocumento;
+        
+        
+        const celdaNumDoc = document.createElement('td');
+        celdaNumDoc.textContent = huesped.numeroDocumento;
+        
+        
+        fila.appendChild(celdaApellido);
+        fila.appendChild(celdanombre);
+        fila.appendChild(celdaTipoDoc);
+        fila.appendChild(celdaNumDoc);
+        
+        
+        fila.setAttribute('data-huesped', JSON.stringify(huesped));
+        
+        
+        tbody.appendChild(fila);
+    });
+    
+    console.log(`Se renderizaron ${resultados.length} resultados`);
+}
+
+
+function obtenerDatosHuespedSeleccionado() {
+    const filaSeleccionada = obtenerFilaSeleccionada();
+    if (!filaSeleccionada) {
+        return null;
+    }
+    
+    const datosHuesped = filaSeleccionada.getAttribute('data-huesped');
+    if (datosHuesped) {
+        return JSON.parse(datosHuesped);
+    }
+    
+    return null;
+}
+
+
+window.inicializarTablaResultados = inicializarTablaResultados;
+window.renderizarResultados = renderizarResultados;
+window.obtenerDatosHuespedSeleccionado = obtenerDatosHuespedSeleccionado;
+
+
+
+
+
+
+// [JS/validaciones-campos.js]
+
+
+
+function mostrarError(campoId, mensaje) {
+    const campo = document.getElementById(campoId);
+    if (!campo) return;
+    
+    
+    let contenedorError = campo.parentElement.querySelector('.mensaje-error');
+    if (!contenedorError) {
+        contenedorError = document.createElement('div');
+        contenedorError.className = 'mensaje-error';
+        campo.parentElement.appendChild(contenedorError);
+    }
+    
+    contenedorError.textContent = mensaje;
+    contenedorError.classList.add('mostrar');
+    campo.classList.remove('campo-valido');
+    campo.classList.add('campo-invalido');
+}
+
+
+function ocultarError(campoId) {
+    const campo = document.getElementById(campoId);
+    if (!campo) return;
+    
+    const contenedorError = campo.parentElement.querySelector('.mensaje-error');
+    if (contenedorError) {
+        contenedorError.classList.remove('mostrar');
+    }
+    campo.classList.remove('campo-invalido');
+    campo.classList.add('campo-valido');
+}
+
+
+function esSoloLetras(valor) {
+    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+    return regex.test(valor);
+}
+
+
+function esSoloNumeros(valor) {
+    const regex = /^\d+$/;
+    return regex.test(valor);
+}
+
+
+function validarApellido(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: true, mensaje: '' }; 
+    }
+    if (valor.trim().length < 1) {
+        return { valido: false, mensaje: 'El apellido debe tener al menos 1 carácter' };
+    }
+    if (!esSoloLetras(valor.trim())) {
+        return { valido: false, mensaje: 'El apellido solo puede contener letras y espacios' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarnombre(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: true, mensaje: '' }; 
+    }
+    if (valor.trim().length < 1) {
+        return { valido: false, mensaje: 'Los nombre deben tener al menos 1 carácter' };
+    }
+    if (!esSoloLetras(valor.trim())) {
+        return { valido: false, mensaje: 'Los nombre solo pueden contener letras y espacios' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarNumeroDocumento(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: true, mensaje: '' }; 
+    }
+    if (!esSoloNumeros(valor.trim())) {
+        return { valido: false, mensaje: 'El número de documento solo puede contener números' };
+    }
+    
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarAlMenosUnCampo() {
+    
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarCampo(campoId) {
+    const campo = document.getElementById(campoId);
+    if (!campo) return true;
+    
+    const valor = campo.value;
+    let resultado = { valido: true, mensaje: '' };
+    
+    switch(campoId) {
+        case 'apellido':
+            resultado = validarApellido(valor);
+            break;
+        case 'nombre':
+            resultado = validarnombre(valor);
+            break;
+        case 'numeroDocumento':
+            resultado = validarNumeroDocumento(valor);
+            break;
+        case 'tipoDocumento':
+            
+            resultado = { valido: true, mensaje: '' };
+            break;
+        default:
+            return true;
+    }
+    
+    if (resultado.valido) {
+        ocultarError(campoId);
+        return true;
+    } else {
+        mostrarError(campoId, resultado.mensaje);
+        return false;
+    }
+}
+
+
+function validarTodosLosCampos() {
+    const camposAValidar = ['apellido', 'nombre', 'numeroDocumento'];
+    
+    let todosValidos = true;
+    camposAValidar.forEach(campoId => {
+        if (!validarCampo(campoId)) {
+            todosValidos = false;
+        }
+    });
+    
+    
+    
+    
+    return todosValidos;
+}
+
+
+function inicializarValidacionTiempoReal() {
+    const camposAValidar = ['apellido', 'nombre', 'numeroDocumento'];
+    
+    camposAValidar.forEach(campoId => {
+        const campo = document.getElementById(campoId);
+        if (campo) {
+            
+            campo.addEventListener('blur', () => {
+                validarCampo(campoId);
+            });
+            
+            
+            campo.addEventListener('input', () => {
+                const mensajeError = campo.parentElement.querySelector('.mensaje-error.mostrar');
+                if (mensajeError && campo.value.trim() !== '') {
+                    ocultarError(campoId);
+                }
+            });
+        }
+    });
+}
+
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarValidacionTiempoReal);
+} else {
+    inicializarValidacionTiempoReal();
+}
+
+
+
+

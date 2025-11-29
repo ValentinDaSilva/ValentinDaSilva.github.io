@@ -1,0 +1,76 @@
+@startuml
+actor Conserje
+participant "UI - Reservar Habitación" as UI
+participant GestorReserva
+participant HabitacionDAO
+participant ReservaDAO
+
+
+Conserje -> UI: Ingresa desdeFecha y hastaFecha
+activate UI
+
+UI -> GestorReserva: validarRangoFechas(desde,hasta)
+activate GestorReserva
+GestorReserva --> UI: resultadoValidacion
+deactivate GestorReserva
+
+alt Fechas inválidas
+    UI -> Conserje: Mostrar cartel con error
+    UI -> Conserje: Solicitar reingreso de fechas
+end
+
+
+UI -> GestorReserva: obtenerEstadoHabitaciones(desde,hasta)
+activate GestorReserva
+
+GestorReserva -> HabitacionDAO: listarHabitaciones()
+activate HabitacionDAO
+HabitacionDAO --> GestorReserva: listaHabitaciones
+deactivate HabitacionDAO
+
+GestorReserva -> ReservaDAO: buscarReservasEntre(desde,hasta)
+activate ReservaDAO
+ReservaDAO --> GestorReserva: listaReservas
+deactivate ReservaDAO
+
+GestorReserva --> UI: estadoHabitaciones
+deactivate GestorReserva
+
+UI -> Conserje: Mostrar grilla con estado de habitaciones
+
+
+Conserje -> UI: Selecciona rango en una habitación
+
+alt Habitación no disponible
+    UI -> Conserje: Mostrar cartel "No disponible"
+    UI -> Conserje: Permitir seleccionar otra
+else Habitación disponible
+    UI -> UI: Marcar rango como "RESERVADA"
+end
+
+
+UI -> Conserje: Mostrar listado de reserva (tipo, ingreso, egreso)
+
+Conserje -> UI: Presiona "ACEPTAR" o "RECHAZAR"
+
+alt Rechazar
+    UI -> UI: Deshacer selección
+    UI -> Conserje: Finalizar CU
+else Aceptar
+    UI -> Conserje: Solicitar datos titular (Apellido, Nombre, Teléfono)
+    Conserje -> UI: Ingresa datos
+end
+
+
+UI -> GestorReserva: crearReserva(listadoHabitaciones, datosTitular, desde, hasta)
+activate GestorReserva
+
+GestorReserva -> ReservaDAO: guardarReserva(reserva)
+activate ReservaDAO
+ReservaDAO --> GestorReserva: confirmación
+deactivate ReservaDAO
+
+GestorReserva --> UI: Mostrar mensaje "Reserva registrada con éxito"
+deactivate GestorReserva
+
+@enduml

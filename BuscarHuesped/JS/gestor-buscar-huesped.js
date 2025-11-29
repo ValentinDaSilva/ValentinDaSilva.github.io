@@ -1,122 +1,156 @@
-export default class GestorBuscarHuesped {
-    constructor() {
-    }
+// JS/gestor-buscar-huesped.js
+import { GestorHuesped } from "/Clases/Dominio/GestorHuesped.js";
 
-    
-    static extraerDatosFormulario() {
-        const formData = {
-            apellido: document.getElementById('apellido')?.value.trim() || '',
-            nombre: document.getElementById('nombre')?.value.trim() || '',
-            tipoDocumento: document.getElementById('tipoDocumento')?.value || '',
-            numeroDocumento: document.getElementById('numeroDocumento')?.value.trim() || ''
+class UIBuscarHuesped {
+
+    // -----------------------------------------
+    // LEER CRITERIOS
+    // -----------------------------------------
+    static extraerCriteriosBusqueda() {
+        return {
+            apellido: document.getElementById("apellido").value.trim(),
+            nombre: document.getElementById("nombre").value.trim(),
+            tipoDocumento: document.getElementById("tipoDocumento").value.trim(),
+            numeroDocumento: document.getElementById("numeroDocumento").value.trim()
         };
-
-        return formData;
     }
 
-    
-    static async buscarHuespedesEnAPI(apellido, nombre, tipoDocumento, numeroDocumento) {
-        try {
-            const params = new URLSearchParams({
-                apellido: apellido || '',
-                nombre: nombre || '',
-                tipoDocumento: tipoDocumento || '',
-                numeroDocumento: numeroDocumento || ''
+    // -----------------------------------------
+    // MOSTRAR RESULTADOS
+    // -----------------------------------------
+    static mostrarResultados(lista) {
+        const tbody = document.querySelector(".tabla-resultados tbody");
+        tbody.innerHTML = "";
+
+        if (!lista || lista.length === 0) {
+            const fila = document.createElement("tr");
+            const celda = document.createElement("td");
+            celda.colSpan = 4;
+            celda.textContent = "No se encontraron coincidencias";
+            celda.style.textAlign = "center";
+            fila.appendChild(celda);
+            tbody.appendChild(fila);
+            return;
+        }
+
+        lista.forEach(h => {
+            const fila = document.createElement("tr");
+
+            const tdApe = document.createElement("td");
+            tdApe.textContent = h.apellido;
+
+            const tdNom = document.createElement("td");
+            tdNom.textContent = h.nombre;
+
+            const tdTipo = document.createElement("td");
+            tdTipo.textContent = h.tipoDocumento;
+
+            const tdNum = document.createElement("td");
+            tdNum.textContent = h.numeroDocumento || h.nroDocumento;
+
+            fila.appendChild(tdApe);
+            fila.appendChild(tdNom);
+            fila.appendChild(tdTipo);
+            fila.appendChild(tdNum);
+
+            fila.dataset.huesped = JSON.stringify(h);
+
+            fila.addEventListener("click", () => {
+                UIBuscarHuesped.marcarSeleccion(fila);
             });
 
-            const url = `http://localhost:8080/api/huespedes/buscar?${params.toString()}`;
-            console.log('URL de búsqueda:', url);
-
-            const res = await fetch(url);
-            const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.message || data || 'Error al buscar huéspedes');
-            }
-
-            console.log('Resultados de la búsqueda:', data);
-            return { success: true, data };
-        } catch (error) {
-            console.error('Error al buscar huéspedes en la API:', error);
-            return {
-                error: error.message || "Error inesperado de conexión. Por favor, verifica que el servidor esté corriendo."
-            };
-        }
-    }
-
-    static renderizarResultados(resultados) {
-        const tbody = document.querySelector(".tabla-resultados tbody");
-        if (!tbody) {
-            console.error('No se encontró el tbody de la tabla');
-            return;
-        }
-        
-        
-        tbody.innerHTML = '';
-        
-        
-        if (resultados.length === 0) {
-            const filaVacia = document.createElement('tr');
-            const celdaVacia = document.createElement('td');
-            celdaVacia.colSpan = 4;
-            celdaVacia.textContent = 'No se encontraron resultados';
-            celdaVacia.style.textAlign = 'center';
-            celdaVacia.style.padding = '20px';
-            celdaVacia.style.color = '#666';
-            filaVacia.appendChild(celdaVacia);
-            tbody.appendChild(filaVacia);
-            return;
-        }
-        
-        
-        resultados.forEach(huesped => {
-            const fila = document.createElement('tr');
-            
-            
-            const celdaApellido = document.createElement('td');
-            celdaApellido.textContent = huesped.apellido;
-            
-            
-            const celdanombre = document.createElement('td');
-            celdanombre.textContent = huesped.nombre;
-            
-            
-            const celdaTipoDoc = document.createElement('td');
-            celdaTipoDoc.textContent = huesped.tipoDocumento;
-            
-            
-            const celdaNumDoc = document.createElement('td');
-            celdaNumDoc.textContent = huesped.numeroDocumento;
-            
-            
-            fila.appendChild(celdaApellido);
-            fila.appendChild(celdanombre);
-            fila.appendChild(celdaTipoDoc);
-            fila.appendChild(celdaNumDoc);
-            
-            
-            fila.setAttribute('data-huesped', JSON.stringify(huesped));
-            
-            
             tbody.appendChild(fila);
         });
-        
-        console.log(`Se renderizaron ${resultados.length} resultados`);
     }
 
-    
-    static mostrarResultados() {
-        const contenedorResultados = document.querySelector('.contenedor-resultados');
-        const contenedorPrincipal = document.querySelector('.contenedor-principal');
-        
-        if (contenedorResultados && contenedorPrincipal) {
-            contenedorPrincipal.style.width = '40vw';
-            contenedorResultados.style.display = 'block';
-        }
+    static marcarSeleccion(fila) {
+        document.querySelectorAll(".tabla-resultados tbody tr").forEach(f => {
+            f.classList.remove("fila-seleccionada");
+            f.style.backgroundColor = "";
+        });
+
+        fila.classList.add("fila-seleccionada");
+        fila.style.backgroundColor = "yellow";
+    }
+
+    static mostrarSeccionResultados() {
+        document.querySelector(".contenedor-resultados").style.display = "block";
+        document.querySelector(".contenedor-principal").style.width = "40vw";
+    }
+
+    // -----------------------------------------
+    // SELECCIÓN
+    // -----------------------------------------
+    static devolverSeleccion() {
+        const fila = document.querySelector(".fila-seleccionada");
+        if (!fila) return null;
+        return JSON.parse(fila.dataset.huesped);
+    }
+
+    // -----------------------------------------
+    // MODALES para el DIAGRAMA
+    // -----------------------------------------
+    static async mostrarSinResultadosYOfrecerAlta() {
+        pregunta(
+            "No se encontraron huéspedes.\n¿Desea dar de alta uno nuevo?",
+            "SI",
+            "NO",
+            () => UIBuscarHuesped.irAPantallaAlta(),
+            () => {}
+        );
+    }
+
+    static mostrarErrorBusqueda(msg) {
+        pregunta(
+            msg,
+            "OK",
+            "CERRAR",
+            () => {},
+            () => {}
+        );
+    }
+
+    static irAPantallaAlta() {
+        window.location.href = "../AltaHuesped/altaHuesped.html";
+    }
+
+    static irAPantallaModificar(huesped) {
+        sessionStorage.setItem("huespedSeleccionado", JSON.stringify(huesped));
+        window.location.href = "../ModificarHuesped/modificarHuesped.html";
+    }
+
+    // -----------------------------------------
+    // INICIALIZAR
+    // -----------------------------------------
+    static inicializar() {
+        const form = document.getElementById("form-buscar-huesped");
+        const botonSiguiente = document.querySelector(".boton-siguiente");
+
+        // SUBMIT
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            let ok = true;
+            if (typeof validarTodosLosCampos === "function") {
+                ok = validarTodosLosCampos();
+            }
+
+            if (!ok) return;
+
+            const criterios = UIBuscarHuesped.extraerCriteriosBusqueda();
+            await GestorHuesped.buscarHuesped(criterios, UIBuscarHuesped);
+        });
+
+        // SIGUIENTE
+        botonSiguiente.addEventListener("click", () => {
+            const seleccion = UIBuscarHuesped.devolverSeleccion();
+            GestorHuesped.procesarSeleccion(seleccion, UIBuscarHuesped);
+        });
     }
 }
 
-window.GestorBuscarHuesped = GestorBuscarHuesped;
+document.addEventListener("DOMContentLoaded", () => {
+    UIBuscarHuesped.inicializar();
+});
 
-
-
+export { UIBuscarHuesped };

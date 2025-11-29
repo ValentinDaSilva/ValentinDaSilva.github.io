@@ -1,0 +1,70 @@
+@startuml
+actor Conserje
+participant UI as "UI - Buscar Huesped"
+participant GestorHuesped
+participant HuespedDAO
+participant Huesped
+
+
+Conserje -> UI: solicitar busqueda
+UI -> UI: mostrar pantalla de búsqueda
+
+Conserje -> UI: ingresa criterios y presiona Buscar
+
+UI -> GestorHuesped: buscarHuesped(criterios)
+activate GestorHuesped
+
+GestorHuesped -> HuespedDAO: buscarHuespedFiltrado(criterios)
+activate HuespedDAO
+HuespedDAO --> GestorHuesped: lista
+deactivate HuespedDAO
+
+loop por cada elemento
+    GestorHuesped -> Huesped: <<create>>
+    activate Huesped
+    Huesped --> GestorHuesped: instanciaHuesped
+    deactivate Huesped
+end
+
+alt no existen coincidencias
+    GestorHuesped -> UI: Avisa que no hay coincidencia
+    GestorHuesped -> UI: Pregunta si quiere dar alta huesped
+
+    UI -> Conserje: solicita decisión
+    Conserje --> UI: opción
+
+    alt Conserje elige DAR DE ALTA
+        UI -> GestorHuesped: darAltaHuesped()
+        deactivate GestorHuesped
+    else Conserje elige NO
+        GestorHuesped -> UI: continuarEnMismaPantalla()
+        deactivate GestorHuesped
+    end
+
+else existen coincidencias
+    GestorHuesped --> UI: mostrarResultados(listaHuespedes)
+    UI -> Conserje: permite seleccionar huésped
+
+    Conserje --> UI: seleccion (un huesped o ninguna)
+    UI --> GestorHuesped: devuelve la seleccion
+
+    alt seleccion vacía
+        GestorHuesped -> UI: Pregunta si quiere dar alta huesped
+        UI -> Conserje: solicita decisión
+        Conserje --> UI: opción
+
+        alt Conserje elige DAR DE ALTA
+            UI -> GestorHuesped: darAltaHuesped()
+        else Conserje elige NO
+            GestorHuesped -> UI: continuarEnPantalla()
+        end
+
+    else seleccion válida
+        GestorHuesped -> GestorHuesped: modificarHuesped(huespedDominio)
+        GestorHuesped -> UI: irAPantallaModificar(huespedDominio)
+    end
+
+    deactivate GestorHuesped
+end
+
+@enduml

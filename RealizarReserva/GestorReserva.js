@@ -8,44 +8,58 @@
 
 import { GestorRealizarReserva } from "./JS/gestor-realizar-reserva.js";
 
-export default class GestorReserva {
+  export default class GestorReserva {
 
-  /**
-   * Método ÚNICO del orquestador.
-   *
-   * @param {Array} listaSeleccion  [{habitacion: 'IND-101', fechaDesde:..., fechaHasta:...}, ...]
-   * @param {Object} datosTitular   {nombre, apellido, telefono}
-   */
-  static async realizarReserva(listaSeleccion, datosTitular) {
-    try {
-      console.log("▶ Iniciando GestorReserva.realizarReserva()");
+      static async buscarReservaEntreDosFechas() {
+        try {
+                const desde = document.getElementById("fecha-desde").value;
+                const hasta = document.getElementById("fecha-hasta").value;
 
-      const gestor = new GestorRealizarReserva();
+                exito = GestorRealizarReserva.validaarFechas(desde, hasta);
 
-      // 1) Extraer datos desde la selección de la UI
-      const datosSeleccion = gestor.extraerDatosSeleccion(listaSeleccion);
-      console.log("1️⃣ Datos de selección:", datosSeleccion);
+                if(exito === false) return;
+                else{
+                    await asegurarHabitaciones();
+                    await cargarReservasEntre(desde, hasta);
+                    generarTablaHabitaciones(desde, hasta);
+                    const cont = document.querySelector(".contenedor-resultados");
+                    if (cont) cont.style.display = "block";
+                }
 
-      // 2) Crear dominio interno
-      const reservasDominio = gestor.crearReservaDominio(datosSeleccion, datosTitular);
-      console.log("2️⃣ Modelo de dominio:", reservasDominio);
 
-      // 3) Crear DTO final para el backend
-      const reservasDTO = gestor.crearReservaDTO(reservasDominio);
-      console.log("3️⃣ DTO final:", reservasDTO);
+        } catch (error) {
+          console.error("❌ Error en buscarReservaEntreDosFechas():", error);
+          mensajeError("No se pudo buscar las reservas: " + error.message);
+        }
+      }
+      
+      static async realizarReserva(listaSeleccion, datosTitular) {
+        try {
 
-      // 4) Guardar cada reserva en el backend
-      await gestor.guardarEnBD(reservasDTO);
+          const gestor = new GestorRealizarReserva();
 
-      console.log("✔ Reserva(s) creada(s) correctamente.");
-      return true;
+          buscarReservaEntreDosFechas();
 
-    } catch (error) {
-      console.error("❌ Error en realizarReserva():", error);
-      mensajeError("No se pudo completar la reserva: " + error.message);
-      return false;
-    }
-  }
+          // 1) Extraer datos desde la selección de la UI
+          const datosSeleccion = gestor.extraerDatosSeleccion(listaSeleccion);
+
+          // 2) Crear dominio interno
+          const reservasDominio = gestor.crearReservaDominio(datosSeleccion, datosTitular);
+
+          // 3) Crear DTO final para el backend
+          const reservasDTO = gestor.crearReservaDTO(reservasDominio);
+
+          // 4) Guardar cada reserva en el backend
+          await gestor.guardarEnBD(reservasDTO);
+
+          return true;
+
+        } catch (error) {
+          console.error("❌ Error en realizarReserva():", error);
+          mensajeError("No se pudo completar la reserva: " + error.message);
+          return false;
+        }
+      }
 
 }
 

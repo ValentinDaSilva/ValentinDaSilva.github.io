@@ -1,0 +1,1351 @@
+📂 Estructura del proyecto (.):
+-----------------------------------
+.
+├── altaHuesped.html
+├── consolidado.txt
+├── CSS
+│   ├── botones.css
+│   ├── errores.css
+│   ├── estilos-base.css
+│   ├── fondo.css
+│   ├── formulario.css
+│   └── modal.css
+└── JS
+    ├── gestor-huesped.js
+    ├── modales.js
+    ├── paises.js
+    ├── utilidades.js
+    ├── validaciones-campos.js
+    └── validacion.js
+
+3 directories, 14 files
+
+-----------------------------------
+
+// [altaHuesped.html]
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Alta de Huésped</title>
+  
+  
+  <link rel="stylesheet" href="CSS/estilos-base.css">
+  <link rel="stylesheet" href="CSS/fondo.css">
+  <link rel="stylesheet" href="CSS/formulario.css">
+  <link rel="stylesheet" href="CSS/modal.css">
+  <link rel="stylesheet" href="CSS/botones.css">
+  <link rel="stylesheet" href="CSS/errores.css">
+</head>
+<body>
+    <img src="/assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="imagen-fondo">
+    <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
+    
+    <div class="superposicion">
+      <form id="altaHuesped" class="formulario-alta" novalidate>
+        <h2 class="titulo-formulario">Dar Alta de Huésped</h2>
+        <div class="cuadricula-formulario">
+          <div class="contenedor-campo">
+            <label for="apellido" class="etiqueta-campo requerido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" placeholder="Pérez" required>
+          </div>
+          <div class="contenedor-campo">
+            <label for="nombre" class="etiqueta-campo requerido">nombre:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Juan Carlos" required>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="tipoDocumento" class="etiqueta-campo requerido">Tipo de documento:</label>
+            <select id="tipoDocumento" name="tipoDocumento" required>
+              <option value="">Seleccione</option>
+              <option value="DNI">DNI</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="CUIL">CUIL</option>
+              <option value="LibretaCivica">Libreta Cívica</option>
+            </select>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="numeroDocumento" class="etiqueta-campo requerido">Número de documento:</label>
+            <input type="text" id="numeroDocumento" name="numeroDocumento" placeholder="12345678" required>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="cuit" class="etiqueta-campo">CUIT (opcional):</label>
+            <input type="text" id="cuit" name="cuit" placeholder="20-12345678-9">
+          </div>      
+      
+          <div class="contenedor-campo">
+            <label for="fechaNacimiento" class="etiqueta-campo requerido">Fecha de nacimiento:</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+          </div>
+      
+          <div>
+            <label for="caracteristica" class="etiqueta-campo requerido">Teléfono:</label>
+            <div class="contenedor-telefono">
+              <div class="contenedor-campo">
+                <input type="tel" id="caracteristica" name="caracteristica" placeholder="Ej: 342" required>
+              </div>
+              <div class="contenedor-campo">
+                <input type="tel" id="telefonoNumero" name="telefonoNumero" placeholder="Ej: 5986867" required>
+              </div>
+            </div>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="email" class="etiqueta-campo">Email (opcional):</label>
+            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com">
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="ocupacion" class="etiqueta-campo requerido">Ocupación:</label>
+            <input type="text" id="ocupacion" name="ocupacion" placeholder="Ingeniero, Estudiante, etc." required>
+          </div>
+      
+          <div class="contenedor-campo">
+            <label for="nacionalidad" class="etiqueta-campo requerido">Nacionalidad:</label>
+            <select id="nacionalidad" name="nacionalidad" required>
+                <option value=""></option>
+            </select>
+          </div>
+      
+          <fieldset class="ancho-completo grupo-direccion">
+            <legend class="leyenda-grupo">Dirección</legend>
+            <div class="cuadricula-direccion">
+              <div class="contenedor-campo">
+                <label for="calle" class="etiqueta-campo requerido">Calle:</label>
+                <input type="text" id="calle" name="calle" placeholder="Primera Junta" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="numeroCalle" class="etiqueta-campo requerido">Número:</label>
+                <input type="text" id="numeroCalle" name="numero" placeholder="2457" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="departamento" class="etiqueta-campo">Departamento: (opcional)</label>
+                <input type="text" id="departamento" name="departamento" placeholder="B">
+              </div>
+              <div class="contenedor-campo">
+                <label for="piso" class="etiqueta-campo">Piso: (opcional)</label>
+                <input type="text" id="piso" name="piso" placeholder="3">
+              </div>
+              <div class="contenedor-campo">
+                <label for="codigoPostal" class="etiqueta-campo requerido">Código Postal:</label>
+                <input type="text" id="codigoPostal" name="codigoPostal" placeholder="1000" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="localidad" class="etiqueta-campo requerido">Localidad:</label>
+                <input type="text" id="localidad" name="localidad" placeholder="Santa Fe" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="provincia" class="etiqueta-campo requerido">Provincia:</label>
+                <input type="text" id="provincia" name="provincia" placeholder="Santa Fe" required>
+              </div>
+              <div class="contenedor-campo">
+                <label for="pais" class="etiqueta-campo requerido">País:</label>
+                <select id="pais" name="pais" required>
+                    <option value=""></option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+      
+          <button type="submit" class="boton-enviar">Siguiente</button>
+          <button type="button" class="boton-cancelar" onclick="window.location.href='../index.html'">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    
+    <div id="modalError" class="modal" style="display: none;">
+      <div class="contenido-modal contenedor-error">
+        <h2 class="titulo-error">ERROR</h2>
+        <img src="/assets/image/Error.png" alt="icono de error" class="imagen-modal">
+        <p id="mensaje-error" class="mensaje-modal">Por favor, completa todos los campos requeridos.</p>
+        <button id="boton-error-ok" class="boton-general boton-error">OK👍</button>
+      </div>
+    </div>
+
+    
+    <div id="modalAdvertencia" class="modal" style="display: none;">
+      <div class="contenido-modal contenedor-advertencia">
+        <h2 class="titulo-advertencia">ADVERTENCIA</h2>
+        <img src="/assets/image/Advertencia.png" alt="icono de advertencia" class="imagen-modal">
+        <p id="mensaje-advertencia" class="mensaje-modal">El numero de documento ya existe</p>
+        <div class="botones-advertencia">
+          <button id="boton-advertencia-aceptar" class="boton-general boton-advertencia">ACEPTAR</button>
+          <button id="boton-advertencia-corregir" class="boton-general boton-advertencia">CORREGIR</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div id="modalPregunta" class="modal" style="display: none;">
+      <div class="contenido-modal contenedor-pregunta">
+        <h2 class="titulo-pregunta">PREGUNTA</h2>
+        <img src="/assets/image/Pregunta.png" alt="icono de pregunta" class="imagen-modal">
+        <p id="mensaje-pregunta" class="mensaje-modal">El numero de documento ya existe</p>
+        <div class="botones-pregunta">
+          <button id="boton-pregunta-1" class="boton-general boton-pregunta">ACEPTAR</button>
+          <button id="boton-pregunta-2" class="boton-general boton-pregunta">CANCELAR</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div id="modalCorrecto" class="modal" style="display: none;">
+      <div class="contenido-modal contenedor-correcto">
+        <h2 class="titulo-correcto">EXITO</h2>
+        <img src="/assets/image/Correcto.png" alt="icono de exito" class="imagen-modal">
+        <p id="mensaje-correcto" class="mensaje-modal">Accion ejecutada con exito</p>
+      </div>
+    </div>
+
+    
+    
+    <script src="../Login/JS/validar-sesion.js"></script>
+    
+    <script src="../Login/JS/navegacion-volver.js"></script>
+    
+   
+    <script src="JS/paises.js"></script>
+    <script src="JS/modales.js"></script>
+    <script src="JS/validaciones-campos.js"></script>
+    <script src="JS/validacion.js"></script>
+    <script src="JS/utilidades.js"></script>
+    <script src="../JS/general.js"></script>
+    <script type="module" src="../Clases/Dominio/GestorHuesped.js"></script>
+    <script type="module" src="../Clases/Dominio/Huesped.js"></script>
+    <script type="module" src="../Clases/Dominio/Direccion.js"></script>
+    <script type="module" src="../Clases/DTO/dto.js"></script>
+
+    <script type="module" src="JS/gestor-huesped.js"></script>
+
+
+</body>
+</html>
+
+
+
+// [CSS/botones.css]
+
+.boton-general {
+    padding: 10px 20px;
+    background-color: #00e1f0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.boton-enviar {
+    grid-column: span 2;
+    padding: 12px;
+    background-color: #49312a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-enviar:hover {
+    background-color: #6d4c41;
+}
+
+.boton-cancelar {
+    grid-column: span 2;
+    padding: 12px;
+    background-color: #6d4c41;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-cancelar:hover {
+    background-color: #49312a;
+}
+
+.boton-error {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.boton-advertencia {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #ffeb3b;
+    color: #222;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.boton-pregunta {
+    display: block;
+    padding: 10px 20px;
+    background-color: #00e1f0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.campo-invalido {
+    border: 2px solid #ff4646 !important;
+}
+
+.enlace-volver {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 24px;
+    color: #64443a;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.enlace-volver:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+
+
+
+// [CSS/errores.css]
+
+
+.contenedor-campo {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.mensaje-error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+    padding: 5px 0;
+    min-height: 20px;
+    line-height: 1.4;
+}
+
+.mensaje-error.mostrar {
+    display: block;
+}
+
+.campo-invalido {
+    border: 2px solid #ff4646 !important;
+    background-color: #ffe6e6 !important;
+}
+
+.campo-valido {
+    border: 2px solid #4caf50 !important;
+}
+
+
+.contenedor-telefono .contenedor-campo {
+    margin-bottom: 0;
+}
+
+.contenedor-telefono .mensaje-error {
+    font-size: 11px;
+}
+
+
+
+
+// [CSS/estilos-base.css]
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
+
+// [CSS/fondo.css]
+
+.imagen-fondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.superposicion {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+
+
+
+// [CSS/formulario.css]
+
+.formulario-alta {
+    background-color: #f4ece3;
+    border: 1px solid #49312a;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.titulo-formulario {
+    text-align: center;
+    color: #49312a;
+    margin-bottom: 25px;
+}
+
+.cuadricula-formulario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.ancho-completo {
+    grid-column: span 2;
+}
+
+.etiqueta-campo {
+    display: block;
+    margin-bottom: 5px;
+    color: #49312a;
+    font-weight: bold;
+}
+
+.etiqueta-campo.requerido::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #a1887f;
+    background-color: #fffaf4;
+}
+
+.grupo-direccion {
+    grid-column: span 2;
+    border-radius: 10px;
+    border: 1px solid #a1887f;
+    background-color: #f5f0eb;
+    padding: 20px;
+    margin-top: 15px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.leyenda-grupo {
+    padding: 0 10px;
+    color: #6d4c41;
+    font-weight: bold;
+}
+
+.cuadricula-direccion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px 30px;
+    width: 100%;
+}
+
+.contenedor-telefono {
+    display: flex;
+    gap: 10px;
+}
+
+.contenedor-telefono .contenedor-campo {
+    flex: 1;
+}
+
+.contenedor-telefono .contenedor-campo input {
+    width: 100%;
+}
+
+
+
+
+// [CSS/modal.css]
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+
+.modal[style*="flex"] {
+    display: flex !important;
+}
+
+.contenido-modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.contenedor-error {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contenedor-advertencia {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contenedor-pregunta {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.contenedor-correcto {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.boton-cerrar {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.boton-cerrar:hover,
+.boton-cerrar:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.titulo-error {
+    text-align: center;
+    color: #d32f2f;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+.titulo-advertencia {
+    text-align: center;
+    color: #ffb300;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+.titulo-pregunta {
+    text-align: center;
+    color: #00e1f0;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+.titulo-correcto {
+    text-align: center;
+    color: #2fd345;
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+.imagen-modal {
+    height: 30%;
+    display: block;
+    margin: 0 auto;
+}
+
+.mensaje-modal {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.botones-advertencia {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    padding: 0 20px;
+}
+
+.botones-pregunta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 20px;
+}
+
+
+
+
+// [JS/gestor-huesped.js]
+// AltaHuesped/JS/gestor-huesped.js
+import {GestorHuesped}  from "/Clases/Dominio/GestorHuesped.js";
+
+class UIAltaHuesped {
+
+    static extraerDatosDeUI() {
+        const datos = {
+            apellido: document.getElementById("apellido").value.trim(),
+            nombre: document.getElementById("nombre").value.trim(),
+            tipoDocumento: document.getElementById("tipoDocumento").value.trim(),
+            numeroDocumento: document.getElementById("numeroDocumento").value.trim(),
+            cuit: document.getElementById("cuit").value.trim(),
+            fechaNacimiento: document.getElementById("fechaNacimiento").value,
+            caracteristica: document.getElementById("caracteristica").value.trim(),
+            telefonoNumero: document.getElementById("telefonoNumero").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            ocupacion: document.getElementById("ocupacion").value.trim(),
+            nacionalidad: document.getElementById("nacionalidad").value.trim(),
+            calle: document.getElementById("calle").value.trim(),
+            numero: document.getElementById("numeroCalle").value.trim(),
+            departamento: document.getElementById("departamento").value.trim(),
+            piso: document.getElementById("piso").value.trim(),
+            codigoPostal: document.getElementById("codigoPostal").value.trim(),
+            localidad: document.getElementById("localidad").value.trim(),
+            provincia: document.getElementById("provincia").value.trim(),
+            pais: document.getElementById("pais").value.trim()
+        };
+
+        datos.telefono = `${datos.caracteristica}-${datos.telefonoNumero}`;
+        return datos;
+    }
+
+    static mostrarErrores(errores) {
+        const modal = document.getElementById("modalError");
+        const mensaje = document.getElementById("mensaje-error");
+
+        mensaje.textContent = Array.isArray(errores) ? errores.join("\n") : errores;
+        modal.style.display = "fle";
+    }
+
+    static enfocarCampoDocumento() {
+        const campo = document.getElementById("numeroDocumento");
+        campo.focus();
+        campo.select();
+    }
+
+    static reiniciarCampos() {
+        document.getElementById("altaHuesped").reset();
+    }
+
+    static volverPantallaAnterior() {
+        window.location.href = "../index.html";
+    }
+
+    static preguntarDocumentoExistente() {
+        return new Promise(resolve => {
+            advertencia(
+                "¡CUIDADO! Ya existe un huésped con ese documento.",
+                "ACEPTAR IGUALMENTE",
+                "CORREGIR",
+                () => resolve("aceptar"),
+                () => resolve("corregir")
+            );
+        });
+    }
+
+    static mostrarAltaExitosa(huesped) {
+        const nombre = huesped.getNombre();
+        const apellido = huesped.getApellido();
+
+        return new Promise(resolve => {
+            pregunta(
+                `El huésped ${nombre} ${apellido} ha sido cargado.\n¿Desea cargar otro?`,
+                "SI",
+                "NO",
+                () => resolve(true),
+                () => resolve(false)
+            );
+        });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("altaHuesped").addEventListener("submit", async e => {
+        e.preventDefault();
+        await GestorHuesped.darAltaHuesped(UIAltaHuesped);
+    });
+});
+
+export { UIAltaHuesped };
+
+
+
+// [JS/modales.js]
+// JS/modales.js
+
+function advertencia(mensaje, textoAceptar, textoCancelar, onAceptar, onCancelar) {
+    const modal = document.getElementById("modalAdvertencia");
+    const mensajeEl = document.getElementById("mensaje-advertencia");
+    const btnAceptar = document.getElementById("boton-advertencia-aceptar");
+    const btnCancelar = document.getElementById("boton-advertencia-corregir");
+
+    mensajeEl.textContent = mensaje;
+
+    btnAceptar.textContent = textoAceptar;
+    btnCancelar.textContent = textoCancelar;
+
+    btnAceptar.onclick = () => {
+        modal.style.display = "none";
+        onAceptar && onAceptar();
+    };
+
+    btnCancelar.onclick = () => {
+        modal.style.display = "none";
+        onCancelar && onCancelar();
+    };
+
+    modal.style.display = "block";
+}
+
+function pregunta(mensaje, textoSi, textoNo, onSi, onNo) {
+    const modal = document.getElementById("modalPregunta");
+    const mensajeEl = document.getElementById("mensaje-pregunta");
+    const btn1 = document.getElementById("boton-pregunta-1");
+    const btn2 = document.getElementById("boton-pregunta-2");
+
+    mensajeEl.textContent = mensaje;
+
+    btn1.textContent = textoSi;
+    btn2.textContent = textoNo;
+
+    btn1.onclick = () => {
+        modal.style.display = "none";
+        onSi && onSi();
+    };
+
+    btn2.onclick = () => {
+        modal.style.display = "none";
+        onNo && onNo();
+    };
+
+    modal.style.display = "block";
+}
+
+function mensajeCorrecto(mensaje) {
+    const modal = document.getElementById("modalCorrecto");
+    const mensajeEl = document.getElementById("mensaje-correcto");
+
+    mensajeEl.textContent = mensaje;
+    modal.style.display = "block";
+
+    setTimeout(() => modal.style.display = "none", 2000);
+}
+
+window.advertencia = advertencia;
+window.pregunta = pregunta;
+window.mensajeCorrecto = mensajeCorrecto;
+
+
+
+// [JS/paises.js]
+
+
+const listaPaises = [
+    "Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argelia",
+    "Argentina", "Armenia", "Australia", "Austria", "Azerbaiyán", "Bahamas", "Bangladés", "Barbados", "Baréin",
+    "Bélgica", "Belice", "Benín", "Bielorrusia", "Birmania", "Bolivia", "Bosnia y Herzegovina", "Botsuana",
+    "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", "Bután", "Cabo Verde", "Camboya", "Camerún", "Canadá",
+    "Catar", "Chad", "Chile", "China", "Chipre", "Ciudad del Vaticano", "Colombia", "Comoras", "Corea del Norte",
+    "Corea del Sur", "Costa de Marfil", "Costa Rica", "Croacia", "Cuba", "Dinamarca", "Dominica", "Ecuador", "Egipto",
+    "El Salvador", "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos",
+    "Estonia", "Esuatini", "Etiopía", "Filipinas", "Finlandia", "Fiyi", "Francia", "Gabón", "Gambia", "Georgia",
+    "Ghana", "Granada", "Grecia", "Guatemala", "Guinea", "Guinea-Bisáu", "Guinea Ecuatorial", "Guyana", "Haití",
+    "Honduras", "Hungría", "India", "Indonesia", "Irak", "Irán", "Irlanda", "Islandia", "Islas Marshall", "Islas Salomón",
+    "Israel", "Italia", "Jamaica", "Japón", "Jordania", "Kazajistán", "Kenia", "Kirguistán", "Kiribati", "Kuwait",
+    "Laos", "Lesoto", "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania", "Luxemburgo", "Macedonia del Norte",
+    "Madagascar", "Malasia", "Malaui", "Maldivas", "Malí", "Malta", "Marruecos", "Mauricio", "Mauritania", "México",
+    "Micronesia", "Moldavia", "Mónaco", "Mongolia", "Montenegro", "Mozambique", "Namibia", "Nauru", "Nepal", "Nicaragua",
+    "Níger", "Nigeria", "Noruega", "Nueva Zelanda", "Omán", "Países Bajos", "Pakistán", "Palaos", "Panamá", "Papúa Nueva Guinea",
+    "Paraguay", "Perú", "Polonia", "Portugal", "Reino Unido", "República Centroafricana", "República Checa", "República del Congo",
+    "República Democrática del Congo", "República Dominicana", "Ruanda", "Rumanía", "Rusia", "Samoa", "San Cristóbal y Nieves",
+    "San Marino", "San Vicente y las Granadinas", "Santa Lucía", "Santo Tomé y Príncipe", "Senegal", "Serbia", "Seychelles",
+    "Sierra Leona", "Singapur", "Siria", "Somalia", "Sri Lanka", "Sudáfrica", "Sudán", "Sudán del Sur", "Suecia", "Suiza",
+    "Surinam", "Tailandia", "Tanzania", "Tayikistán", "Timor Oriental", "Togo", "Tonga", "Trinidad y Tobago", "Túnez",
+    "Turkmenistán", "Turquía", "Tuvalu", "Ucrania", "Uganda", "Uruguay", "Uzbekistán", "Vanuatu", "Venezuela", "Vietnam",
+    "Yemen", "Yibuti", "Zambia", "Zimbabue", "Palestina"
+];
+
+
+function cargarPaises(listaPaises) {
+    const selectNacionalidad = document.getElementById("nacionalidad");
+    const selectPais = document.getElementById("pais");
+    
+    if (selectNacionalidad) {
+        selectNacionalidad.innerHTML = "<option value=''>Seleccione una opción</option>";
+        
+        listaPaises.forEach(pais => {
+            const option = document.createElement("option");
+            option.value = pais;
+            option.textContent = pais;
+            selectNacionalidad.appendChild(option);
+        });
+    }
+    
+    if (selectPais) {
+        selectPais.innerHTML = "<option value=''>Seleccione una opción</option>";
+        
+        listaPaises.forEach(pais => {
+            const option = document.createElement("option");
+            option.value = pais;
+            option.textContent = pais;
+            selectPais.appendChild(option);
+        });
+    }
+}
+
+
+function inicializarPaises() {
+    cargarPaises(listaPaises);
+}
+
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarPaises);
+} else {
+    inicializarPaises();
+}
+
+
+
+
+// [JS/utilidades.js]
+
+
+
+function completarFormulario() {
+    document.getElementById("apellido").value = "GONZÁLEZ";
+    document.getElementById("nombre").value = "MARÍA FERNANDA";
+    document.getElementById("tipoDocumento").value = "DNI";
+    document.getElementById("numeroDocumento").value = "12345678";
+    document.getElementById("cuit").value = "20-98765432-1";
+    document.getElementById("fechaNacimiento").value = "1990-05-15";
+    document.getElementById("caracteristica").value = "11";
+    document.getElementById("telefonoNumero").value = "5551234";
+    document.getElementById("email").value = "MARIA.GONZALEZ@EXAMPLE.COM";
+    document.getElementById("ocupacion").value = "ABOGADA";
+    document.getElementById("nacionalidad").value = "Argentina";
+    document.getElementById("calle").value = "AV. SIEMPRE VIVA";
+    document.getElementById("numeroCalle").value = "742";
+    document.getElementById("departamento").value = "A";
+    document.getElementById("piso").value = "3";
+    document.getElementById("codigoPostal").value = "1001";
+    document.getElementById("localidad").value = "BUENOS AIRES";
+    document.getElementById("provincia").value = "BUENOS AIRES";
+    document.getElementById("pais").value = "Argentina";
+}
+
+
+function inicializarAtajoCompletarFormulario() {
+    document.addEventListener('keydown', function(event) {
+        
+        if (event.altKey && event.key === 'p') {
+            event.preventDefault();
+            completarFormulario();
+        }
+    });
+}
+
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarAtajoCompletarFormulario);
+} else {
+    inicializarAtajoCompletarFormulario();
+}
+
+
+
+
+// [JS/validacion.js]
+// JS/validacion.js
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("altaHuesped");
+    if (!form) return;
+
+    form.addEventListener("input", () => {
+        // NO validamos nada acá
+        // El verdadero validador es el GestorHuesped según el diagrama
+        // Esto solo podría agregar clases CSS visuales si querés
+    });
+});
+
+
+
+// [JS/validaciones-campos.js]
+
+
+
+function mostrarError(campoId, mensaje) {
+    const campo = document.getElementById(campoId);
+    if (!campo) return;
+    
+    
+    let contenedorError = campo.parentElement.querySelector('.mensaje-error');
+    if (!contenedorError) {
+        contenedorError = document.createElement('div');
+        contenedorError.className = 'mensaje-error';
+        campo.parentElement.appendChild(contenedorError);
+    }
+    
+    contenedorError.textContent = mensaje;
+    contenedorError.classList.add('mostrar');
+    campo.classList.remove('campo-valido');
+    campo.classList.add('campo-invalido');
+}
+
+
+function ocultarError(campoId) {
+    const campo = document.getElementById(campoId);
+    if (!campo) return;
+    
+    const contenedorError = campo.parentElement.querySelector('.mensaje-error');
+    if (contenedorError) {
+        contenedorError.classList.remove('mostrar');
+    }
+    campo.classList.remove('campo-invalido');
+    campo.classList.add('campo-valido');
+}
+
+
+function esSoloLetras(valor) {
+    const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+    return regex.test(valor);
+}
+
+
+function esSoloNumeros(valor) {
+    const regex = /^\d+$/;
+    return regex.test(valor);
+}
+
+
+function esEmailValido(valor) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(valor);
+}
+
+
+function esCUITValido(valor) {
+    const regex = /^\d{2}-\d{7,8}-\d{1}$/;
+    return regex.test(valor);
+}
+
+
+function esFechaValida(fecha) {
+    if (!fecha) return false;
+    
+    const fechaIngresada = new Date(fecha);
+    const hoy = new Date();
+    const fechaMinima = new Date();
+    fechaMinima.setFullYear(hoy.getFullYear() - 120); 
+    
+    return fechaIngresada <= hoy && fechaIngresada >= fechaMinima;
+}
+
+
+function validarApellido(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'El apellido es requerido' };
+    }
+    if (valor.trim().length < 2) {
+        return { valido: false, mensaje: 'El apellido debe tener al menos 2 caracteres' };
+    }
+    if (!esSoloLetras(valor.trim())) {
+        return { valido: false, mensaje: 'El apellido solo puede contener letras y espacios' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarnombre(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'Los nombre son requeridos' };
+    }
+    if (valor.trim().length < 2) {
+        return { valido: false, mensaje: 'Los nombre deben tener al menos 2 caracteres' };
+    }
+    if (!esSoloLetras(valor.trim())) {
+        return { valido: false, mensaje: 'Los nombre solo pueden contener letras y espacios' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarNumeroDocumento(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'El número de documento es requerido' };
+    }
+    if (!esSoloNumeros(valor.trim())) {
+        return { valido: false, mensaje: 'El número de documento solo puede contener números' };
+    }
+    if (valor.trim().length < 7 || valor.trim().length > 9) {
+        return { valido: false, mensaje: 'El número de documento debe tener entre 7 y 9 dígitos' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarCUIT(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: true, mensaje: '' }; 
+    }
+    if (!esCUITValido(valor.trim())) {
+        return { valido: false, mensaje: 'El CUIT debe tener el formato XX-XXXXXXX-X' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarFechaNacimiento(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'La fecha de nacimiento es requerida' };
+    }
+    if (!esFechaValida(valor)) {
+        return { valido: false, mensaje: 'La fecha de nacimiento debe ser válida y no puede ser futura' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarCaracteristica(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'El código de área es requerido' };
+    }
+    if (!esSoloNumeros(valor.trim())) {
+        return { valido: false, mensaje: 'El código de área solo puede contener números' };
+    }
+    if (valor.trim().length < 2 || valor.trim().length > 4) {
+        return { valido: false, mensaje: 'El código de área debe tener entre 2 y 4 dígitos' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarTelefonoNumero(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'El número de teléfono es requerido' };
+    }
+    if (!esSoloNumeros(valor.trim())) {
+        return { valido: false, mensaje: 'El número de teléfono solo puede contener números' };
+    }
+    if (valor.trim().length < 6 || valor.trim().length > 8) {
+        return { valido: false, mensaje: 'El número de teléfono debe tener entre 6 y 8 dígitos' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarEmail(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: true, mensaje: '' }; 
+    }
+    if (!esEmailValido(valor.trim())) {
+        return { valido: false, mensaje: 'El email debe tener un formato válido (ejemplo@correo.com)' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarOcupacion(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'La ocupación es requerida' };
+    }
+    if (valor.trim().length < 2) {
+        return { valido: false, mensaje: 'La ocupación debe tener al menos 2 caracteres' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarCodigoPostal(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'El código postal es requerido' };
+    }
+    if (!esSoloNumeros(valor.trim())) {
+        return { valido: false, mensaje: 'El código postal solo puede contener números' };
+    }
+    if (valor.trim().length < 4 || valor.trim().length > 8) {
+        return { valido: false, mensaje: 'El código postal debe tener entre 4 y 8 dígitos' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarCampoTexto(valor, nombreCampo) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: `${nombreCampo} es requerido` };
+    }
+    if (valor.trim().length < 2) {
+        return { valido: false, mensaje: `${nombreCampo} debe tener al menos 2 caracteres` };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarCampoSoloLetras(valor, nombreCampo) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: `${nombreCampo} es requerido` };
+    }
+    if (valor.trim().length < 2) {
+        return { valido: false, mensaje: `${nombreCampo} debe tener al menos 2 caracteres` };
+    }
+    if (!esSoloLetras(valor.trim())) {
+        return { valido: false, mensaje: `${nombreCampo} solo puede contener letras y espacios` };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarNumeroCalle(valor) {
+    if (!valor || valor.trim() === '') {
+        return { valido: false, mensaje: 'El número es requerido' };
+    }
+    
+    if (!esSoloNumeros(valor.trim())) {
+        return { valido: false, mensaje: 'El número solo puede contener números' };
+    }
+    return { valido: true, mensaje: '' };
+}
+
+
+function validarCampo(campoId) {
+    const campo = document.getElementById(campoId);
+    if (!campo) return true;
+    
+    const valor = campo.value;
+    let resultado = { valido: true, mensaje: '' };
+    
+    switch(campoId) {
+        case 'apellido':
+            resultado = validarApellido(valor);
+            break;
+        case 'nombre':
+            resultado = validarnombre(valor);
+            break;
+        case 'numeroDocumento':
+            resultado = validarNumeroDocumento(valor);
+            break;
+        case 'cuit':
+            resultado = validarCUIT(valor);
+            break;
+        case 'fechaNacimiento':
+            resultado = validarFechaNacimiento(valor);
+            break;
+        case 'caracteristica':
+            resultado = validarCaracteristica(valor);
+            break;
+        case 'telefonoNumero':
+            resultado = validarTelefonoNumero(valor);
+            break;
+        case 'email':
+            resultado = validarEmail(valor);
+            break;
+        case 'ocupacion':
+            resultado = validarOcupacion(valor);
+            break;
+        case 'codigoPostal':
+            resultado = validarCodigoPostal(valor);
+            break;
+        case 'calle':
+            resultado = validarCampoTexto(valor, 'La calle');
+            break;
+        case 'numeroCalle':
+            resultado = validarNumeroCalle(valor);
+            break;
+        case 'localidad':
+            resultado = validarCampoSoloLetras(valor, 'La localidad');
+            break;
+        case 'provincia':
+            resultado = validarCampoSoloLetras(valor, 'La provincia');
+            break;
+        case 'pais':
+            if (!valor || valor === '') {
+                resultado = { valido: false, mensaje: 'Debe seleccionar un país' };
+            } else {
+                resultado = { valido: true, mensaje: '' };
+            }
+            break;
+        case 'departamento':
+            if (!valor || valor.trim() === '') {
+                resultado = { valido: true, mensaje: '' }; 
+            } else {
+                
+                if (!esSoloLetras(valor.trim())) {
+                    resultado = { valido: false, mensaje: 'El departamento solo puede contener letras y espacios' };
+                } else {
+                    resultado = { valido: true, mensaje: '' };
+                }
+            }
+            break;
+        case 'piso':
+            
+            resultado = { valido: true, mensaje: '' };
+            break;
+        case 'tipoDocumento':
+            if (!valor || valor === '') {
+                resultado = { valido: false, mensaje: 'Debe seleccionar un tipo de documento' };
+            }
+            break;
+        case 'nacionalidad':
+            if (!valor || valor === '') {
+                resultado = { valido: false, mensaje: 'Debe seleccionar una nacionalidad' };
+            }
+            break;
+        default:
+            
+            return true;
+    }
+    
+    if (resultado.valido) {
+        ocultarError(campoId);
+        return true;
+    } else {
+        mostrarError(campoId, resultado.mensaje);
+        return false;
+    }
+}
+
+
+function validarTodosLosCampos() {
+    const camposAValidar = [
+        'apellido',
+        'nombre',
+        'tipoDocumento',
+        'numeroDocumento',
+        'cuit',
+        'fechaNacimiento',
+        'caracteristica',
+        'telefonoNumero',
+        'email',
+        'ocupacion',
+        'nacionalidad',
+        'calle',
+        'numeroCalle',
+        'codigoPostal',
+        'localidad',
+        'provincia',
+        'pais',
+        'departamento'
+    ];
+    
+    let todosValidos = true;
+    camposAValidar.forEach(campoId => {
+        if (!validarCampo(campoId)) {
+            todosValidos = false;
+        }
+    });
+    
+    return todosValidos;
+}
+
+
+function inicializarValidacionTiempoReal() {
+    const camposAValidar = [
+        'apellido',
+        'nombre',
+        'tipoDocumento',
+        'numeroDocumento',
+        'cuit',
+        'fechaNacimiento',
+        'caracteristica',
+        'telefonoNumero',
+        'email',
+        'ocupacion',
+        'nacionalidad',
+        'calle',
+        'numeroCalle',
+        'codigoPostal',
+        'localidad',
+        'provincia',
+        'pais',
+        'departamento'
+    ];
+    
+    camposAValidar.forEach(campoId => {
+        const campo = document.getElementById(campoId);
+        if (campo) {
+            
+            campo.addEventListener('blur', () => {
+                validarCampo(campoId);
+            });
+            
+            
+            campo.addEventListener('input', () => {
+                
+                const mensajeError = campo.parentElement.querySelector('.mensaje-error.mostrar');
+                if (mensajeError && campo.value.trim() !== '') {
+                    ocultarError(campoId);
+                }
+            });
+        }
+    });
+}
+
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarValidacionTiempoReal);
+} else {
+    inicializarValidacionTiempoReal();
+}
+
+
+
+

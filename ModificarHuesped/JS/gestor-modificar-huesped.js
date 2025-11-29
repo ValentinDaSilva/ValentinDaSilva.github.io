@@ -44,7 +44,7 @@ export class GestorModificarHuesped  {
             return formData;
         }
     
-        static validarTodosLosCampos() {
+        static validarTodosLosCampos(datos) {
             const todosLosCamposValidos = validarTodosLosCampos();
             if (!todosLosCamposValidos) {
                 mensajeError("Por favor, corrige los errores en los campos marcados antes de continuar");
@@ -132,56 +132,141 @@ export class GestorModificarHuesped  {
             );
         }
 
-    static async enviarHuespedAAPIModificar(huesped) {
+    static async enviarHuespedAAPIModificar(jsonData) {
+        console.log('JSON a enviar a la API (modificar):', jsonData);
 
         try {
-            const res = await fetch("http://localhost:8080/api/huespedes", {
+            // Intento normal de modificación
+            let res = await fetch("http://localhost:8080/api/huespedes", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(huesped)
+                body: JSON.stringify(jsonData)
             });
 
-            // Manejo de errores
-            if (!res.ok) {
+            // Caso → Documento duplicado / conflicto (409)
+            if (res.status === 409) {
+                return new Promise((resolve) => {
+                    advertencia(
+                        "¡CUIDADO! Ya existe un huésped con ese numero de documento.\n¿Deseás modificarlo igual?",
+                        "ACEPTAR ✅",
+                        "CORREGIR ✏️",
+
+                        // ACEPTAR -> reintentar con forzar = true
+                        async function () {
+                            const jsonForzado = { ...jsonData, forzar: true };
+                            console.log("Reintentando modificación con forzar = true:", jsonForzado);
+
+                            try {
+                                const res2 = await fetch("http://localhost:8080/api/huespedes", {
+                                    method: "PUT",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(jsonForzado)
+                                });
+
+                                if (!res2.ok) {
+                                    const err = await res2.text();
+                                    console.error("Error al forzar modificación:", err);
+                                    resolve({ error: err || 'Error al modificar el huésped en la base de datos' });
+                                    return;
+                                }
+
+                                const data = await res2.json();
+                                resolve({ success: true, data });
+                            } catch (err) {
+                                console.error("Error al reintentar modificación forzada:", err);
+                                resolve({
+                                    error: "Error inesperado de conexión. Por favor, verifica que el servidor esté corriendo."
+                                });
+                            }
+                        },
+
+                        // CORREGIR -> devolver cancelado y enfocar campo
+                        function () {
+                            const campo = document.getElementById('numeroDocumento');
+                            if (campo) campo.focus();
+                            resolve({ cancelado: true });
+                        }
+                    );
+                });
+            } else if (!res.ok) {
+                // Otro error del servidor
                 const errorText = await res.text();
-                console.error('Error en la respuesta del servidor:', errorText);
+                console.error('Error en la respuesta del servidor al modificar:', errorText);
                 return { error: errorText || 'Error al modificar el huésped en la base de datos' };
+            } else {
+                // Éxito
+                const data = await res.json();
+                console.log('Huésped modificado exitosamente:', data);
+
+                const nombre = document.getElementById("nombre")?.value?.trim() || '';
+                const apellido = document.getElementById("apellido")?.value?.trim() || '';
+
+                mensajeExito(`La operación ha culminado con éxito`);
+
+                return { success: true, data };
             }
-
-            // Éxito
-            const data = await res.json();
-            console.log('Huésped modificado exitosamente:', data);
-            return { success: true, data };
-
         } catch (error) {
-            console.error('Error al enviar huésped a la API:', error);
+            console.error('Error al enviar huésped a la API (modificar):', error);
             return {
                 error: "Error inesperado de conexión. Por favor, verifica que el servidor esté corriendo."
             };
         }
     }
 
-    static async enviarHuespedAAPIEliminar(huesped) {
-        try {
-            const res = await fetch(`http://localhost:8080/api/huespedes/${huesped.getNumeroDocumento()}`, {
-                method: "DELETE"
-            });
+    static async enviarHuespedAAPIEliminar(jsonData) {
+        console.log('JSON para eliminar en la API:', jsonData);
 
-            if (!res.ok) {
-                const errorText = await res.text();
-                console.error('Error al eliminar el huésped:', errorText);
-                return { error: errorText || 'Error al eliminar el huésped en la base de datos' };
-            }
+        const numeroDocumento = jsonData?.numeroDocumento || jsonData?.numero || document.getElementById('numeroDocumento')?.value?.trim();
+        
 
-            const data = await res.json();
-            console.log('Huésped eliminado exitosamente:', data);
-            return { success: true, data };
-        } catch (error) {
-            console.error('Error al intentar eliminar huésped en la API:', error);
-            return {
-                error: "Error inesperado de conexión. Por favor, verifica que el servidor esté corriendo."
-            };
-        }
+        // Pedimos confirmación al usuario antes de intentar eliminar
+        return new Promise((resolve) => {
+            const nombre = jsonData?.nombre || document.getElementById('nombre')?.value?.trim() || '';
+            const apellido = jsonData?.apellido || document.getElementById('apellido')?.value?.trim() || '';
+            const tipoDocumento = jsonData?.tipoDocumento || document.getElementById('tipoDocumento')?.value?.trim() || '';
+
+
+            pregunta(
+                `Los datos del\nhuésped ${nombre} ${apellido},\n${tipoDocumento} ${numeroDocumento}\nserán eliminados del sistema.`,
+                "ELIMINAR ✅",
+                "CANCELAR ❌",
+
+                // ACEPTAR -> realizar DELETE
+                async function () {
+                    try {
+                        let res = await fetch(`http://localhost:8080/api/huespedes/${encodeURIComponent(numeroDocumento)}`, {
+                            method: "DELETE"
+                        });
+
+                        // Si el servidor devuelve conflicto (p. ej. 409 por referencias), preguntamos si quiere forzar
+                        if (res.status === 409) {
+                            const errorText = await res.text();
+                            mensajeError("El huésped no puede ser eliminado pues se ha alojado en el Hotel en alguna oportunidad. PRESIONE CUALQUIER TECLA PARA CONTINUAR…");
+                            return;
+                        }else if (!res.ok) {
+                            const errorText = await res.text();
+                            console.error('Error en la respuesta del servidor al eliminar:', errorText);
+                            resolve({ error: errorText || 'Error al eliminar el huésped en la base de datos' });
+                            return;
+                        }else {
+                            mensajeExito("Los datos del\nhuésped ${nombre} ${apellido},\n${tipoDocumento} ${numeroDocumento}\nsfueron eliminados del sistema, PRESIONE CUALQUIER TECLA PARA CONTINUAR");
+                        }
+
+                        resolve({ success: true, data });
+                    } catch (error) {
+                        console.error('Error al intentar eliminar huésped en la API:', error);
+                        resolve({
+                            error: "Error inesperado de conexión. Por favor, verifica que el servidor esté corriendo."
+                        });
+                    }
+                },
+
+                // NO -> cancelar eliminación
+                function () {
+                    resolve({ cancelado: true });
+                }
+            );
+        });
     }
 
     static async guardarEnBD(jsonData, operacion = 'modificacion') {

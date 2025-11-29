@@ -9,6 +9,26 @@
 
 export class GestorRealizarReserva {
 
+  static validaarFechas(desde, hasta) {
+    const fechaDesde = new Date(desde);
+    const fechaHasta = new Date(hasta);
+    if (!desde || !hasta) {
+          mensajeError("Debes completar ambas fechas.");
+          return false;
+        }
+
+        if (new Date(desde) >= new Date(hasta)) {
+          mensajeError("La fecha de salida debe ser posterior a la de entrada.");
+          return false;
+        }
+
+        // Limpio selección anterior, cargo datos y genero grilla
+        if (typeof limpiarHabitacionesSeleccionadas === "function") {
+            limpiarHabitacionesSeleccionadas();
+        }
+        return true;
+
+  }
   // -----------------------------------------------------------
   // 1) Normalizar / validar selección proveniente de la UI
   //    listaSeleccion: [{ habitacion: "IND-101", fechaDesde, fechaHasta }, ...]

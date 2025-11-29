@@ -1,0 +1,56 @@
+@startuml
+actor Conserje
+participant "UI - Modificar Huesped" as UI
+participant GestorHuesped
+participant Huesped
+participant HuespedDAO
+
+Conserje -> UI: Solicita modificar huésped
+UI -> GestorHuesped: iniciarModificacion(huespedSeleccionado)
+
+activate GestorHuesped
+GestorHuesped -> UI: mostrarDatos(huespedSeleccionado)
+
+loop Hasta que los datos sean válidos
+    Conserje -> UI: Modifica datos y presiona SIGUIENTE
+    UI -> GestorHuesped: modificarHuesped()
+
+    GestorHuesped -> UI: extraerDatosDeUI()
+    UI --> GestorHuesped: datosIngresados
+
+    GestorHuesped -> GestorHuesped: validarDatos(datosIngresados)
+
+    alt datos inválidos
+        GestorHuesped -> UI: mostrarErrores(errores)
+    else datos válidos
+    end
+end
+
+GestorHuesped -> HuespedDAO: existeDocumento(tipo,numero)
+activate HuespedDAO
+HuespedDAO --> GestorHuesped: existe
+deactivate HuespedDAO
+
+alt Documento ya existente
+    GestorHuesped -> UI: Mostrar cartel "Documento ya existe\nACEPTAR / CORREGIR"
+    UI -> Conserje: Solicita opción
+    Conserje --> UI: opcion
+    alt CORREGIR
+        UI --> GestorHuesped: opcionCorregir
+        GestorHuesped -> UI: enfocarCampoDocumento()
+        return
+    else ACEPTAR IGUALMENTE
+        UI --> GestorHuesped: opcionAceptar
+    end
+end
+
+GestorHuesped -> GestorHuesped: actualizarHuesped(datosIngresados)
+GestorHuesped -> HuespedDAO: actualizar(huesped)
+activate HuespedDAO
+HuespedDAO --> GestorHuesped: resultado
+deactivate HuespedDAO
+
+GestorHuesped -> UI: mostrarMensaje("Operación exitosa")
+deactivate GestorHuesped
+
+@enduml

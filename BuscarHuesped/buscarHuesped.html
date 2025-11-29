@@ -4,34 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Buscar Huésped</title>
-  
-  
+
+  <!-- CSS del sistema -->
   <link rel="stylesheet" href="CSS/estilos-base.css">
   <link rel="stylesheet" href="CSS/fondo.css">
   <link rel="stylesheet" href="CSS/formulario.css">
   <link rel="stylesheet" href="CSS/resultados.css">
   <link rel="stylesheet" href="CSS/botones.css">
   <link rel="stylesheet" href="CSS/errores.css">
+  <link rel="stylesheet" href="CSS/modal.css">
 </head>
+
 <body>
+
   <img src="/assets/image/fondoAltaHuesped.webp" alt="Fondo hotel" class="imagen-fondo">
   <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
-  
+
+  <!-- ============================== -->
+  <!-- FORMULARIO DE BÚSQUEDA -->
+  <!-- ============================== -->
   <div class="contenedor-principal">
     <div class="contenedor-formulario">
         <h1 class="titulo-busqueda">Buscar Huésped</h1>
-        <form>
+
+        <form id="form-buscar-huesped">
           <div class="grupo-campo contenedor-campo">
             <label for="apellido" class="etiqueta-campo">Apellido:</label>
-            <input type="text" id="apellido" name="apellido" placeholder="Perez"/>
+            <input type="text" id="apellido" placeholder="Pérez"/>
           </div>
+
           <div class="grupo-campo contenedor-campo">
-            <label for="nombre" class="etiqueta-campo">nombre:</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Juan Carlos"/>
+            <label for="nombre" class="etiqueta-campo">Nombre:</label>
+            <input type="text" id="nombre" placeholder="Juan Carlos"/>
           </div>
+
           <div class="grupo-campo contenedor-campo">
             <label for="tipoDocumento" class="etiqueta-campo">Tipo de documento:</label>
-            <select id="tipoDocumento" name="tipoDocumento">
+            <select id="tipoDocumento">
               <option value="">Seleccione</option>
               <option value="DNI">DNI</option>
               <option value="Pasaporte">Pasaporte</option>
@@ -39,50 +48,113 @@
               <option value="LibretaCivica">Libreta Cívica</option>
             </select>
           </div>
+
           <div class="grupo-campo contenedor-campo">
             <label for="numeroDocumento" class="etiqueta-campo">Número de documento:</label>
-            <input type="text" id="numeroDocumento" name="numeroDocumento" placeholder="12345678"/>
+            <input type="text" id="numeroDocumento" placeholder="12345678"/>
           </div>
+
           <div class="grupo-campo">
             <button type="submit" class="boton-buscar">Buscar</button>
           </div>
         </form>
     </div>
   </div>
-  
-  <div class="contenedor-resultados" style="display: none;">
+
+
+  <!-- ============================== -->
+  <!-- RESULTADOS -->
+  <!-- ============================== -->
+  <div class="contenedor-resultados" style="display:none;">
     <h2 class="titulo-resultados">Resultados de la búsqueda</h2>
+
     <div class="contenedor-tabla">
       <table class="tabla-resultados">
         <thead>
           <tr>
             <th>Apellido</th>
-            <th>nombre</th>
-            <th>Tipo de documento</th>
-            <th>Número de documento</th>
+            <th>Nombre</th>
+            <th>Tipo Documento</th>
+            <th>Número Documento</th>
           </tr>
         </thead>
-        <tbody>
-          
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
+
     <div class="boton-siguiente">Siguiente</div>
   </div>
 
-  
-  
-  <script src="../Login/JS/validar-sesion.js"></script>
-  
-  <script src="../Login/JS/navegacion-volver.js"></script>
+
+
+  <!-- ================================================================== -->
+  <!-- ===========================  MODALES  ============================ -->
+  <!-- ================================================================== -->
+
+  <!-- ERROR -->
+  <div id="modalError" class="modal" style="display:none;">
+    <div class="contenido-modal contenedor-error">
+      <h2 class="titulo-error">ERROR</h2>
+      <img src="/assets/image/Error.png" class="imagen-modal">
+      <p id="mensaje-error" class="mensaje-modal"></p>
+      <button id="boton-error-ok" class="boton-general boton-error">OK</button>
+    </div>
+  </div>
+
+  <!-- ADVERTENCIA -->
+  <div id="modalAdvertencia" class="modal" style="display:none;">
+    <div class="contenido-modal contenedor-advertencia">
+      <h2 class="titulo-advertencia">ADVERTENCIA</h2>
+      <img src="/assets/image/Advertencia.png" class="imagen-modal">
+      <p id="mensaje-advertencia" class="mensaje-modal"></p>
+      <div class="botones-advertencia">
+        <button id="boton-advertencia-aceptar" class="boton-general boton-advertencia">ACEPTAR</button>
+        <button id="boton-advertencia-corregir" class="boton-general boton-advertencia">CORREGIR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⭐ PREGUNTA (EL QUE NECESITÁS) -->
+  <div id="modalPregunta" class="modal" style="display:none;">
+    <div class="contenido-modal contenedor-pregunta">
+      <h2 class="titulo-pregunta">PREGUNTA</h2>
+      <img src="/assets/image/Pregunta.png" class="imagen-modal">
+      <p id="mensaje-pregunta" class="mensaje-modal"></p>
+
+      <div class="botones-pregunta">
+        <button id="boton-pregunta-1" class="boton-general boton-pregunta">SI</button>
+        <button id="boton-pregunta-2" class="boton-general boton-pregunta">NO</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORRECTO -->
+  <div id="modalCorrecto" class="modal" style="display:none;">
+    <div class="contenido-modal contenedor-correcto">
+      <h2 class="titulo-correcto">ÉXITO</h2>
+      <img src="/assets/image/Correcto.png" class="imagen-modal">
+      <p id="mensaje-correcto" class="mensaje-modal"></p>
+    </div>
+  </div>
+
+
+
+  <!-- ================================================================== -->
+  <!-- ====================  SCRIPTS DEL SISTEMA  ======================= -->
+  <!-- ================================================================== -->
+
   <script src="JS/modales.js"></script>
-  
-  <script src="JS/datos-huespedes.js"></script>
+  <script src="../Login/JS/navegacion-volver.js"></script>
   <script src="JS/validaciones-campos.js"></script>
   <script src="JS/tabla-resultados.js"></script>
+
+  <!-- Controlador de UI -->
   <script type="module" src="JS/gestor-buscar-huesped.js"></script>
-  <script src="JS/busqueda.js"></script>
-  <script src="../JS/general.js"></script>
+
+  <!-- Backend / GestorHuesped general -->
   <script type="module" src="/Clases/Dominio/GestorHuesped.js"></script>
+
+  <script src="../JS/general.js"></script>
+
 </body>
 </html>

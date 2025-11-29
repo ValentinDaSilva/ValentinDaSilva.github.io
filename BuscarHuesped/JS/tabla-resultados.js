@@ -111,10 +111,7 @@ function manejarBotonSiguiente() {
 
 
 function inicializarBotonSiguiente() {
-    const botonSiguiente = document.querySelector('.boton-siguiente');
-    if (botonSiguiente) {
-        botonSiguiente.addEventListener('click', manejarBotonSiguiente);
-    }
+   
 }
 
 
