@@ -1,0 +1,77 @@
+@startuml
+actor Conserje
+participant "UI - Modificar Huesped" as UI
+participant GestorHuesped
+participant HuespedDAO
+
+Conserje -> UI: Selecciona huésped y solicita modificar
+UI -> GestorHuesped: iniciarModificacion(huespedSeleccionado)
+activate GestorHuesped
+GestorHuesped -> UI: mostrarDatos(huespedSeleccionado)
+
+loop Reingreso de datos
+    Conserje -> UI: Modifica datos y presiona botón
+
+    alt Botón SIGUIENTE
+        UI -> GestorHuesped: modificarHuesped()
+        GestorHuesped -> UI: extraerDatosDeUI()
+        UI --> GestorHuesped: datosIngresados
+        GestorHuesped -> GestorHuesped: validarDatosObligatorios()
+
+        alt Datos faltantes (2.A)
+            GestorHuesped -> UI: mostrarErroresOmisiones()
+        else Datos completos
+            GestorHuesped -> HuespedDAO: existeDocumento(tipo, numero)
+            activate HuespedDAO
+            HuespedDAO --> GestorHuesped: existe
+            deactivate HuespedDAO
+
+            alt Documento existente (2.B)
+                GestorHuesped -> UI: mostrarCartelDocumentoExiste()
+                UI -> Conserje: Solicita opción
+                Conserje --> UI: opcion
+
+                alt CORREGIR
+                    UI -> GestorHuesped: opcionCorregir
+                    GestorHuesped -> UI: enfocarCampoDocumento()
+                else ACEPTAR IGUALMENTE
+                    UI -> GestorHuesped: opcionAceptar
+                    break
+                end
+
+            else Documento OK
+                break
+            end
+        end
+
+    else Botón CANCELAR (2.C)
+        UI -> GestorHuesped: cancelarModificacion()
+        GestorHuesped -> UI: mostrarConfirmacionCancelar()
+        UI -> Conserje: Solicita SI/NO
+        Conserje --> UI: opcionCancelar
+
+        alt Elige SI
+            GestorHuesped -> UI: volverPantallaAnterior()
+            deactivate GestorHuesped
+            return
+        else Elige NO
+            GestorHuesped -> UI: mostrarDatos(huespedSeleccionado)
+        end
+
+    else Botón BORRAR (2.D)
+        UI -> GestorHuesped: borrarHuesped()
+        GestorHuesped -> HuespedDAO: ejecutarBajaHuesped()
+        deactivate GestorHuesped
+        return
+    end
+end
+
+GestorHuesped -> HuespedDAO: actualizar(huesped)
+activate HuespedDAO
+HuespedDAO --> GestorHuesped: resultado
+deactivate HuespedDAO
+
+GestorHuesped -> UI: mostrarMensaje("La operación ha culminado con éxito")
+deactivate GestorHuesped
+
+@enduml

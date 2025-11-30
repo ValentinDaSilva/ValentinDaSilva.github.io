@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Modificar Huésped</title>
+  <title>Alta de Huésped</title>
   
   
   <link rel="stylesheet" href="CSS/estilos-base.css">
@@ -17,16 +17,16 @@
     <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
     
     <div class="superposicion">
-      <form id="formularioModificarHuesped" class="formulario-modificar" novalidate>
-        <h2 class="titulo-formulario">Modificar Huésped</h2>
+      <form id="altaHuesped" class="formulario-alta" novalidate>
+        <h2 class="titulo-formulario">Dar Alta de Huésped</h2>
         <div class="cuadricula-formulario">
           <div class="contenedor-campo">
             <label for="apellido" class="etiqueta-campo requerido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido" required>
+            <input type="text" id="apellido" name="apellido" placeholder="Pérez" required>
           </div>
           <div class="contenedor-campo">
             <label for="nombre" class="etiqueta-campo requerido">nombre:</label>
-            <input type="text" id="nombre" name="nombre" required>
+            <input type="text" id="nombre" name="nombre" placeholder="Juan Carlos" required>
           </div>
       
           <div class="contenedor-campo">
@@ -42,12 +42,12 @@
       
           <div class="contenedor-campo">
             <label for="numeroDocumento" class="etiqueta-campo requerido">Número de documento:</label>
-            <input type="text" id="numeroDocumento" name="numeroDocumento" required>
+            <input type="text" id="numeroDocumento" name="numeroDocumento" placeholder="12345678" required>
           </div>
       
           <div class="contenedor-campo">
             <label for="cuit" class="etiqueta-campo">CUIT (opcional):</label>
-            <input type="text" id="cuit" name="cuit">
+            <input type="text" id="cuit" name="cuit" placeholder="20-12345678-9">
           </div>      
       
           <div class="contenedor-campo">
@@ -62,7 +62,7 @@
                 <input type="tel" id="caracteristica" name="caracteristica" placeholder="Ej: 342" required>
               </div>
               <div class="contenedor-campo">
-                <input type="tel" id="celular" name="celular" placeholder="Ej: 5986867" required>
+                <input type="tel" id="telefonoNumero" name="telefonoNumero" placeholder="Ej: 5986867" required>
               </div>
             </div>
           </div>
@@ -92,8 +92,8 @@
                 <input type="text" id="calle" name="calle" placeholder="Primera Junta" required>
               </div>
               <div class="contenedor-campo">
-                <label for="numero" class="etiqueta-campo requerido">Número:</label>
-                <input type="text" id="numero" name="numero" placeholder="2457" required>
+                <label for="numeroCalle" class="etiqueta-campo requerido">Número:</label>
+                <input type="text" id="numeroCalle" name="numero" placeholder="2457" required>
               </div>
               <div class="contenedor-campo">
                 <label for="departamento" class="etiqueta-campo">Departamento: (opcional)</label>
@@ -124,9 +124,8 @@
             </div>
           </fieldset>
       
-          <button type="submit" class="boton-guardar">Guardar</button>
-          <button type="button" class="boton-borrar">Borrar</button>
-          <button type="button" class="boton-cancelar">Cancelar</button>
+          <button type="submit" class="boton-enviar">Siguiente</button>
+          <button type="button" class="boton-cancelar" onclick="window.location.href='../index.html'">Cancelar</button>
         </div>
       </form>
     </div>
@@ -178,19 +177,24 @@
 
     
     
-    <script src="../Login/JS/validar-sesion.js"></script>
+    <script src="../../Login/JS/validar-sesion.js"></script>
     
-    <script src="../Login/JS/navegacion-volver.js"></script>
+    <script src="../../Login/JS/navegacion-volver.js"></script>
     
-    
-    <script src="JS/paises.js"></script>
-    <script src="JS/modales.js"></script>
-    <script src="JS/validaciones-campos.js"></script>
-    
-    <script type="module" src="JS/gestor-modificar-huesped.js"></script>
-    <script src="JS/carga-datos.js"></script>
-    <script type="module" src="JS/validacion.js"></script>
-    <script src="JS/utilidades.js"></script>
-    <script src="../JS/general.js"></script>
+   
+    <script src="./JS/paises.js"></script>
+    <script src="./JS/modales.js"></script>
+    <script src="./JS/validaciones-campos.js"></script>
+    <script src="./JS/validacion.js"></script>
+    <script src="./JS/utilidades.js"></script>
+    <script src="/JS/general.js"></script>
+    <script type="module" src="/GestionDeHuespedes/GestorHuesped.js"></script>
+    <script type="module" src="/Clases/Dominio/Huesped.js"></script>
+    <script type="module" src="/Clases/Dominio/Direccion.js"></script>
+    <script type="module" src="/Clases/DTO/dto.js"></script>
+
+    <script type="module" src="JS/gestor-huesped.js"></script>
+
+
 </body>
 </html>

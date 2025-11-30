@@ -1,0 +1,71 @@
+@startuml
+actor Conserje
+participant "UI - Dar Alta Huesped" as UI
+participant GestorHuesped
+participant Huesped
+participant HuespedDAO
+
+Conserje -> UI: Solicita dar de alta un huésped
+
+activate GestorHuesped
+
+UI -> Conserje: Solicitar ingreso de datos
+Conserje --> UI: Ingresa los datos y presiona el boton siguiente
+UI -> GestorHuesped: darAltaHuesped()
+
+loop Hasta que los datos sean válidos
+    GestorHuesped -> UI: extraerDatosDeUI()
+    UI --> GestorHuesped: datosIngresados
+    GestorHuesped -> GestorHuesped: validarDatos(datosIngresados)
+
+    alt datos inválidos
+        GestorHuesped -> UI: mostrarErrores(errores)
+    else datos válidos
+    end
+end
+
+GestorHuesped -> GestorHuesped: crearHuesped(datosIngresados)
+create Huesped
+GestorHuesped --> Huesped: <<create>>
+activate Huesped
+Huesped --> GestorHuesped: h: instanciaHuesped
+deactivate Huesped
+
+GestorHuesped -> HuespedDAO: crearHuesped(h)
+activate HuespedDAO
+HuespedDAO --> GestorHuesped: resultado
+deactivate HuespedDAO
+
+alt Documento ya existente
+    GestorHuesped -> UI: Mostrar cartel "Documento ya existe\nCORREGIR o ACEPTAR"
+    UI -> Conserje: Solicita opción
+    Conserje --> UI: opcion
+
+    alt CORREGIR
+        UI --> GestorHuesped: opcionCorregir
+        GestorHuesped -> UI: enfocarCampoDocumento()
+
+    else ACEPTAR IGUALMENTE
+        UI --> GestorHuesped: opcionAceptar
+
+        GestorHuesped -> HuespedDAO: crearHuesped(h)
+        activate HuespedDAO
+        HuespedDAO --> GestorHuesped: resultado
+        deactivate HuespedDAO
+    end
+
+end
+    GestorHuesped -> UI: Mostrar mensaje "Alta exitosa\n¿Cargar otro?"
+    UI -> Conserje: Solicitar respuesta
+    Conserje --> UI: Respuesta
+
+    alt SI
+        UI --> GestorHuesped: cargarOtro
+        GestorHuesped -> UI: reiniciarCampos()
+    else NO
+        GestorHuesped -> UI: volverPantallaAnterior()
+    end
+
+
+deactivate GestorHuesped
+@enduml

@@ -1,12 +1,10 @@
 // /Clases/Dominio/GestorHuesped.js
-import { Direccion } from "./Direccion.js";
-import { Huesped } from "./Huesped.js";
-import { HuespedDTO, DireccionDTO } from "../DTO/dto.js";
+import { Direccion } from "/Clases/Dominio/Direccion.js";
+import { Huesped } from "/Clases/Dominio/Huesped.js";
+import { HuespedDTO, DireccionDTO } from "/Clases/DTO/dto.js";
 
 class HuespedDAO {
-    // ==========================
-    // ALTA HUÉSPED
-    // ==========================
+    
     static async crearHuesped(dto, forzar = false) {
         const payload = { ...dto };
         if (forzar) payload.forzar = true;
@@ -37,9 +35,6 @@ class HuespedDAO {
         }
     }
 
-    // ==========================
-    // BUSCAR HUÉSPED FILTRADO
-    // ==========================
     static async buscarHuespedFiltrado(criterios) {
         const params = new URLSearchParams({
             apellido: criterios.apellido || "",
@@ -71,24 +66,73 @@ class HuespedDAO {
             };
         }
     }
+
+    //Guardar modificación de huésped
+    static async guardar(dto, forzar = false, esModificacion = false) {
+        const payload = { ...dto };
+        if (forzar) payload.forzar = true;
+
+        const method = esModificacion ? "PUT" : "POST";
+        const url = "http://localhost:8080/api/huespedes";
+
+        try {
+            const res = await fetch(url, {
+                method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const contentType = res.headers.get("Content-Type") || "";
+            let body;
+
+            if (contentType.includes("application/json")) {
+                body = await res.json();
+            } else {
+                body = await res.text();
+            }
+
+            return { ok: res.ok, status: res.status, body };
+        } catch (e) {
+            return {
+                ok: false,
+                status: 0,
+                body: "Error de conexión con el servidor."
+            };
+        }
+    }
+
+    static async borrar(numeroDocumento) {
+        try {
+            const res = await fetch(
+                `http://localhost:8080/api/huespedes/${encodeURIComponent(numeroDocumento)}`,
+                { method: "DELETE" }
+            );
+
+            const text = await res.text();
+            return { ok: res.ok, status: res.status, body: text };
+        } catch (e) {
+            return {
+                ok: false,
+                status: 0,
+                body: "Error de conexión con el backend."
+            };
+        }
+    }
 }
 
-class GestorHuesped {
-    // ==========================================================
-    // CU09 – DAR ALTA HUÉSPED (ya lo tenías)
-    // ==========================================================
+export default class GestorHuesped {
+
     static async darAltaHuesped(UI) {
         let datos;
         let validacion;
 
-        do {
-            datos = UI.extraerDatosDeUI();
-            validacion = GestorHuesped.validarDatos(datos);
+        datos = UI.extraerDatosDeUI();
+        validacion = GestorHuesped.validarDatos(datos);
 
-            if (!validacion.esValido) {
-                UI.mostrarErrores(validacion.errores);
-            }
-        } while (!validacion.esValido);
+        if (!validacion.esValido) {
+            UI.mostrarErrores(validacion.errores);
+            return;
+        }
 
         const huesped = GestorHuesped.crearHuesped(datos);
         const dto = GestorHuesped.crearHuespedDTO(huesped);
@@ -122,9 +166,96 @@ class GestorHuesped {
         }
     }
 
-    // ==========================================================
-    // VALIDACIÓN (Alta)
-    // ==========================================================
+    static async buscarHuesped(criterios, UI) {
+        const resp = await HuespedDAO.buscarHuespedFiltrado(criterios);
+
+        if (!resp.ok) {
+            const msg =
+                typeof resp.body === "string"
+                    ? resp.body
+                    : "Error al buscar huéspedes.";
+            UI.mostrarErrorBusqueda(msg);
+            return;
+        }
+
+        const body = resp.body;
+        const lista = Array.isArray(body)
+            ? body
+            : Array.isArray(body?.huespedes)
+                ? body.huespedes
+                : [];
+
+        console.log("[GestorHuesped] listaHuespedes:", lista);
+
+        // alt no existe ninguna concordancia
+        if (!lista || lista.length === 0) {
+            await UI.mostrarSinResultadosYOfrecerAlta();
+            return;
+        }
+
+        // else existen coincidencias → GestorHuesped --> UI: mostrarResultados(lista)
+        UI.mostrarResultados(lista);
+        UI.mostrarSeccionResultados();
+    }
+
+    static async modificarHuesped(UI) {
+        const datos = UI.extraerDatosDeUI();
+        const valid = GestorHuesped.validarDatos(datos);
+
+        if (!valid.esValido) {
+            UI.mostrarError("Hay campos con errores.");
+            return;
+        }
+
+        const dom = GestorHuesped.crearDominio(datos);sd
+        const dto = GestorHuesped.crearDTO(dom);
+
+        let resp = await HuespedDAO.guardar(dto, false, true);
+
+        if (resp.status === 409) {
+            const opcion = await UI.preguntarDocumentoExistente();
+
+            if (opcion === "corregir") {
+                UI.enfocarCampoDocumento();
+                return;
+            }
+
+            resp = await HuespedDAO.guardar(dto, true, true);
+        }
+
+        if (!resp.ok) {
+            UI.mostrarError(resp.body || "Error al modificar.");
+            return;
+        }
+
+        await UI.mostrarModificacionExitosa(dom);
+        UI.volverPantallaAnterior();
+    }
+
+    static async borrarHuesped(UI) {
+        const datos = UI.extraerDatosDeUI();
+        const numero = datos.numeroDocumento;
+
+        const deseaBorrar = await UI.confirmarBorrado(datos);
+
+        if (!deseaBorrar) return UI.volverPantallaAnterior();
+
+        const resp = await HuespedDAO.borrar(numero);
+
+        if (resp.status === 409) {
+            await UI.mostrarNoEliminable();
+            return UI.volverPantallaAnterior();
+        }
+
+        if (!resp.ok) {
+            UI.mostrarError(resp.body || "No se pudo borrar.");
+            return;
+        }
+
+        await UI.mostrarBorradoExitoso(datos);
+        UI.volverPantallaAnterior();
+    }
+
     static validarDatos(d) {
         const err = [];
 
@@ -146,9 +277,6 @@ class GestorHuesped {
         return { esValido: err.length === 0, errores: err };
     }
 
-    // ==========================================================
-    // CREAR DOMINIO / DTO (Alta)
-    // ==========================================================
     static crearHuesped(d) {
         const direccion = new Direccion(
             d.calle,
@@ -202,65 +330,8 @@ class GestorHuesped {
             direccionDTO
         );
     }
-
-    // ==========================================================
-    // CUxx – BUSCAR HUÉSPED (diagrama que pasaste)
-    // ==========================================================
-    static async buscarHuesped(criterios, UI) {
-        const resp = await HuespedDAO.buscarHuespedFiltrado(criterios);
-
-        if (!resp.ok) {
-            const msg =
-                typeof resp.body === "string"
-                    ? resp.body
-                    : "Error al buscar huéspedes.";
-            UI.mostrarErrorBusqueda(msg);
-            return;
-        }
-
-        const body = resp.body;
-        const lista = Array.isArray(body)
-            ? body
-            : Array.isArray(body?.huespedes)
-                ? body.huespedes
-                : [];
-
-        console.log("[GestorHuesped] listaHuespedes:", lista);
-
-        // alt no existe ninguna concordancia
-        if (!lista || lista.length === 0) {
-            await UI.mostrarSinResultadosYOfrecerAlta();
-            return;
-        }
-
-        // else existen coincidencias → GestorHuesped --> UI: mostrarResultados(lista)
-        UI.mostrarResultados(lista);
-        UI.mostrarSeccionResultados();
-    }
-
-    // UI --> GestorHuesped: devolverSeleccion(seleccion)
-    static procesarSeleccion(seleccion, UI) {
-        // alt selección vacía → darAltaHuesped()
-        if (!seleccion) {
-            UI.irAPantallaAlta();
-            return;
-        }
-
-        // else selección válida → modificarHuesped(huespedDTO)
-        GestorHuesped.modificarHuesped(seleccion, UI);
-    }
-
-    static modificarHuesped(huespedSeleccionado, UI) {
-        UI.irAPantallaModificar(huespedSeleccionado);
-    }
-
-    // Stubs si tu profe mira el diagrama de clases
-    static async darDeBaja(nroDoc) {}
-    static async buscarHuespedPorDoc(apellido, nombre, tipoDoc, nroDoc) {}
-    static async modificarHuespedPorDoc(nroDoc) {}
 }
 
-// export como módulo y también al objeto global para los scripts no-module
 export { GestorHuesped };
 
 if (typeof window !== "undefined") {

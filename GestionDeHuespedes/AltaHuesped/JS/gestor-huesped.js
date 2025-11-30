@@ -1,5 +1,5 @@
 // AltaHuesped/JS/gestor-huesped.js
-import { GestorHuesped }  from "/Clases/Dominio/GestorHuesped.js";
+import { GestorHuesped }  from "/GestionDeHuespedes/GestorHuesped.js";
 
 class UIAltaHuesped {
     static {
