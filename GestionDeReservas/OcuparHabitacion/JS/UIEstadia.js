@@ -216,24 +216,23 @@ class UIEstadia {
             fondoReserva.style.display = 'none';
         }
 
-        // Crear overlay oscuro si no existe (permanece visible durante todo el proceso)
-        let overlay = document.getElementById('overlay-buscador-huesped');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'overlay-buscador-huesped';
-            overlay.style.cssText = `
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.8);
-                z-index: 9998;
-                display: block;
-            `;
-            document.body.appendChild(overlay);
-        } else {
-            // Aumentar opacidad cuando se muestra el buscador
-            overlay.style.background = 'rgba(0, 0, 0, 0.8)';
-            overlay.style.display = 'block';
-        }
+         // Crear overlay semitransparente para oscurecer el fondo (pero mantenerlo visible)
+         let overlay = document.getElementById('overlay-buscador-huesped');
+         if (!overlay) {
+             overlay = document.createElement('div');
+             overlay.id = 'overlay-buscador-huesped';
+             overlay.style.cssText = `
+                 position: fixed;
+                 inset: 0;
+                 background: rgba(0, 0, 0, 0.4);
+                 z-index: 9998;
+                 display: block;
+             `;
+             document.body.appendChild(overlay);
+         } else {
+             overlay.style.background = 'rgba(0, 0, 0, 0.4)';
+             overlay.style.display = 'block';
+         }
 
         const titulo = container.querySelector('h1');
         if (titulo) titulo.textContent = "Buscar Titular de la Estadía";
@@ -269,24 +268,23 @@ class UIEstadia {
             return;
         }
 
-        // Asegurar que el overlay esté visible (permanece desde el buscador de titular)
-        let overlay = document.getElementById('overlay-buscador-huesped');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'overlay-buscador-huesped';
-            overlay.style.cssText = `
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.8);
-                z-index: 9998;
-                display: block;
-            `;
-            document.body.appendChild(overlay);
-        } else {
-            // Mantener opacidad alta
-            overlay.style.background = 'rgba(0, 0, 0, 0.8)';
-            overlay.style.display = 'block';
-        }
+         // Asegurar que el overlay esté visible (mantener fondo visible pero más opaco)
+         let overlay = document.getElementById('overlay-buscador-huesped');
+         if (!overlay) {
+             overlay = document.createElement('div');
+             overlay.id = 'overlay-buscador-huesped';
+             overlay.style.cssText = `
+                 position: fixed;
+                 inset: 0;
+                 background: rgba(0, 0, 0, 0.4);
+                 z-index: 9998;
+                 display: block;
+             `;
+             document.body.appendChild(overlay);
+         } else {
+             overlay.style.background = 'rgba(0, 0, 0, 0.4)';
+             overlay.style.display = 'block';
+         }
 
         const titulo = container.querySelector('h1');
         if (titulo) titulo.textContent = "Buscar Acompañantes (opcional)";
@@ -325,7 +323,9 @@ class UIEstadia {
         if (container) container.style.display = 'none';
         if (resultadoBusqueda) resultadoBusqueda.style.display = 'none';
         
-        // El overlay permanece visible, solo ocultamos los buscadores
+        // Ocultar overlay
+        const overlay = document.getElementById('overlay-buscador-huesped');
+        if (overlay) overlay.style.display = 'none';
 
         // Preguntar si quiere acompañantes
         advertencia(
@@ -366,7 +366,9 @@ class UIEstadia {
         if (container) container.style.display = 'none';
         if (resultadoBusqueda) resultadoBusqueda.style.display = 'none';
         
-        // El overlay permanece visible hasta que se complete el registro
+        // Ocultar overlay
+        const overlay = document.getElementById('overlay-buscador-huesped');
+        if (overlay) overlay.style.display = 'none';
 
         UIEstadia.crearYRegistrarEstadia(acompanantesActual);
     }
@@ -393,10 +395,6 @@ class UIEstadia {
             mensajeError(resultado.mensaje || "No se pudo registrar la ocupación.");
             return;
         }
-
-        // Ocultar overlay solo cuando se completa el registro
-        const overlay = document.getElementById('overlay-buscador-huesped');
-        if (overlay) overlay.style.display = 'none';
 
         UIEstadia.menuFinalCU07();
     }
