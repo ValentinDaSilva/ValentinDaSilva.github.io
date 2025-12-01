@@ -161,6 +161,15 @@
   margin-top: 10px;
 }
 
+.imagen-pregunta {
+  height: 30%;
+  max-height: 120px;
+  width: auto;
+  display: block;
+  margin: 10px auto;
+  object-fit: contain;
+}
+
 .preguntaBotones {
   display: flex;
   justify-content: center;
