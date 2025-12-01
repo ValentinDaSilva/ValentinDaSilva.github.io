@@ -575,7 +575,8 @@ class UIEstadia {
                     window.location.href = "/index.html";
                 });
             } else if (boton === "Salir ❌") {
-                // Salir sin registrar
+                // Registrar la estadía antes de salir (sin acompañantes)
+                await UIEstadia.crearYRegistrarEstadia([]);
                 window.location.href = "/index.html";
             }
         });
