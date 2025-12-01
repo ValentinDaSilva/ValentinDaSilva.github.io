@@ -142,4 +142,5 @@ window.establecerTipoFiltro = establecerTipoFiltro;
 window.mostrarFiltro = mostrarFiltro;
 window.ocultarFiltro = ocultarFiltro;
 window.normalizarTipo = normalizarTipo;
+window.inicializarFiltro = inicializarFiltro;
 

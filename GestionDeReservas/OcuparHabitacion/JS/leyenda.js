@@ -77,6 +77,11 @@ function mostrarLeyenda() {
       
       // Re-inicializar el event listener del icono de información después de restaurar
       inicializarLeyenda();
+      
+      // Re-inicializar el filtro porque los elementos del DOM fueron recreados
+      if (typeof inicializarFiltro === 'function') {
+        inicializarFiltro();
+      }
     });
   }
 }
