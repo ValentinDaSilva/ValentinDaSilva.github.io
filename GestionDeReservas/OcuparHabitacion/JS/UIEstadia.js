@@ -560,6 +560,7 @@ class UIEstadia {
             "¿Desea agregar acompañantes?", 
             "SÍ, AGREGAR ✅",
             "NO, CONTINUAR ❌",
+            "Salir ❌"
         );
 
         const btnNo  = document.getElementById("boton-advertencia-aceptar");
