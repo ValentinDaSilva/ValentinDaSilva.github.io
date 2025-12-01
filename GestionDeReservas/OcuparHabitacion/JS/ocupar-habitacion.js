@@ -2,7 +2,7 @@
 
 import { 
   GestorEstadia 
-} from "../../Clases/Dominio/dominio.js";
+} from "./GestorEstadia.js";
 import { 
   convertirReservaJSONADominio, 
   convertirHuespedJSONADominio,

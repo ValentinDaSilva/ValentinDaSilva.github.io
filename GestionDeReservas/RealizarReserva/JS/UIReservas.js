@@ -5,7 +5,7 @@
 //  - Llama a GestorReserva para la lógica
 // =======================================================
 
-import { GestorReserva } from "../GestorReserva.js";
+import { GestorReserva } from "../../GestorReserva.js";
 
 class UIReservas {
 

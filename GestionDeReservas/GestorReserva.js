@@ -7,8 +7,8 @@
 //  - Llama a ReservaDAO para guardar
 // =======================================================
 
-import { HabitacionDAO } from "./JS/HabitacionDAO.js";
-import { ReservaDAO } from "./JS/ReservaDAO.js";
+import { HabitacionDAO } from "./HabitacionDAO.js";
+import { ReservaDAO } from "./ReservaDAO.js";
 
 class GestorReserva {
 

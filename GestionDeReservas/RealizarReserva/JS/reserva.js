@@ -6,7 +6,7 @@
 //  ✔ El fetch y el armado de DTO/dominio está en los Gestores
 // ==============================================================
 
-import GestorReserva from "../GestorReserva.js";
+import GestorReserva from "../../GestorReserva.js";
 
 // ------------------------------------------------------------
 // 1) MANEJAR BÚSQUEDA → cargar tabla

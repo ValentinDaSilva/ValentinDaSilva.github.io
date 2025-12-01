@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ocupar Habitación - Hotel Premier</title>
-  
-  
+  <title>Ocupar Habitación (Check-In)</title>
+
   <link rel="stylesheet" href="CSS/estilos-base.css">
   <link rel="stylesheet" href="CSS/fondo.css">
   <link rel="stylesheet" href="CSS/formulario-reserva.css">
@@ -13,31 +12,43 @@
   <link rel="stylesheet" href="CSS/estados-habitaciones.css">
   <link rel="stylesheet" href="CSS/filtro.css">
   <link rel="stylesheet" href="CSS/modales.css">
+  <!-- Buscador de huésped (misma UI que CU04) -->
   <link rel="stylesheet" href="CSS/buscar-huesped.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
+
 <body>
   <a href="javascript:volverPaginaAnterior()" class="enlace-volver">&#8592; Volver</a>
-  
-  <div class="background fondo-reserva">
-    <div class="booking-form formulario-busqueda">
-      <h2 class="titulo-formulario">Ocupar Habitaciones</h2>
-      <form novalidate>
-        <label for="checkin" class="etiqueta-campo requerido">Desde fecha</label>
-        <input type="date" id="checkin" name="checkin" class="campo-fecha" required>
 
-        <label for="checkout" class="etiqueta-campo requerido">Hasta fecha</label>
-        <input type="date" id="checkout" name="checkout" class="campo-fecha" required>
-        
+  <!-- ============================ -->
+  <!--   FORMULARIO RANGO FECHAS    -->
+  <!-- ============================ -->
+  <div class="fondo-reserva">
+    <div class="formulario-busqueda">
+      <h2 class="titulo-formulario">Ocupar Habitación</h2>
+
+      <form id="form-ocupar" novalidate>
+        <label class="etiqueta-campo requerido">Desde fecha</label>
+        <input type="date" id="desde" class="campo-fecha" required>
+
+        <label class="etiqueta-campo requerido">Hasta fecha</label>
+        <input type="date" id="hasta" class="campo-fecha" required>
+
         <button type="submit" class="boton-buscar">Buscar</button>
       </form>
     </div>
   </div>
-  
-  <div class="resultado contenedor-resultados animate__animated animate__fadeIn" style="display: none;">
-    <img src="/assets/image/Pregunta.png" alt="Icono de información" class="icono-informacion">
-    <div class="contenedor-filtro" id="contenedor-filtro" style="display: none;">
-      <label for="filtro-tipo-habitacion" class="etiqueta-filtro">Filtrar:</label>
+
+  <!-- ============================ -->
+  <!--   RESULTADOS (TABLA)         -->
+  <!-- ============================ -->
+  <div class="contenedor-resultados" style="display:none;">
+    
+    <h2 class="titulo-resultados">Estado de Habitaciones</h2>
+
+    <img src="/assets/image/Pregunta.png" class="icono-informacion">
+
+    <div id="contenedor-filtro" class="contenedor-filtro" style="display:none;">
+      <label class="etiqueta-filtro">Filtrar:</label>
       <select id="filtro-tipo-habitacion" class="select-filtro">
         <option value="">Todos</option>
         <option value="IND">IND</option>
@@ -47,91 +58,44 @@
         <option value="SUITE">SUITE</option>
       </select>
     </div>
-    <h2 class="titulo-resultados">Resultados de la búsqueda</h2>
-    <div class="tabla-scroll contenedor-tabla-scroll">
+
+    <div class="contenedor-tabla-scroll">
       <table class="tabla-habitaciones">
-        <thead>
-          
-        </thead>
-        <tbody>
-          
-        </tbody>
+        <thead></thead>
+        <tbody></tbody>
       </table>
     </div>
-    <div class="siguiente boton-ocupar">Ocupar</div>
-  </div>
-  
-  
-  <div id="modal-error" class="modal" style="display: none;">
-    <div class="contenido-modal-error error">
-      <h2 class="titulo-error">ERROR</h2>
-      <img src="/assets/image/Error.png" alt="Icono de error" class="imagen-modal">
-      <p id="mensaje-error" class="mensaje-modal">Por favor, completa todos los campos requeridos.</p>
-      <button id="boton-ok" class="boton-ok">OK👍</button>
-    </div>
-  </div>
-  
-  
-  <div id="modal-correcto" class="modal" style="display: none;">
-    <div class="contenido-modal-correcto correcto">
-      <h2 class="titulo-correcto">EXITO</h2>
-      <img src="/assets/image/Correcto.png" alt="Icono de éxito" class="imagen-modal">
-      <p id="mensaje-correcto" class="mensaje-modal">Acción ejecutada con éxito</p>
-    </div>
-  </div>
-  
-  
-  <div id="modal-advertencia" class="modal" style="display: none;">
-    <div class="contenido-modal-advertencia advertencia">
-      <h2 class="titulo-advertencia">ADVERTENCIA</h2>
-      <img src="/assets/image/Advertencia.png" alt="Icono de advertencia" class="imagen-modal">
-      <p id="mensaje-advertencia" class="mensaje-modal">El numero de documento ya existe</p>
-      <div class="botones-advertencia advertenciaBotones">
-        <button id="boton-advertencia-aceptar" class="boton-advertencia boton-advertencia-aceptar">ACEPTAR</button>
-        <button id="boton-advertencia-corregir" class="boton-advertencia boton-advertencia-corregir">CORREGIR</button>
-      </div>
-    </div>
   </div>
 
-  
-  <div id="modal-pregunta" class="modal" style="display: none;">
-    <div class="modal-content pregunta">
-      <h2 style="text-align: center; color: #00e1f0; font-size: 24px; margin-top: 10px;">PREGUNTA</h2>
-      <img src="/assets/image/Pregunta.png" alt="icono de pregunta" style="height: 30%; display: block; margin: 0 auto;">
-      <p id="mensaje-pregunta" class="mensaje-modal">¿Qué desea hacer?</p>
-      <div class="preguntaBotones">
-        <button id="pregunta-boton-1" class="boton boton-aceptar">ACEPTAR</button>
-        <button id="pregunta-boton-2" class="boton boton-corregir">CORREGIR</button>
-        <button id="pregunta-boton-3" class="boton boton-corregir">CORREGIR</button>
-      </div>
-    </div>
-  </div>
-
-  
-  <div class="container" style="display: none;">
-    <h1>Buscar Huésped</h1>
+  <!-- ============================ -->
+  <!--   BUSCADOR DE HUÉSPEDES      -->
+  <!--   (MISMA UI QUE CU04)        -->
+  <!-- ============================ -->
+  <div class="container" style="top:100vh;">
+    <h1>Buscar Titular de la Estadía</h1>
     <form>
       <div class="form-group">
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" placeholder="Perez"/>
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" />
       </div>
       <div class="form-group">
-        <label for="nombre">nombre:</label>
-        <input type="text" id="nombre" name="nombre" />
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" />
       </div>
       <div class="form-group">
-        <label for="tipoDocumento">Tipo de documento:</label>
-        <select id="tipoDocumento" name="tipoDocumento">
-          <option value="">Seleccione</option>
+        <label for="tipoDocumento">Tipo de documento</label>
+        <select id="tipoDocumento">
+          <option value="">Todos</option>
           <option value="DNI">DNI</option>
+          <option value="LE">LE</option>
+          <option value="LC">LC</option>
           <option value="Pasaporte">Pasaporte</option>
-          <option value="CUIL">CUIL</option>
-          <option value="LibretaCivica">Libreta Cívica</option>
+          <option value="Otro">Otro</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="numeroDocumento">Número de documento:</label>
-        <input type="text" id="numeroDocumento" name="numeroDocumento" />
+        <label for="numeroDocumento">Número de documento</label>
+        <input type="text" id="numeroDocumento" />
       </div>
       <div class="form-group">
         <button type="submit">Buscar</button>
@@ -139,55 +103,67 @@
     </form>
   </div>
 
-  
-  <div class="resultadoBusqueda" style="display: none;">
+  <div class="resultadoBusqueda">
     <h2>Resultados de la búsqueda</h2>
-    <p class="subtitulo">(Seleccione los huéspedes que ocuparán la habitación)</p>
+    <p class="subtitulo">Seleccione uno o más huéspedes según corresponda.</p>
     <div class="contenedor-tabla-busqueda">
       <table>
-          <thead>
-              <tr>
-                  <th>Apellido</th>
-                  <th>nombre</th>
-                  <th>Tipo de documento</th>
-                  <th>Número de documento</th>
-              </tr>
-          </thead>
-          <tbody>
-              
-          </tbody>
+        <thead>
+          <tr>
+            <th>Apellido</th>
+            <th>Nombre</th>
+            <th>Tipo Doc</th>
+            <th>Número</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- filas dinámicas -->
+        </tbody>
       </table>
     </div>
-    <div class="siguienteBusqueda">Aceptar</div>
+    <button class="siguienteBusqueda">Aceptar</button>
   </div>
 
-  
-  
-  <script src="../Login/JS/validar-sesion.js"></script>
-  
-  <script src="../Login/JS/navegacion-volver.js"></script>
+  <!-- ============================ -->
+  <!--     SCRIPTS NECESARIOS       -->
+  <!-- ============================ -->
+
+  <!-- Login -->
+  <script src="/Login/JS/validar-sesion.js"></script>
+  <script src="/Login/JS/navegacion-volver.js"></script>
+
+  <!-- Modales (únicos para todo CU Reservas) -->
   <script src="JS/modales.js"></script>
+
+  <!-- Utilidades de habitaciones (fechas, formato, etc.) -->
   <script src="JS/datos-habitaciones.js"></script>
-  <script src="JS/datos-huespedes.js"></script>
+
+  <!-- Validación fechas (CU04 + CU07) -->
   <script src="JS/validaciones-campos.js"></script>
+
+  <!-- Tabla -->
   <script src="JS/tabla-habitaciones.js"></script>
+
+  <!-- Filtro -->
   <script src="JS/filtro-habitaciones.js"></script>
+
+  <!-- Generar tabla CU05 -->
   <script src="JS/generar-tabla.js"></script>
+
+  <!-- Selección rango en habitación -->
   <script src="JS/seleccion-habitaciones.js"></script>
+
+  <!-- Leyenda -->
   <script src="JS/leyenda.js"></script>
-  <script src="JS/buscar-huesped.js"></script>
-  <script src="/JS/general.js"></script>
-  
-  <script type="module" src="/Clases/Dominio/dominio.js"></script>
-  <script type="module">
-    import GestorEstadia from '../Clases/Dominio/GestorEstadia.js';
-    if (!window.gestorEstadia) {
-      window.gestorEstadia = new GestorEstadia();
-    }
-  </script>
-  <script type="module" src="JS/gestor-ocupar-habitacion.js"></script>
-  <script type="module" src="JS/mostrar-json-estadia.js"></script>
-  <script type="module" src="JS/conversor-datos.js"></script>
-  <script type="module" src="JS/ocupar-habitacion.js"></script>
+
+  <!-- DAOs a backend -->
+  <script type="module" src="HabitacionDAO.js"></script>
+  <script type="module" src="ReservaDAO.js"></script>
+  <script type="module" src="HuespedDAO.js"></script>
+
+  <!-- CU07 -->
+  <script type="module" src="JS/GestorEstadia.js"></script>
+  <script type="module" src="JS/UIEstadia.js"></script>
+
 </body>
 </html>
