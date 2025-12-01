@@ -2,10 +2,12 @@
 
 
 function generarTablaHabitaciones(fechaInicio, fechaFin) {
+  let huboLibre = false;
+  
   const tabla = document.querySelector('.tabla-habitaciones');
   if (!tabla) {
     console.error('Tabla no encontrada');
-    return;
+    return false;
   }
 
   
@@ -14,7 +16,7 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
   
   if (!thead || !tbody) {
     console.error('thead o tbody no encontrados');
-    return;
+    return false;
   }
 
   
