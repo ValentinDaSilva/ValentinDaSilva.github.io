@@ -1,5 +1,4 @@
 
-
 let habitaciones = [];
 let reservas = [];
 
@@ -58,23 +57,47 @@ function compararFechas(fecha1, fecha2) {
 
 function estaHabitacionReservada(numeroHabitacion, fecha) {
   // Usar reservas del backend (obtenidas por GestorEstadia) si están disponibles
-  const reservasParaUsar = window.listaReservasCU07 || reservas;
+  const reservasParaUsar = window.listaReservasCU07 || reservas || [];
+  
+  if (!reservasParaUsar || reservasParaUsar.length === 0) {
+    return false;
+  }
+  
+  // Convertir numeroHabitacion a número si es string para comparación correcta
+  const numHab = typeof numeroHabitacion === 'string' ? parseInt(numeroHabitacion, 10) : numeroHabitacion;
   
   return reservasParaUsar.some(reserva => {
+    if (!reserva) return false;
     
+    // Verificar si la reserva tiene esta habitación
     const habitacionesReserva = reserva.habitaciones || [];
-    const tieneHabitacion = habitacionesReserva.some(hab => hab.numero === numeroHabitacion);
+    const tieneHabitacion = habitacionesReserva.some(hab => {
+      if (!hab) return false;
+      const numHabReserva = typeof hab.numero === 'string' ? parseInt(hab.numero, 10) : hab.numero;
+      return numHabReserva === numHab;
+    });
     
-    
-    if (!tieneHabitacion && reserva.numeroHabitacion !== numeroHabitacion) {
-      return false;
+    // También verificar si hay un campo directo numeroHabitacion
+    if (!tieneHabitacion) {
+      if (reserva.numeroHabitacion !== undefined) {
+        const numHabDirecto = typeof reserva.numeroHabitacion === 'string' 
+          ? parseInt(reserva.numeroHabitacion, 10) 
+          : reserva.numeroHabitacion;
+        if (numHabDirecto !== numHab) {
+          return false;
+        }
+      } else {
+        return false;
+      }
     }
     
-    
-    
+    // Verificar que la fecha esté en el rango de la reserva
     const fechaDesde = reserva.fechaInicio || reserva.desde; 
-    const fechaHasta = reserva.fechaFin || reserva.hasta;   
+    const fechaHasta = reserva.fechaFin || reserva.hasta;
     
+    if (!fechaDesde || !fechaHasta) {
+      return false;
+    }
     
     return compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0;
   });

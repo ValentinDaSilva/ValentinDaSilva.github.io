@@ -77,8 +77,10 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones.forEach(habitacion => {
       const td = document.createElement('td');
       
+      // Verificar si está reservada usando las reservas del backend
+      const estaReservada = estaHabitacionReservada(habitacion.numero, fecha);
       
-      if (estaHabitacionReservada(habitacion.numero, fecha)) {
+      if (estaReservada) {
         td.className = 'estado-reservada';
         td.setAttribute('data-estado-original', 'reservada');
       } else {
