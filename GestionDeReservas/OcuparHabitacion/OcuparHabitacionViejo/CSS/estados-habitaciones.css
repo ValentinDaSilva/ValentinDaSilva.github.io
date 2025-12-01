@@ -1,0 +1,84 @@
+
+
+.estado-libre {
+  background-color: rgb(145, 190, 153);
+}
+
+.estado-ocupada {
+  background-color: rgb(215, 148, 163);
+}
+
+.estado-reservada {
+  background-color: rgb(215, 198, 126);
+}
+
+.estado-fuera-servicio {
+  background-color: rgb(148, 150, 152);
+}
+
+.estado-seleccionada {
+  background-color: yellow;
+}
+
+
+
+.caja-color {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.color-libre {
+  background-color: rgb(195, 230, 203);
+  border: 1px solid #155724;
+}
+
+.color-ocupada {
+  background-color: rgb(245, 198, 203);
+  border: 1px solid #721c24;
+}
+
+.color-reservada {
+  background-color: rgb(255, 238, 186);
+  border: 1px solid #856404;
+}
+
+.color-seleccionada {
+  background-color: yellow;
+  border: 1px solid #856404;
+}
+
+.color-fuera-servicio {
+  background-color: rgb(198, 200, 202);
+  border: 1px solid #383d41;
+}
+
+.item-leyenda {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.contenedor-leyenda {
+  padding: 10px;
+}
+
+.contenedor-leyenda > * {
+  margin-bottom: 10px;
+}
+
+.icono-cerrar {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  font-size: 36px;
+  color: #64443a;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

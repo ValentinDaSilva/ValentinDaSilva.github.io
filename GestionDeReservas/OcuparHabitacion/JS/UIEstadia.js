@@ -61,12 +61,22 @@ class UIEstadia {
     // manejamos evaluación de la selección
     // --------------------------------------------------
     static async manejarSeleccion(nombreHab, fechaDesde, fechaHasta) {
+        console.log("🔍 UIEstadia.manejarSeleccion:", { nombreHab, fechaDesde, fechaHasta });
+        
         const numero = obtenerNumeroDesdeNombre(nombreHab);
+        console.log("🔍 Número extraído:", numero);
+        
         const habitacion = (window.listaHabitacionesCU07 || []).find(h => h.numero === numero);
-        const reservas   = window.listaReservasCU07 || [];
+        console.log("🔍 Habitación encontrada:", habitacion);
+        
+        const reservas = window.listaReservasCU07 || [];
+        console.log("🔍 Reservas disponibles:", reservas.length);
 
         const fechasRango = generarArrayFechas(fechaDesde, fechaHasta);
+        console.log("🔍 Fechas rango:", fechasRango);
+        
         const evaluacion = GestorEstadia.evaluarSeleccion(habitacion, fechasRango, reservas);
+        console.log("🔍 Evaluación resultado:", evaluacion);
 
         if (!evaluacion.ok && evaluacion.tipo === "estado-no-permitido") {
             mensajeError("El estado de la habitación no permite ocuparla.");

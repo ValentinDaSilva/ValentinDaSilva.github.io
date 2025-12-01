@@ -7,67 +7,6 @@ let habitacionesSeleccionadas = [];
 let celdaInicioSeleccion = null; 
 let seleccionEnProgreso = false;
 
-// Función para mostrar/ocultar botón Continuar
-function mostrarBotonContinuar() {
-  const boton = document.querySelector('.boton-continuar-ocupar');
-  if (boton) {
-    if (habitacionesSeleccionadas.length > 0) {
-      boton.style.display = 'block';
-    } else {
-      boton.style.display = 'none';
-    }
-  }
-}
-
-// Función para inicializar el botón Continuar
-function inicializarBotonContinuar() {
-  const boton = document.querySelector('.boton-continuar-ocupar');
-  if (!boton) return;
-  
-  // Remover listeners anteriores para evitar duplicados
-  const nuevoBoton = boton.cloneNode(true);
-  boton.parentNode.replaceChild(nuevoBoton, boton);
-  
-  nuevoBoton.addEventListener('click', async () => {
-    if (habitacionesSeleccionadas.length === 0) {
-      if (typeof mensajeError === "function") {
-        mensajeError("Debe seleccionar al menos una habitación.");
-      }
-      return;
-    }
-    
-    // Deshabilitar botón mientras se procesa
-    nuevoBoton.disabled = true;
-    
-    try {
-      // Tomar la primera selección (en CU07 solo se ocupa una habitación a la vez)
-      const seleccion = habitacionesSeleccionadas[0];
-      const nombreHab = seleccion.habitacion;
-      const fechaDesde = seleccion.fechaDesde;
-      const fechaHasta = seleccion.fechaHasta;
-      
-      console.log("🔍 Botón Continuar presionado:", { nombreHab, fechaDesde, fechaHasta });
-      
-      // Llamar a UIEstadia para evaluar y continuar
-      if (typeof window.UIEstadia !== 'undefined' && window.UIEstadia.manejarSeleccion) {
-        await window.UIEstadia.manejarSeleccion(nombreHab, fechaDesde, fechaHasta);
-      } else {
-        console.error("❌ UIEstadia.manejarSeleccion no está disponible");
-        if (typeof mensajeError === "function") {
-          mensajeError("Error: No se pudo procesar la selección.");
-        }
-      }
-    } catch (error) {
-      console.error("❌ Error al procesar selección:", error);
-      if (typeof mensajeError === "function") {
-        mensajeError("Error al procesar la selección: " + error.message);
-      }
-    } finally {
-      nuevoBoton.disabled = false;
-    }
-  });
-}
-
 
 function obtenerHabitacionesSeleccionadas() {
   return habitacionesSeleccionadas;
@@ -86,8 +25,6 @@ function limpiarHabitacionesSeleccionadas() {
     celda.classList.add(estadoOriginal === 'reservada' ? 'estado-reservada' : 'estado-libre');
     aplicarEstilosCeldas();
   });
-  
-  mostrarBotonContinuar();
 }
 
 
@@ -133,9 +70,8 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
   if (!numeroHabitacion) return;
 
   
-  // Obtener fechas del formulario de ocupar habitación
-  const fechaDesdeForm = document.getElementById('desde')?.value || window.desdeCU07;
-  const fechaHastaForm = document.getElementById('hasta')?.value || window.hastaCU07;
+  const fechaDesdeForm = document.getElementById('checkin').value;
+  const fechaHastaForm = document.getElementById('checkout').value;
   const todasLasFechas = generarArrayFechas(fechaDesdeForm, fechaHastaForm);
 
   
@@ -145,9 +81,30 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
   }
 
   
-  // La evaluación de la selección se hace en UIEstadia.manejarSeleccion
-  // según el diagrama de secuencia, así que solo guardamos la selección
-  // y llamamos a UIEstadia para que evalúe
+  const fechasRango = generarArrayFechas(fechaDesde, fechaHasta);
+  const todasLibres = fechasRango.every(fecha => {
+    return !estaHabitacionReservada(numeroHabitacion, fecha);
+  });
+
+  
+  if (!todasLibres) {
+    const checkinDate = document.getElementById('checkin').value;
+    const checkoutDate = document.getElementById('checkout').value;
+    
+    advertencia(
+      `La habitación ${habitacion} está reservada en algunas fechas del rango seleccionado.<br>Desde Fecha: ${checkinDate} <br>Hasta Fecha: ${checkoutDate}.`,
+      "OCUPAR IGUAL",
+      "VOLVER"
+    ).then(boton => {
+      if (boton !== "OCUPAR IGUAL") {
+        return; 
+      }
+      
+    });
+    
+    
+    
+  }
 
   
   const indiceExistente = habitacionesSeleccionadas.findIndex(
@@ -183,9 +140,6 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
       }
     }
   });
-
-  // Mostrar botón "Continuar" cuando hay una selección
-  mostrarBotonContinuar();
 }
 
 
@@ -212,8 +166,6 @@ function deseleccionarRangoHabitacion(habitacion) {
       aplicarEstilosCeldas();
     }
   });
-  
-  mostrarBotonContinuar();
 }
 
 
@@ -340,16 +292,13 @@ function inicializarSeleccionHabitaciones() {
     celda.addEventListener('click', () => {
       manejarClickCelda(celda);
     });
-    
+
     
     const estadoOriginal = celda.getAttribute('data-estado-original');
     if (estadoOriginal !== 'fuera-servicio' && estadoOriginal !== 'ocupada') {
       celda.style.cursor = 'pointer';
     }
   });
-  
-  // Inicializar botón Continuar
-  inicializarBotonContinuar();
 }
 
 

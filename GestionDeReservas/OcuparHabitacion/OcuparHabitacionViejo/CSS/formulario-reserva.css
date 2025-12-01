@@ -1,0 +1,60 @@
+
+
+.booking-form,
+.formulario-busqueda {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 30px 25px;
+  border-radius: 8px;
+  width: 250px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(-10px);
+}
+
+.booking-form h2,
+.titulo-formulario {
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.booking-form label,
+.etiqueta-campo {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.booking-form label.required::after,
+.etiqueta-campo.requerido::after {
+  content: "*";
+  color: red;
+  margin-left: 5px;
+}
+
+.booking-form input[type="date"],
+.booking-form input[type="number"],
+.campo-fecha {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.booking-form button,
+.boton-buscar {
+  width: 100%;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.booking-form button:hover,
+.boton-buscar:hover {
+  background-color: #333;
+}
+
