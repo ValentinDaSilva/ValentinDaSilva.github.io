@@ -93,7 +93,13 @@ class UIEstadia {
             return;
         }
 
-        // Engloba reserva(s)
+        // Habitación no reservada - no se puede ocupar
+        if (!evaluacion.ok && evaluacion.tipo === "no-reservada") {
+            mensajeError("Solo se pueden ocupar habitaciones que estén RESERVADAS. Esta habitación está disponible (libre) en el rango seleccionado.");
+            return;
+        }
+
+        // Engloba reserva(s) - esta es la única forma válida de ocupar
         if (evaluacion.ok && evaluacion.tipo === "engloba-reservada") {
             return UIEstadia.mostrarInfoReservaYConfirmar(
                 evaluacion.reservas,
@@ -101,12 +107,6 @@ class UIEstadia {
                 fechaDesde,
                 fechaHasta
             );
-        }
-
-        // Disponible correctamente
-        if (evaluacion.ok && evaluacion.tipo === "disponible") {
-            UIEstadia.pintarComoOcupada(nombreHab, fechasRango);
-            await UIEstadia.continuarCU07(habitacion, fechaDesde, fechaHasta, null);
         }
     }
 

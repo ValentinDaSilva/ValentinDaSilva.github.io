@@ -85,13 +85,14 @@ class GestorEstadia {
 
         // ¿Engloba días reservados? (reservas con estado PENDIENTE u otro)
         // Esto SÍ se permite ocupar, pero con confirmación
+        // IMPORTANTE: Solo se puede ocupar si está RESERVADA (no disponible)
         const reservasAsociadas = reservas.filter(r => {
             const tieneHabitacion = r.habitaciones && r.habitaciones.some(h => h.numero === habitacion.numero);
             const fechaDesdeEnRango = compararFechas(fechasRango[0], r.fechaInicio) >= 0;
             const fechaHastaEnRango = compararFechas(fechasRango.at(-1), r.fechaFin) <= 0;
             const estadoReserva = (r.estado || "").toLowerCase().trim();
             
-            // Solo considerar reservas que no estén finalizadas
+            // Solo considerar reservas que no estén finalizadas (Pendiente, Confirmada, etc.)
             return tieneHabitacion && fechaDesdeEnRango && fechaHastaEnRango && estadoReserva !== "finalizada";
         });
 
@@ -105,8 +106,9 @@ class GestorEstadia {
         }
 
         // Totalmente disponible (sin reservas en ese rango)
-        console.log("✅ Habitación disponible");
-        return { ok: true, tipo: "disponible" };
+        // NO se permite ocupar habitaciones disponibles, solo reservadas
+        console.log("❌ Habitación disponible (no reservada) - No se puede ocupar sin reserva");
+        return { ok: false, tipo: "no-reservada" };
     }
 
     // -------------------------------------------------------
@@ -130,29 +132,31 @@ class GestorEstadia {
     // Crea el EstadiaDTO según el formato esperado por el backend
     // -------------------------------------------------------
     static async registrarOcupacion(habitacion, desde, hasta, titular, acompanantes, reservaAsociada) {
+        // Validar que existe una reserva asociada (OBLIGATORIO)
+        if (!reservaAsociada || !reservaAsociada.id) {
+            console.error("❌ Error: La estadía debe tener una reserva asociada.");
+            return { ok: false, mensaje: "La estadía debe estar asociada a una reserva." };
+        }
+
         // Construir EstadiaDTO según el formato esperado por el backend
+        // La reserva es OBLIGATORIA
         const estadiaDTO = {
             fechaCheckIn: desde,
             horaCheckIn: "14:00", // Hora por defecto para check-in
             fechaCheckOut: hasta,
             horaCheckOut: null,
             estado: "EnCurso",
-            titular: titular, // Ya viene completo del backend con toda su estructura
-            acompaniantes: acompanantes || [] // Ya vienen completos del backend
-        };
-        
-        // Agregar objeto reserva completo si existe una reserva asociada
-        if (reservaAsociada && reservaAsociada.id) {
-            // Construir objeto reserva según el formato esperado
-            estadiaDTO.reserva = {
+            reserva: {
                 id: reservaAsociada.id,
                 fechaInicio: reservaAsociada.fechaInicio || reservaAsociada.desde,
                 fechaFin: reservaAsociada.fechaFin || reservaAsociada.hasta,
                 titular: reservaAsociada.titular || null,
                 habitaciones: reservaAsociada.habitaciones || [],
                 estado: reservaAsociada.estado || "Confirmada"
-            };
-        }
+            },
+            titular: titular, // Ya viene completo del backend con toda su estructura
+            acompaniantes: acompanantes || [] // Ya vienen completos del backend
+        };
 
         console.log("📤 EstadiaDTO a enviar:", estadiaDTO);
 
