@@ -37,6 +37,12 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones = filtrarHabitacionesPorTipo(tipoFiltro);
   }
   
+  // Normalizar cada habitación → agregar codigoTipo (alias)
+  habitaciones = habitaciones.map(h => ({
+    ...h,
+    codigoTipo: normalizarTipo(h)
+  }));
+  
   // =====================================================
   // ORDENAR HABITACIONES POR NÚMERO (101, 102, 103, etc.)
   // =====================================================
@@ -66,8 +72,10 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
   
   habitaciones.forEach(habitacion => {
     const th = document.createElement('th');
-    th.textContent = formatearNombreHabitacion(habitacion);
-    th.setAttribute('data-tipo-habitacion', habitacion.tipo);
+    // Usar el alias normalizado (IND, DOBE, DOBS, FAM, SUITE) en lugar del nombre completo
+    const codigoTipo = habitacion.codigoTipo || normalizarTipo(habitacion) || habitacion.tipo;
+    th.textContent = `${codigoTipo}-${habitacion.numero}`;
+    th.setAttribute('data-tipo-habitacion', codigoTipo);
     headerRow.appendChild(th);
   });
 

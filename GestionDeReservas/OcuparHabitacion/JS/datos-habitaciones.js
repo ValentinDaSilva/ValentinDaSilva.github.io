@@ -196,8 +196,37 @@ function obtenerNumeroDesdeNombre(nombreHabitacion) {
 }
 
 
+// Normalizar tipo de habitación a alias (IND, DOBE, DOBS, FAM, SUITE)
+function normalizarTipo(h) {
+  if (!h || !h.tipo) return "";
+
+  const tipo = h.tipo.trim().toLowerCase();
+  const categoria = (h.categoria || "").trim().toLowerCase();
+
+  // Individual
+  if (tipo === "individual") return "IND";
+
+  // Doble estándar
+  if (tipo === "doble" && categoria.includes("estandar")) return "DOBE";
+  if (tipo === "doble" && categoria.includes("estándar")) return "DOBE";
+
+  // Doble superior
+  if (tipo === "doble" && categoria.includes("superior")) return "DOBS";
+
+  // Familiar
+  if (tipo === "familiar") return "FAM";
+
+  // Suite
+  if (tipo === "suite") return "SUITE";
+
+  return "";
+}
+
 function formatearNombreHabitacion(habitacion) {
-  return `${habitacion.tipo}-${habitacion.numero}`;
+  // Usar el alias normalizado si está disponible, sino usar el tipo completo
+  const codigoTipo = normalizarTipo(habitacion);
+  const tipoMostrar = codigoTipo || habitacion.tipo;
+  return `${tipoMostrar}-${habitacion.numero}`;
 }
 
 
