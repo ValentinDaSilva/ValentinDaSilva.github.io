@@ -85,7 +85,6 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
         estadoReserva = obtenerEstadoReservaHabitacion(habitacion.numero, fecha);
       } else {
         // Fallback: usar la función antigua si la nueva no existe
-        console.warn("⚠️ obtenerEstadoReservaHabitacion no está disponible, usando estaHabitacionReservada");
         const estaReservada = estaHabitacionReservada(habitacion.numero, fecha);
         estadoReserva = estaReservada ? 'reservada' : null;
       }
@@ -93,10 +92,13 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
       // Debug: log para verificar reservas (solo primera celda para no saturar)
       if (fecha === fechas[0] && habitacion.numero === habitaciones[0].numero) {
         console.log("🔍 Debug generarTabla - Primera celda:");
-        console.log("  - Habitación:", habitacion.numero);
+        console.log("  - Habitación:", habitacion.numero, typeof habitacion.numero);
         console.log("  - Fecha:", fecha);
         console.log("  - Reservas disponibles:", (window.listaReservasCU07 || []).length);
-        console.log("  - window.listaReservasCU07:", window.listaReservasCU07);
+        if (window.listaReservasCU07 && window.listaReservasCU07.length > 0) {
+          console.log("  - Primera reserva:", window.listaReservasCU07[0]);
+          console.log("  - Habitaciones primera reserva:", window.listaReservasCU07[0].habitaciones);
+        }
         console.log("  - Estado reserva:", estadoReserva);
         console.log("  - Función disponible:", typeof obtenerEstadoReservaHabitacion);
       }
