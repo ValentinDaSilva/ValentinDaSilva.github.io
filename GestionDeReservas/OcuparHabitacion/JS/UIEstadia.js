@@ -205,34 +205,6 @@ class UIEstadia {
             return;
         }
 
-        // Ocultar completamente la tabla de habitaciones y el formulario de fechas
-        const contenedorResultados = document.querySelector('.contenedor-resultados');
-        if (contenedorResultados) {
-            contenedorResultados.style.display = 'none';
-        }
-        
-        const fondoReserva = document.querySelector('.fondo-reserva');
-        if (fondoReserva) {
-            fondoReserva.style.display = 'none';
-        }
-
-        // Crear overlay oscuro si no existe
-        let overlay = document.getElementById('overlay-buscador-huesped');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'overlay-buscador-huesped';
-            overlay.style.cssText = `
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.7);
-                z-index: 9998;
-                display: block;
-            `;
-            document.body.appendChild(overlay);
-        } else {
-            overlay.style.display = 'block';
-        }
-
         const titulo = container.querySelector('h1');
         if (titulo) titulo.textContent = "Buscar Titular de la Estadía";
 
@@ -245,13 +217,15 @@ class UIEstadia {
         const tbody = resultadoBusqueda.querySelector('tbody');
         if (tbody) tbody.innerHTML = '';
 
-        // Mostrar buscador con z-index alto
+        // Ocultamos resultados de habitaciones
+        const contenedorResultados = document.querySelector('.contenedor-resultados');
+        if (contenedorResultados) contenedorResultados.style.display = 'none';
+
+        // Mostramos buscador
         container.style.display = 'block';
         container.style.top = '50px';
-        container.style.zIndex = '10000';
         resultadoBusqueda.style.display = 'block';
         resultadoBusqueda.style.top = '50px';
-        resultadoBusqueda.style.zIndex = '10000';
     }
 
     // --------------------------------------------------
@@ -265,23 +239,6 @@ class UIEstadia {
             console.error("UIEstadia: no se encontró la UI de búsqueda para acompañantes.");
             mensajeError("No se encontró la UI de búsqueda para acompañantes.");
             return;
-        }
-
-        // Asegurar que el overlay esté visible
-        let overlay = document.getElementById('overlay-buscador-huesped');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'overlay-buscador-huesped';
-            overlay.style.cssText = `
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.7);
-                z-index: 9998;
-                display: block;
-            `;
-            document.body.appendChild(overlay);
-        } else {
-            overlay.style.display = 'block';
         }
 
         const titulo = container.querySelector('h1');
@@ -298,10 +255,8 @@ class UIEstadia {
 
         container.style.display = 'block';
         container.style.top = '50px';
-        container.style.zIndex = '10000';
         resultadoBusqueda.style.display = 'block';
         resultadoBusqueda.style.top = '50px';
-        resultadoBusqueda.style.zIndex = '10000';
     }
 
     // --------------------------------------------------
@@ -320,10 +275,6 @@ class UIEstadia {
         const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
         if (container) container.style.display = 'none';
         if (resultadoBusqueda) resultadoBusqueda.style.display = 'none';
-        
-        // Ocultar overlay
-        const overlay = document.getElementById('overlay-buscador-huesped');
-        if (overlay) overlay.style.display = 'none';
 
         // Preguntar si quiere acompañantes
         advertencia(
@@ -363,10 +314,6 @@ class UIEstadia {
         const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
         if (container) container.style.display = 'none';
         if (resultadoBusqueda) resultadoBusqueda.style.display = 'none';
-        
-        // Ocultar overlay
-        const overlay = document.getElementById('overlay-buscador-huesped');
-        if (overlay) overlay.style.display = 'none';
 
         UIEstadia.crearYRegistrarEstadia(acompanantesActual);
     }
