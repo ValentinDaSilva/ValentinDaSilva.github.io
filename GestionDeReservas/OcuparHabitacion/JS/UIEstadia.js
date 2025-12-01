@@ -5,7 +5,7 @@
 //     Sigue el diagrama de secuencia proporcionado
 // ======================================================
 
-import { GestorEstadia } from "./GestorEstadia.js";
+import { GestorEstadia } from "../../GestorEstadia.js";
 
 // Estado interno del flujo CU07
 let habitacionActual = null;

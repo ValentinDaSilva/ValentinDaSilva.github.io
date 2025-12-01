@@ -5,10 +5,10 @@
 //       Coordina: HabitacionDAO, ReservaDAO, HuespedDAO, EstadiaDAO
 // ===========================================================
 
-import { EstadiaDAO } from "../../EstadiaDAO.js";
-import { HabitacionDAO } from "../../HabitacionDAO.js";
-import { ReservaDAO } from "../../ReservaDAO.js";
-import { HuespedDAO } from "../../HuespedDAO.js";
+import { EstadiaDAO } from "./EstadiaDAO.js";
+import { HabitacionDAO } from "./HabitacionDAO.js";
+import { ReservaDAO } from "./ReservaDAO.js";
+import { HuespedDAO } from "./HuespedDAO.js";
 
 // OJO: usa compararFechas y generarArrayFechas de datos-habitaciones.js
 

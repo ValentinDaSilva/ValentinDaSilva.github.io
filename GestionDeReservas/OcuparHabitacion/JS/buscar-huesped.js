@@ -4,7 +4,7 @@
 //     Se comunica con GestorEstadia para buscar huéspedes
 // ======================================================
 
-import { GestorEstadia } from "./GestorEstadia.js";
+import { GestorEstadia } from "../../GestorEstadia.js";
 
 let huespedesSeleccionados = [];
 

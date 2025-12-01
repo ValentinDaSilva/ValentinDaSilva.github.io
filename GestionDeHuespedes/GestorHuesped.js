@@ -140,6 +140,7 @@ export default class GestorHuesped {
         let resp = await HuespedDAO.crearHuesped(dto, false);
 
         if (resp.status === 409) {
+            console.log("Huésped con documento existente.");
             const opcion = await UI.preguntarDocumentoExistente();
 
             if (opcion === "corregir") {
