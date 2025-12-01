@@ -3,7 +3,7 @@
 .container {
   width: 30vw;
   max-width: 500px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 25px 30px;
   border-radius: 8px;
   box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
@@ -12,6 +12,7 @@
   left: 50px;
   z-index: 10000;
   transition: top 0.3s ease;
+  backdrop-filter: blur(2px);
 }
 
 .container h1 {
@@ -60,7 +61,7 @@
   max-width: 50vw;
   margin: 50px;
   padding: 20px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 8px;
   box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.4);
   border: 2px solid #6b493ed0;
@@ -76,6 +77,7 @@
   height: 80vh;
   box-sizing: border-box;
   overflow: hidden;
+  backdrop-filter: blur(2px);
 }
 
 .resultadoBusqueda h2 {

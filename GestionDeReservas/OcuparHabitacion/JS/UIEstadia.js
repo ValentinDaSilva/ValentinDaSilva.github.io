@@ -217,9 +217,16 @@ class UIEstadia {
         const tbody = resultadoBusqueda.querySelector('tbody');
         if (tbody) tbody.innerHTML = '';
 
-        // Ocultamos resultados de habitaciones
+        // Ocultamos resultados de habitaciones (pero NO el fondo)
         const contenedorResultados = document.querySelector('.contenedor-resultados');
         if (contenedorResultados) contenedorResultados.style.display = 'none';
+        
+        // Asegurar que el fondo permanezca visible
+        const fondoReserva = document.querySelector('.fondo-reserva');
+        if (fondoReserva) {
+            fondoReserva.style.display = 'block';
+            fondoReserva.style.visibility = 'visible';
+        }
 
         // Mostramos buscador
         container.style.display = 'block';
