@@ -216,7 +216,7 @@ class UIEstadia {
             fondoReserva.style.display = 'none';
         }
 
-        // Crear overlay oscuro si no existe
+        // Crear overlay oscuro si no existe (permanece visible durante todo el proceso)
         let overlay = document.getElementById('overlay-buscador-huesped');
         if (!overlay) {
             overlay = document.createElement('div');
@@ -224,12 +224,14 @@ class UIEstadia {
             overlay.style.cssText = `
                 position: fixed;
                 inset: 0;
-                background: rgba(0, 0, 0, 0.7);
+                background: rgba(0, 0, 0, 0.8);
                 z-index: 9998;
                 display: block;
             `;
             document.body.appendChild(overlay);
         } else {
+            // Aumentar opacidad cuando se muestra el buscador
+            overlay.style.background = 'rgba(0, 0, 0, 0.8)';
             overlay.style.display = 'block';
         }
 
@@ -267,7 +269,7 @@ class UIEstadia {
             return;
         }
 
-        // Asegurar que el overlay esté visible
+        // Asegurar que el overlay esté visible (permanece desde el buscador de titular)
         let overlay = document.getElementById('overlay-buscador-huesped');
         if (!overlay) {
             overlay = document.createElement('div');
@@ -275,12 +277,14 @@ class UIEstadia {
             overlay.style.cssText = `
                 position: fixed;
                 inset: 0;
-                background: rgba(0, 0, 0, 0.7);
+                background: rgba(0, 0, 0, 0.8);
                 z-index: 9998;
                 display: block;
             `;
             document.body.appendChild(overlay);
         } else {
+            // Mantener opacidad alta
+            overlay.style.background = 'rgba(0, 0, 0, 0.8)';
             overlay.style.display = 'block';
         }
 
@@ -321,9 +325,7 @@ class UIEstadia {
         if (container) container.style.display = 'none';
         if (resultadoBusqueda) resultadoBusqueda.style.display = 'none';
         
-        // Ocultar overlay
-        const overlay = document.getElementById('overlay-buscador-huesped');
-        if (overlay) overlay.style.display = 'none';
+        // El overlay permanece visible, solo ocultamos los buscadores
 
         // Preguntar si quiere acompañantes
         advertencia(
@@ -364,9 +366,7 @@ class UIEstadia {
         if (container) container.style.display = 'none';
         if (resultadoBusqueda) resultadoBusqueda.style.display = 'none';
         
-        // Ocultar overlay
-        const overlay = document.getElementById('overlay-buscador-huesped');
-        if (overlay) overlay.style.display = 'none';
+        // El overlay permanece visible hasta que se complete el registro
 
         UIEstadia.crearYRegistrarEstadia(acompanantesActual);
     }
@@ -393,6 +393,10 @@ class UIEstadia {
             mensajeError(resultado.mensaje || "No se pudo registrar la ocupación.");
             return;
         }
+
+        // Ocultar overlay solo cuando se completa el registro
+        const overlay = document.getElementById('overlay-buscador-huesped');
+        if (overlay) overlay.style.display = 'none';
 
         UIEstadia.menuFinalCU07();
     }
