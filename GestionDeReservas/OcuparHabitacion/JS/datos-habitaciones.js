@@ -110,12 +110,27 @@ function obtenerEstadoReservaHabitacion(numeroHabitacion, fecha) {
   // Usar reservas del backend (obtenidas por GestorEstadia) si están disponibles
   const reservasParaUsar = window.listaReservasCU07 || reservas || [];
   
+  // Debug: log detallado para primera llamada
+  if (!window._debugObtenidoEstado) {
+    window._debugObtenidoEstado = true;
+    console.log("🔍 obtenerEstadoReservaHabitacion - Primera llamada:");
+    console.log("  - window.listaReservasCU07:", window.listaReservasCU07);
+    console.log("  - reservas (local):", reservas);
+    console.log("  - reservasParaUsar:", reservasParaUsar);
+    console.log("  - Cantidad de reservas:", reservasParaUsar?.length || 0);
+  }
+  
   if (!reservasParaUsar || reservasParaUsar.length === 0) {
     return null;
   }
   
   // Convertir numeroHabitacion a número si es string para comparación correcta
   const numHab = typeof numeroHabitacion === 'string' ? parseInt(numeroHabitacion, 10) : numeroHabitacion;
+  
+  if (isNaN(numHab)) {
+    console.warn("⚠️ obtenerEstadoReservaHabitacion: número de habitación inválido:", numeroHabitacion);
+    return null;
+  }
   
   for (const reserva of reservasParaUsar) {
     if (!reserva) continue;
@@ -153,9 +168,11 @@ function obtenerEstadoReservaHabitacion(numeroHabitacion, fecha) {
     if (fechaEnRango) {
       // Verificar el estado de la reserva
       const estadoReserva = (reserva.estado || "").trim();
-      if (estadoReserva.toLowerCase() === "confirmada" || estadoReserva.toLowerCase() === "finalizada") {
+      const estadoLower = estadoReserva.toLowerCase();
+      if (estadoLower === "confirmada" || estadoLower === "finalizada") {
         return 'ocupada';
       } else {
+        // Cualquier otro estado (Pendiente, etc.) se considera reservada
         return 'reservada';
       }
     }
