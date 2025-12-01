@@ -222,6 +222,9 @@ function normalizarTipo(h) {
   return "";
 }
 
+// Exponer a window para que sea accesible desde otros scripts
+window.normalizarTipo = normalizarTipo;
+
 function formatearNombreHabitacion(habitacion) {
   // Usar el alias normalizado si está disponible, sino usar el tipo completo
   const codigoTipo = normalizarTipo(habitacion);

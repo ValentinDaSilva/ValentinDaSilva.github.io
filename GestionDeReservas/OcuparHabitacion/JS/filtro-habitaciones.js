@@ -1,19 +1,56 @@
 
+// ====================================================
+//    filtro-habitaciones.js — versión corregida
+// ====================================================
 
 let todasLasHabitaciones = [];
 let tipoFiltroActual = '';
 
+// =======================================================
+// NORMALIZACIÓN (tipo + categoría)
+// Convierte lo que viene del backend → IND / DOBE / DOBS / FAM / SUITE
+// =======================================================
+function normalizarTipo(h) {
+  if (!h || !h.tipo) return "";
+
+  const tipo = h.tipo.trim().toLowerCase();
+  const categoria = (h.categoria || "").trim().toLowerCase();
+
+  // Individual
+  if (tipo === "individual") return "IND";
+
+  // Doble estándar
+  if (tipo === "doble" && categoria.includes("estandar")) return "DOBE";
+  if (tipo === "doble" && categoria.includes("estándar")) return "DOBE";
+
+  // Doble superior
+  if (tipo === "doble" && categoria.includes("superior")) return "DOBS";
+
+  // Familiar
+  if (tipo === "familiar") return "FAM";
+
+  // Suite
+  if (tipo === "suite") return "SUITE";
+
+  return "";
+}
 
 function establecerHabitaciones(habitaciones) {
   todasLasHabitaciones = habitaciones;
 }
 
-
-function filtrarHabitacionesPorTipo(tipo) {
-  if (!tipo || tipo === '') {
+// =======================================================
+// FILTRO POR CÓDIGO (IND / DOBE / DOBS / FAM / SUITE)
+// =======================================================
+function filtrarHabitacionesPorTipo(tipoSeleccionado) {
+  if (!tipoSeleccionado || tipoSeleccionado === '') {
     return todasLasHabitaciones;
   }
-  return todasLasHabitaciones.filter(habitacion => habitacion.tipo === tipo);
+  
+  return todasLasHabitaciones.filter(h => {
+    const codigo = normalizarTipo(h);
+    return codigo === tipoSeleccionado;
+  });
 }
 
 
@@ -77,4 +114,15 @@ if (document.readyState === 'loading') {
 } else {
   inicializarFiltro();
 }
+
+// =======================================================
+// EXPONER A WINDOW para que sean accesibles desde otros módulos
+// =======================================================
+window.establecerHabitaciones = establecerHabitaciones;
+window.filtrarHabitacionesPorTipo = filtrarHabitacionesPorTipo;
+window.obtenerTipoFiltroActual = obtenerTipoFiltroActual;
+window.establecerTipoFiltro = establecerTipoFiltro;
+window.mostrarFiltro = mostrarFiltro;
+window.ocultarFiltro = ocultarFiltro;
+window.normalizarTipo = normalizarTipo;
 
