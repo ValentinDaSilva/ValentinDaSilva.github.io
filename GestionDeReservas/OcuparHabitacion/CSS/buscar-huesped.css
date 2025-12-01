@@ -69,9 +69,9 @@
   top: 100vh;
   left: 40vw;
   z-index: 10000;
-  transition: top 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
+  transition: top 0.5s ease, opacity 0.5s ease, transform 0.5s ease, visibility 0s;
   max-height: 80vh;
-  display: none;
+  display: flex;
   flex-direction: column;
   min-height: 400px;
   height: 80vh;
@@ -79,14 +79,18 @@
   overflow: hidden;
   backdrop-filter: blur(2px);
   opacity: 0;
+  visibility: hidden;
   transform: translateY(20px);
+  pointer-events: none;
 }
 
 .resultadoBusqueda.mostrar {
-  display: flex;
   top: 50px;
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
+  pointer-events: auto;
+  transition: top 0.5s ease, opacity 0.5s ease, transform 0.5s ease, visibility 0s 0s;
 }
 
 .resultadoBusqueda h2 {

@@ -167,11 +167,11 @@ async function inicializarBusquedaHuesped() {
         renderizarResultadosHuespedes(resultados);
         
         // Mostrar resultados con animación
-        resultadoDiv.style.display = 'flex';
-        // Pequeño delay para que el navegador procese el cambio de display
-        setTimeout(() => {
+        // Usar requestAnimationFrame para asegurar que el navegador procese el cambio
+        requestAnimationFrame(() => {
+            // Agregar la clase para la animación
             resultadoDiv.classList.add('mostrar');
-        }, 10);
+        });
         
         setTimeout(() => {
             inicializarSeleccionHuespedes();
@@ -204,9 +204,6 @@ async function inicializarBusquedaHuesped() {
                 const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
                 if (resultadoBusqueda) {
                     resultadoBusqueda.classList.remove('mostrar');
-                    setTimeout(() => {
-                        resultadoBusqueda.style.display = 'none';
-                    }, 500); // Esperar a que termine la animación
                 }
                 
                 
@@ -222,9 +219,6 @@ async function inicializarBusquedaHuesped() {
                 const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
                 if (resultadoBusqueda) {
                     resultadoBusqueda.classList.remove('mostrar');
-                    setTimeout(() => {
-                        resultadoBusqueda.style.display = 'none';
-                    }, 500); // Esperar a que termine la animación
                 }
                 
                 
