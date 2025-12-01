@@ -81,13 +81,30 @@ function inicializarFiltro() {
   selectFiltro.addEventListener('change', function() {
     tipoFiltroActual = this.value;
     
+    // Intentar obtener las fechas de window primero (las que se usaron para generar la tabla)
+    let fechaDesde = window.desdeCU07;
+    let fechaHasta = window.hastaCU07;
     
-    const fechaDesdeInput = document.getElementById('desde') || document.getElementById('checkin');
-    const fechaHastaInput = document.getElementById('hasta') || document.getElementById('checkout');
-    
-    if (fechaDesdeInput && fechaHastaInput && fechaDesdeInput.value && fechaHastaInput.value) {
+    // Si no están en window, intentar obtenerlas de los inputs
+    if (!fechaDesde || !fechaHasta) {
+      const fechaDesdeInput = document.getElementById('desde') || document.getElementById('checkin');
+      const fechaHastaInput = document.getElementById('hasta') || document.getElementById('checkout');
       
-      generarTablaHabitaciones(fechaDesdeInput.value, fechaHastaInput.value);
+      if (fechaDesdeInput && fechaHastaInput && fechaDesdeInput.value && fechaHastaInput.value) {
+        fechaDesde = fechaDesdeInput.value;
+        fechaHasta = fechaHastaInput.value;
+      }
+    }
+    
+    if (fechaDesde && fechaHasta) {
+      // Regenerar la tabla con el filtro aplicado
+      if (typeof generarTablaHabitaciones === 'function') {
+        generarTablaHabitaciones(fechaDesde, fechaHasta);
+      } else {
+        console.error('La función generarTablaHabitaciones no está disponible');
+      }
+    } else {
+      console.warn('No se pueden obtener las fechas para regenerar la tabla');
     }
   });
 }
