@@ -556,7 +556,7 @@ class UIEstadia {
         if (overlayFondo) overlayFondo.style.display = 'none';
 
         // Preguntar si quiere acompañantes
-        advertencia(
+        pregunta(
             "¿Desea agregar acompañantes?", 
             "SÍ, AGREGAR ✅",
             "NO, CONTINUAR ❌",
