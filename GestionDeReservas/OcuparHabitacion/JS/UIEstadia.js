@@ -349,7 +349,8 @@ class UIEstadia {
             btnNo.onclick = () => {
                 const modal = document.getElementById("modal-advertencia");
                 if (modal) modal.style.display = "none";
-                UIEstadia.crearYRegistrarEstadia([]);
+                // No registrar todavía, solo mostrar el menú
+                UIEstadia.menuFinalCU07();
             };
         }
 
@@ -367,7 +368,9 @@ class UIEstadia {
     // (lo llama buscar-huesped.js → window.manejarSeleccionAcompaniantes)
     // --------------------------------------------------
     static async manejarSeleccionAcompanantes(listaJSON) {
-        acompanantesActual = Array.isArray(listaJSON) ? listaJSON : [];
+        // Agregar los nuevos acompañantes a la lista actual (acumular)
+        const nuevosAcompanantes = Array.isArray(listaJSON) ? listaJSON : [];
+        acompanantesActual = [...acompanantesActual, ...nuevosAcompanantes];
 
         const container = document.querySelector('.container');
         const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
@@ -378,11 +381,14 @@ class UIEstadia {
         const overlayFondo = document.getElementById('overlay-fondo-opaco');
         if (overlayFondo) overlayFondo.style.display = 'none';
 
-        UIEstadia.crearYRegistrarEstadia(acompanantesActual);
+        // NO registrar todavía, solo mostrar el menú
+        // El menú decidirá cuándo registrar (cuando elija "CARGAR OTRA HABITACIÓN" o "SALIR")
+        UIEstadia.menuFinalCU07();
     }
 
     // --------------------------------------------------
     // Construir datos y llamar a GestorEstadia.registrarOcupacion
+    // Este método solo registra, NO muestra el menú
     // --------------------------------------------------
     static async crearYRegistrarEstadia(listaAcompanantes) {
         if (!habitacionActual || !desdeActual || !hastaActual || !titularActual) {
@@ -404,7 +410,9 @@ class UIEstadia {
             return;
         }
 
-        UIEstadia.menuFinalCU07();
+        // No mostrar menú aquí, el menú ya se mostró antes
+        // Este método solo registra la estadía
+        console.log("✅ Estadía registrada correctamente");
     }
 
     // --------------------------------------------------
@@ -436,8 +444,8 @@ class UIEstadia {
         `;
 
         panel.innerHTML = `
-            <h2 style="margin-top: 0;">Ocupación registrada correctamente</h2>
-            <p>¿Qué desea hacer?</p>
+            <h2 style="margin-top: 0;">¿Qué desea hacer?</h2>
+            <p>Puede seguir agregando acompañantes o finalizar la ocupación.</p>
         `;
 
         const contBotones = document.createElement("div");
@@ -459,16 +467,20 @@ class UIEstadia {
         const btnOtra = document.createElement("button");
         btnOtra.className = "boton-reserva-estandar";
         btnOtra.textContent = "CARGAR OTRA HABITACIÓN";
-        btnOtra.onclick = () => {
+        btnOtra.onclick = async () => {
             overlay.remove();
+            // Registrar la estadía antes de recargar
+            await UIEstadia.crearYRegistrarEstadia(acompanantesActual);
             window.location.reload();
         };
 
         const btnSalir = document.createElement("button");
         btnSalir.className = "boton-reserva-estandar";
         btnSalir.textContent = "SALIR";
-        btnSalir.onclick = () => {
+        btnSalir.onclick = async () => {
             overlay.remove();
+            // Registrar la estadía antes de salir
+            await UIEstadia.crearYRegistrarEstadia(acompanantesActual);
             window.location.href = "/index.html";
         };
 
