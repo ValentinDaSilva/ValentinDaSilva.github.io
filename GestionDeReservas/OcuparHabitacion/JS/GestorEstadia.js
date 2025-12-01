@@ -54,45 +54,49 @@ class GestorEstadia {
 
     // -------------------------------------------------------
     // EVALUAR HABITACIÓN SELECCIONADA
+    // Según diagrama: se puede ocupar si está LIBRE o RESERVADA
+    // El estado se determina por las reservas, no por un campo de la habitación
     // -------------------------------------------------------
     static evaluarSeleccion(habitacion, fechasRango, reservas) {
         if (!habitacion) {
             return { ok: false, tipo: "sin-habitacion" };
         }
 
-        let estado = (habitacion.estado || "")
-            .trim()
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .replace(/_/g, "");
+        console.log("🔍 Evaluando selección - Habitación:", habitacion);
+        console.log("🔍 Fechas rango:", fechasRango);
+        console.log("🔍 Reservas totales:", reservas.length);
 
-        // Solo se permite ocupar si está LIBRE o RESERVADA
-        if (estado !== "libre" && estado !== "reservada") {
-            return { ok: false, tipo: "estado-no-permitido" };
-        }
-
-        // ¿Engloba días OCUPADOS? (r.estado FINALIZADA)
+        // ¿Engloba días OCUPADOS? (reservas con estado FINALIZADA)
+        // Esto NO se permite ocupar
         const hayOcupado = fechasRango.some(f => 
-            reservas.some(r =>
-                (r.estado || "").toLowerCase() === "finalizada" &&
-                compararFechas(f, r.fechaInicio) >= 0 &&
-                compararFechas(f, r.fechaFin)   <= 0 &&
-                r.habitaciones.some(h => h.numero === habitacion.numero)
-            )
+            reservas.some(r => {
+                const estadoReserva = (r.estado || "").toLowerCase().trim();
+                const tieneHabitacion = r.habitaciones && r.habitaciones.some(h => h.numero === habitacion.numero);
+                const fechaEnRango = compararFechas(f, r.fechaInicio) >= 0 && compararFechas(f, r.fechaFin) <= 0;
+                
+                return estadoReserva === "finalizada" && tieneHabitacion && fechaEnRango;
+            })
         );
 
         if (hayOcupado) {
+            console.log("❌ Hay días ocupados (reservas finalizadas)");
             return { ok: false, tipo: "dias-ocupados" };
         }
 
-        // ¿Engloba días reservados? (válido, pero con reserva asociada)
-        const reservasAsociadas = reservas.filter(r =>
-            r.habitaciones.some(h => h.numero === habitacion.numero) &&
-            compararFechas(fechasRango[0],       r.fechaInicio) >= 0 &&
-            compararFechas(fechasRango.at(-1),   r.fechaFin)    <= 0
-        );
+        // ¿Engloba días reservados? (reservas con estado PENDIENTE u otro)
+        // Esto SÍ se permite ocupar, pero con confirmación
+        const reservasAsociadas = reservas.filter(r => {
+            const tieneHabitacion = r.habitaciones && r.habitaciones.some(h => h.numero === habitacion.numero);
+            const fechaDesdeEnRango = compararFechas(fechasRango[0], r.fechaInicio) >= 0;
+            const fechaHastaEnRango = compararFechas(fechasRango.at(-1), r.fechaFin) <= 0;
+            const estadoReserva = (r.estado || "").toLowerCase().trim();
+            
+            // Solo considerar reservas que no estén finalizadas
+            return tieneHabitacion && fechaDesdeEnRango && fechaHastaEnRango && estadoReserva !== "finalizada";
+        });
 
         if (reservasAsociadas.length > 0) {
+            console.log("✅ Engloba reservas (se puede ocupar con confirmación):", reservasAsociadas);
             return {
                 ok: true,
                 tipo: "engloba-reservada",
@@ -100,7 +104,8 @@ class GestorEstadia {
             };
         }
 
-        // Totalmente disponible
+        // Totalmente disponible (sin reservas en ese rango)
+        console.log("✅ Habitación disponible");
         return { ok: true, tipo: "disponible" };
     }
 
