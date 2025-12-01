@@ -28,7 +28,7 @@ function mensajeError(mensaje) {
 }
 
 
-function mensajeCorrecto(mensaje) {
+function mensajeCorrecto(mensaje, callback) {
   if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
   
   const modal = document.getElementById('modal-correcto');
@@ -36,11 +36,13 @@ function mensajeCorrecto(mensaje) {
   
   if (!modal) {
     console.error('Modal de correcto no encontrado');
+    if (callback) callback();
     return;
   }
   
   if (!mensajeCorrectoElement) {
     console.error('Elemento mensaje-correcto no encontrado');
+    if (callback) callback();
     return;
   }
   
@@ -50,8 +52,19 @@ function mensajeCorrecto(mensaje) {
   
   modal.style.zIndex = "9999";
   
-  window.onkeydown = function() {
+  const cerrarModal = function() {
     modal.style.display = "none";
+    window.onkeydown = null; // Limpiar el listener
+    if (callback) callback();
+  };
+  
+  window.onkeydown = cerrarModal;
+  
+  // También cerrar al hacer click en el modal
+  modal.onclick = function(event) {
+    if (event.target === modal) {
+      cerrarModal();
+    }
   };
 }
 

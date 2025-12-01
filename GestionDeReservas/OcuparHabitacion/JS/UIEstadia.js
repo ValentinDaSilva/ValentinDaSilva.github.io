@@ -161,6 +161,7 @@ class UIEstadia {
 
     // --------------------------------------------------
     // GUARDAMOS CONTEXTO Y DISPARAMOS BÚSQUEDA TITULAR
+    // Según diagrama: mostrar "Presione una tecla para continuar" primero
     // --------------------------------------------------
     static async continuarCU07(habitacion, desde, hasta, reserva) {
         habitacionActual       = habitacion;
@@ -170,7 +171,15 @@ class UIEstadia {
         titularActual          = null;
         acompanantesActual     = [];
 
-        UIEstadia.mostrarBuscadorTitular();
+        // Mostrar mensaje "Presione una tecla para continuar" según diagrama
+        if (typeof mensajeCorrecto === "function") {
+            mensajeCorrecto("Presione una tecla para continuar", () => {
+                UIEstadia.mostrarBuscadorTitular();
+            });
+        } else {
+            // Si no hay función mensajeCorrecto, mostrar directamente
+            UIEstadia.mostrarBuscadorTitular();
+        }
     }
 
     // --------------------------------------------------
