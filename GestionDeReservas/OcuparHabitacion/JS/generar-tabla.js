@@ -37,6 +37,20 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones = filtrarHabitacionesPorTipo(tipoFiltro);
   }
   
+  // =====================================================
+  // ORDENAR HABITACIONES POR NÚMERO (101, 102, 103, etc.)
+  // =====================================================
+  habitaciones.sort((a, b) => {
+    const numA = Number(a.numero);
+    const numB = Number(b.numero);
+
+    if (isNaN(numA) || isNaN(numB)) {
+      return String(a.numero).localeCompare(String(b.numero));
+    }
+
+    return numA - numB;
+  });
+  
   const fechas = generarArrayFechas(fechaInicio, fechaFin);
 
   
