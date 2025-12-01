@@ -71,24 +71,23 @@ function estaHabitacionReservada(numeroHabitacion, fecha) {
     
     // Verificar si la reserva tiene esta habitación
     const habitacionesReserva = reserva.habitaciones || [];
-    const tieneHabitacion = habitacionesReserva.some(hab => {
+    let tieneHabitacion = habitacionesReserva.some(hab => {
       if (!hab) return false;
       const numHabReserva = typeof hab.numero === 'string' ? parseInt(hab.numero, 10) : hab.numero;
       return numHabReserva === numHab;
     });
     
     // También verificar si hay un campo directo numeroHabitacion
+    if (!tieneHabitacion && reserva.numeroHabitacion !== undefined) {
+      const numHabDirecto = typeof reserva.numeroHabitacion === 'string' 
+        ? parseInt(reserva.numeroHabitacion, 10) 
+        : reserva.numeroHabitacion;
+      tieneHabitacion = (numHabDirecto === numHab);
+    }
+    
+    // Si no tiene la habitación, no es esta reserva
     if (!tieneHabitacion) {
-      if (reserva.numeroHabitacion !== undefined) {
-        const numHabDirecto = typeof reserva.numeroHabitacion === 'string' 
-          ? parseInt(reserva.numeroHabitacion, 10) 
-          : reserva.numeroHabitacion;
-        if (numHabDirecto !== numHab) {
-          return false;
-        }
-      } else {
-        return false;
-      }
+      return false;
     }
     
     // Verificar que la fecha esté en el rango de la reserva
@@ -99,7 +98,8 @@ function estaHabitacionReservada(numeroHabitacion, fecha) {
       return false;
     }
     
-    return compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0;
+    const fechaEnRango = compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0;
+    return fechaEnRango;
   });
 }
 

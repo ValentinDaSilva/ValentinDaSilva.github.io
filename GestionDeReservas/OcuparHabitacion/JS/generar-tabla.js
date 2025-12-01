@@ -80,6 +80,15 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
       // Verificar si está reservada usando las reservas del backend
       const estaReservada = estaHabitacionReservada(habitacion.numero, fecha);
       
+      // Debug: log para verificar reservas
+      if (fecha === fechas[0] && habitacion.numero === habitaciones[0].numero) {
+        console.log("🔍 Debug generarTabla - Primera celda:");
+        console.log("  - Habitación:", habitacion.numero);
+        console.log("  - Fecha:", fecha);
+        console.log("  - Reservas disponibles:", (window.listaReservasCU07 || []).length);
+        console.log("  - Está reservada:", estaReservada);
+      }
+      
       if (estaReservada) {
         td.className = 'estado-reservada';
         td.setAttribute('data-estado-original', 'reservada');
