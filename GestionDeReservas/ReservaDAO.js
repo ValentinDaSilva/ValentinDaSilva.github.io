@@ -16,16 +16,17 @@ class ReservaDAO {
         const res = await fetch(url);
         if (!res.ok) throw new Error("Error al cargar reservas.");
 
-        RESERVAS = await res.json();
-        console.log("Reservas recibidas:", RESERVAS);
+        const reservas = await res.json();
+        console.log("Reservas recibidas:", reservas);
       
-        return RESERVAS;
+        return reservas;
     } catch (err) {
         console.error(err);
-        mensajeError("Error cargando reservas desde el backend.");
-        RESERVAS = [];
+        if (typeof mensajeError === "function") {
+            mensajeError("Error cargando reservas desde el backend.");
+        }
+        return [];
     }
-    throw new Error("No se pudieron obtener las reservas.");
   }
 
   static async guardarReserva(reserva) {

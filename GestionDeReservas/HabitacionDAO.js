@@ -1,7 +1,7 @@
 // JS/HabitacionDAO.js
 // =======================================================
 // HabitacionDAO
-//  - listarHabitaciones(): usa datos-habitaciones.js
+//  - listarHabitaciones(): obtiene habitaciones del backend
 // =======================================================
 
 class HabitacionDAO {
@@ -13,20 +13,18 @@ class HabitacionDAO {
         const res = await fetch("http://localhost:8080/api/habitaciones");
         if (!res.ok) throw new Error("Error al cargar habitaciones.");
 
-        HABITACIONES = await res.json();
-        datosHabitacionesCargados = true;
+        const habitaciones = await res.json();
 
-        console.log("Habitaciones obtenidas:", HABITACIONES);
-        console.log("Total habitaciones:", HABITACIONES.length);
-        return HABITACIONES;
+        console.log("Habitaciones obtenidas:", habitaciones);
+        console.log("Total habitaciones:", habitaciones.length);
+        return habitaciones;
     } catch (err) {
         console.error(err);
-        mensajeError("No se pudieron cargar las habitaciones.");
-        HABITACIONES = [];
-        return HABITACIONES;
+        if (typeof mensajeError === "function") {
+            mensajeError("No se pudieron cargar las habitaciones.");
+        }
+        return [];
     }
-
-    throw new Error("No se pudieron obtener las habitaciones.");
   }
 }
 
