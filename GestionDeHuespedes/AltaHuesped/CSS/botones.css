@@ -66,10 +66,12 @@
     font-size: 16px;
 }
 
+.botones-advertencia button.boton-general.boton-advertencia,
 .botones-advertencia .boton-advertencia {
-    display: block;
-    margin: 20px 0 0;
     flex: 1;
+    margin: 20px 0 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 .boton-pregunta {
