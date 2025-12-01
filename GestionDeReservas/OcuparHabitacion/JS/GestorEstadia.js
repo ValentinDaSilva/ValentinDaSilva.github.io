@@ -92,6 +92,7 @@ class GestorEstadia {
         // ¿Engloba días reservados? (reservas con estado PENDIENTE u otro)
         // Esto SÍ se permite ocupar, pero con confirmación
         // IMPORTANTE: Solo se puede ocupar si está RESERVADA (no disponible)
+        // NUEVA RESTRICCIÓN: Las fechas deben coincidir EXACTAMENTE con la reserva
         const reservasAsociadas = reservas.filter(r => {
             const tieneHabitacion = r.habitaciones && r.habitaciones.some(h => h.numero === habitacion.numero);
             const fechaDesdeEnRango = compararFechas(fechasRango[0], r.fechaInicio) >= 0;
@@ -103,7 +104,29 @@ class GestorEstadia {
         });
 
         if (reservasAsociadas.length > 0) {
-            console.log("✅ Engloba reservas (se puede ocupar con confirmación):", reservasAsociadas);
+            // Verificar que las fechas coincidan EXACTAMENTE con la reserva
+            const reserva = reservasAsociadas[0];
+            const fechaInicioReserva = reserva.fechaInicio || reserva.desde;
+            const fechaFinReserva = reserva.fechaFin || reserva.hasta;
+            const fechaInicioSeleccion = fechasRango[0];
+            const fechaFinSeleccion = fechasRango.at(-1);
+            
+            // Comparar fechas exactas
+            const inicioExacto = compararFechas(fechaInicioSeleccion, fechaInicioReserva) === 0;
+            const finExacto = compararFechas(fechaFinSeleccion, fechaFinReserva) === 0;
+            
+            if (!inicioExacto || !finExacto) {
+                console.log("❌ Las fechas seleccionadas no coinciden exactamente con la reserva");
+                return {
+                    ok: false,
+                    tipo: "fechas-no-exactas",
+                    reserva: reserva,
+                    fechaInicioReserva: fechaInicioReserva,
+                    fechaFinReserva: fechaFinReserva
+                };
+            }
+            
+            console.log("✅ Engloba reservas y fechas coinciden exactamente:", reservasAsociadas);
             return {
                 ok: true,
                 tipo: "engloba-reservada",

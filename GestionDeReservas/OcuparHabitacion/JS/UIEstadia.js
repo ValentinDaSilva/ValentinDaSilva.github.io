@@ -100,6 +100,40 @@ class UIEstadia {
                     mensajeError(`La habitación ${nombreHab} no está reservada en el rango seleccionado.`);
                 } else if (evaluacion.tipo === "dias-ocupados") {
                     mensajeError(`La habitación ${nombreHab} tiene días ocupados en este rango.`);
+                } else if (evaluacion.tipo === "fechas-no-exactas") {
+                    // Mostrar advertencia con las fechas exactas de la reserva
+                    const fechaInicio = evaluacion.fechaInicioReserva;
+                    const fechaFin = evaluacion.fechaFinReserva;
+                    const modal = document.getElementById('modal-advertencia');
+                    const mensajeAdvertencia = document.getElementById('mensaje-advertencia');
+                    const botonAceptar = document.getElementById("boton-advertencia-aceptar");
+                    const botonCorregir = document.getElementById("boton-advertencia-corregir");
+                    
+                    if (modal && mensajeAdvertencia) {
+                        mensajeAdvertencia.innerHTML = `Las fechas seleccionadas no coinciden exactamente con la reserva de la habitación ${nombreHab}.<br><br>
+                            <b>Fechas seleccionadas:</b><br>
+                            Desde: <b>${fechaDesde}</b> | Hasta: <b>${fechaHasta}</b><br><br>
+                            <b>Fechas de la reserva:</b><br>
+                            Desde: <b>${fechaInicio}</b> | Hasta: <b>${fechaFin}</b><br><br>
+                            Por favor, seleccione el rango exacto de la reserva.`;
+                        
+                        if (botonAceptar) {
+                            botonAceptar.textContent = "ACEPTAR";
+                            botonAceptar.onclick = () => {
+                                modal.style.display = "none";
+                                // Restaurar visibilidad del segundo botón para próximos usos
+                                if (botonCorregir) botonCorregir.style.display = "";
+                            };
+                        }
+                        
+                        if (botonCorregir) {
+                            botonCorregir.style.display = "none"; // Ocultar segundo botón
+                        }
+                        
+                        modal.style.display = "flex";
+                    }
+                    // No continuar con esta selección
+                    continue;
                 }
                 continue;
             }
@@ -180,6 +214,41 @@ class UIEstadia {
         // Habitación no reservada - no se puede ocupar
         if (!evaluacion.ok && evaluacion.tipo === "no-reservada") {
             mensajeError("Solo se pueden ocupar habitaciones que estén RESERVADAS. Esta habitación está disponible (libre) en el rango seleccionado.");
+            return;
+        }
+
+        // Fechas no coinciden exactamente con la reserva
+        if (!evaluacion.ok && evaluacion.tipo === "fechas-no-exactas") {
+            const fechaInicio = evaluacion.fechaInicioReserva;
+            const fechaFin = evaluacion.fechaFinReserva;
+            const modal = document.getElementById('modal-advertencia');
+            const mensajeAdvertencia = document.getElementById('mensaje-advertencia');
+            const botonAceptar = document.getElementById("boton-advertencia-aceptar");
+            const botonCorregir = document.getElementById("boton-advertencia-corregir");
+            
+            if (modal && mensajeAdvertencia) {
+                mensajeAdvertencia.innerHTML = `Las fechas seleccionadas no coinciden exactamente con la reserva.<br><br>
+                    <b>Fechas seleccionadas:</b><br>
+                    Desde: <b>${fechaDesde}</b> | Hasta: <b>${fechaHasta}</b><br><br>
+                    <b>Fechas de la reserva:</b><br>
+                    Desde: <b>${fechaInicio}</b> | Hasta: <b>${fechaFin}</b><br><br>
+                    Por favor, seleccione el rango exacto de la reserva.`;
+                
+                if (botonAceptar) {
+                    botonAceptar.textContent = "ACEPTAR";
+                    botonAceptar.onclick = () => {
+                        modal.style.display = "none";
+                        // Restaurar visibilidad del segundo botón para próximos usos
+                        if (botonCorregir) botonCorregir.style.display = "";
+                    };
+                }
+                
+                if (botonCorregir) {
+                    botonCorregir.style.display = "none"; // Ocultar segundo botón
+                }
+                
+                modal.style.display = "flex";
+            }
             return;
         }
 
