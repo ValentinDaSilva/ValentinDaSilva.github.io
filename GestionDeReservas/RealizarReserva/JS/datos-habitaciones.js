@@ -97,12 +97,48 @@ function formatearFecha(f) {
 //   GET /api/habitaciones
 // ===========================================================
 async function cargarHabitaciones() {
-   
+  try {
+    // Usar HabitacionDAO si está disponible, sino hacer fetch directo
+    if (typeof window.HabitacionDAO !== "undefined") {
+      HABITACIONES = await window.HabitacionDAO.listarHabitaciones();
+    } else {
+      const res = await fetch("http://localhost:8080/api/habitaciones");
+      if (!res.ok) throw new Error("Error al cargar habitaciones.");
+      HABITACIONES = await res.json();
+    }
+    datosHabitacionesCargados = true;
+    console.log("✅ Habitaciones cargadas:", HABITACIONES.length);
+  } catch (error) {
+    console.error("❌ Error al cargar habitaciones:", error);
+    HABITACIONES = [];
+    datosHabitacionesCargados = false;
+  }
 }
 
 async function asegurarHabitaciones() {
   if (!datosHabitacionesCargados || HABITACIONES.length === 0) {
     await cargarHabitaciones();
+  }
+}
+
+// ===========================================================
+//   GET /api/reservas/entre?inicio=...&fin=...
+// ===========================================================
+async function cargarReservasEntre(desde, hasta) {
+  try {
+    // Usar ReservaDAO si está disponible, sino hacer fetch directo
+    if (typeof window.ReservaDAO !== "undefined") {
+      RESERVAS = await window.ReservaDAO.buscarReservasEntre(desde, hasta);
+    } else {
+      const url = `http://localhost:8080/api/reservas/entre?inicio=${desde}&fin=${hasta}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Error al cargar reservas.");
+      RESERVAS = await res.json();
+    }
+    console.log("✅ Reservas cargadas:", RESERVAS.length);
+  } catch (error) {
+    console.error("❌ Error al cargar reservas:", error);
+    RESERVAS = [];
   }
 }
 
@@ -145,6 +181,7 @@ window.generarArrayFechas = generarArrayFechas;
 window.formatearFecha = formatearFecha;
 
 window.asegurarHabitaciones = asegurarHabitaciones;
+window.cargarHabitaciones = cargarHabitaciones;
 window.cargarReservasEntre = cargarReservasEntre;
 
 

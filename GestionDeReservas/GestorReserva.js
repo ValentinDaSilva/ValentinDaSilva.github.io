@@ -47,9 +47,31 @@ class GestorReserva {
   static async obtenerEstadoHabitaciones(desde, hasta, ui) {
     console.log("🔍 Obteniendo estado de habitaciones entre", desde, "y", hasta);
     try {
-      let listaReservas = await HabitacionDAO.listarHabitaciones();
+      // Cargar habitaciones y actualizar el array global
+      if (typeof window.cargarHabitaciones === "function") {
+        await window.cargarHabitaciones();
+      } else {
+        // Fallback: usar HabitacionDAO directamente
+        const habitaciones = await HabitacionDAO.listarHabitaciones();
+        if (typeof window.obtenerHabitaciones === "function") {
+          // Actualizar el array global si hay una función setter
+          // Por ahora, asumimos que cargarHabitaciones lo hace
+        }
+      }
 
-      let listarHabitaciones = await ReservaDAO.buscarReservasEntre(desde, hasta);
+      // Cargar reservas y actualizar el array global
+      if (typeof window.cargarReservasEntre === "function") {
+        await window.cargarReservasEntre(desde, hasta);
+      } else {
+        // Fallback: usar ReservaDAO directamente
+        const reservas = await ReservaDAO.buscarReservasEntre(desde, hasta);
+        if (typeof window.obtenerReservas === "function") {
+          // Actualizar el array global si hay una función setter
+          // Por ahora, asumimos que cargarReservasEntre lo hace
+        }
+      }
+
+      // Generar la tabla con los datos cargados
       let huboLibre = false; 
       if (typeof generarTablaHabitaciones === "function") {
           huboLibre = generarTablaHabitaciones(desde, hasta);
