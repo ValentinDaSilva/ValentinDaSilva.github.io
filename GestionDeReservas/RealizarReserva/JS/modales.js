@@ -29,7 +29,7 @@ function mensajeError(mensaje) {
 }
 
 
-function mensajeCorrecto(mensaje) {
+function mensajeCorrecto(mensaje, funcionFinalizar) {
   if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
   
   const modal = document.getElementById('modal-correcto');
@@ -51,7 +51,7 @@ function mensajeCorrecto(mensaje) {
   
   modal.style.zIndex = "9999";
   
-  window.onkeydown = function() {
+  window.onkeydown = funcionFinalizar? funcionFinalizar : function() {
     modal.style.display = "none";
   };
 }

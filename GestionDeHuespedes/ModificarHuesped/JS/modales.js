@@ -1,7 +1,7 @@
 
 
 
-function mensajeCorrecto(mensaje) {
+function mensajeCorrecto(mensaje, accionBoton) {
     if (mensaje == undefined) mensaje = "Acción ejecutada con éxito";
     
     const modal = document.getElementById('modalCorrecto');
@@ -12,29 +12,38 @@ function mensajeCorrecto(mensaje) {
     mensajeExito.innerHTML = mensaje;
     
     modal.style.display = "flex";
-    window.onkeydown = function() {
+    
+       
+    document.addEventListener("keydown", (e) => {
+        e.preventDefault();
+        if(modal.style.display === "flex"){
+            console.log("Tecla presionada en modal correcto:", e.key);
+            modal.style.display = "none";
+            accionBoton();
+        }
+    });
+}
+
+function mensajeError(mensaje, accionBoton) {
+    console.log("Mostrando mensaje de error:", mensaje);
+    const modal = document.getElementById('modalError');
+    const mensajeErrorElement = document.getElementById('mensaje-error');
+    const botonOk = document.getElementById("boton-error-ok");
+
+    if (!modal || !mensajeErrorElement || !botonOk) return;
+
+    mensajeErrorElement.textContent = mensaje;
+    modal.style.display = "flex";
+
+    botonOk.onclick = (e) => {
+        e.stopPropagation();  
+        if (typeof accionBoton === "function") {
+            accionBoton();
+        }
+
         modal.style.display = "none";
     };
 }
-
-
-function mensajeError(mensaje) {
-    const modal = document.getElementById('modalError');
-    const mensajeErrorElement = document.getElementById('mensaje-error');
-    
-    if (!modal || !mensajeErrorElement) return;
-    
-    mensajeErrorElement.textContent = mensaje;
-    
-    modal.style.display = "flex";
-    
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-}
-
 
 function advertencia(mensaje, boton1, boton2) {
     if(mensaje == undefined) mensaje = "Mensaje de Advertencia";

@@ -68,11 +68,11 @@ class HuespedDAO {
     }
 
     //Guardar modificación de huésped
-    static async guardar(dto, forzar = false, esModificacion = false) {
+    static async modificarHuesped(dto, forzar) {
         const payload = { ...dto };
         if (forzar) payload.forzar = true;
 
-        const method = esModificacion ? "PUT" : "POST";
+        const method = "PUT";
         const url = "http://localhost:8080/api/huespedes";
 
         try {
@@ -101,10 +101,10 @@ class HuespedDAO {
         }
     }
 
-    static async borrar(numeroDocumento) {
+    static async eliminarHuesped(dto) {
         try {
             const res = await fetch(
-                `http://localhost:8080/api/huespedes/${encodeURIComponent(numeroDocumento)}`,
+                `http://localhost:8080/api/huespedes/${encodeURIComponent(dto.numeroDocumento)}`,
                 { method: "DELETE" }
             );
 
@@ -196,6 +196,7 @@ export default class GestorHuesped {
         // else existen coincidencias → GestorHuesped --> UI: mostrarResultados(lista)
         UI.mostrarResultados(lista);
         UI.mostrarSeccionResultados();
+        
     }
 
     static async modificarHuesped(UI) {
@@ -207,11 +208,13 @@ export default class GestorHuesped {
             return;
         }
 
-        const dom = GestorHuesped.crearDominio(datos);sd
-        const dto = GestorHuesped.crearDTO(dom);
+        const dom = GestorHuesped.crearHuesped(datos);
+        const dto = GestorHuesped.crearHuespedDTO(dom);
+        console.log("DTO a modificar:", dto);
 
-        let resp = await HuespedDAO.guardar(dto, false, true);
+        let resp = await HuespedDAO.modificarHuesped(dto, false, true);
 
+        
         if (resp.status === 409) {
             const opcion = await UI.preguntarDocumentoExistente();
 
@@ -222,38 +225,43 @@ export default class GestorHuesped {
 
             resp = await HuespedDAO.guardar(dto, true, true);
         }
-
+        
+        
         if (!resp.ok) {
             UI.mostrarError(resp.body || "Error al modificar.");
             return;
         }
-
+        
         await UI.mostrarModificacionExitosa(dom);
-        UI.volverPantallaAnterior();
     }
 
-    static async borrarHuesped(UI) {
+    static async eliminarHuesped(UI) {
         const datos = UI.extraerDatosDeUI();
-        const numero = datos.numeroDocumento;
+        const valid = GestorHuesped.validarDatos(datos);
 
-        const deseaBorrar = await UI.confirmarBorrado(datos);
-
-        if (!deseaBorrar) return UI.volverPantallaAnterior();
-
-        const resp = await HuespedDAO.borrar(numero);
-
-        if (resp.status === 409) {
-            await UI.mostrarNoEliminable();
-            return UI.volverPantallaAnterior();
-        }
-
-        if (!resp.ok) {
-            UI.mostrarError(resp.body || "No se pudo borrar.");
+        if (!valid.esValido) {
+            UI.mostrarError("Hay campos con errores.");
             return;
         }
 
-        await UI.mostrarBorradoExitoso(datos);
-        UI.volverPantallaAnterior();
+        const dom = GestorHuesped.crearHuesped(datos);
+        const dto = GestorHuesped.crearHuespedDTO(dom);
+        
+        let respuesta = await HuespedDAO.eliminarHuesped(dto,false);
+        
+        if(!respuesta.ok){
+            UI.mostrarError(respuesta.body || "Error al modificar.");
+            return;
+        }else if(respuesta.status === 409){
+            await UI.mostrarNoEliminable();
+            return UI.volverPantallaAnterior();
+        }else{
+            const deseaBorrar = await UI.confirmarBorrado(datos);
+            if (!deseaBorrar) return UI.volverPantallaAnterior();
+            respuesta = await HuespedDAO.eliminarHuesped(dto,true);
+            await UI.mostrarBorradoExitoso(datos);
+            UI.irAPantallaPrincipal();
+        }
     }
 
     static validarDatos(d) {

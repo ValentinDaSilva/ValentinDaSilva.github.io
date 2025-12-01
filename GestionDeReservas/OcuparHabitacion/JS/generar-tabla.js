@@ -76,6 +76,7 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
       } else {
         td.className = 'estado-libre';
         td.setAttribute('data-estado-original', 'libre');
+        huboLibre = true;
       }
       
       
@@ -91,5 +92,6 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
   
   aplicarEstilosCeldas();
   inicializarSeleccionHabitaciones();
+  return huboLibre;
 }
 

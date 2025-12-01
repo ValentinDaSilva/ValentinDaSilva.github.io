@@ -1,6 +1,6 @@
 
 
-import { GestorEstadia } from "../../Clases/Dominio/dominio.js";
+import { GestorEstadia } from "../../../Clases/Dominio/dominio.js";
 import { 
     convertirReservaJSONADominio, 
     convertirHuespedJSONADominio,

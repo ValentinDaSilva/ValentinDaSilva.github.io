@@ -2,6 +2,45 @@
 import GestorHuesped from "/GestionDeHuespedes/GestorHuesped.js";
 
 class UIModificarHuesped {
+    constructor() {
+        this.mostrarDatos();
+    }
+
+    mostrarDatos() {
+        const huesped = obtenerHuespedDeSessionStorage();
+        if (!huesped) {
+            mensajeError("Primero debes seleccionar un huésped", () => {
+                window.location.href = '../BuscarHuesped/buscarHuesped.html';
+            });
+            return;
+
+        }
+        window.huespedOriginalModificar = JSON.parse(JSON.stringify(huesped));
+        cargarDatosEnFormulario(huesped);
+
+
+        const botonBorrar = document.querySelector(".boton-borrar");
+        if (botonBorrar) {
+            botonBorrar.addEventListener("click", () => {
+                GestorHuesped.eliminarHuesped(this);
+            });
+        }
+
+        const botonCancelar = document.querySelector(".boton-cancelar");
+        if (botonCancelar) {
+            botonCancelar.addEventListener("click", GestorHuesped.eliminarHuesped);
+        }   
+        
+        const botonGuardar = document.querySelector(".boton-guardar");
+        if (botonGuardar) {
+            console.log("Asignando evento al botón Guardar");
+            botonGuardar.addEventListener("click", (e) => {
+                e.preventDefault();
+                GestorHuesped.modificarHuesped(this);
+            });
+        }   
+    }
+
     extraerDatosDeUI() {
         const apellido       = document.getElementById('apellido')?.value.trim() || '';
         const nombre         = document.getElementById('nombre')?.value.trim() || '';
@@ -93,15 +132,17 @@ class UIModificarHuesped {
     }
 
     async mostrarModificacionExitosa(huespedDominio) {
+        
         const nombre   = huespedDominio.getNombre();
         const apellido = huespedDominio.getApellido();
         mensajeCorrecto(
-            `El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`
+            `El huésped<br>${nombre} ${apellido}<br>ha sido modificado correctamente.<br><br>Presione cualquier tecla para continuar...`,
+            this.irAPantallaPrincipal
         );
     }
 
-    volverPantallaAnterior() {
-        window.location.href = '../BuscarHuesped/buscarHuesped.html';
+    irAPantallaPrincipal() {
+        window.location.href = '/index.html';
     }
 
     confirmarBorrado(datos) {
@@ -148,14 +189,11 @@ class UIModificarHuesped {
             `Los datos del huésped <br> ${nombre} ${apellido}, ${tipoDocumento}: ${numeroDocumento}<br> han sido eliminados del sistema. <br><br> PRESIONE CUALQUIER TECLA PARA CONTINUAR…`
         );
     }
-    static irAPantallaModificar() {
-        // En este CU, significa volver a la pantalla anterior (index del módulo)
-        window.location.href = '/index.html';
-}
 
 }
 
-const uiModificarHuesped = new UIModificarHuesped();
-window.uiModificarHuesped = uiModificarHuesped;
+document.addEventListener('DOMContentLoaded', () => {
+    const uiModificarHuesped = new UIModificarHuesped();
+    window.uiModificarHuesped = uiModificarHuesped;
+});
 
-export default uiModificarHuesped;

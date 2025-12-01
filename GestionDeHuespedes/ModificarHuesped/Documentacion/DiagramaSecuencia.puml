@@ -1,77 +1,87 @@
 @startuml
 actor Conserje
-participant "UI - Modificar Huesped" as UI
+participant "UI - Dar Alta Huesped" as UI
 participant GestorHuesped
+participant Huesped
 participant HuespedDAO
 
-Conserje -> UI: Selecciona huésped y solicita modificar
-UI -> GestorHuesped: iniciarModificacion(huespedSeleccionado)
-activate GestorHuesped
-GestorHuesped -> UI: mostrarDatos(huespedSeleccionado)
+Conserje -> UI: Solicita dar de alta un huésped
+UI -> UI: cargar huesped a modificar
+UI -> Conserje: Solicitar ingreso de datos
+Conserje --> UI: Ingresa los datos y presiona uno de tres botones
 
-loop Reingreso de datos
-    Conserje -> UI: Modifica datos y presiona botón
-
-    alt Botón SIGUIENTE
-        UI -> GestorHuesped: modificarHuesped()
-        GestorHuesped -> UI: extraerDatosDeUI()
-        UI --> GestorHuesped: datosIngresados
-        GestorHuesped -> GestorHuesped: validarDatosObligatorios()
-
-        alt Datos faltantes (2.A)
-            GestorHuesped -> UI: mostrarErroresOmisiones()
-        else Datos completos
-            GestorHuesped -> HuespedDAO: existeDocumento(tipo, numero)
+alt Botón = Guardar || Boton = Borrar
+    UI -> GestorHuesped: modificarHuesped()
+    activate GestorHuesped
+    GestorHuesped->UI: extraerDatosDeLaUI()
+    UI-->GestorHuesped:datos ingresados
+    GestorHuesped->GestorHuesped:validarDatos(datos ingresados)
+    alt datos incorrectos
+        GestorHuesped->UI: mensajeError("Hay campos que tiene valores incorrectos")
+        UI->Conserje: solicita ingresar los datos nuevamente
+    else
+        GestorHuesped -> GestorHuesped: modificarHuesped(datosIngresados)
+        create Huesped
+        GestorHuesped --> Huesped: <<create>>
+        activate Huesped
+        Huesped --> GestorHuesped: h: instanciaHuesped
+        deactivate Huesped
+        alt Boton = Guardar
+            GestorHuesped -> HuespedDAO: modificarHuesped(h)
             activate HuespedDAO
-            HuespedDAO --> GestorHuesped: existe
+            HuespedDAO --> GestorHuesped: resultado
             deactivate HuespedDAO
 
-            alt Documento existente (2.B)
-                GestorHuesped -> UI: mostrarCartelDocumentoExiste()
+            alt Documento ya existente
+                GestorHuesped -> UI: Mostrar cartel "Documento ya existe\nCORREGIR o ACEPTAR"
                 UI -> Conserje: Solicita opción
                 Conserje --> UI: opcion
 
                 alt CORREGIR
-                    UI -> GestorHuesped: opcionCorregir
+                    UI --> GestorHuesped: opcionCorregir
                     GestorHuesped -> UI: enfocarCampoDocumento()
-                else ACEPTAR IGUALMENTE
-                    UI -> GestorHuesped: opcionAceptar
-                    break
-                end
 
-            else Documento OK
-                break
+                else ACEPTAR IGUALMENTE
+                    UI --> GestorHuesped: opcionAceptar
+
+                    GestorHuesped -> HuespedDAO: modificarHuesped(h)
+                    activate HuespedDAO
+                    HuespedDAO --> GestorHuesped: resultado
+                    deactivate HuespedDAO
+                end
+                GestorHuesped->UI: mensaje("La operación ha culminado con éxito”")
+                GestorHuesped->UI: volverALaPantallaDeInicio()
+        else Boton = Borrar
+            GestorHuesped->HuespedDAO:eliminarHuesped()
+            HuespedDAO-->GestorHuesped:respueta
+            alt huesped ya hospedado anteriormente
+                GestorHuesped->UI: mostrar mensaje que no puede ser eliminado
+                UI->Conserje: Solicita ingresar cualquier tecla
+                Conserje-->UI: Ingresa una tecla
+                UI-->GestorHuesped
+                GestorHuesped->UI: volverALaPantallaDeInicio()
+            else huesped no hospedado 
+                GestorHuesped->UI: mostrar mensaje con los datos del huesped
+                UI->Conserje: Solicita elegir dos botones "Eliminar" o "Cancelar"
+                Conserje-->UI:Selecciona un boton
+                UI-->GestorHuesped: seleccion del usuario
+                alt Eliminar
+                    GestorHuesped->UI: mostrar mensaje de exito
+                    UI->Conserje: Solicita ingresar cualquier tecla
+                    Conserje-->UI: Ingresa una tecla
+                    UI-->GestorHuesped
+                    GestorHuesped->UI:volverALaPantallaDeInicio()
+                else Cancelar
+                    GestorHuesped->UI:volverALaPantallaDeInicio()
+                end
             end
         end
-
-    else Botón CANCELAR (2.C)
-        UI -> GestorHuesped: cancelarModificacion()
-        GestorHuesped -> UI: mostrarConfirmacionCancelar()
-        UI -> Conserje: Solicita SI/NO
-        Conserje --> UI: opcionCancelar
-
-        alt Elige SI
-            GestorHuesped -> UI: volverPantallaAnterior()
-            deactivate GestorHuesped
-            return
-        else Elige NO
-            GestorHuesped -> UI: mostrarDatos(huespedSeleccionado)
-        end
-
-    else Botón BORRAR (2.D)
-        UI -> GestorHuesped: borrarHuesped()
-        GestorHuesped -> HuespedDAO: ejecutarBajaHuesped()
-        deactivate GestorHuesped
-        return
     end
+    end
+else Botón = Cancelar
+    UI -> GestorHuesped: cancelarAlta()
+    GestorHuesped -> UI: volverALaPantallaDeInicio()
 end
 
-GestorHuesped -> HuespedDAO: actualizar(huesped)
-activate HuespedDAO
-HuespedDAO --> GestorHuesped: resultado
-deactivate HuespedDAO
-
-GestorHuesped -> UI: mostrarMensaje("La operación ha culminado con éxito")
 deactivate GestorHuesped
-
-@enduml
+@enduml"

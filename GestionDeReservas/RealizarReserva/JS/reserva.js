@@ -17,7 +17,6 @@ function manejarBusqueda() {
 
   form.addEventListener("submit", async e => {
     e.preventDefault();
-
     GestorReserva.buscarReservaEntreDosFechas();
   });
 }

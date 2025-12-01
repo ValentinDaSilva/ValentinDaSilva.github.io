@@ -10,23 +10,28 @@
 │   ├── formulario-reserva.css
 │   ├── modales.css
 │   └── resultado.css
+├── Documentacion
+│   └── DiagramaSecuencia.puml
 ├── GestorReserva.js
 ├── JS
 │   ├── datos-habitaciones.js
 │   ├── filtro-habitaciones.js
 │   ├── generar-tabla.js
 │   ├── gestor-realizar-reserva.js
+│   ├── HabitacionDAO.js
 │   ├── leyenda.js
 │   ├── modales.js
 │   ├── mostrar-json-reserva.js
+│   ├── ReservaDAO.js
 │   ├── reserva.js
 │   ├── seleccion-habitaciones.js
 │   ├── tabla-habitaciones.js
 │   ├── test.js
+│   ├── UIReservas.js
 │   └── validaciones-campos.js
 └── realizarReserva.html
 
-3 directories, 22 files
+4 directories, 26 files
 
 -----------------------------------
 
@@ -131,8 +136,8 @@
   <!-- ============================================================ -->
 
   <!-- Login -->
-  <script src="../Login/JS/validar-sesion.js"></script>
-  <script src="../Login/JS/navegacion-volver.js"></script>
+  <script src="/Login/JS/validar-sesion.js"></script>
+  <script src="/Login/JS/navegacion-volver.js"></script>
 
   <!-- Modales -->
   <script src="JS/modales.js"></script>
@@ -158,10 +163,14 @@
   <!-- Leyenda -->
   <script src="JS/leyenda.js"></script>
 
-  <!-- Flujo completo de reserva -->
-  <script type="module" src="JS/reserva.js"></script>
+  <!-- Mostrar JSON (si lo usás para debug) -->
+  <script src="JS/mostrar-json-reserva.js"></script>
 
+  <!-- Test (ALT+P) -->
   <script src="JS/test.js"></script>
+
+  <!-- DAO + Gestor + UI (MÓDULOS) -->
+  <script type="module" src="JS/UIReservas.js"></script>
 </body>
 </html>
 
@@ -959,56 +968,188 @@ body, html {
 
 // [GestorReserva.js]
 // GestorReserva.js
-// =====================================================================
-//  GestorReserva.js
-//  ✔ Orquestador del proceso de reserva
-//  ✔ Solo tiene un método: realizarReserva()
-//  ✔ Toda la lógica REAL la hace GestorRealizarReserva
-// =====================================================================
+// =======================================================
+// GestorReserva
+//  - Valida rango de fechas
+//  - Obtiene estado de habitaciones (HabitacionDAO, ReservaDAO)
+//  - Crea reservas (dominio + DTO)
+//  - Llama a ReservaDAO para guardar
+// =======================================================
 
-import { GestorRealizarReserva } from "./JS/gestor-realizar-reserva.js";
+import { HabitacionDAO } from "./JS/HabitacionDAO.js";
+import { ReservaDAO } from "./JS/ReservaDAO.js";
 
-export default class GestorReserva {
+class GestorReserva {
 
-  /**
-   * Método ÚNICO del orquestador.
-   *
-   * @param {Array} listaSeleccion  [{habitacion: 'IND-101', fechaDesde:..., fechaHasta:...}, ...]
-   * @param {Object} datosTitular   {nombre, apellido, telefono}
-   */
-  static async realizarReserva(listaSeleccion, datosTitular) {
+  // ---------------------------------------------------
+  // Validar rango de fechas
+  // ---------------------------------------------------
+  static validarRangoFechas(desde, hasta, ui) {
+    if (!desde || !hasta) {
+      ui.mostrarError("Debes completar ambas fechas.");
+      return false;
+    }
+
+    const d1 = new Date(desde);
+    const d2 = new Date(hasta);
+
+    if (d1 >= d2) {
+      ui.mostrarError("La fecha de salida debe ser posterior a la de entrada.");
+      const checkinInput = document.getElementById("fecha-desde");
+      const checkoutInput = document.getElementById("fecha-hasta");
+      if (checkinInput) checkinInput.value = "";
+      if (checkoutInput) checkoutInput.value = "";
+      if (checkinInput) checkinInput.focus();
+      return false;
+    }
+
+    if (typeof limpiarHabitacionesSeleccionadas === "function") {
+      limpiarHabitacionesSeleccionadas();
+    }
+
+    return true;
+  }
+
+  // ---------------------------------------------------
+  // Obtener estado de habitaciones (CU05)
+  // ---------------------------------------------------
+  static async obtenerEstadoHabitaciones(desde, hasta, ui) {
+    console.log("🔍 Obteniendo estado de habitaciones entre", desde, "y", hasta);
     try {
-      console.log("▶ Iniciando GestorReserva.realizarReserva()");
+      let listaReservas = await HabitacionDAO.listarHabitaciones();
 
-      const gestor = new GestorRealizarReserva();
-
-      // 1) Extraer datos desde la selección de la UI
-      const datosSeleccion = gestor.extraerDatosSeleccion(listaSeleccion);
-      console.log("1️⃣ Datos de selección:", datosSeleccion);
-
-      // 2) Crear dominio interno
-      const reservasDominio = gestor.crearReservaDominio(datosSeleccion, datosTitular);
-      console.log("2️⃣ Modelo de dominio:", reservasDominio);
-
-      // 3) Crear DTO final para el backend
-      const reservasDTO = gestor.crearReservaDTO(reservasDominio);
-      console.log("3️⃣ DTO final:", reservasDTO);
-
-      // 4) Guardar cada reserva en el backend
-      await gestor.guardarEnBD(reservasDTO);
-
-      console.log("✔ Reserva(s) creada(s) correctamente.");
-      return true;
+      let listarHabitaciones = await ReservaDAO.buscarReservasEntre(desde, hasta);
+      let huboLibre = false; 
+      if (typeof generarTablaHabitaciones === "function") {
+          huboLibre = generarTablaHabitaciones(desde, hasta);
+      }
+      if(huboLibre === false){
+        ui.mostrarError("No hay habitaciones disponibles en el rango de fechas seleccionado.");
+        return;
+      }
+      ui.mostrarGrilla();
 
     } catch (error) {
-      console.error("❌ Error en realizarReserva():", error);
-      mensajeError("No se pudo completar la reserva: " + error.message);
-      return false;
+      console.error("❌ Error en obtenerEstadoHabitaciones():", error);
+      ui.mostrarError("No se pudo mostrar el estado de las habitaciones.");
+    }
+
+  }
+
+  // ---------------------------------------------------
+  // Crear reserva (CU04)
+  // listaSeleccion = [{ habitacion: "IND-101", fechaDesde, fechaHasta }]
+  // ---------------------------------------------------
+  static async crearReserva(listaSeleccion, titular, desde, hasta, ui) {
+    try {
+      if (!Array.isArray(listaSeleccion) || listaSeleccion.length === 0) {
+        ui.mostrarError("Debe seleccionar al menos una habitación.");
+        return;
+      }
+
+      if (!titular || !titular.nombre || !titular.apellido || !titular.telefono) {
+        ui.mostrarError("Debe completar los datos obligatorios del titular.");
+        return;
+      }
+
+      const seleccionNormalizada = GestorReserva.extraerDatosSeleccion(listaSeleccion);
+      const reservasDominio = GestorReserva.crearReservaDominio(seleccionNormalizada, titular);
+      const reservasDTO = GestorReserva.crearReservaDTO(reservasDominio);
+
+      await GestorReserva.guardarEnBD(reservasDTO);
+
+      ui.mostrarReservaExitosa();
+
+    } catch (error) {
+      console.error("❌ Error en crearReserva():", error);
+      ui.mostrarError("No se pudo completar la reserva: " + error.message);
     }
   }
 
+  // ---------------------------------------------------
+  // Helpers internos (sin guiones bajos en el nombre)
+  // ---------------------------------------------------
+  static extraerDatosSeleccion(listaSeleccion) {
+    return listaSeleccion.map(item => {
+      const { habitacion, fechaDesde, fechaHasta } = item || {};
+
+      if (!habitacion || !fechaDesde || !fechaHasta) {
+        throw new Error("La selección de habitaciones es inválida.");
+      }
+
+      const numero = GestorReserva.extraerNumero(habitacion);
+      if (numero === null) {
+        throw new Error(`No se pudo obtener el número de habitación desde "${habitacion}".`);
+      }
+
+      return {
+        habitacion,
+        numero,
+        fechaDesde,
+        fechaHasta
+      };
+    });
+  }
+
+  static crearReservaDominio(seleccionNormalizada, titular) {
+    const titularDominio = {
+      nombre: titular.nombre,
+      apellido: titular.apellido,
+      telefono: titular.telefono
+    };
+
+    return seleccionNormalizada.map(sel => ({
+      fechaInicio: sel.fechaDesde,
+      fechaFin: sel.fechaHasta,
+      titular: titularDominio,
+      estado: "PENDIENTE",
+      habitaciones: [
+        { numero: sel.numero }
+      ]
+    }));
+  }
+
+  static crearReservaDTO(reservasDominio) {
+    if (!Array.isArray(reservasDominio) || reservasDominio.length === 0) {
+      throw new Error("No hay reservas en el modelo de dominio.");
+    }
+
+    return reservasDominio.map(r => ({
+      fechaInicio: r.fechaInicio,
+      fechaFin: r.fechaFin,
+      titular: {
+        nombre: r.titular.nombre,
+        apellido: r.titular.apellido,
+        telefono: r.titular.telefono
+      },
+      habitaciones: r.habitaciones.map(h => ({
+        numero: h.numero
+      }))
+    }));
+  }
+
+  static async guardarEnBD(reservasDTO) {
+    if (!Array.isArray(reservasDTO) || reservasDTO.length === 0) {
+      throw new Error("No hay reservas para guardar.");
+    }
+
+    for (const reserva of reservasDTO) {
+      await ReservaDAO.guardarReserva(reserva);
+    }
+  }
+
+  static extraerNumero(nombreHabitacion) {
+    if (typeof obtenerNumeroDesdeNombre === "function") {
+      return obtenerNumeroDesdeNombre(nombreHabitacion);
+    }
+
+    const partes = (nombreHabitacion || "").split("-");
+    const num = parseInt(partes[1]);
+    return isNaN(num) ? null : num;
+  }
 }
 
+export { GestorReserva };
 window.GestorReserva = GestorReserva;
 
 
@@ -1113,23 +1254,7 @@ function formatearFecha(f) {
 //   GET /api/habitaciones
 // ===========================================================
 async function cargarHabitaciones() {
-  try {
-    console.log("Solicitando habitaciones al backend…");
-
-    const res = await fetch("http://localhost:8080/api/habitaciones");
-    if (!res.ok) throw new Error("Error al cargar habitaciones.");
-
-    HABITACIONES = await res.json();
-    datosHabitacionesCargados = true;
-
-    console.log("Habitaciones obtenidas:", HABITACIONES);
-    console.log("Total habitaciones:", HABITACIONES.length);
-
-  } catch (err) {
-    console.error(err);
-    mensajeError("No se pudieron cargar las habitaciones.");
-    HABITACIONES = [];
-  }
+   
 }
 
 async function asegurarHabitaciones() {
@@ -1138,26 +1263,6 @@ async function asegurarHabitaciones() {
   }
 }
 
-// ===========================================================
-//   GET /api/reservas/entre?inicio=YYYY-MM-DD&fin=YYYY-MM-DD
-// ===========================================================
-async function cargarReservasEntre(inicio, fin) {
-  try {
-    const url = `http://localhost:8080/api/reservas/entre?inicio=${inicio}&fin=${fin}`;
-    console.log("Solicitando reservas:", url);
-
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Error al cargar reservas.");
-
-    RESERVAS = await res.json();
-    console.log("Reservas recibidas:", RESERVAS);
-
-  } catch (err) {
-    console.error(err);
-    mensajeError("Error cargando reservas desde el backend.");
-    RESERVAS = [];
-  }
-}
 
 // ===========================================================
 //   Consultas globales
@@ -1324,13 +1429,13 @@ window.normalizarTipo = normalizarTipo;
 
 
 // [JS/generar-tabla.js]
-
 // [JS/generar-tabla.js]
 // ========================================================
-//   generar-tabla.js — VERSIÓN FINAL DEFINITIVA
-//   ✔ Usa normalizarTipo() para obtener IND/DOBE/DOBS/FAM/SUITE
-//   ✔ No redeclara variables globales
-//   ✔ No usa MAPA duplicado (se elimina por completo)
+//   generar-tabla.js — VERSIÓN FINAL ULTRA CORREGIDA
+//   ✔ Soporta estados: libre / reservada / ocupada / fuera de servicio
+//   ✔ Ordena habitaciones por tipo normalizado + número
+//   ✔ Respeta filtros
+//   ✔ No pierde habitaciones duplicadas
 // ========================================================
 
 function generarTablaHabitaciones(fechaInicio, fechaFin) {
@@ -1362,11 +1467,26 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones = filtrarHabitacionesPorTipo(tipoFiltro);
   }
 
-  // Normalizar cada habitación (agrega h.codigoTipo)
+    // Normalizar cada habitación → agregar codigoTipo
   habitaciones = habitaciones.map(h => ({
     ...h,
     codigoTipo: normalizarTipo(h) // IND / DOBE / DOBS / FAM / SUITE
   }));
+
+  // =====================================================
+  // ORDENAR HABITACIONES SOLO POR NÚMERO
+  // =====================================================
+  habitaciones.sort((a, b) => {
+    const numA = Number(a.numero);
+    const numB = Number(b.numero);
+
+    if (isNaN(numA) || isNaN(numB)) {
+      return String(a.numero).localeCompare(String(b.numero));
+    }
+
+    return numA - numB;
+  });
+
 
   // Crear rango de fechas
   const fechas = generarArrayFechas(fechaInicio, fechaFin);
@@ -1415,13 +1535,38 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones.forEach(h => {
       const td = document.createElement("td");
 
-      // ¿Está reservada?
-      if (estaHabitacionReservada(h.numero, fechaISO)) {
-        td.className = "estado-reservada";
-        td.dataset.estadoOriginal = "reservada";
+      // ==============================================
+      // NORMALIZAR ESTADO DEL BACKEND
+      // ==============================================
+      let estadoBase = (h.estado || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .replace(/_/g, "")
+        .replace(/-/g, "");
+
+      // ==============================================
+      // ESTADOS PRIORITARIOS
+      // ==============================================
+      if (estadoBase === "ocupada") {
+        td.className = "estado-ocupada";
+        td.dataset.estadoOriginal = "ocupada";
+
+      } else if (estadoBase === "fueradeservicio") {
+        td.className = "estado-fuera-servicio";
+        td.dataset.estadoOriginal = "fuera-servicio";
+
       } else {
-        td.className = "estado-libre";
-        td.dataset.estadoOriginal = "libre";
+        // ==============================================
+        // ESTADO POR RESERVAS EXISTENTES
+        // ==============================================
+        if (estaHabitacionReservada(h.numero, fechaISO)) {
+          td.className = "estado-reservada";
+          td.dataset.estadoOriginal = "reservada";
+        } else {
+          td.className = "estado-libre";
+          td.dataset.estadoOriginal = "libre";
+        }
       }
 
       td.dataset.numeroHabitacion = h.numero;
@@ -1445,46 +1590,127 @@ window.generarTablaHabitaciones = generarTablaHabitaciones;
 
 
 
-
-
 // [JS/gestor-realizar-reserva.js]
-
 // [JS/gestor-realizar-reserva.js]
 // ===============================================================
-//   gestor-realizar-reserva.js — Opción B (versión nueva y limpia)
-//   Se encarga SOLO de armar el DTO correctamente
+//   GestorRealizarReserva — ejecutor del caso de uso Reservar
+//   ✔ Valida y normaliza la selección de habitaciones
+//   ✔ Crea el modelo de dominio interno
+//   ✔ Crea el/los DTO para el backend
+//   ✔ Hace las llamadas fetch y actualiza la UI
 // ===============================================================
 
-// ---------------------------------------------------------------
-// Clase para gestionar reservas
-// ---------------------------------------------------------------
 export class GestorRealizarReserva {
 
-  // -----------------------------
-  // Crear DTO principal
-  // -----------------------------
-  crearReservaDTO(seleccion, titular) {
-    // selección viene así:
-    // [
-    //   { habitacion: "DOBLE-103", fechaDesde: "2025-01-10", fechaHasta: "2025-01-12" }
-    // ]
+  static validaarFechas(desde, hasta) {
+    const fechaDesde = new Date(desde);
+    const fechaHasta = new Date(hasta);
+    if (!desde || !hasta) {
+          mensajeError("Debes completar ambas fechas.");
+          return false;
+        }
 
-    return seleccion.map(sel => ({
+        if (new Date(desde) >= new Date(hasta)) {
+          mensajeError("La fecha de salida debe ser posterior a la de entrada.");
+          return false;
+        }
+
+        // Limpio selección anterior, cargo datos y genero grilla
+        if (typeof limpiarHabitacionesSeleccionadas === "function") {
+            limpiarHabitacionesSeleccionadas();
+        }
+        return true;
+
+  }
+  // -----------------------------------------------------------
+  // 1) Normalizar / validar selección proveniente de la UI
+  //    listaSeleccion: [{ habitacion: "IND-101", fechaDesde, fechaHasta }, ...]
+  // -----------------------------------------------------------
+  extraerDatosSeleccion(listaSeleccion) {
+    if (!Array.isArray(listaSeleccion) || listaSeleccion.length === 0) {
+      throw new Error("No se recibieron habitaciones seleccionadas.");
+    }
+
+    return listaSeleccion.map(item => {
+      const { habitacion, fechaDesde, fechaHasta } = item || {};
+
+      if (!habitacion || !fechaDesde || !fechaHasta) {
+        throw new Error("La selección de habitaciones es inválida.");
+      }
+
+      const numero = this.extraerNumero(habitacion);
+      if (numero === null) {
+        throw new Error(`No se pudo obtener el número de habitación desde "${habitacion}".`);
+      }
+
+      return {
+        habitacion,    // "IND-101"
+        numero,        // 101
+        fechaDesde,    // "YYYY-MM-DD"
+        fechaHasta     // "YYYY-MM-DD"
+      };
+    });
+  }
+
+  // -----------------------------------------------------------
+  // 2) Crear modelo de dominio interno
+  //    (podrías mapear esto 1:1 con tus clases Reserva/Habitacion/Titular)
+  // -----------------------------------------------------------
+  crearReservaDominio(seleccionNormalizada, datosTitular) {
+    if (!datosTitular || !datosTitular.nombre || !datosTitular.apellido || !datosTitular.telefono) {
+      throw new Error("Los datos del titular están incompletos.");
+    }
+
+    const titular = this.crearTitularDominio(datosTitular);
+
+    // Dominio: una reserva por cada habitación seleccionada
+    return seleccionNormalizada.map(sel => ({
       fechaInicio: sel.fechaDesde,
       fechaFin: sel.fechaHasta,
-      titular: this.crearTitularDTO(titular),
+      titular: titular,
+      estado: "PENDIENTE",
       habitaciones: [
         {
-          numero: this.extraerNumero(sel.habitacion)
+          numero: sel.numero
+          // si más adelante querés: tipo, categoria, etc.
         }
       ]
     }));
   }
 
-  // -----------------------------
-  // DTO del titular
-  // -----------------------------
+  // Titular en el modelo de dominio
+  crearTitularDominio(t) {
+    return {
+      nombre: t.nombre,
+      apellido: t.apellido,
+      telefono: t.telefono
+      // acá tranquilamente podrías agregar más campos (DNI, etc.) si después
+      // se completan en la UI
+    };
+  }
+
+  // -----------------------------------------------------------
+  // 3) Crear DTO para el backend
+  //    Ahora recibe el dominio, no la selección cruda
+  // -----------------------------------------------------------
+  crearReservaDTO(reservasDominio) {
+    if (!Array.isArray(reservasDominio) || reservasDominio.length === 0) {
+      throw new Error("No hay reservas en el modelo de dominio.");
+    }
+
+    return reservasDominio.map(r => ({
+      fechaInicio: r.fechaInicio,
+      fechaFin: r.fechaFin,
+      titular: this.crearTitularDTO(r.titular),
+      habitaciones: r.habitaciones.map(h => ({
+        numero: h.numero
+      }))
+    }));
+  }
+
+  // DTO del titular para backend
   crearTitularDTO(t) {
+    if (!t) return null;
     return {
       nombre: t.nombre,
       apellido: t.apellido,
@@ -1492,23 +1718,103 @@ export class GestorRealizarReserva {
     };
   }
 
-  // -----------------------------
-  // obtener número desde "TIPO-410"
-  // -----------------------------
+  // -----------------------------------------------------------
+  // 4) Guardar en la BD (backend REST)
+  //    Hace el POST de CADA reserva DTO
+  // -----------------------------------------------------------
+  async guardarEnBD(reservasDTO) {
+    if (!Array.isArray(reservasDTO) || reservasDTO.length === 0) {
+      throw new Error("No hay reservas para guardar.");
+    }
+
+    console.log("💾 Enviando reservas al backend…", reservasDTO);
+
+    for (const reserva of reservasDTO) {
+      const respuesta = await fetch("http://localhost:8080/api/reservas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reserva)
+      });
+
+      if (!respuesta.ok) {
+        // Podrías inspeccionar respuesta.status / respuesta.text()
+        throw new Error("No se pudo crear la reserva en el backend.");
+      }
+    }
+
+    // Si llegamos hasta acá, se crearon todas correctamente
+    if (typeof mensajeCorrecto === "function") {
+      mensajeCorrecto("Reservas creadas correctamente.");
+    }
+
+    // Limpiar selección y ocultar panel de resultados
+    if (typeof limpiarHabitacionesSeleccionadas === "function") {
+      limpiarHabitacionesSeleccionadas();
+    }
+
+    const cont = document.querySelector(".contenedor-resultados");
+    if (cont) {
+      cont.style.display = "none";
+    }
+  }
+
+  // -----------------------------------------------------------
+  // Utilidad: obtener número desde "TIPO-410"
+  // -----------------------------------------------------------
   extraerNumero(nombreHabitacion) {
-    const partes = nombreHabitacion.split("-");
+    // Si ya tenés la función global, podrías reutilizarla:
+    if (typeof obtenerNumeroDesdeNombre === "function") {
+      return obtenerNumeroDesdeNombre(nombreHabitacion);
+    }
+
+    const partes = (nombreHabitacion || "").split("-");
     const num = parseInt(partes[1]);
     return isNaN(num) ? null : num;
   }
 }
 
 // ---------------------------------------------------------------
-// Exponer en window para acceso externo (opcional)
+// Exponer en window para poder jugar en consola si querés
 // ---------------------------------------------------------------
 window.GestorRealizarReserva = GestorRealizarReserva;
 
 
 
+// [JS/HabitacionDAO.js]
+// JS/HabitacionDAO.js
+// =======================================================
+// HabitacionDAO
+//  - listarHabitaciones(): usa datos-habitaciones.js
+// =======================================================
+
+class HabitacionDAO {
+
+  static async listarHabitaciones() {
+    try {
+        console.log("Solicitando habitaciones al backend…");
+
+        const res = await fetch("http://localhost:8080/api/habitaciones");
+        if (!res.ok) throw new Error("Error al cargar habitaciones.");
+
+        HABITACIONES = await res.json();
+        datosHabitacionesCargados = true;
+
+        console.log("Habitaciones obtenidas:", HABITACIONES);
+        console.log("Total habitaciones:", HABITACIONES.length);
+        return HABITACIONES;
+    } catch (err) {
+        console.error(err);
+        mensajeError("No se pudieron cargar las habitaciones.");
+        HABITACIONES = [];
+        return HABITACIONES;
+    }
+
+    throw new Error("No se pudieron obtener las habitaciones.");
+  }
+}
+
+export { HabitacionDAO };
+window.HabitacionDAO = HabitacionDAO;
 
 
 
@@ -2236,11 +2542,13 @@ window.mostrarJSONReservaEnPantalla = mostrarJSONReservaEnPantalla;
 // [JS/reserva.js]
 // [JS/reserva.js]
 // ==============================================================
-//  reserva.js — VERSIÓN FINAL DEFINITIVA
-//  ✔ Flujo completo de reserva
-//  ✔ Envía UNA RESERVA POR HABITACIÓN
-//  ✔ Integración perfecta con selección + filtros + backend
+//  reserva.js — VERSIÓN REORGANIZADA
+//  ✔ Maneja solo la interacción con la UI
+//  ✔ Llama a GestorReserva.realizarReserva(listaSeleccion, datosTitular)
+//  ✔ El fetch y el armado de DTO/dominio está en los Gestores
 // ==============================================================
+
+import GestorReserva from "../GestorReserva.js";
 
 // ------------------------------------------------------------
 // 1) MANEJAR BÚSQUEDA → cargar tabla
@@ -2251,29 +2559,7 @@ function manejarBusqueda() {
 
   form.addEventListener("submit", async e => {
     e.preventDefault();
-
-    const desde = document.getElementById("fecha-desde").value;
-    const hasta = document.getElementById("fecha-hasta").value;
-
-    if (!desde || !hasta) {
-      mensajeError("Debes completar ambas fechas.");
-      return;
-    }
-
-    if (new Date(desde) >= new Date(hasta)) {
-      mensajeError("La fecha de salida debe ser posterior a la de entrada.");
-      return;
-    }
-
-    limpiarHabitacionesSeleccionadas();
-
-    await asegurarHabitaciones();
-    await cargarReservasEntre(desde, hasta);
-
-    generarTablaHabitaciones(desde, hasta);
-
-    const cont = document.querySelector(".contenedor-resultados");
-    if (cont) cont.style.display = "block";
+    GestorReserva.buscarReservaEntreDosFechas();
   });
 }
 
@@ -2329,8 +2615,8 @@ function mostrarConfirmacion(lista) {
   lista.forEach(sel => {
     panel.innerHTML += `
       <p style="margin:8px 0;">
-        <strong>${sel.habitacion}</strong> — 
-        Desde <strong>${sel.fechaDesde}</strong> 
+        <strong>${sel.habitacion}</strong> —
+        Desde <strong>${sel.fechaDesde}</strong>
         hasta <strong>${sel.fechaHasta}</strong>
       </p>
     `;
@@ -2350,7 +2636,9 @@ function mostrarConfirmacion(lista) {
   btnCancelar.onclick = () => {
     overlay.remove();
     if (base) base.style.display = "block";
-    limpiarHabitacionesSeleccionadas();
+    if (typeof limpiarHabitacionesSeleccionadas === "function") {
+      limpiarHabitacionesSeleccionadas();
+    }
   };
 
   const btnOk = document.createElement("button");
@@ -2440,59 +2728,19 @@ function mostrarFormularioTitular(listaSeleccion) {
       return;
     }
 
-    await enviarReserva(listaSeleccion, { nombre, apellido, telefono });
+    // Acá delegamos TODO al director GestorReserva
+    await GestorReserva.realizarReserva(listaSeleccion, { nombre, apellido, telefono });
+
+    // Cierro el formulario (el resto de la UI se maneja desde los gestores)
     overlay.remove();
   };
-}
-
-// ------------------------------------------------------------
-// 5) POST — ENVIAR UNA RESERVA POR HABITACIÓN
-// ------------------------------------------------------------
-async function enviarReserva(lista, titular) {
-  try {
-    const reservas = lista.map(sel => ({
-      fechaInicio: sel.fechaDesde,
-      fechaFin: sel.fechaHasta,
-      titular: titular,
-      habitaciones: [
-        {
-          numero: obtenerNumeroDesdeNombre(sel.habitacion)
-        }
-      ]
-    }));
-
-    console.log("Reservas generadas:", reservas);
-
-    // enviar una por una
-    for (const reserva of reservas) {
-      const res = await fetch("http://localhost:8080/api/reservas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reserva)
-      });
-
-      if (!res.ok) {
-        mensajeError("No se pudo crear la reserva.");
-        return;
-      }
-    }
-
-    mensajeCorrecto("Reservas creadas correctamente.");
-
-    limpiarHabitacionesSeleccionadas();
-    const cont = document.querySelector(".contenedor-resultados");
-    if (cont) cont.style.display = "none";
-
-  } catch (err) {
-    console.error(err);
-    mensajeError("Error enviando reservas al backend.");
-  }
 }
 
 // ------------------------------------------------------------
 // Inicialización
 // ------------------------------------------------------------
 function inicializarReserva() {
+  console.log("Estoy aca");
   manejarBusqueda();
   manejarClickReservar();
 }
@@ -2503,6 +2751,54 @@ if (document.readyState === "loading") {
   inicializarReserva();
 }
 
+
+
+// [JS/ReservaDAO.js]
+// JS/ReservaDAO.js
+// =======================================================
+// ReservaDAO
+//  - buscarReservasEntre(desde,hasta)
+//  - guardarReserva(reserva)
+//  Usa datos-habitaciones.js para el GET de reservas
+// =======================================================
+
+class ReservaDAO {
+
+  static async buscarReservasEntre(desde, hasta) {
+    try {
+        const url = `http://localhost:8080/api/reservas/entre?inicio=${desde}&fin=${hasta}`;
+        console.log("Solicitando reservas:", url);
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Error al cargar reservas.");
+
+        RESERVAS = await res.json();
+        console.log("Reservas recibidas:", RESERVAS);
+        
+        return RESERVAS;
+    } catch (err) {
+        console.error(err);
+        mensajeError("Error cargando reservas desde el backend.");
+        RESERVAS = [];
+    }
+    throw new Error("No se pudieron obtener las reservas.");
+  }
+
+  static async guardarReserva(reserva) {
+    const respuesta = await fetch("http://localhost:8080/api/reservas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reserva)
+    });
+
+    if (!respuesta.ok) {
+      throw new Error("No se pudo guardar la reserva en el backend.");
+    }
+  }
+}
+
+export { ReservaDAO };
+window.ReservaDAO = ReservaDAO;
 
 
 
@@ -2685,7 +2981,7 @@ function inicializarSeleccionHabitaciones() {
   document.querySelectorAll(".tabla-habitaciones tbody td").forEach(c => {
     if (c.cellIndex === 0) return;
 
-    if (c.dataset.estadoOriginal !== "reservada") {
+    if (c.dataset.estadoOriginal == "libre") {
       c.addEventListener("click", () => manejarClickCelda(c));
       c.style.cursor = "pointer";
     }
@@ -2792,6 +3088,275 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+
+
+
+// [JS/UIReservas.js]
+// JS/UIReservas.js
+// =======================================================
+// UIReservas
+//  - Maneja la interacción con la UI
+//  - Llama a GestorReserva para la lógica
+// =======================================================
+
+import { GestorReserva } from "../GestorReserva.js";
+
+class UIReservas {
+
+  // ---------------------------------------------------
+  // Inicialización general
+  // ---------------------------------------------------
+  static inicializar() {
+    UIReservas.inicializarBusqueda();
+    UIReservas.inicializarBotonReservar();
+  }
+
+  // ---------------------------------------------------
+  // Formulario de búsqueda de fechas
+  // ---------------------------------------------------
+  static inicializarBusqueda() {
+    const form = document.querySelector(".formulario-busqueda form") || document.querySelector("form");
+    if (!form) return;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const desde = document.getElementById("fecha-desde").value;
+      const hasta = document.getElementById("fecha-hasta").value;
+
+      const valido = GestorReserva.validarRangoFechas(desde, hasta, UIReservas);
+      if (!valido) return;
+      await GestorReserva.obtenerEstadoHabitaciones(desde, hasta, UIReservas);
+    });
+  }
+
+  // ---------------------------------------------------
+  // Botón "Reservar"
+  // ---------------------------------------------------
+  static inicializarBotonReservar() {
+    const btn = document.querySelector(".boton-reservar");
+    if (!btn) return;
+
+    btn.addEventListener("click", () => {
+      const lista = typeof obtenerHabitacionesSeleccionadas === "function"
+        ? obtenerHabitacionesSeleccionadas()
+        : [];
+
+      if (!lista || !lista.length) {
+        UIReservas.mostrarError("Debe seleccionar al menos una habitación.");
+        return;
+      }
+
+      UIReservas.mostrarConfirmacion(lista);
+    });
+  }
+
+  // ---------------------------------------------------
+  // Mostrar errores (usa modales.js)
+  // ---------------------------------------------------
+  static mostrarError(mensaje) {
+    if (typeof mensajeError === "function") {
+      mensajeError(mensaje);
+    } else {
+      alert(mensaje);
+    }
+  }
+
+  // ---------------------------------------------------
+  // Mostrar grilla con resultados
+  // ---------------------------------------------------
+  static mostrarGrilla() {
+    const cont = document.querySelector(".contenedor-resultados");
+    if (cont) cont.style.display = "block";
+  }
+
+  // ---------------------------------------------------
+  // Panel de confirmación: listado tipo / ingreso / egreso
+  // ---------------------------------------------------
+  static mostrarConfirmacion(listaSeleccion) {
+    const base = document.querySelector(".contenedor-resultados");
+    if (base) base.style.display = "none";
+
+    const overlay = document.createElement("div");
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+    `;
+
+    const panel = document.createElement("div");
+    panel.style.cssText = `
+      background: white;
+      width: 90%;
+      max-width: 600px;
+      border: 2px solid #412c26;
+      border-radius: 10px;
+      padding: 25px;
+      font-family: sans-serif;
+    `;
+
+    panel.innerHTML = `<h2>Confirmá la selección</h2>`;
+
+    listaSeleccion.forEach(sel => {
+      panel.innerHTML += `
+        <p style="margin:8px 0;">
+          <strong>${sel.habitacion}</strong> —
+          Desde <strong>${sel.fechaDesde}</strong>
+          hasta <strong>${sel.fechaHasta}</strong>
+        </p>
+      `;
+    });
+
+    const contBotones = document.createElement("div");
+    contBotones.style.cssText = `
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    `;
+
+    const btnRechazar = document.createElement("button");
+    btnRechazar.className = "boton-reserva-estandar";
+    btnRechazar.textContent = "Rechazar";
+    btnRechazar.onclick = () => {
+      overlay.remove();
+      if (base) base.style.display = "block";
+      if (typeof limpiarHabitacionesSeleccionadas === "function") {
+        limpiarHabitacionesSeleccionadas();
+      }
+    };
+
+    const btnAceptar = document.createElement("button");
+    btnAceptar.className = "boton-reserva-estandar";
+    btnAceptar.textContent = "Aceptar";
+    btnAceptar.onclick = () => {
+      overlay.remove();
+      UIReservas.mostrarFormularioTitular(listaSeleccion);
+    };
+
+    contBotones.appendChild(btnRechazar);
+    contBotones.appendChild(btnAceptar);
+
+    panel.appendChild(contBotones);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+  }
+
+  // ---------------------------------------------------
+  // Formulario de titular (Apellido, Nombre, Teléfono)
+  // ---------------------------------------------------
+  static mostrarFormularioTitular(listaSeleccion) {
+    const overlay = document.createElement("div");
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    `;
+
+    const box = document.createElement("div");
+    box.className = "formulario-datos-huesped";
+    box.style.cssText = `
+      width: 90%;
+      max-width: 600px;
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    `;
+
+    box.innerHTML = `
+      <h2 class="titulo-formulario-huesped">Datos del Titular</h2>
+
+      <div class="cuadricula-formulario-huesped">
+        <div class="contenedor-campo-huesped">
+          <label>Nombre</label>
+          <input id="tit-nombre" class="campo-huesped" placeholder="Ingresá nombre">
+        </div>
+
+        <div class="contenedor-campo-huesped">
+          <label>Apellido</label>
+          <input id="tit-apellido" class="campo-huesped" placeholder="Ingresá apellido">
+        </div>
+
+        <div class="contenedor-campo-huesped">
+          <label>Teléfono</label>
+          <input id="tit-telefono" class="campo-huesped" placeholder="Ej: 341-5555555">
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:15px; margin-top:20px;">
+        <button id="btn-tit-cancelar" class="boton-reserva-estandar">Cancelar</button>
+        <button id="btn-tit-confirmar" class="boton-reserva-estandar">Confirmar Reserva</button>
+      </div>
+    `;
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    const btnCancelar = document.getElementById("btn-tit-cancelar");
+    const btnConfirmar = document.getElementById("btn-tit-confirmar");
+
+    btnCancelar.onclick = () => {
+      overlay.remove();
+      const base = document.querySelector(".contenedor-resultados");
+      if (base) base.style.display = "block";
+    };
+
+    btnConfirmar.onclick = async () => {
+      const nombre = document.getElementById("tit-nombre").value.trim();
+      const apellido = document.getElementById("tit-apellido").value.trim();
+      const telefono = document.getElementById("tit-telefono").value.trim();
+
+      if (!nombre || !apellido || !telefono) {
+        UIReservas.mostrarError("Complete todos los campos obligatorios del titular.");
+        return;
+      }
+
+      const desde = document.getElementById("fecha-desde").value;
+      const hasta = document.getElementById("fecha-hasta").value;
+
+      await GestorReserva.crearReserva(
+        listaSeleccion,
+        { nombre, apellido, telefono },
+        desde,
+        hasta,
+        UIReservas
+      );
+
+      overlay.remove();
+    };
+  }
+
+  // ---------------------------------------------------
+  // Mensaje final de éxito
+  // ---------------------------------------------------
+  static mostrarReservaExitosa() {
+    if (typeof mensajeCorrecto === "function") {
+      mensajeCorrecto("Reserva registrada con éxito.");
+    } else {
+      alert("Reserva registrada con éxito.");
+    }
+    // Podés ajustar esto si no querés recargar
+    location.reload();
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => UIReservas.inicializar());
+} else {
+  UIReservas.inicializar();
+}
+
+export { UIReservas };
+window.UIReservas = UIReservas;
 
 
 

@@ -143,10 +143,26 @@ class UIBuscarHuesped {
 
         // SIGUIENTE
         botonSiguiente.addEventListener("click", () => {
-            const seleccion = UIBuscarHuesped.devolverSeleccion();
-            GestorHuesped.procesarSeleccion(seleccion, UIBuscarHuesped);
+            const seleccionado = UIBuscarHuesped.devolverSeleccion();
+            if (!seleccionado) {
+                pregunta(
+                    "No hay resultado, desea dar alta huesped?",
+                    "Si",
+                    "NO",
+                    () => {window.location.href = "../AltaHuesped/altaHuesped.html";},
+                    () => {document.getElementById("modalPregunta").style.display = "none";}
+                );
+                return;
+            }else {
+                UIBuscarHuesped.modificarHuesped(seleccionado);
+            }
         });
     }
+    static modificarHuesped(huesped) {
+        sessionStorage.setItem("huespedSeleccionado", JSON.stringify(huesped));
+        window.location.href = "../ModificarHuesped/modificarHuesped.html";
+    }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {

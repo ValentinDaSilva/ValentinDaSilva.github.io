@@ -8,7 +8,7 @@ import {
   Direccion,
   EstadoReserva,
   EstadoHabitacion
-} from "../../Clases/Dominio/dominio.js";
+} from "../../../Clases/Dominio/dominio.js";
 
 
 function obtenerNumeroDesdeNombre(nombreHabitacion) {

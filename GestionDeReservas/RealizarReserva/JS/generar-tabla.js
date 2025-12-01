@@ -1,10 +1,10 @@
-
 // [JS/generar-tabla.js]
 // ========================================================
-//   generar-tabla.js — VERSIÓN FINAL DEFINITIVA
-//   ✔ Usa normalizarTipo() para obtener IND/DOBE/DOBS/FAM/SUITE
-//   ✔ No redeclara variables globales
-//   ✔ No usa MAPA duplicado (se elimina por completo)
+//   generar-tabla.js — VERSIÓN FINAL ULTRA CORREGIDA
+//   ✔ Soporta estados: libre / reservada / ocupada / fuera de servicio
+//   ✔ Ordena habitaciones por tipo normalizado + número
+//   ✔ Respeta filtros
+//   ✔ NO PINTA OCUPADA A MENOS QUE LA RESERVA ESTÉ FINALIZADA
 // ========================================================
 
 function generarTablaHabitaciones(fechaInicio, fechaFin) {
@@ -36,11 +36,25 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones = filtrarHabitacionesPorTipo(tipoFiltro);
   }
 
-  // Normalizar cada habitación (agrega h.codigoTipo)
+  // Normalizar cada habitación → agregar codigoTipo
   habitaciones = habitaciones.map(h => ({
     ...h,
-    codigoTipo: normalizarTipo(h) // IND / DOBE / DOBS / FAM / SUITE
+    codigoTipo: normalizarTipo(h)
   }));
+
+  // =====================================================
+  // ORDENAR HABITACIONES SOLO POR NÚMERO
+  // =====================================================
+  habitaciones.sort((a, b) => {
+    const numA = Number(a.numero);
+    const numB = Number(b.numero);
+
+    if (isNaN(numA) || isNaN(numB)) {
+      return String(a.numero).localeCompare(String(b.numero));
+    }
+
+    return numA - numB;
+  });
 
   // Crear rango de fechas
   const fechas = generarArrayFechas(fechaInicio, fechaFin);
@@ -62,11 +76,8 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
 
   habitaciones.forEach(h => {
     const th = document.createElement("th");
-
-    // TEXTO FINAL: "IND-103"
     th.textContent = `${h.codigoTipo}-${h.numero}`;
     th.dataset.tipoHabitacion = h.codigoTipo;
-
     headerRow.appendChild(th);
   });
 
@@ -89,13 +100,46 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones.forEach(h => {
       const td = document.createElement("td");
 
-      // ¿Está reservada?
-      if (estaHabitacionReservada(h.numero, fechaISO)) {
-        td.className = "estado-reservada";
-        td.dataset.estadoOriginal = "reservada";
-      } else {
-        td.className = "estado-libre";
-        td.dataset.estadoOriginal = "libre";
+      // Normalizar estado básico del backend
+      let estadoBase = (h.estado || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .replace(/_/g, "")
+        .replace(/-/g, "");
+
+      // ---------------------------------------------
+      // PRIORIDAD 1: Fuera de servicio
+      // ---------------------------------------------
+      if (estadoBase === "fueradeservicio") {
+        td.className = "estado-fuera-servicio";
+        td.dataset.estadoOriginal = "fueraservicio";
+      }
+
+      // ---------------------------------------------
+      // PRIORIDAD 2: Habitaciones “ocupadas POR UNA RESERVA FINALIZADA”
+      // ---------------------------------------------
+      else {
+        const reservaAsociada = obtenerReservas().find(r =>
+          r.habitaciones?.some(hab => hab.numero === h.numero) &&
+          compararFechas(fechaISO, r.fechaInicio) >= 0 &&
+          compararFechas(fechaISO, r.fechaFin) <= 0
+        );
+
+        if (reservaAsociada) {
+          const estadoReserva = (reservaAsociada.estado || "").trim().toUpperCase();
+
+          if (estadoReserva === "FINALIZADA") {
+            td.className = "estado-ocupada";
+            td.dataset.estadoOriginal = "ocupada";
+          } else {
+            td.className = "estado-reservada";
+            td.dataset.estadoOriginal = "reservada";
+          }
+        } else {
+          td.className = "estado-libre";
+          td.dataset.estadoOriginal = "libre";
+        }
       }
 
       td.dataset.numeroHabitacion = h.numero;
@@ -116,5 +160,3 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
 
 // Exponer globalmente
 window.generarTablaHabitaciones = generarTablaHabitaciones;
-
-

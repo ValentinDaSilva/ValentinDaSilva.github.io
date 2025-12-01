@@ -176,7 +176,7 @@ function inicializarSeleccionHabitaciones() {
   document.querySelectorAll(".tabla-habitaciones tbody td").forEach(c => {
     if (c.cellIndex === 0) return;
 
-    if (c.dataset.estadoOriginal !== "reservada") {
+    if (c.dataset.estadoOriginal == "libre") {
       c.addEventListener("click", () => manejarClickCelda(c));
       c.style.cursor = "pointer";
     }

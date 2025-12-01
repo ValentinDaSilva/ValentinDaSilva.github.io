@@ -62,24 +62,11 @@ async function manejarBotonBorrar(event) {
 
 function manejarBotonCancelar(event) {
     event.preventDefault();
-    window.location.href = '../BuscarHuesped/buscarHuesped.html';
+    //window.location.href = '../BuscarHuesped/buscarHuesped.html';
 }
 
 function inicializarValidacionFormulario() {
-    const formulario = document.getElementById("formularioModificarHuesped");
-    if (formulario) {
-        formulario.addEventListener("submit", manejarGuardarFormulario);
-    }
-
-    const botonBorrar = document.querySelector(".boton-borrar");
-    if (botonBorrar) {
-        botonBorrar.addEventListener("click", manejarBotonBorrar);
-    }
-
-    const botonCancelar = document.querySelector(".boton-cancelar");
-    if (botonCancelar) {
-        botonCancelar.addEventListener("click", manejarBotonCancelar);
-    }
+    
 }
 
 function hayModalAbierto() {
@@ -96,8 +83,3 @@ function hayModalAbierto() {
     });
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inicializarValidacionFormulario);
-} else {
-    inicializarValidacionFormulario();
-}

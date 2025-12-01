@@ -97,23 +97,7 @@ function formatearFecha(f) {
 //   GET /api/habitaciones
 // ===========================================================
 async function cargarHabitaciones() {
-  try {
-    console.log("Solicitando habitaciones al backend…");
-
-    const res = await fetch("http://localhost:8080/api/habitaciones");
-    if (!res.ok) throw new Error("Error al cargar habitaciones.");
-
-    HABITACIONES = await res.json();
-    datosHabitacionesCargados = true;
-
-    console.log("Habitaciones obtenidas:", HABITACIONES);
-    console.log("Total habitaciones:", HABITACIONES.length);
-
-  } catch (err) {
-    console.error(err);
-    mensajeError("No se pudieron cargar las habitaciones.");
-    HABITACIONES = [];
-  }
+   
 }
 
 async function asegurarHabitaciones() {
@@ -122,26 +106,6 @@ async function asegurarHabitaciones() {
   }
 }
 
-// ===========================================================
-//   GET /api/reservas/entre?inicio=YYYY-MM-DD&fin=YYYY-MM-DD
-// ===========================================================
-async function cargarReservasEntre(inicio, fin) {
-  try {
-    const url = `http://localhost:8080/api/reservas/entre?inicio=${inicio}&fin=${fin}`;
-    console.log("Solicitando reservas:", url);
-
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Error al cargar reservas.");
-
-    RESERVAS = await res.json();
-    console.log("Reservas recibidas:", RESERVAS);
-
-  } catch (err) {
-    console.error(err);
-    mensajeError("Error cargando reservas desde el backend.");
-    RESERVAS = [];
-  }
-}
 
 // ===========================================================
 //   Consultas globales

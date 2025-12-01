@@ -2,7 +2,7 @@
 
 function obtenerHuespedDeSessionStorage() {
     try {
-        const huespedGuardado = sessionStorage.getItem('huespedSeleccionado');
+        const huespedGuardado = sessionStorage.getItem('huespedSeleccionado');  
         if (huespedGuardado) {
             return JSON.parse(huespedGuardado);
         }
@@ -132,26 +132,4 @@ function cargarDatosEnFormulario(huesped) {
         const campoPais = document.getElementById('pais');
         if (campoPais) campoPais.value = huesped.pais || (huesped.direccion ? huesped.direccion.pais : '') || '';
     }
-}
-
-function inicializarCargaDatos() {
-    const huesped = obtenerHuespedDeSessionStorage();
-
-    if (!huesped) {
-        alert("Primero debes seleccionar un huésped");
-        window.location.href = '../BuscarHuesped/buscarHuesped.html';
-        return;
-    }
-
-    window.huespedOriginalModificar = JSON.parse(JSON.stringify(huesped));
-
-    cargarDatosEnFormulario(huesped);
-
-    console.log('Datos del huésped cargados correctamente:', huesped);
-}
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inicializarCargaDatos);
-} else {
-    inicializarCargaDatos();
 }

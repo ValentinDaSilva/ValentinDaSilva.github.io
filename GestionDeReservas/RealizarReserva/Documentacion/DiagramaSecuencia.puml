@@ -1,0 +1,97 @@
+@startuml
+actor Conserje
+participant "UI - Reservar Habitación" as UI
+participant GestorReserva
+participant HabitacionDAO
+participant ReservaDAO
+
+Conserje -> UI: Ingresa desdeFecha y hastaFecha
+activate UI
+
+UI -> GestorReserva: validarRangoFechas(desde,hasta)
+activate GestorReserva
+GestorReserva --> UI: resultadoValidacion
+deactivate GestorReserva
+
+alt Fechas inválidas
+    UI -> Conserje: Mostrar error y solicitar reingreso de fechas
+end
+
+
+UI -> GestorReserva: obtenerEstadoHabitaciones(desde,hasta)
+activate GestorReserva
+
+GestorReserva -> HabitacionDAO: listarHabitaciones()
+activate HabitacionDAO
+HabitacionDAO --> GestorReserva: listaHabitaciones
+deactivate HabitacionDAO
+
+GestorReserva -> ReservaDAO: buscarReservasEntre(desde,hasta)
+activate ReservaDAO
+ReservaDAO --> GestorReserva: listaReservas
+deactivate ReservaDAO
+
+GestorReserva --> UI: mostrar grilla con horarios
+deactivate GestorReserva
+
+alt No existen habitaciones disponibles
+    UI -> Conserje: Mostrar mensaje informativo
+    UI -> Conserje: Finalizar CU
+
+else Hay habitaciones disponibles
+    loop Hasta que el conserje aprete reservar
+        UI -> Conserje: Solicitar seleccion de habitaciones
+
+        Conserje -> UI: Selecciona una o varias habitaciones y apreta reservar
+
+        alt Habitación con estado distinto de "Disponible"
+            UI -> Conserje: Mostrar mensaje "Habitación no disponible"
+            UI -> Conserje: Solicitar nueva selección
+
+        else Habitación disponible
+            UI -> UI: Pintar la selección como "RESERVADA"
+        end
+    end
+end
+
+
+UI -> Conserje: Mostrar listado (tipo, ingreso, egreso)
+
+Conserje -> UI: Presiona ACEPTAR o RECHAZAR
+
+alt RECHAZAR
+    UI -> UI: Deshacer selección realizada
+    UI -> UI: Genera nuevamente la grilla con horarios
+    UI -> Conserje: Solicita ingresar una habitacion nuevamente
+
+else ACEPTAR
+
+
+
+UI -> Conserje: Solicitar datos del titular (Apellido, Nombre, Teléfono)
+Conserje -> UI: Ingresa datos
+
+alt Falta un dato obligatorio
+    UI -> Conserje: Mostrar mensaje de error
+    UI -> Conserje: Solicitar ingreso nuevamente
+else Datos válidos
+    
+UI -> GestorReserva: crearReserva(habitaciones, titular, desde, hasta)
+    activate GestorReserva
+
+    GestorReserva -> ReservaDAO: guardarReserva(reserva)
+    activate ReservaDAO
+    ReservaDAO --> GestorReserva: confirmación
+    deactivate ReservaDAO
+
+    GestorReserva -> UI: Mostrar mensaje "Reserva registrada con éxito"
+
+    UI->Conserje: Solicita ingresar cualquier tecla para continuar
+end
+end
+
+
+deactivate GestorReserva
+
+@enduml
+
