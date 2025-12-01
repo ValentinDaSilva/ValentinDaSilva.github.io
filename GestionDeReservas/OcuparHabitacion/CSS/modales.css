@@ -140,7 +140,7 @@
 }
 
 
-.contenido-modal-pregunta {
+.pregunta {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -163,7 +163,7 @@
   margin-bottom: 0;
 }
 
-.imagen-pregunta {
+.pregunta .imagen-modal {
   height: 30%;
   max-height: 120px;
   width: auto;
