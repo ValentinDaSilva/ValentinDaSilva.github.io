@@ -44,14 +44,34 @@ class ReservaDAO {
   }
 
   static async guardarReserva(reserva) {
-    const respuesta = await fetch("http://localhost:8080/api/reservas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reserva)
-    });
+    try {
+      console.log("==========================================");
+      console.log("📤 ReservaDAO.guardarReserva");
+      console.log("==========================================");
+      console.log("URL: http://localhost:8080/api/reservas");
+      console.log("Método: POST");
+      console.log("ReservaDTO:", JSON.stringify(reserva, null, 2));
+      console.log("==========================================");
 
-    if (!respuesta.ok) {
-      throw new Error("No se pudo guardar la reserva en el backend.");
+      const respuesta = await fetch("http://localhost:8080/api/reservas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reserva)
+      });
+
+      if (!respuesta.ok) {
+        const errorTexto = await respuesta.text();
+        console.error("❌ Error HTTP:", respuesta.status, errorTexto);
+        return { ok: false, error: errorTexto };
+      }
+
+      const reservaCreada = await respuesta.json();
+      console.log("✅ Reserva creada:", reservaCreada);
+      return { ok: true, data: reservaCreada };
+
+    } catch (err) {
+      console.error("❌ Error en ReservaDAO.guardarReserva:", err);
+      return { ok: false, error: err.message || "Error de conexión" };
     }
   }
 }

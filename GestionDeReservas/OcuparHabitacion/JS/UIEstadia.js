@@ -144,7 +144,21 @@ class UIEstadia {
                     habitacion: habitacion,
                     desde: fechaDesde,
                     hasta: fechaHasta,
-                    reserva: reserva
+                    reserva: reserva,
+                    requiereCrearReserva: false
+                });
+                
+                // Pintar como ocupada visualmente
+                const fechas = generarArrayFechas(fechaDesde, fechaHasta);
+                UIEstadia.pintarComoOcupada(nombreHab, fechas);
+            } else if (evaluacion.ok && evaluacion.tipo === "disponible-sin-reserva") {
+                // Habitación libre - se creará la reserva después de seleccionar el titular
+                seleccionesValidas.push({
+                    habitacion: habitacion,
+                    desde: fechaDesde,
+                    hasta: fechaHasta,
+                    reserva: null, // Se creará después
+                    requiereCrearReserva: true
                 });
                 
                 // Pintar como ocupada visualmente
@@ -211,10 +225,10 @@ class UIEstadia {
             return;
         }
 
-        // Habitación no reservada - no se puede ocupar
-        if (!evaluacion.ok && evaluacion.tipo === "no-reservada") {
-            mensajeError("Solo se pueden ocupar habitaciones que estén RESERVADAS. Esta habitación está disponible (libre) en el rango seleccionado.");
-            return;
+        // Habitación disponible sin reserva - se puede ocupar creando reserva
+        if (evaluacion.ok && evaluacion.tipo === "disponible-sin-reserva") {
+            // Continuar con el flujo, se creará la reserva después de seleccionar el titular
+            return UIEstadia.continuarCU07(habitacion, fechaDesde, fechaHasta, null, true);
         }
 
         // Fechas no coinciden exactamente con la reserva
@@ -326,13 +340,14 @@ class UIEstadia {
     // GUARDAMOS CONTEXTO Y DISPARAMOS BÚSQUEDA TITULAR
     // Según diagrama: mostrar "Presione una tecla para continuar" primero
     // --------------------------------------------------
-    static async continuarCU07(habitacion, desde, hasta, reserva) {
+    static async continuarCU07(habitacion, desde, hasta, reserva, requiereCrearReserva = false) {
         habitacionActual       = habitacion;
         desdeActual            = desde;
         hastaActual            = hasta;
         reservaAsociadaActual  = reserva || null;
         titularActual          = null;
         acompanantesActual     = [];
+        window.requiereCrearReservaCU07 = requiereCrearReserva; // Flag para saber si hay que crear reserva
 
         // Mostrar mensaje "Presione una tecla para continuar" según diagrama
         if (typeof mensajeCorrecto === "function") {
@@ -470,6 +485,66 @@ class UIEstadia {
         }
 
         titularActual = huespedJSON;
+
+        // Si requiere crear reserva (habitación libre), crearla ahora con el titular
+        if (window.requiereCrearReservaCU07 && habitacionActual && desdeActual && hastaActual) {
+            // Extraer solo nombre, apellido y teléfono del titular
+            const titularSimplificado = {
+                nombre: huespedJSON.nombre || "",
+                apellido: huespedJSON.apellido || "",
+                telefono: huespedJSON.telefono || ""
+            };
+
+            console.log("📤 Creando reserva para habitación libre...");
+            const resultadoCrearReserva = await GestorEstadia.crearReserva(
+                habitacionActual,
+                desdeActual,
+                hastaActual,
+                titularSimplificado
+            );
+
+            if (!resultadoCrearReserva.ok) {
+                mensajeError(resultadoCrearReserva.mensaje || "No se pudo crear la reserva.");
+                return;
+            }
+
+            // Asignar la reserva creada
+            reservaAsociadaActual = resultadoCrearReserva.reserva;
+            window.requiereCrearReservaCU07 = false; // Ya se creó
+            console.log("✅ Reserva creada:", reservaAsociadaActual);
+        }
+
+        // Si hay múltiples selecciones pendientes, crear reservas para las que lo requieran
+        if (seleccionesPendientes.length > 0) {
+            for (let i = 0; i < seleccionesPendientes.length; i++) {
+                const seleccion = seleccionesPendientes[i];
+                if (seleccion.requiereCrearReserva && !seleccion.reserva) {
+                    const titularSimplificado = {
+                        nombre: huespedJSON.nombre || "",
+                        apellido: huespedJSON.apellido || "",
+                        telefono: huespedJSON.telefono || ""
+                    };
+
+                    console.log(`📤 Creando reserva ${i + 1}/${seleccionesPendientes.length} para habitación libre...`);
+                    const resultadoCrearReserva = await GestorEstadia.crearReserva(
+                        seleccion.habitacion,
+                        seleccion.desde,
+                        seleccion.hasta,
+                        titularSimplificado
+                    );
+
+                    if (!resultadoCrearReserva.ok) {
+                        mensajeError(`No se pudo crear la reserva para ${seleccion.habitacion.tipo}-${seleccion.habitacion.numero}: ${resultadoCrearReserva.mensaje}`);
+                        continue;
+                    }
+
+                    // Asignar la reserva creada a la selección
+                    seleccionesPendientes[i].reserva = resultadoCrearReserva.reserva;
+                    seleccionesPendientes[i].requiereCrearReserva = false;
+                    console.log(`✅ Reserva ${i + 1} creada:`, resultadoCrearReserva.reserva);
+                }
+            }
+        }
 
         const container = document.querySelector('.container');
         const resultadoBusqueda = document.querySelector('.resultadoBusqueda');

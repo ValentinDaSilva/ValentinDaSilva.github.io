@@ -161,9 +161,12 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
   });
 
   
-  // Verificar que todas las celdas del rango estén reservadas (no ocupadas, no libres)
-  let todasReservadas = true;
+  // Verificar que todas las celdas del rango estén reservadas o libres (no ocupadas)
+  let todasValidas = true;
   let hayOcupadas = false;
+  let hayReservadas = false;
+  let hayLibres = false;
+  
   todasLasFechas.forEach(fecha => {
     if (compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0) {
       const celda = document.querySelector(
@@ -173,9 +176,13 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
         const estadoOriginal = celda.getAttribute('data-estado-original');
         if (estadoOriginal === 'ocupada') {
           hayOcupadas = true;
-          todasReservadas = false;
-        } else if (estadoOriginal !== 'reservada') {
-          todasReservadas = false;
+          todasValidas = false;
+        } else if (estadoOriginal === 'reservada') {
+          hayReservadas = true;
+        } else if (estadoOriginal === 'libre') {
+          hayLibres = true;
+        } else if (estadoOriginal === 'fuera-servicio') {
+          todasValidas = false;
         }
       }
     }
@@ -193,9 +200,9 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
     return;
   }
 
-  // Si hay celdas libres en el rango, no permitir la selección
-  if (!todasReservadas) {
-    mensajeError("El rango seleccionado contiene días disponibles (libres). Solo se pueden ocupar habitaciones que estén completamente RESERVADAS en el rango seleccionado.");
+  // El rango debe estar completamente libre O completamente reservado (no mezclado)
+  if (hayReservadas && hayLibres) {
+    mensajeError("El rango seleccionado contiene días mezclados (algunos libres y algunos reservados). Seleccione un rango completamente libre o completamente reservado.");
     // Remover la selección que se agregó
     const indice = habitacionesSeleccionadas.findIndex(h => h.habitacion === habitacion);
     if (indice !== -1) {
@@ -205,7 +212,7 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
     return;
   }
 
-  // Todas las celdas están reservadas, proceder con la selección visual
+  // Todas las celdas están reservadas o libres, proceder con la selección visual
   todasLasFechas.forEach(fecha => {
     if (compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0) {
       const celda = document.querySelector(
@@ -214,10 +221,10 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
       if (celda) {
         const estadoOriginal = celda.getAttribute('data-estado-original');
         
-        if (estadoOriginal === 'reservada') {
+        if (estadoOriginal === 'reservada' || estadoOriginal === 'libre') {
           celda.style.backgroundColor = 'yellow';
           celda.classList.add('estado-seleccionada');
-          celda.classList.remove('estado-reservada');
+          celda.classList.remove('estado-reservada', 'estado-libre');
         }
       }
     }
@@ -266,11 +273,9 @@ function deseleccionarRangoHabitacion(habitacion) {
 function manejarClickCelda(celda) {
   
   const estadoOriginal = celda.getAttribute('data-estado-original');
-  // Solo se pueden seleccionar celdas RESERVADAS (no libres, no ocupadas, no fuera de servicio)
-  if (estadoOriginal !== 'reservada') {
-    if (estadoOriginal === 'libre') {
-      mensajeError("Solo se pueden ocupar habitaciones que estén RESERVADAS. Esta celda está disponible (libre).");
-    } else if (estadoOriginal === 'ocupada') {
+  // Se pueden seleccionar celdas RESERVADAS o LIBRES (no ocupadas, no fuera de servicio)
+  if (estadoOriginal === 'ocupada' || estadoOriginal === 'fuera-servicio') {
+    if (estadoOriginal === 'ocupada') {
       mensajeError("Esta habitación ya está ocupada (reserva confirmada). No se puede seleccionar.");
     }
     return;
@@ -395,8 +400,8 @@ function inicializarSeleccionHabitaciones() {
     
     
     const estadoOriginal = celda.getAttribute('data-estado-original');
-    // Solo las celdas RESERVADAS son clicables para ocupar
-    if (estadoOriginal === 'reservada') {
+    // Las celdas RESERVADAS y LIBRES son clicables para ocupar
+    if (estadoOriginal === 'reservada' || estadoOriginal === 'libre') {
       celda.style.cursor = 'pointer';
     } else {
       celda.style.cursor = 'not-allowed';

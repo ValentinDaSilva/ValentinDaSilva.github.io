@@ -135,9 +135,13 @@ class GestorEstadia {
         }
 
         // Totalmente disponible (sin reservas en ese rango)
-        // NO se permite ocupar habitaciones disponibles, solo reservadas
-        console.log("❌ Habitación disponible (no reservada) - No se puede ocupar sin reserva");
-        return { ok: false, tipo: "no-reservada" };
+        // Ahora SÍ se permite ocupar, pero se debe crear una reserva primero
+        console.log("✅ Habitación disponible (sin reserva) - Se puede ocupar creando reserva");
+        return { 
+            ok: true, 
+            tipo: "disponible-sin-reserva",
+            requiereCrearReserva: true
+        };
     }
 
     // -------------------------------------------------------
@@ -153,6 +157,49 @@ class GestorEstadia {
         } catch (e) {
             console.error("❌ Error buscando huéspedes:", e);
             return { ok: false, mensaje: "No se pudieron buscar los huéspedes." };
+        }
+    }
+
+    // -------------------------------------------------------
+    // CREAR RESERVA (para habitaciones libres)
+    // Crea una reserva con el titular simplificado (solo nombre, apellido, teléfono)
+    // -------------------------------------------------------
+    static async crearReserva(habitacion, desde, hasta, titularSimplificado) {
+        try {
+            // Construir DTO de reserva según el formato del backend
+            const reservaDTO = {
+                fechaInicio: desde,
+                fechaFin: hasta,
+                titular: {
+                    nombre: titularSimplificado.nombre || "",
+                    apellido: titularSimplificado.apellido || "",
+                    telefono: titularSimplificado.telefono || ""
+                },
+                habitaciones: [{
+                    numero: habitacion.numero,
+                    tipo: habitacion.tipo,
+                    categoria: habitacion.categoria || "",
+                    costoPorNoche: habitacion.costoPorNoche || habitacion.costoNoche || 0,
+                    estado: habitacion.estado || "Disponible"
+                }],
+                estado: "Pendiente"
+            };
+
+            console.log("📤 Creando reserva:", reservaDTO);
+
+            const respuesta = await ReservaDAO.guardarReserva(reservaDTO);
+            
+            if (!respuesta || !respuesta.ok) {
+                console.error("❌ Error al crear reserva:", respuesta?.error);
+                return { ok: false, mensaje: respuesta?.error || "No se pudo crear la reserva." };
+            }
+
+            console.log("✅ Reserva creada:", respuesta.data);
+            return { ok: true, reserva: respuesta.data };
+
+        } catch (e) {
+            console.error("❌ Error creando reserva:", e);
+            return { ok: false, mensaje: "No se pudo crear la reserva." };
         }
     }
 
