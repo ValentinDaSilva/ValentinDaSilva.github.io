@@ -130,19 +130,28 @@ class GestorEstadia {
     // Crea el EstadiaDTO según el formato esperado por el backend
     // -------------------------------------------------------
     static async registrarOcupacion(habitacion, desde, hasta, titular, acompanantes, reservaAsociada) {
-        // Construir EstadiaDTO según el formato del backend
-        // El backend espera: fechaCheckIn, fechaCheckOut, nroHabitacion, titular, acompaniantes, idReserva (opcional)
+        // Construir EstadiaDTO según el formato esperado por el backend
         const estadiaDTO = {
             fechaCheckIn: desde,
+            horaCheckIn: "14:00", // Hora por defecto para check-in
             fechaCheckOut: hasta,
-            nroHabitacion: habitacion.numero,
-            titular: titular,
-            acompaniantes: acompanantes || []
+            horaCheckOut: null,
+            estado: "EnCurso",
+            titular: titular, // Ya viene completo del backend con toda su estructura
+            acompaniantes: acompanantes || [] // Ya vienen completos del backend
         };
         
-        // Agregar idReserva solo si existe una reserva asociada
+        // Agregar objeto reserva completo si existe una reserva asociada
         if (reservaAsociada && reservaAsociada.id) {
-            estadiaDTO.idReserva = reservaAsociada.id;
+            // Construir objeto reserva según el formato esperado
+            estadiaDTO.reserva = {
+                id: reservaAsociada.id,
+                fechaInicio: reservaAsociada.fechaInicio || reservaAsociada.desde,
+                fechaFin: reservaAsociada.fechaFin || reservaAsociada.hasta,
+                titular: reservaAsociada.titular || null,
+                habitaciones: reservaAsociada.habitaciones || [],
+                estado: reservaAsociada.estado || "Confirmada"
+            };
         }
 
         console.log("📤 EstadiaDTO a enviar:", estadiaDTO);
