@@ -73,6 +73,11 @@ function renderizarResultadosHuespedes(resultados) {
 function inicializarSeleccionHuespedes() {
     huespedesSeleccionados = [];
     
+    // Determinar si es búsqueda de titular o acompañantes
+    const container = document.querySelector('.container');
+    const titulo = container ? container.querySelector('h1') : null;
+    const esTitular = titulo && titulo.textContent.includes('Titular');
+    
     const filasHuespedes = document.querySelectorAll('.resultadoBusqueda tbody tr');
     filasHuespedes.forEach(fila => {
         
@@ -81,16 +86,40 @@ function inicializarSeleccionHuespedes() {
         
         nuevaFila.addEventListener('click', () => {
             const indice = huespedesSeleccionados.indexOf(nuevaFila);
-            if (indice === -1) {
-                
-                huespedesSeleccionados.push(nuevaFila);
-                nuevaFila.style.backgroundColor = 'yellow';
-                nuevaFila.style.color = 'black';
+            
+            if (esTitular) {
+                // Para titular: solo permitir seleccionar uno a la vez
+                if (indice === -1) {
+                    // Deseleccionar todos los demás
+                    huespedesSeleccionados.forEach(f => {
+                        f.style.backgroundColor = '';
+                        f.style.color = '';
+                    });
+                    huespedesSeleccionados = [];
+                    
+                    // Seleccionar solo esta fila
+                    huespedesSeleccionados.push(nuevaFila);
+                    nuevaFila.style.backgroundColor = 'yellow';
+                    nuevaFila.style.color = 'black';
+                } else {
+                    // Deseleccionar si ya estaba seleccionada
+                    huespedesSeleccionados.splice(indice, 1);
+                    nuevaFila.style.backgroundColor = '';
+                    nuevaFila.style.color = '';
+                }
             } else {
-                
-                huespedesSeleccionados.splice(indice, 1);
-                nuevaFila.style.backgroundColor = '';
-                nuevaFila.style.color = '';
+                // Para acompañantes: permitir selección múltiple
+                if (indice === -1) {
+                    // Agregar a la selección
+                    huespedesSeleccionados.push(nuevaFila);
+                    nuevaFila.style.backgroundColor = 'yellow';
+                    nuevaFila.style.color = 'black';
+                } else {
+                    // Quitar de la selección
+                    huespedesSeleccionados.splice(indice, 1);
+                    nuevaFila.style.backgroundColor = '';
+                    nuevaFila.style.color = '';
+                }
             }
         });
     });

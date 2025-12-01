@@ -12,6 +12,7 @@ function mensajeError(mensaje) {
   
   mensajeError.textContent = mensaje;
   modal.style.display = "flex";
+  modal.style.zIndex = "10002";
   
   window.onclick = function(event) {
     if (event.target == modal) {
