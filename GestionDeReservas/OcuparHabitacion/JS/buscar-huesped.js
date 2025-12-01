@@ -166,10 +166,11 @@ async function inicializarBusquedaHuesped() {
         const resultados = resultado.listaHuespedes || [];
         renderizarResultadosHuespedes(resultados);
         
-        resultadoDiv.style.display = 'block';
-        
+        // Mostrar resultados con animación
+        resultadoDiv.style.display = 'flex';
+        // Pequeño delay para que el navegador procese el cambio de display
         setTimeout(() => {
-            resultadoDiv.style.top = '50px';
+            resultadoDiv.classList.add('mostrar');
         }, 10);
         
         setTimeout(() => {
@@ -202,7 +203,10 @@ async function inicializarBusquedaHuesped() {
                 
                 const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
                 if (resultadoBusqueda) {
-                    resultadoBusqueda.style.display = 'none';
+                    resultadoBusqueda.classList.remove('mostrar');
+                    setTimeout(() => {
+                        resultadoBusqueda.style.display = 'none';
+                    }, 500); // Esperar a que termine la animación
                 }
                 
                 
@@ -217,7 +221,10 @@ async function inicializarBusquedaHuesped() {
                 
                 const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
                 if (resultadoBusqueda) {
-                    resultadoBusqueda.style.display = 'none';
+                    resultadoBusqueda.classList.remove('mostrar');
+                    setTimeout(() => {
+                        resultadoBusqueda.style.display = 'none';
+                    }, 500); // Esperar a que termine la animación
                 }
                 
                 

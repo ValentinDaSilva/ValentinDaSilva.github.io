@@ -69,15 +69,24 @@
   top: 100vh;
   left: 40vw;
   z-index: 10000;
-  transition: top 0.3s ease;
+  transition: top 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
   max-height: 80vh;
-  display: flex;
+  display: none;
   flex-direction: column;
   min-height: 400px;
   height: 80vh;
   box-sizing: border-box;
   overflow: hidden;
   backdrop-filter: blur(2px);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.resultadoBusqueda.mostrar {
+  display: flex;
+  top: 50px;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .resultadoBusqueda h2 {
