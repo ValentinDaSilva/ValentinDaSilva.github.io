@@ -77,45 +77,62 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones.forEach(habitacion => {
       const td = document.createElement('td');
       
-      // Obtener el estado de la reserva (ocupada, reservada, o null si está libre)
-      let estadoReserva = null;
+      // PRIORIDAD 1: Verificar si la habitación está fuera de servicio
+      // Normalizar estado de la habitación (igual que en RealizarReserva)
+      let estadoBase = (habitacion.estado || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "")
+        .replace(/_/g, "")
+        .replace(/-/g, "");
       
-      // Verificar que la función exista antes de llamarla
-      if (typeof obtenerEstadoReservaHabitacion === 'function') {
-        estadoReserva = obtenerEstadoReservaHabitacion(habitacion.numero, fecha);
+      if (estadoBase === "fueradeservicio") {
+        // Habitación fuera de servicio → toda la columna en gris
+        td.className = 'estado-fuera-servicio';
+        td.setAttribute('data-estado-original', 'fuera-servicio');
       } else {
-        // Fallback: usar la función antigua si la nueva no existe
-        const estaReservada = estaHabitacionReservada(habitacion.numero, fecha);
-        estadoReserva = estaReservada ? 'reservada' : null;
-      }
-      
-      // Debug: log para verificar reservas (solo primera celda para no saturar)
-      if (fecha === fechas[0] && habitacion.numero === habitaciones[0].numero) {
-        console.log("🔍 Debug generarTabla - Primera celda:");
-        console.log("  - Habitación:", habitacion.numero, typeof habitacion.numero);
-        console.log("  - Fecha:", fecha);
-        console.log("  - Reservas disponibles:", (window.listaReservasCU07 || []).length);
-        if (window.listaReservasCU07 && window.listaReservasCU07.length > 0) {
-          console.log("  - Primera reserva:", window.listaReservasCU07[0]);
-          console.log("  - Habitaciones primera reserva:", window.listaReservasCU07[0].habitaciones);
+        // PRIORIDAD 2: Verificar reservas solo si NO está fuera de servicio
+        // Obtener el estado de la reserva (ocupada, reservada, o null si está libre)
+        let estadoReserva = null;
+        
+        // Verificar que la función exista antes de llamarla
+        if (typeof obtenerEstadoReservaHabitacion === 'function') {
+          estadoReserva = obtenerEstadoReservaHabitacion(habitacion.numero, fecha);
+        } else {
+          // Fallback: usar la función antigua si la nueva no existe
+          const estaReservada = estaHabitacionReservada(habitacion.numero, fecha);
+          estadoReserva = estaReservada ? 'reservada' : null;
         }
-        console.log("  - Estado reserva:", estadoReserva);
-        console.log("  - Función disponible:", typeof obtenerEstadoReservaHabitacion);
-      }
-      
-      if (estadoReserva === 'ocupada') {
-        // Reserva con estado "Confirmada" o "Finalizada" → mostrar como ocupada (rojo)
-        td.className = 'estado-ocupada';
-        td.setAttribute('data-estado-original', 'ocupada');
-      } else if (estadoReserva === 'reservada') {
-        // Reserva con estado "Pendiente" u otro → mostrar como reservada (amarillo)
-        td.className = 'estado-reservada';
-        td.setAttribute('data-estado-original', 'reservada');
-      } else {
-        // No hay reserva → mostrar como libre (verde)
-        td.className = 'estado-libre';
-        td.setAttribute('data-estado-original', 'libre');
-        huboLibre = true;
+        
+        // Debug: log para verificar reservas (solo primera celda para no saturar)
+        if (fecha === fechas[0] && habitacion.numero === habitaciones[0].numero) {
+          console.log("🔍 Debug generarTabla - Primera celda:");
+          console.log("  - Habitación:", habitacion.numero, typeof habitacion.numero);
+          console.log("  - Estado habitación:", habitacion.estado);
+          console.log("  - Fecha:", fecha);
+          console.log("  - Reservas disponibles:", (window.listaReservasCU07 || []).length);
+          if (window.listaReservasCU07 && window.listaReservasCU07.length > 0) {
+            console.log("  - Primera reserva:", window.listaReservasCU07[0]);
+            console.log("  - Habitaciones primera reserva:", window.listaReservasCU07[0].habitaciones);
+          }
+          console.log("  - Estado reserva:", estadoReserva);
+          console.log("  - Función disponible:", typeof obtenerEstadoReservaHabitacion);
+        }
+        
+        if (estadoReserva === 'ocupada') {
+          // Reserva con estado "Confirmada" o "Finalizada" → mostrar como ocupada (rojo)
+          td.className = 'estado-ocupada';
+          td.setAttribute('data-estado-original', 'ocupada');
+        } else if (estadoReserva === 'reservada') {
+          // Reserva con estado "Pendiente" u otro → mostrar como reservada (amarillo)
+          td.className = 'estado-reservada';
+          td.setAttribute('data-estado-original', 'reservada');
+        } else {
+          // No hay reserva → mostrar como libre (verde)
+          td.className = 'estado-libre';
+          td.setAttribute('data-estado-original', 'libre');
+          huboLibre = true;
+        }
       }
       
       
