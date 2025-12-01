@@ -40,27 +40,21 @@ function inicializarBotonContinuar() {
     nuevoBoton.disabled = true;
     
     try {
-      // Tomar la primera selección (en CU07 solo se ocupa una habitación a la vez)
-      const seleccion = habitacionesSeleccionadas[0];
-      const nombreHab = seleccion.habitacion;
-      const fechaDesde = seleccion.fechaDesde;
-      const fechaHasta = seleccion.fechaHasta;
+      console.log("🔍 Botón Continuar presionado - Selecciones:", habitacionesSeleccionadas.length);
       
-      console.log("🔍 Botón Continuar presionado:", { nombreHab, fechaDesde, fechaHasta });
-      
-      // Llamar a UIEstadia para evaluar y continuar
-      if (typeof window.UIEstadia !== 'undefined' && window.UIEstadia.manejarSeleccion) {
-        await window.UIEstadia.manejarSeleccion(nombreHab, fechaDesde, fechaHasta);
+      // Llamar a UIEstadia para procesar TODAS las selecciones
+      if (typeof window.UIEstadia !== 'undefined' && window.UIEstadia.manejarMultiplesSelecciones) {
+        await window.UIEstadia.manejarMultiplesSelecciones(habitacionesSeleccionadas);
       } else {
-        console.error("❌ UIEstadia.manejarSeleccion no está disponible");
+        console.error("❌ UIEstadia.manejarMultiplesSelecciones no está disponible");
         if (typeof mensajeError === "function") {
-          mensajeError("Error: No se pudo procesar la selección.");
+          mensajeError("Error: No se pudo procesar las selecciones.");
         }
       }
     } catch (error) {
-      console.error("❌ Error al procesar selección:", error);
+      console.error("❌ Error al procesar selecciones:", error);
       if (typeof mensajeError === "function") {
-        mensajeError("Error al procesar la selección: " + error.message);
+        mensajeError("Error al procesar las selecciones: " + error.message);
       }
     } finally {
       nuevoBoton.disabled = false;

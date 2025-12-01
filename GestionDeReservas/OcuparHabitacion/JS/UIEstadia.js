@@ -15,6 +15,10 @@ let reservaAsociadaActual = null;
 let titularActual = null;
 let acompanantesActual = [];
 
+// Estado para múltiples selecciones
+let seleccionesPendientes = []; // Array de {habitacion, desde, hasta, reserva}
+let indiceSeleccionActual = 0;
+
 class UIEstadia {
 
     // --------------------------------------------------
@@ -65,7 +69,79 @@ class UIEstadia {
     }
 
     // --------------------------------------------------
-    // LLAMADO DESDE seleccion-habitaciones.js
+    // MANEJAR MÚLTIPLES SELECCIONES
+    // Evalúa todas las habitaciones seleccionadas y prepara el flujo
+    // --------------------------------------------------
+    static async manejarMultiplesSelecciones(selecciones) {
+        console.log("🔍 UIEstadia.manejarMultiplesSelecciones - Total selecciones:", selecciones.length);
+        
+        const reservas = window.listaReservasCU07 || [];
+        const seleccionesValidas = [];
+        
+        // Evaluar cada selección
+        for (const seleccion of selecciones) {
+            const nombreHab = seleccion.habitacion;
+            const fechaDesde = seleccion.fechaDesde;
+            const fechaHasta = seleccion.fechaHasta;
+            
+            const numero = obtenerNumeroDesdeNombre(nombreHab);
+            const habitacion = (window.listaHabitacionesCU07 || []).find(h => h.numero === numero);
+            
+            if (!habitacion) {
+                mensajeError(`No se encontró la habitación ${nombreHab}.`);
+                continue;
+            }
+            
+            const fechasRango = generarArrayFechas(fechaDesde, fechaHasta);
+            const evaluacion = GestorEstadia.evaluarSeleccion(habitacion, fechasRango, reservas);
+            
+            if (!evaluacion.ok) {
+                if (evaluacion.tipo === "no-reservada") {
+                    mensajeError(`La habitación ${nombreHab} no está reservada en el rango seleccionado.`);
+                } else if (evaluacion.tipo === "dias-ocupados") {
+                    mensajeError(`La habitación ${nombreHab} tiene días ocupados en este rango.`);
+                }
+                continue;
+            }
+            
+            if (evaluacion.ok && evaluacion.tipo === "engloba-reservada") {
+                const reserva = evaluacion.reservas[0];
+                seleccionesValidas.push({
+                    habitacion: habitacion,
+                    desde: fechaDesde,
+                    hasta: fechaHasta,
+                    reserva: reserva
+                });
+                
+                // Pintar como ocupada visualmente
+                const fechas = generarArrayFechas(fechaDesde, fechaHasta);
+                UIEstadia.pintarComoOcupada(nombreHab, fechas);
+            }
+        }
+        
+        if (seleccionesValidas.length === 0) {
+            mensajeError("No hay selecciones válidas para procesar.");
+            return;
+        }
+        
+        // Guardar las selecciones válidas y comenzar el flujo
+        seleccionesPendientes = seleccionesValidas;
+        indiceSeleccionActual = 0;
+        
+        console.log("✅ Selecciones válidas:", seleccionesValidas.length);
+        
+        // Mostrar mensaje y comenzar con la búsqueda de titular
+        if (typeof mensajeCorrecto === "function") {
+            mensajeCorrecto("Presione una tecla para continuar", () => {
+                UIEstadia.mostrarBuscadorTitular();
+            });
+        } else {
+            UIEstadia.mostrarBuscadorTitular();
+        }
+    }
+
+    // --------------------------------------------------
+    // LLAMADO DESDE seleccion-habitaciones.js (método antiguo, mantener para compatibilidad)
     // manejamos evaluación de la selección
     // --------------------------------------------------
     static async manejarSeleccion(nombreHab, fechaDesde, fechaHasta) {
@@ -391,6 +467,12 @@ class UIEstadia {
     // Este método solo registra, NO muestra el menú
     // --------------------------------------------------
     static async crearYRegistrarEstadia(listaAcompanantes) {
+        // Si hay múltiples selecciones pendientes, registrar todas
+        if (seleccionesPendientes.length > 0) {
+            return await UIEstadia.registrarTodasLasEstadias(listaAcompanantes);
+        }
+        
+        // Flujo antiguo: una sola estadía
         if (!habitacionActual || !desdeActual || !hastaActual || !titularActual) {
             mensajeError("Faltan datos para registrar la ocupación.");
             return;
@@ -410,9 +492,51 @@ class UIEstadia {
             return;
         }
 
-        // No mostrar menú aquí, el menú ya se mostró antes
-        // Este método solo registra la estadía
         console.log("✅ Estadía registrada correctamente");
+    }
+
+    // --------------------------------------------------
+    // REGISTRAR TODAS LAS ESTADÍAS (una por cada habitación seleccionada)
+    // --------------------------------------------------
+    static async registrarTodasLasEstadias(listaAcompanantes) {
+        if (!titularActual) {
+            mensajeError("Faltan datos para registrar la ocupación.");
+            return;
+        }
+
+        console.log(`📤 Registrando ${seleccionesPendientes.length} estadía(s)...`);
+        
+        let exitosas = 0;
+        let fallidas = 0;
+        
+        for (const seleccion of seleccionesPendientes) {
+            const resultado = await GestorEstadia.registrarOcupacion(
+                seleccion.habitacion,
+                seleccion.desde,
+                seleccion.hasta,
+                titularActual,
+                listaAcompanantes,
+                seleccion.reserva
+            );
+
+            if (resultado.ok) {
+                exitosas++;
+                console.log(`✅ Estadía registrada para habitación ${seleccion.habitacion.tipo}-${seleccion.habitacion.numero}`);
+            } else {
+                fallidas++;
+                console.error(`❌ Error registrando estadía para habitación ${seleccion.habitacion.tipo}-${seleccion.habitacion.numero}:`, resultado.mensaje);
+            }
+        }
+
+        if (fallidas > 0) {
+            mensajeError(`Se registraron ${exitosas} estadía(s) correctamente, pero ${fallidas} fallaron.`);
+        } else {
+            console.log(`✅ Todas las estadías registradas correctamente (${exitosas})`);
+        }
+        
+        // Limpiar selecciones pendientes
+        seleccionesPendientes = [];
+        indiceSeleccionActual = 0;
     }
 
     // --------------------------------------------------
