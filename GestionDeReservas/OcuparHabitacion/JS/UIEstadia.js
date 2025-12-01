@@ -570,8 +570,10 @@ class UIEstadia {
             } else if (boton === "NO, CONTINUAR ❌") {
                 // Registrar la estadía inmediatamente (sin acompañantes)
                 await UIEstadia.crearYRegistrarEstadia([]);
-                // Mostrar el menú para decidir qué hacer después
-                UIEstadia.menuFinalCU07();
+                // Mostrar mensaje de éxito y redirigir
+                mensajeCorrecto("Ocupación registrada correctamente", () => {
+                    window.location.href = "/index.html";
+                });
             } else if (boton === "Salir ❌") {
                 // Salir sin registrar
                 window.location.href = "/index.html";
@@ -612,8 +614,10 @@ class UIEstadia {
             } else if (boton === "NO, CONTINUAR ❌") {
                 // Registrar la estadía con los acompañantes cargados
                 await UIEstadia.crearYRegistrarEstadia(acompanantesActual);
-                // Mostrar el menú para decidir qué hacer después
-                UIEstadia.menuFinalCU07();
+                // Mostrar mensaje de éxito y redirigir
+                mensajeCorrecto("Ocupación registrada correctamente", () => {
+                    window.location.href = "/index.html";
+                });
             } else if (boton === "Salir ❌") {
                 // Registrar la estadía antes de salir
                 await UIEstadia.crearYRegistrarEstadia(acompanantesActual);
@@ -699,82 +703,6 @@ class UIEstadia {
         indiceSeleccionActual = 0;
     }
 
-    // --------------------------------------------------
-    // Menú final CU07 (seguir / otra hab / salir)
-    // Según diagrama de secuencia: SEGUIR CARGANDO, CARGAR OTRA HABITACIÓN, SALIR
-    // --------------------------------------------------
-    static menuFinalCU07() {
-        // Crear modal con tres opciones
-        const overlay = document.createElement("div");
-        overlay.style.cssText = `
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        `;
-
-        const panel = document.createElement("div");
-        panel.style.cssText = `
-            background: white;
-            width: 90%;
-            max-width: 500px;
-            border: 2px solid #412c26;
-            border-radius: 10px;
-            padding: 25px;
-            font-family: sans-serif;
-        `;
-
-        panel.innerHTML = `
-            <h2 style="margin-top: 0;">¿Qué desea hacer?</h2>
-            <p>Puede seguir agregando acompañantes o finalizar la ocupación.</p>
-        `;
-
-        const contBotones = document.createElement("div");
-        contBotones.style.cssText = `
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        `;
-
-        const btnSeguir = document.createElement("button");
-        btnSeguir.className = "boton-reserva-estandar";
-        btnSeguir.textContent = "SEGUIR CARGANDO";
-        btnSeguir.onclick = () => {
-            overlay.remove();
-            UIEstadia.mostrarBuscadorAcompanantes();
-        };
-
-        const btnOtra = document.createElement("button");
-        btnOtra.className = "boton-reserva-estandar";
-        btnOtra.textContent = "CARGAR OTRA HABITACIÓN";
-        btnOtra.onclick = async () => {
-            overlay.remove();
-            // Registrar la estadía antes de recargar
-            await UIEstadia.crearYRegistrarEstadia(acompanantesActual);
-            window.location.reload();
-        };
-
-        const btnSalir = document.createElement("button");
-        btnSalir.className = "boton-reserva-estandar";
-        btnSalir.textContent = "SALIR";
-        btnSalir.onclick = async () => {
-            overlay.remove();
-            // Registrar la estadía antes de salir
-            await UIEstadia.crearYRegistrarEstadia(acompanantesActual);
-            window.location.href = "/index.html";
-        };
-
-        contBotones.appendChild(btnSeguir);
-        contBotones.appendChild(btnOtra);
-        contBotones.appendChild(btnSalir);
-        panel.appendChild(contBotones);
-        overlay.appendChild(panel);
-        document.body.appendChild(overlay);
-    }
 }
 
 // Exponemos para JS no módulo
