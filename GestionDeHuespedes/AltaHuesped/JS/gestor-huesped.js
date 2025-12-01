@@ -77,8 +77,8 @@ class UIAltaHuesped {
         return new Promise(resolve => {
             advertencia(
                 "¡CUIDADO! Ya existe un huésped con ese documento.",
-                "ACEPTAR IGUALMENTE",
-                "CORREGIR",
+                "ACEPTAR ✅",
+                "CORREGIR ✏️",
                 () => resolve("aceptar"),
                 () => resolve("corregir")
             );
@@ -89,8 +89,8 @@ class UIAltaHuesped {
         return new Promise(resolve => {
             pregunta(
                 `El huésped ${huesped.getNombre()} ${huesped.getApellido()} ha sido cargado.\n¿Desea cargar otro?`,
-                "SI",
-                "NO",
+                "SI ✅",
+                "NO ❌",
                 () => resolve(true),
                 () => resolve(false)
             );

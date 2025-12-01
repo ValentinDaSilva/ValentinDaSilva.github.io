@@ -154,8 +154,8 @@ class UIModificarHuesped {
 
             advertencia(
                 `Los datos del huésped <br> ${nombre} ${apellido}, ${tipoDocumento}: ${numeroDocumento} <br> serán eliminados del sistema`,
-                "Cancelar",
-                "Eliminar"
+                "Eliminar ✅",
+                "Cancelar ❌",
             );
 
             const btnCancelar = document.getElementById("boton-advertencia-aceptar");

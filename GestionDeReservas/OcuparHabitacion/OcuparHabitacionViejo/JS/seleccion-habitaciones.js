@@ -93,8 +93,8 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
     
     advertencia(
       `La habitación ${habitacion} está reservada en algunas fechas del rango seleccionado.<br>Desde Fecha: ${checkinDate} <br>Hasta Fecha: ${checkoutDate}.`,
-      "OCUPAR IGUAL",
-      "VOLVER"
+      "OCUPAR IGUAL ✅",
+      "VOLVER ❌"
     ).then(boton => {
       if (boton !== "OCUPAR IGUAL") {
         return; 

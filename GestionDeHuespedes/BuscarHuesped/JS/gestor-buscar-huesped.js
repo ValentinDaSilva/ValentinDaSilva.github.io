@@ -93,8 +93,8 @@ class UIBuscarHuesped {
     static async mostrarSinResultadosYOfrecerAlta() {
         pregunta(
             "No se encontraron huéspedes.\n¿Desea dar de alta uno nuevo?",
-            "SI",
-            "NO",
+            "SI ✅",
+            "NO ❌",
             () => UIBuscarHuesped.irAPantallaAlta(),
             () => {}
         );
@@ -103,7 +103,7 @@ class UIBuscarHuesped {
     static mostrarErrorBusqueda(msg) {
         pregunta(
             msg,
-            "OK",
+            "OK ✅",
             "CERRAR",
             () => {},
             () => {}
@@ -147,8 +147,8 @@ class UIBuscarHuesped {
             if (!seleccionado) {
                 pregunta(
                     "No hay resultado, desea dar alta huesped?",
-                    "Si",
-                    "NO",
+                    "SI ✅",
+                    "NO ❌",
                     () => {window.location.href = "../AltaHuesped/altaHuesped.html";},
                     () => {document.getElementById("modalPregunta").style.display = "none";}
                 );

@@ -154,6 +154,13 @@
   box-sizing: border-box;
 }
 
+.titulo-pregunta {
+  text-align: center;
+  color: #00e1f0;
+  font-size: 24px;
+  margin-top: 10px;
+}
+
 .preguntaBotones {
   display: flex;
   justify-content: center;

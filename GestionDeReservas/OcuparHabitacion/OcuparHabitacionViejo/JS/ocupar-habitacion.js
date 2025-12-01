@@ -257,9 +257,9 @@ function manejarSeleccionTitular(huespedJSON) {
   
   pregunta(
     "¿Desea agregar acompañantes?",
-    "Sí, agregar acompañantes",
-    "No, continuar sin acompañantes",
-    "Cancelar"
+    "Sí, agregar acompañantes ✅",
+    "No, continuar sin acompañantes ❌",
+    "Cancelar ❌"
   ).then(boton => {
     if (boton === "Cancelar") {
       

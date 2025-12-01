@@ -58,8 +58,8 @@ function mensajeCorrecto(mensaje) {
 
 function advertencia(mensaje, boton1, boton2) {
   if (mensaje == undefined) mensaje = "Mensaje de Advertencia";
-  if (boton1 == undefined) boton1 = "ACEPTAR";
-  if (boton2 == undefined) boton2 = "CANCELAR";
+  if (boton1 == undefined) boton1 = "ACEPTAR ✅";
+  if (boton2 == undefined) boton2 = "CANCELAR ❌";
   
   return new Promise((resolve) => {
     const modal = document.getElementById('modal-advertencia');
@@ -97,9 +97,9 @@ function advertencia(mensaje, boton1, boton2) {
 
 function pregunta(mensaje, boton1, boton2, boton3) {
   if (mensaje == undefined) mensaje = "Mensaje de Pregunta";
-  if (boton1 == undefined) boton1 = "ACEPTAR";
-  if (boton2 == undefined) boton2 = "CANCELAR";
-  if (boton3 == undefined) boton3 = "OTRO";
+  if (boton1 == undefined) boton1 = "ACEPTAR ✅";
+  if (boton2 == undefined) boton2 = "CANCELAR ❌";
+  if (boton3 == undefined) boton3 = "OTRO ➕";
   
   return new Promise((resolve) => {
     const modal = document.getElementById('modal-pregunta');

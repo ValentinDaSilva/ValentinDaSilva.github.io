@@ -30,8 +30,8 @@ let preguntaCallbackBoton2 = null;
 
 function pregunta(mensaje, boton1, boton2, callbackBoton1, callbackBoton2) {
   if (mensaje == undefined) mensaje = "Mensaje de Pregunta";
-  if (boton1 == undefined) boton1 = "ACEPTAR";
-  if (boton2 == undefined) boton2 = "CANCELAR";
+  if (boton1 == undefined) boton1 = "ACEPTAR ✅";
+  if (boton2 == undefined) boton2 = "CANCELAR ❌";
   
   const modal = document.getElementById('modalPregunta');
   const errorMessage = document.getElementById('error-messagePregunta');

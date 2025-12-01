@@ -557,9 +557,9 @@ class UIEstadia {
 
         // Preguntar si quiere acompañantes
         advertencia(
-            "¿Desea agregar acompañantes?",
-            "NO, CONTINUAR",
-            "SÍ, AGREGAR"
+            "¿Desea agregar acompañantes?", 
+            "SÍ, AGREGAR ✅",
+            "NO, CONTINUAR ❌",
         );
 
         const btnNo  = document.getElementById("boton-advertencia-aceptar");

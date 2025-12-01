@@ -30,8 +30,8 @@ function inicializarEventos() {
           if (responsable) {
             pregunta(
               `¿Desea asignar la factura a la razón social ${responsable.razonSocial}?`, 
-              "Cancelar", 
-              "Aceptar",
+              "Aceptar ✅",
+              "Cancelar ❌",
               () => {
                 
               },
