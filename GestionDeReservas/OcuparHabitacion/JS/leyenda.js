@@ -74,6 +74,9 @@ function mostrarLeyenda() {
       
       aplicarEstilosCeldas();
       inicializarSeleccionHabitaciones();
+      
+      // Re-inicializar el event listener del icono de información después de restaurar
+      inicializarLeyenda();
     });
   }
 }
@@ -82,7 +85,8 @@ function mostrarLeyenda() {
 function inicializarLeyenda() {
   const iconoInformacion = document.querySelector('.icono-informacion');
   if (iconoInformacion) {
-    iconoInformacion.addEventListener('click', mostrarLeyenda);
+    // Usar onclick en lugar de addEventListener para evitar listeners duplicados
+    iconoInformacion.onclick = mostrarLeyenda;
   }
 }
 
