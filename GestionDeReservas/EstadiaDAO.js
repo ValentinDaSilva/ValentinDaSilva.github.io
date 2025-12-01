@@ -15,7 +15,23 @@ class EstadiaDAO {
     // -------------------------------------------------------
     static async guardarOcupacion(estadia) {
         try {
-            console.log("📤 Enviando estadía al backend:", estadia);
+            console.log("==========================================");
+            console.log("📤 ENVIANDO ESTADÍA A LA BASE DE DATOS");
+            console.log("==========================================");
+            console.log("URL:", `${BASE_URL}/checkin`);
+            console.log("Método: POST");
+            console.log("EstadiaDTO completo:", JSON.stringify(estadia, null, 2));
+            console.log("------------------------------------------");
+            console.log("Detalles del DTO:");
+            console.log("  - fechaCheckIn:", estadia.fechaCheckIn);
+            console.log("  - fechaCheckOut:", estadia.fechaCheckOut);
+            console.log("  - nroHabitacion:", estadia.nroHabitacion);
+            console.log("  - titular:", estadia.titular);
+            console.log("  - acompaniantes:", estadia.acompaniantes);
+            if (estadia.idReserva) {
+                console.log("  - idReserva:", estadia.idReserva);
+            }
+            console.log("==========================================");
             
             const respuesta = await fetch(`${BASE_URL}/checkin`, {
                 method: "POST",
