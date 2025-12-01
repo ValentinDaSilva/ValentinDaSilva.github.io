@@ -37,8 +37,14 @@ class GestorEstadia {
     // -------------------------------------------------------
     static async obtenerEstadoHabitaciones(desde, hasta) {
         try {
+            console.log("🔍 GestorEstadia.obtenerEstadoHabitaciones - Fechas:", { desde, hasta });
+            
             const habitaciones = await HabitacionDAO.listarHabitaciones();
-            const reservas     = await ReservaDAO.buscarReservasEntre(desde, hasta);
+            console.log("🔍 GestorEstadia - Habitaciones obtenidas:", habitaciones.length);
+            
+            const reservas = await ReservaDAO.buscarReservasEntre(desde, hasta);
+            console.log("🔍 GestorEstadia - Reservas obtenidas:", reservas.length);
+            console.log("🔍 GestorEstadia - Reservas completas:", reservas);
 
             return {
                 ok: true,

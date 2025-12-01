@@ -11,19 +11,33 @@ class ReservaDAO {
   static async buscarReservasEntre(desde, hasta) {
     try {
         const url = `http://localhost:8080/api/reservas/entre?inicio=${desde}&fin=${hasta}`;
-        console.log("Solicitando reservas:", url);
+        console.log("==========================================");
+        console.log("📤 ReservaDAO.buscarReservasEntre");
+        console.log("==========================================");
+        console.log("URL:", url);
+        console.log("Desde:", desde);
+        console.log("Hasta:", hasta);
 
         const res = await fetch(url);
-        if (!res.ok) throw new Error("Error al cargar reservas.");
+        console.log("Status de respuesta:", res.status, res.statusText);
+        
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error("❌ Error HTTP:", res.status, errorText);
+            throw new Error(`Error al cargar reservas: ${res.status} ${errorText}`);
+        }
 
         const reservas = await res.json();
-        console.log("Reservas recibidas:", reservas);
+        console.log("✅ Reservas recibidas del backend:", reservas.length);
+        console.log("✅ Reservas completas:", reservas);
+        console.log("==========================================");
       
         return reservas;
     } catch (err) {
-        console.error(err);
+        console.error("❌ Error en ReservaDAO.buscarReservasEntre:", err);
+        console.error("Stack trace:", err.stack);
         if (typeof mensajeError === "function") {
-            mensajeError("Error cargando reservas desde el backend.");
+            mensajeError("Error cargando reservas desde el backend: " + err.message);
         }
         return [];
     }

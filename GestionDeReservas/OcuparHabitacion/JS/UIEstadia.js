@@ -42,10 +42,18 @@ class UIEstadia {
                 return;
             }
 
+            console.log("🔍 UIEstadia - Guardando datos en window:");
+            console.log("  - Habitaciones:", resultado.listaHabitaciones?.length || 0);
+            console.log("  - Reservas:", resultado.listaReservas?.length || 0);
+            console.log("  - Reservas completas:", resultado.listaReservas);
+
             window.listaHabitacionesCU07 = resultado.listaHabitaciones;
             window.listaReservasCU07    = resultado.listaReservas;
             window.desdeCU07 = desde;
             window.hastaCU07 = hasta;
+            
+            console.log("🔍 UIEstadia - Verificación después de guardar:");
+            console.log("  - window.listaReservasCU07:", window.listaReservasCU07?.length || 0);
 
             if (typeof generarTablaHabitaciones === "function") {
                 generarTablaHabitaciones(desde, hasta);
