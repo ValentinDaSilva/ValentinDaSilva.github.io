@@ -217,15 +217,31 @@ class UIEstadia {
         const tbody = resultadoBusqueda.querySelector('tbody');
         if (tbody) tbody.innerHTML = '';
 
-        // Ocultamos resultados de habitaciones (pero NO el fondo)
+        // Ocultamos resultados de habitaciones
         const contenedorResultados = document.querySelector('.contenedor-resultados');
         if (contenedorResultados) contenedorResultados.style.display = 'none';
         
-        // Asegurar que el fondo permanezca visible
+        // Ocultamos el formulario de fechas
         const fondoReserva = document.querySelector('.fondo-reserva');
         if (fondoReserva) {
-            fondoReserva.style.display = 'block';
-            fondoReserva.style.visibility = 'visible';
+            fondoReserva.style.display = 'none';
+        }
+        
+        // Hacer el fondo más opaco agregando un overlay
+        let overlayFondo = document.getElementById('overlay-fondo-opaco');
+        if (!overlayFondo) {
+            overlayFondo = document.createElement('div');
+            overlayFondo.id = 'overlay-fondo-opaco';
+            overlayFondo.style.cssText = `
+                position: fixed;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.6);
+                z-index: 9998;
+                pointer-events: none;
+            `;
+            document.body.appendChild(overlayFondo);
+        } else {
+            overlayFondo.style.display = 'block';
         }
 
         // Mostramos buscador
@@ -260,6 +276,23 @@ class UIEstadia {
         const tbody = resultadoBusqueda.querySelector('tbody');
         if (tbody) tbody.innerHTML = '';
 
+        // Asegurar que el overlay esté visible
+        let overlayFondo = document.getElementById('overlay-fondo-opaco');
+        if (!overlayFondo) {
+            overlayFondo = document.createElement('div');
+            overlayFondo.id = 'overlay-fondo-opaco';
+            overlayFondo.style.cssText = `
+                position: fixed;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.6);
+                z-index: 9998;
+                pointer-events: none;
+            `;
+            document.body.appendChild(overlayFondo);
+        } else {
+            overlayFondo.style.display = 'block';
+        }
+
         container.style.display = 'block';
         container.style.top = '50px';
         resultadoBusqueda.style.display = 'block';
@@ -282,6 +315,10 @@ class UIEstadia {
         const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
         if (container) container.style.display = 'none';
         if (resultadoBusqueda) resultadoBusqueda.style.display = 'none';
+        
+        // Ocultar overlay del fondo cuando se oculta el buscador
+        const overlayFondo = document.getElementById('overlay-fondo-opaco');
+        if (overlayFondo) overlayFondo.style.display = 'none';
 
         // Preguntar si quiere acompañantes
         advertencia(
@@ -321,6 +358,10 @@ class UIEstadia {
         const resultadoBusqueda = document.querySelector('.resultadoBusqueda');
         if (container) container.style.display = 'none';
         if (resultadoBusqueda) resultadoBusqueda.style.display = 'none';
+        
+        // Ocultar overlay del fondo cuando se oculta el buscador
+        const overlayFondo = document.getElementById('overlay-fondo-opaco');
+        if (overlayFondo) overlayFondo.style.display = 'none';
 
         UIEstadia.crearYRegistrarEstadia(acompanantesActual);
     }
