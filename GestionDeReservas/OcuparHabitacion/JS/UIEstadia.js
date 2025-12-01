@@ -561,27 +561,22 @@ class UIEstadia {
             "SÍ, AGREGAR ✅",
             "NO, CONTINUAR ❌",
             "Salir ❌"
-        );
-
-        const btnNo  = document.getElementById("boton-advertencia-aceptar");
-        const btnSi  = document.getElementById("boton-advertencia-corregir");
-
-        if (btnNo) {
-            btnNo.onclick = () => {
-                const modal = document.getElementById("modal-advertencia");
-                if (modal) modal.style.display = "none";
-                // No registrar todavía, solo mostrar el menú
-                UIEstadia.menuFinalCU07();
-            };
-        }
-
-        if (btnSi) {
-            btnSi.onclick = () => {
-                const modal = document.getElementById("modal-advertencia");
-                if (modal) modal.style.display = "none";
+        ).then(async (boton) => {
+            if (!boton) return;
+            
+            if (boton === "SÍ, AGREGAR ✅") {
+                // Mostrar buscador de acompañantes
                 UIEstadia.mostrarBuscadorAcompanantes();
-            };
-        }
+            } else if (boton === "NO, CONTINUAR ❌") {
+                // Registrar la estadía inmediatamente (sin acompañantes)
+                await UIEstadia.crearYRegistrarEstadia([]);
+                // Mostrar el menú para decidir qué hacer después
+                UIEstadia.menuFinalCU07();
+            } else if (boton === "Salir ❌") {
+                // Salir sin registrar
+                window.location.href = "/index.html";
+            }
+        });
     }
 
     // --------------------------------------------------
@@ -602,9 +597,29 @@ class UIEstadia {
         const overlayFondo = document.getElementById('overlay-fondo-opaco');
         if (overlayFondo) overlayFondo.style.display = 'none';
 
-        // NO registrar todavía, solo mostrar el menú
-        // El menú decidirá cuándo registrar (cuando elija "CARGAR OTRA HABITACIÓN" o "SALIR")
-        UIEstadia.menuFinalCU07();
+        // Preguntar si quiere cargar más acompañantes o continuar
+        pregunta(
+            "¿Desea agregar más acompañantes?", 
+            "SÍ, AGREGAR ✅",
+            "NO, CONTINUAR ❌",
+            "Salir ❌"
+        ).then(async (boton) => {
+            if (!boton) return;
+            
+            if (boton === "SÍ, AGREGAR ✅") {
+                // Mostrar buscador de acompañantes nuevamente
+                UIEstadia.mostrarBuscadorAcompanantes();
+            } else if (boton === "NO, CONTINUAR ❌") {
+                // Registrar la estadía con los acompañantes cargados
+                await UIEstadia.crearYRegistrarEstadia(acompanantesActual);
+                // Mostrar el menú para decidir qué hacer después
+                UIEstadia.menuFinalCU07();
+            } else if (boton === "Salir ❌") {
+                // Registrar la estadía antes de salir
+                await UIEstadia.crearYRegistrarEstadia(acompanantesActual);
+                window.location.href = "/index.html";
+            }
+        });
     }
 
     // --------------------------------------------------
