@@ -129,7 +129,7 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
         if (reservaAsociada) {
           const estadoReserva = (reservaAsociada.estado || "").trim().toUpperCase();
 
-          if (estadoReserva === "FINALIZADA") {
+          if (estadoReserva === "Confirmada") {
             td.className = "estado-ocupada";
             td.dataset.estadoOriginal = "ocupada";
           } else {
