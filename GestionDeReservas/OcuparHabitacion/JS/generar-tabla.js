@@ -77,8 +77,8 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
     habitaciones.forEach(habitacion => {
       const td = document.createElement('td');
       
-      // Verificar si está reservada usando las reservas del backend
-      const estaReservada = estaHabitacionReservada(habitacion.numero, fecha);
+      // Obtener el estado de la reserva (ocupada, reservada, o null si está libre)
+      const estadoReserva = obtenerEstadoReservaHabitacion(habitacion.numero, fecha);
       
       // Debug: log para verificar reservas
       if (fecha === fechas[0] && habitacion.numero === habitaciones[0].numero) {
@@ -86,13 +86,19 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
         console.log("  - Habitación:", habitacion.numero);
         console.log("  - Fecha:", fecha);
         console.log("  - Reservas disponibles:", (window.listaReservasCU07 || []).length);
-        console.log("  - Está reservada:", estaReservada);
+        console.log("  - Estado reserva:", estadoReserva);
       }
       
-      if (estaReservada) {
+      if (estadoReserva === 'ocupada') {
+        // Reserva con estado "Confirmada" o "Finalizada" → mostrar como ocupada (rojo)
+        td.className = 'estado-ocupada';
+        td.setAttribute('data-estado-original', 'ocupada');
+      } else if (estadoReserva === 'reservada') {
+        // Reserva con estado "Pendiente" u otro → mostrar como reservada (amarillo)
         td.className = 'estado-reservada';
         td.setAttribute('data-estado-original', 'reservada');
       } else {
+        // No hay reserva → mostrar como libre (verde)
         td.className = 'estado-libre';
         td.setAttribute('data-estado-original', 'libre');
         huboLibre = true;

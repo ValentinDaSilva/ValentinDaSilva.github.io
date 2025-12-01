@@ -167,8 +167,9 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
   });
 
   
-  // Verificar que todas las celdas del rango estén reservadas
+  // Verificar que todas las celdas del rango estén reservadas (no ocupadas, no libres)
   let todasReservadas = true;
+  let hayOcupadas = false;
   todasLasFechas.forEach(fecha => {
     if (compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0) {
       const celda = document.querySelector(
@@ -176,12 +177,27 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
       );
       if (celda) {
         const estadoOriginal = celda.getAttribute('data-estado-original');
-        if (estadoOriginal !== 'reservada') {
+        if (estadoOriginal === 'ocupada') {
+          hayOcupadas = true;
+          todasReservadas = false;
+        } else if (estadoOriginal !== 'reservada') {
           todasReservadas = false;
         }
       }
     }
   });
+
+  // Si hay celdas ocupadas en el rango, no permitir la selección
+  if (hayOcupadas) {
+    mensajeError("El rango seleccionado contiene días ocupados (reservas confirmadas). No se puede seleccionar.");
+    // Remover la selección que se agregó
+    const indice = habitacionesSeleccionadas.findIndex(h => h.habitacion === habitacion);
+    if (indice !== -1) {
+      habitacionesSeleccionadas.splice(indice, 1);
+    }
+    mostrarBotonContinuar();
+    return;
+  }
 
   // Si hay celdas libres en el rango, no permitir la selección
   if (!todasReservadas) {
@@ -237,7 +253,14 @@ function deseleccionarRangoHabitacion(habitacion) {
       const estadoOriginal = celda.getAttribute('data-estado-original');
       celda.style.backgroundColor = '';
       celda.classList.remove('estado-seleccionada');
-      celda.classList.add(estadoOriginal === 'reservada' ? 'estado-reservada' : 'estado-libre');
+      // Restaurar el estado original correcto
+      if (estadoOriginal === 'reservada') {
+        celda.classList.add('estado-reservada');
+      } else if (estadoOriginal === 'ocupada') {
+        celda.classList.add('estado-ocupada');
+      } else {
+        celda.classList.add('estado-libre');
+      }
       aplicarEstilosCeldas();
     }
   });
@@ -253,6 +276,8 @@ function manejarClickCelda(celda) {
   if (estadoOriginal !== 'reservada') {
     if (estadoOriginal === 'libre') {
       mensajeError("Solo se pueden ocupar habitaciones que estén RESERVADAS. Esta celda está disponible (libre).");
+    } else if (estadoOriginal === 'ocupada') {
+      mensajeError("Esta habitación ya está ocupada (reserva confirmada). No se puede seleccionar.");
     }
     return;
   }

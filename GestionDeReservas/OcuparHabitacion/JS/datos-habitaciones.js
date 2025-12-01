@@ -104,6 +104,67 @@ function estaHabitacionReservada(numeroHabitacion, fecha) {
 }
 
 
+// Obtener el estado de la reserva para una habitación y fecha específica
+// Retorna: 'ocupada' si el estado es "Confirmada" o "Finalizada", 'reservada' si es "Pendiente", null si no hay reserva
+function obtenerEstadoReservaHabitacion(numeroHabitacion, fecha) {
+  // Usar reservas del backend (obtenidas por GestorEstadia) si están disponibles
+  const reservasParaUsar = window.listaReservasCU07 || reservas || [];
+  
+  if (!reservasParaUsar || reservasParaUsar.length === 0) {
+    return null;
+  }
+  
+  // Convertir numeroHabitacion a número si es string para comparación correcta
+  const numHab = typeof numeroHabitacion === 'string' ? parseInt(numeroHabitacion, 10) : numeroHabitacion;
+  
+  for (const reserva of reservasParaUsar) {
+    if (!reserva) continue;
+    
+    // Verificar si la reserva tiene esta habitación
+    const habitacionesReserva = reserva.habitaciones || [];
+    let tieneHabitacion = habitacionesReserva.some(hab => {
+      if (!hab) return false;
+      const numHabReserva = typeof hab.numero === 'string' ? parseInt(hab.numero, 10) : hab.numero;
+      return numHabReserva === numHab;
+    });
+    
+    // También verificar si hay un campo directo numeroHabitacion
+    if (!tieneHabitacion && reserva.numeroHabitacion !== undefined) {
+      const numHabDirecto = typeof reserva.numeroHabitacion === 'string' 
+        ? parseInt(reserva.numeroHabitacion, 10) 
+        : reserva.numeroHabitacion;
+      tieneHabitacion = (numHabDirecto === numHab);
+    }
+    
+    // Si no tiene la habitación, continuar con la siguiente reserva
+    if (!tieneHabitacion) {
+      continue;
+    }
+    
+    // Verificar que la fecha esté en el rango de la reserva
+    const fechaDesde = reserva.fechaInicio || reserva.desde; 
+    const fechaHasta = reserva.fechaFin || reserva.hasta;
+    
+    if (!fechaDesde || !fechaHasta) {
+      continue;
+    }
+    
+    const fechaEnRango = compararFechas(fecha, fechaDesde) >= 0 && compararFechas(fecha, fechaHasta) <= 0;
+    if (fechaEnRango) {
+      // Verificar el estado de la reserva
+      const estadoReserva = (reserva.estado || "").trim();
+      if (estadoReserva.toLowerCase() === "confirmada" || estadoReserva.toLowerCase() === "finalizada") {
+        return 'ocupada';
+      } else {
+        return 'reservada';
+      }
+    }
+  }
+  
+  return null;
+}
+
+
 function obtenerNumeroDesdeNombre(nombreHabitacion) {
   const partes = nombreHabitacion.split('-');
   if (partes.length === 2) {
