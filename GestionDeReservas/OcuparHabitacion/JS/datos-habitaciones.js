@@ -57,7 +57,10 @@ function compararFechas(fecha1, fecha2) {
 
 
 function estaHabitacionReservada(numeroHabitacion, fecha) {
-  return reservas.some(reserva => {
+  // Usar reservas del backend (obtenidas por GestorEstadia) si están disponibles
+  const reservasParaUsar = window.listaReservasCU07 || reservas;
+  
+  return reservasParaUsar.some(reserva => {
     
     const habitacionesReserva = reserva.habitaciones || [];
     const tieneHabitacion = habitacionesReserva.some(hab => hab.numero === numeroHabitacion);

@@ -45,8 +45,8 @@ function inicializarFiltro() {
     tipoFiltroActual = this.value;
     
     
-    const fechaDesdeInput = document.getElementById('checkin');
-    const fechaHastaInput = document.getElementById('checkout');
+    const fechaDesdeInput = document.getElementById('desde') || document.getElementById('checkin');
+    const fechaHastaInput = document.getElementById('hasta') || document.getElementById('checkout');
     
     if (fechaDesdeInput && fechaHastaInput && fechaDesdeInput.value && fechaHastaInput.value) {
       

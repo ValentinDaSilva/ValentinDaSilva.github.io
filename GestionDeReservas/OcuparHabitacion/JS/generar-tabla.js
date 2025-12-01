@@ -20,7 +20,13 @@ function generarTablaHabitaciones(fechaInicio, fechaFin) {
   }
 
   
-  let habitaciones = obtenerHabitaciones();
+  // Usar habitaciones del backend (obtenidas por GestorEstadia)
+  let habitaciones = window.listaHabitacionesCU07 || [];
+  
+  if (habitaciones.length === 0) {
+    console.error('No hay habitaciones disponibles');
+    return false;
+  }
   
   
   establecerHabitaciones(habitaciones);
