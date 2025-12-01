@@ -221,10 +221,17 @@ class UIEstadia {
         const contenedorResultados = document.querySelector('.contenedor-resultados');
         if (contenedorResultados) contenedorResultados.style.display = 'none';
         
-        // Ocultamos el formulario de fechas
+        // Ocultamos solo el formulario de búsqueda dentro del fondo, NO el fondo completo
+        const formularioBusqueda = document.querySelector('.fondo-reserva .formulario-busqueda');
+        if (formularioBusqueda) {
+            formularioBusqueda.style.display = 'none';
+        }
+        
+        // El fondo (.fondo-reserva) debe permanecer visible siempre
         const fondoReserva = document.querySelector('.fondo-reserva');
         if (fondoReserva) {
-            fondoReserva.style.display = 'none';
+            fondoReserva.style.display = 'block';
+            fondoReserva.style.visibility = 'visible';
         }
         
         // Hacer el fondo más opaco agregando un overlay
