@@ -127,19 +127,28 @@ class GestorEstadia {
 
     // -------------------------------------------------------
     // REGISTRAR OCUPACIÓN (CU07)
+    // Crea el EstadiaDTO según el formato esperado por el backend
     // -------------------------------------------------------
     static async registrarOcupacion(habitacion, desde, hasta, titular, acompanantes, reservaAsociada) {
-        const estadiaDominio = {
-            fechaInicio: desde,
-            fechaFin:   hasta,
-            habitacion: { numero: habitacion.numero },
+        // Construir EstadiaDTO según el formato del backend
+        // El backend espera: fechaCheckIn, fechaCheckOut, nroHabitacion, titular, acompaniantes, idReserva (opcional)
+        const estadiaDTO = {
+            fechaCheckIn: desde,
+            fechaCheckOut: hasta,
+            nroHabitacion: habitacion.numero,
             titular: titular,
-            acompanantes: acompanantes || [],
-            reservaAsociada: reservaAsociada ? reservaAsociada.id : null
+            acompaniantes: acompanantes || []
         };
+        
+        // Agregar idReserva solo si existe una reserva asociada
+        if (reservaAsociada && reservaAsociada.id) {
+            estadiaDTO.idReserva = reservaAsociada.id;
+        }
+
+        console.log("📤 EstadiaDTO a enviar:", estadiaDTO);
 
         try {
-            const respuesta = await EstadiaDAO.guardarOcupacion(estadiaDominio);
+            const respuesta = await EstadiaDAO.guardarOcupacion(estadiaDTO);
 
             if (!respuesta || !respuesta.ok) {
                 console.error("❌ Error al registrar ocupación en backend:", respuesta?.error);

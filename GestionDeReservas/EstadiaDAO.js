@@ -1,21 +1,23 @@
-// /Reservas/JS/EstadiaDAO.js
+// EstadiaDAO.js
 // ===========================================================
 //   DAO de Estadia – Maneja comunicación con backend
 //   CU07: Ocupar Habitación
 //   Todas las operaciones devuelven: { ok, data?, error? }
 // ===========================================================
 
-const BASE_URL = "http://localhost:8080/estadia";  
-// Cambiar si usás otra URL o prefijo
+const BASE_URL = "http://localhost:8080/api/estadia";  
 
 class EstadiaDAO {
 
     // -------------------------------------------------------
-    // GUARDAR OCUPACIÓN (CU07)
+    // GENERAR CHECK-IN / OCUPACIÓN (CU07)
+    // Endpoint: POST /api/estadia/checkin
     // -------------------------------------------------------
     static async guardarOcupacion(estadia) {
         try {
-            const respuesta = await fetch(`${BASE_URL}/guardar`, {
+            console.log("📤 Enviando estadía al backend:", estadia);
+            
+            const respuesta = await fetch(`${BASE_URL}/checkin`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -29,8 +31,11 @@ class EstadiaDAO {
                 return { ok: false, error: errorTexto };
             }
 
-            const json = await respuesta.json();
-            return { ok: true, data: json };
+            // El backend devuelve un String según el controller
+            const respuestaTexto = await respuesta.text();
+            console.log("✅ Respuesta del backend:", respuestaTexto);
+            
+            return { ok: true, data: respuestaTexto };
 
         } catch (e) {
             console.error("❌ Error EstadiaDAO.guardarOcupacion:", e);
@@ -39,60 +44,58 @@ class EstadiaDAO {
     }
 
     // -------------------------------------------------------
-    // LISTAR TODAS LAS ESTADÍAS (si lo necesitás en CU08 / CU09)
+    // REGISTRAR CHECK-OUT
+    // Endpoint: POST /api/estadia/checkout/{id}
     // -------------------------------------------------------
-    static async listar() {
+    static async registrarCheckOut(idEstadia) {
         try {
-            const r = await fetch(`${BASE_URL}/listar`);
-            if (!r.ok) {
-                const t = await r.text();
-                return { ok: false, error: t };
-            }
-            const json = await r.json();
-            return { ok: true, data: json };
-        } catch (e) {
-            return { ok: false, error: e.message };
-        }
-    }
-
-    // -------------------------------------------------------
-    // BUSCAR ESTADÍA POR ID (común en CU08 / CU09)
-    // -------------------------------------------------------
-    static async buscarPorId(id) {
-        try {
-            const r = await fetch(`${BASE_URL}/${id}`);
-            if (!r.ok) {
-                const t = await r.text();
-                return { ok: false, error: t };
-            }
-            const json = await r.json();
-            return { ok: true, data: json };
-        } catch (e) {
-            return { ok: false, error: e.message };
-        }
-    }
-
-    // -------------------------------------------------------
-    // ACTUALIZAR ESTADÍA (por ejemplo para registrar checkout)
-    // -------------------------------------------------------
-    static async actualizar(id, datos) {
-        try {
-            const respuesta = await fetch(`${BASE_URL}/actualizar/${id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(datos)
+            const respuesta = await fetch(`${BASE_URL}/checkout/${idEstadia}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
 
             if (!respuesta.ok) {
-                const t = await respuesta.text();
-                return { ok: false, error: t };
+                const errorTexto = await respuesta.text();
+                console.error("❌ Error en checkout:", errorTexto);
+                return { ok: false, error: errorTexto };
             }
 
             const json = await respuesta.json();
             return { ok: true, data: json };
 
         } catch (e) {
-            return { ok: false, error: e.message };
+            console.error("❌ Error EstadiaDAO.registrarCheckOut:", e);
+            return { ok: false, error: e.message || "Error de conexión" };
+        }
+    }
+
+    // -------------------------------------------------------
+    // OBTENER ESTADÍA ACTIVA POR HABITACIÓN
+    // Endpoint: GET /api/estadia/activa/{nroHabitacion}
+    // -------------------------------------------------------
+    static async obtenerActivaPorHabitacion(nroHabitacion) {
+        try {
+            const respuesta = await fetch(`${BASE_URL}/activa/${nroHabitacion}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (!respuesta.ok) {
+                const errorTexto = await respuesta.text();
+                console.error("❌ Error obteniendo estadía activa:", errorTexto);
+                return { ok: false, error: errorTexto };
+            }
+
+            const json = await respuesta.json();
+            return { ok: true, data: json };
+
+        } catch (e) {
+            console.error("❌ Error EstadiaDAO.obtenerActivaPorHabitacion:", e);
+            return { ok: false, error: e.message || "Error de conexión" };
         }
     }
 }
