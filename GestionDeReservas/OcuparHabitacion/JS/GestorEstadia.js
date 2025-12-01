@@ -1,12 +1,14 @@
-// /Reservas/JS/GestorEstadia.js
+// OcuparHabitacion/JS/GestorEstadia.js
 // ===========================================================
 //       GESTOR ESTADIA  (CU07 – OCUPAR HABITACIÓN)
 //       Sigue el diagrama de secuencia propuesto
+//       Coordina: HabitacionDAO, ReservaDAO, HuespedDAO, EstadiaDAO
 // ===========================================================
 
 import { EstadiaDAO } from "../../EstadiaDAO.js";
 import { HabitacionDAO } from "../../HabitacionDAO.js";
 import { ReservaDAO } from "../../ReservaDAO.js";
+import { HuespedDAO } from "../../HuespedDAO.js";
 
 // OJO: usa compararFechas y generarArrayFechas de datos-habitaciones.js
 
@@ -100,6 +102,22 @@ class GestorEstadia {
 
         // Totalmente disponible
         return { ok: true, tipo: "disponible" };
+    }
+
+    // -------------------------------------------------------
+    // BUSCAR HUÉSPEDES (para titular y acompañantes)
+    // -------------------------------------------------------
+    static async buscarHuespedes(criterios) {
+        try {
+            const huespedes = await HuespedDAO.buscarHuespedes(criterios);
+            return {
+                ok: true,
+                listaHuespedes: huespedes
+            };
+        } catch (e) {
+            console.error("❌ Error buscando huéspedes:", e);
+            return { ok: false, mensaje: "No se pudieron buscar los huéspedes." };
+        }
     }
 
     // -------------------------------------------------------

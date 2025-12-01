@@ -70,8 +70,9 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
   if (!numeroHabitacion) return;
 
   
-  const fechaDesdeForm = document.getElementById('checkin').value;
-  const fechaHastaForm = document.getElementById('checkout').value;
+  // Obtener fechas del formulario de ocupar habitación
+  const fechaDesdeForm = document.getElementById('desde')?.value || window.desdeCU07;
+  const fechaHastaForm = document.getElementById('hasta')?.value || window.hastaCU07;
   const todasLasFechas = generarArrayFechas(fechaDesdeForm, fechaHastaForm);
 
   
@@ -81,30 +82,9 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
   }
 
   
-  const fechasRango = generarArrayFechas(fechaDesde, fechaHasta);
-  const todasLibres = fechasRango.every(fecha => {
-    return !estaHabitacionReservada(numeroHabitacion, fecha);
-  });
-
-  
-  if (!todasLibres) {
-    const checkinDate = document.getElementById('checkin').value;
-    const checkoutDate = document.getElementById('checkout').value;
-    
-    advertencia(
-      `La habitación ${habitacion} está reservada en algunas fechas del rango seleccionado.<br>Desde Fecha: ${checkinDate} <br>Hasta Fecha: ${checkoutDate}.`,
-      "OCUPAR IGUAL",
-      "VOLVER"
-    ).then(boton => {
-      if (boton !== "OCUPAR IGUAL") {
-        return; 
-      }
-      
-    });
-    
-    
-    
-  }
+  // La evaluación de la selección se hace en UIEstadia.manejarSeleccion
+  // según el diagrama de secuencia, así que solo guardamos la selección
+  // y llamamos a UIEstadia para que evalúe
 
   
   const indiceExistente = habitacionesSeleccionadas.findIndex(
@@ -140,6 +120,11 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
       }
     }
   });
+
+  // Llamar a UIEstadia.manejarSeleccion para evaluar la selección según el diagrama
+  if (typeof window.UIEstadia !== 'undefined' && window.UIEstadia.manejarSeleccion) {
+    window.UIEstadia.manejarSeleccion(habitacion, fechaDesde, fechaHasta);
+  }
 }
 
 

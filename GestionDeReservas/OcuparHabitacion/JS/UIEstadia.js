@@ -1,7 +1,8 @@
-// /Reservas/JS/UIEstadia.js
+// OcuparHabitacion/JS/UIEstadia.js
 // ======================================================
 //     UI – OCUPAR HABITACIÓN (CU07 COMPLETO)
-//     Usa la misma UI de búsqueda de huéspedes que CU04
+//     Se comunica únicamente con GestorEstadia
+//     Sigue el diagrama de secuencia proporcionado
 // ======================================================
 
 import { GestorEstadia } from "./GestorEstadia.js";
@@ -326,28 +327,75 @@ class UIEstadia {
 
     // --------------------------------------------------
     // Menú final CU07 (seguir / otra hab / salir)
+    // Según diagrama de secuencia: SEGUIR CARGANDO, CARGAR OTRA HABITACIÓN, SALIR
     // --------------------------------------------------
     static menuFinalCU07() {
-        advertencia(
-            "Ocupación registrada correctamente.<br>¿Qué desea hacer?",
-            "SALIR",
-            "CARGAR OTRA HABITACIÓN"
-        );
+        // Crear modal con tres opciones
+        const overlay = document.createElement("div");
+        overlay.style.cssText = `
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        `;
 
-        const salir = document.getElementById("boton-advertencia-aceptar");
-        const otra  = document.getElementById("boton-advertencia-corregir");
+        const panel = document.createElement("div");
+        panel.style.cssText = `
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid #412c26;
+            border-radius: 10px;
+            padding: 25px;
+            font-family: sans-serif;
+        `;
 
-        if (salir) {
-            salir.onclick = () => {
-                window.location.href = "/index.html";
-            };
-        }
+        panel.innerHTML = `
+            <h2 style="margin-top: 0;">Ocupación registrada correctamente</h2>
+            <p>¿Qué desea hacer?</p>
+        `;
 
-        if (otra) {
-            otra.onclick = () => {
-                window.location.reload();
-            };
-        }
+        const contBotones = document.createElement("div");
+        contBotones.style.cssText = `
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        `;
+
+        const btnSeguir = document.createElement("button");
+        btnSeguir.className = "boton-reserva-estandar";
+        btnSeguir.textContent = "SEGUIR CARGANDO";
+        btnSeguir.onclick = () => {
+            overlay.remove();
+            UIEstadia.mostrarBuscadorAcompanantes();
+        };
+
+        const btnOtra = document.createElement("button");
+        btnOtra.className = "boton-reserva-estandar";
+        btnOtra.textContent = "CARGAR OTRA HABITACIÓN";
+        btnOtra.onclick = () => {
+            overlay.remove();
+            window.location.reload();
+        };
+
+        const btnSalir = document.createElement("button");
+        btnSalir.className = "boton-reserva-estandar";
+        btnSalir.textContent = "SALIR";
+        btnSalir.onclick = () => {
+            overlay.remove();
+            window.location.href = "/index.html";
+        };
+
+        contBotones.appendChild(btnSeguir);
+        contBotones.appendChild(btnOtra);
+        contBotones.appendChild(btnSalir);
+        panel.appendChild(contBotones);
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
     }
 }
 

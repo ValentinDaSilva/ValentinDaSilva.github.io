@@ -1,4 +1,10 @@
+// OcuparHabitacion/JS/buscar-huesped.js
+// ======================================================
+//     Búsqueda de huéspedes (titular y acompañantes)
+//     Se comunica con GestorEstadia para buscar huéspedes
+// ======================================================
 
+import { GestorEstadia } from "./GestorEstadia.js";
 
 let huespedesSeleccionados = [];
 
@@ -111,37 +117,31 @@ async function inicializarBusquedaHuesped() {
         return;
     }
 
-    
-    if (datosHuespedes.length === 0) {
-        await cargarHuespedes();
-        if (datosHuespedes.length === 0) {
-            mensajeError('No se pudieron cargar los datos. Por favor, recarga la página.');
-            return;
-        }
-    }
-
     formBuscar.addEventListener('submit', async function(event) {
         event.preventDefault();
-        
         
         const apellido = document.getElementById('apellido').value.trim();
         const nombre = document.getElementById('nombre').value.trim();
         const tipoDocumento = document.getElementById('tipoDocumento').value;
         const numeroDocumento = document.getElementById('numeroDocumento').value.trim();
         
+        // Usar GestorEstadia para buscar huéspedes
+        const criterios = { apellido, nombre, tipoDocumento, numeroDocumento };
+        const resultado = await GestorEstadia.buscarHuespedes(criterios);
         
-        const resultados = filtrarHuespedes(apellido, nombre, tipoDocumento, numeroDocumento);
+        if (!resultado.ok) {
+            mensajeError(resultado.mensaje || "No se pudieron buscar los huéspedes.");
+            return;
+        }
         
-        
+        const resultados = resultado.listaHuespedes || [];
         renderizarResultadosHuespedes(resultados);
-        
         
         resultadoDiv.style.display = 'block';
         
         setTimeout(() => {
             resultadoDiv.style.top = '50px';
         }, 10);
-        
         
         setTimeout(() => {
             inicializarSeleccionHuespedes();
