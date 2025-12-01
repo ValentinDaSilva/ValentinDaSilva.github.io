@@ -7,6 +7,42 @@ let habitacionesSeleccionadas = [];
 let celdaInicioSeleccion = null; 
 let seleccionEnProgreso = false;
 
+// Función para mostrar/ocultar botón Continuar
+function mostrarBotonContinuar() {
+  const boton = document.querySelector('.boton-continuar-ocupar');
+  if (boton) {
+    if (habitacionesSeleccionadas.length > 0) {
+      boton.style.display = 'block';
+    } else {
+      boton.style.display = 'none';
+    }
+  }
+}
+
+// Función para inicializar el botón Continuar
+function inicializarBotonContinuar() {
+  const boton = document.querySelector('.boton-continuar-ocupar');
+  if (!boton) return;
+  
+  boton.addEventListener('click', async () => {
+    if (habitacionesSeleccionadas.length === 0) {
+      mensajeError("Debe seleccionar al menos una habitación.");
+      return;
+    }
+    
+    // Tomar la primera selección (en CU07 solo se ocupa una habitación a la vez)
+    const seleccion = habitacionesSeleccionadas[0];
+    const nombreHab = seleccion.habitacion;
+    const fechaDesde = seleccion.fechaDesde;
+    const fechaHasta = seleccion.fechaHasta;
+    
+    // Llamar a UIEstadia para evaluar y continuar
+    if (typeof window.UIEstadia !== 'undefined' && window.UIEstadia.manejarSeleccion) {
+      await window.UIEstadia.manejarSeleccion(nombreHab, fechaDesde, fechaHasta);
+    }
+  });
+}
+
 
 function obtenerHabitacionesSeleccionadas() {
   return habitacionesSeleccionadas;
@@ -25,6 +61,8 @@ function limpiarHabitacionesSeleccionadas() {
     celda.classList.add(estadoOriginal === 'reservada' ? 'estado-reservada' : 'estado-libre');
     aplicarEstilosCeldas();
   });
+  
+  mostrarBotonContinuar();
 }
 
 
@@ -121,10 +159,8 @@ function seleccionarRangoHabitacion(habitacion, fechaDesde, fechaHasta) {
     }
   });
 
-  // Llamar a UIEstadia.manejarSeleccion para evaluar la selección según el diagrama
-  if (typeof window.UIEstadia !== 'undefined' && window.UIEstadia.manejarSeleccion) {
-    window.UIEstadia.manejarSeleccion(habitacion, fechaDesde, fechaHasta);
-  }
+  // Mostrar botón "Continuar" cuando hay una selección
+  mostrarBotonContinuar();
 }
 
 
@@ -151,6 +187,8 @@ function deseleccionarRangoHabitacion(habitacion) {
       aplicarEstilosCeldas();
     }
   });
+  
+  mostrarBotonContinuar();
 }
 
 
@@ -277,13 +315,16 @@ function inicializarSeleccionHabitaciones() {
     celda.addEventListener('click', () => {
       manejarClickCelda(celda);
     });
-
+    
     
     const estadoOriginal = celda.getAttribute('data-estado-original');
     if (estadoOriginal !== 'fuera-servicio' && estadoOriginal !== 'ocupada') {
       celda.style.cursor = 'pointer';
     }
   });
+  
+  // Inicializar botón Continuar
+  inicializarBotonContinuar();
 }
 
 

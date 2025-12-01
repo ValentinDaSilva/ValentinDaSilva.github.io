@@ -110,7 +110,8 @@
 }
 
 .siguiente,
-.boton-ocupar {
+.boton-ocupar,
+.boton-continuar-ocupar {
   width: 30%;
   background-color: #412c26;
   color: white;
@@ -127,7 +128,8 @@
 }
 
 .siguiente:hover,
-.boton-ocupar:hover {
+.boton-ocupar:hover,
+.boton-continuar-ocupar:hover {
   background-color: #5a3d33;
 }
 
