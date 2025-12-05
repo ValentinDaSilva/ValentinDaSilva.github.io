@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>Registro General de Tareas</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    * { box-sizing: border-box; }
+
+    .pantalla {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cabecera {
+      padding: 20px;
+      text-align: center;
+      flex-shrink: 0;
+      height: 15vh;
+      max-height: 15vh;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .cabecera h2 {
+      margin: 0;
+      font-size: 150%;
+    }
+
+    .flecha {
+      font-size: 24px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .contenido-flex {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    #loader {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 5px solid #ccc;
+      border-top: 5px solid #4a89dc;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #tipoSelect {
+      font-size: 16px;
+      margin-bottom: 15px;
+      padding: 5px 10px;
+    }
+
+    #calendario {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      user-select: none;
+      width: 100%;
+      max-width: 720px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #calendario.visible {
+      opacity: 1;
+    }
+
+    .dia {
+      border: 1px solid #ccc;
+      padding: 12px 6px;
+      text-align: center;
+      font-weight: bold;
+      min-height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .dia.inactivo {
+      color: #aaa;
+      background-color: #f9f9f9;
+    }
+
+    .ocupado-valentin {
+      background-color: #a0d468;
+      color: #2f4f13;
+    }
+
+    .ocupado-joaquin {
+      background-color: #4a89dc;
+      color: white;
+    }
+
+    .sin-registro {
+      background-color: #eee;
+    }
+
+    .etiqueta {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .pantalla-botones {
+      height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .botones {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 25px;
+      margin: 0 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    #resultado {
+      text-align: center;
+      margin: 15px 0;
+      font-weight: bold;
+      color: green;
+    }
+
+    #leyenda {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-size: 14px;
+    }
+
+    .color-cuadro {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 1px solid #aaa;
+    }
+
+    .color-valentin {
+      background-color: #a0d468;
+    }
+
+    .color-joaquin {
+      background-color: #4a89dc;
+    }
+
+    .hoy {
+      color: red;
+      font-weight: bold;
+    }
+
+    .swal2-container {
+      backdrop-filter: blur(6px);
+      background-color: rgba(0, 0, 0, 0.4) !important;
+    }
+  </style>
+</head>
+<body>
+
+<div class="pantalla">
+  <div class="cabecera">
+    <span class="flecha" onclick="mesAnterior()">⬅️</span>
+    <h2 id="tituloMes">Registro General de Tareas</h2>
+    <span class="flecha" onclick="mesSiguiente()">➡️</span>
+  </div>
+  <div class="contenido-flex">
+    <div id="loader">
+      <div class="spinner"></div>
+      <div>Cargando...</div>
+    </div>
+    <div id="calendario"></div>
+  </div>
+</div>
+
+<div class="pantalla-botones">
+  <h1>Registrar Tarea</h1>
+  <div class="botones">
+    <button onclick="registrar('Valentín')">Valentín</button>
+    <button onclick="registrar('Joaquin')">Joaquin</button>
+  </div>
+  <div id="resultado"></div>
+  <div id="leyenda">
+    <div><span class="color-cuadro color-valentin"></span> Valentín</div>
+    <div><span class="color-cuadro color-joaquin"></span> Joaquin</div>
+    <div><span class="color-cuadro" style="background:#eee; border:1px solid #ccc;"></span> Sin registro</div>
+  </div>
+  <div style="text-align:center; margin:50px">
+      <label for="tipoSelect">Tipo:</label>
+      <select id="tipoSelect" onchange="filtrarPorTipo()"></select>
+    </div>
+  <div id="nuevoTipoContainer" style="margin-top: 10px; text-align: center;">
+  <button onclick="mostrarInputNuevoTipo()">➕ Agregar Tipo</button>
+  <div id="inputNuevoTipo" style="margin-top: 10px; display: none;  align-items: end;">
+    <input type="text" id="nuevoTipoTexto" placeholder="Nuevo tipo..." style="height: 30px; margin: 20px;" />
+    <button onclick="guardarNuevoTipo()" style="padding: 10px; font-size: 12px; height: 30px; margin: 20px; display: flex; align-items: center; ">Guardar</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbx-0cGI7_Uy5MkxHGGInuNHapzIYwjr6tkoRB31z5pPaTS--2WRm6fyWNV6-OyMx5Pm/exec";
+  let todosLosRegistros = [];
+  let tipoSeleccionado = "Basura";
+
+  let mesActual = new Date().getMonth();
+  let anioActual = new Date().getFullYear();
+
+  const mesHoy = new Date().getMonth();
+  const anioHoy = new Date().getFullYear();
+
+  function crearCalendario(registros, anio, mes) {
+    const calendario = document.getElementById('calendario');
+    calendario.innerHTML = '';
+
+    const primerDiaMes = new Date(anio, mes, 1);
+    const ultimoDiaMes = new Date(anio, mes + 1, 0);
+    const diasMes = ultimoDiaMes.getDate();
+    const primerDiaSemana = primerDiaMes.getDay();
+
+    document.getElementById("tituloMes").textContent = 
+      `${primerDiaMes.toLocaleString('es-ES', { month: 'long' })} ${anio}`;
+
+    const nombreDias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    for (let i = 0; i < 7; i++) {
+      const nombreDia = document.createElement('div');
+      nombreDia.classList.add('dia', 'inactivo');
+      nombreDia.textContent = nombreDias[i];
+      calendario.appendChild(nombreDia);
+    }
+
+    for (let i = 0; i < primerDiaSemana; i++) {
+      const celdaVacia = document.createElement('div');
+      celdaVacia.classList.add('dia', 'inactivo');
+      calendario.appendChild(celdaVacia);
+    }
+
+    const mapaRegistros = {};
+    registros.forEach(({ fecha, nombre }) => {
+      const fechaSolo = fecha.split("T")[0];
+      mapaRegistros[fechaSolo] = nombre;
+    });
+
+    for (let dia = 1; dia <= diasMes; dia++) {
+      const fechaStr = `${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+      const celda = document.createElement('div');
+      celda.classList.add('dia');
+
+      const quien = mapaRegistros[fechaStr];
+      if (quien === 'Valentín') {
+        celda.classList.add('ocupado-valentin');
+      } else if (quien === 'Joaquin') {
+        celda.classList.add('ocupado-joaquin');
+      } else {
+        celda.classList.add('sin-registro');
+      }
+
+      const hoy = new Date();
+      const esHoy = (hoy.toDateString() === new Date(anio, mes, dia).toDateString());
+      const numeroHTML = `<div${esHoy ? ' class="hoy"' : ''}>${dia}</div>`;
+      celda.innerHTML = `${numeroHTML}<div class="etiqueta">${quien ? quien : ''}</div>`;
+      calendario.appendChild(celda);
+    }
+
+    calendario.classList.add('visible');
+  }
+
+  function mesAnterior() {
+    mesActual--;
+    if (mesActual < 0) {
+      mesActual = 11;
+      anioActual--;
+    }
+    filtrarPorTipo();
+  }
+
+  function mesSiguiente() {
+    if (anioActual < anioHoy || (anioActual === anioHoy && mesActual < mesHoy)) {
+      mesActual++;
+      if (mesActual > 11) {
+        mesActual = 0;
+        anioActual++;
+      }
+      filtrarPorTipo();
+    }
+  }
+  
+  function registrar(nombre) {
+    const ahora = new Date();
+    const fecha = `${ahora.getFullYear()}-${String(ahora.getMonth()+1).padStart(2,'0')}-${String(ahora.getDate()).padStart(2,'0')}`;
+    const tipo = tipoSeleccionado;
+    const payload = { accion: "registrar", nombre, fecha, tipo , enviarCorreos};
+
+    const loader = document.getElementById('loader');
+    const calendario = document.getElementById('calendario');
+    loader.style.display = 'flex';
+    calendario.classList.remove('visible');
+    calendario.style.display = 'none';
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+
+    fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(() => obtenerRegistros());
+
+    document.getElementById('resultado').innerText = `Nuevo Registro: ${nombre} - ${tipo} - ${fecha}`;
+  }
+
+  function obtenerRegistros() {
+    const loader = document.getElementById('loader');
+    const calendario = document.getElementById('calendario');
+    loader.style.display = 'flex';
+    calendario.classList.remove('visible');
+    calendario.style.display = 'none';
+
+    fetch(`${scriptURL}?accion=leer`)
+      .then(res => res.json())
+      .then(registros => {
+        todosLosRegistros = registros;
+        const tiposUnicos = [...new Set(registros.map(r => r.tipo))];
+        const select = document.getElementById("tipoSelect");
+        select.innerHTML = "";
+        tiposUnicos.forEach(tipo => {
+          const opt = document.createElement("option");
+          opt.value = tipo;
+          opt.textContent = tipo;
+          if (tipo === tipoSeleccionado) opt.selected = true;
+          select.appendChild(opt);
+        });
+        filtrarPorTipo();
+      })
+      .catch(() => {
+        calendario.innerHTML = '<p style="text-align:center;">No se pudo cargar el historial.</p>';
+      })
+      .finally(() => {
+        loader.style.display = 'none';
+        calendario.style.display = 'grid';
+      });
+  }
+
+  function filtrarPorTipo() {
+    const select = document.getElementById("tipoSelect");
+    tipoSeleccionado = select.value;
+    const filtrados = todosLosRegistros.filter(r => r.tipo === tipoSeleccionado);
+    crearCalendario(filtrados, anioActual, mesActual);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!sessionStorage.getItem("nombreUsuario")) {
+      Swal.fire({
+        title: '¿Quién sos?',
+        input: 'select',
+        inputLabel: 'Seleccioná tu nombre',
+        inputOptions: {
+          'Valentín': 'Valentín',
+          'Joaquin': 'Joaquin',
+          'Claudia': 'Claudia',
+          'Javier': 'Javier'
+        },
+        inputPlaceholder: 'Seleccioná tu nombre',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: 'Guardar',
+        inputValidator: (value) => {
+          if (!value) return 'Tenés que elegir un nombre';
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          sessionStorage.setItem("nombreUsuario", result.value);
+        }
+      });
+    }
+
+    obtenerRegistros();
+  });
+
+  function mostrarInputNuevoTipo() {
+    document.getElementById("inputNuevoTipo").style.display = "flex";
+  }
+
+  function guardarNuevoTipo() {
+    const input = document.getElementById("nuevoTipoTexto");
+    const nuevoTipo = input.value.trim();
+
+    if (!nuevoTipo) {
+      Swal.fire('Error', 'El tipo no puede estar vacío', 'error');
+      return;
+    }
+
+    const select = document.getElementById("tipoSelect");
+    const yaExiste = Array.from(select.options).some(opt => opt.value === nuevoTipo);
+
+    if (yaExiste) {
+      Swal.fire('Ya existe', 'Ese tipo ya está en la lista', 'info');
+      return;
+    }
+
+    const opt = document.createElement("option");
+    opt.value = nuevoTipo;
+    opt.textContent = nuevoTipo;
+    opt.selected = true;
+
+    select.appendChild(opt);
+    tipoSeleccionado = nuevoTipo;
+
+    input.value = "";
+    document.getElementById("inputNuevoTipo").style.display = "none";
+
+    filtrarPorTipo();
+  }
+  let enviarCorreos = true;
+</script>
+
+</body>
+</html>
