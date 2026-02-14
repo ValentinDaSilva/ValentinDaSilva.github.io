@@ -3,239 +3,566 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>Registro General de Tareas</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      scroll-behavior: smooth;
+    :root {
+      --bg-page: #eef1f6;
+      --bg-card: #ffffff;
+      --text-primary: #1a1d23;
+      --text-secondary: #5c6370;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --valentin: #22c55e;
+      --valentin-dark: #15803d;
+      --joaquin: #3b82f6;
+      --joaquin-dark: #1d4ed8;
+      --sin-registro: #e5e7eb;
+      --border: #e2e8f0;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 40px -12px rgba(0,0,0,0.12);
+      --radius: 14px;
+      --radius-sm: 10px;
     }
 
     * { box-sizing: border-box; }
 
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(160deg, #eef1f6 0%, #e4e9f2 50%, #dfe4ed 100%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      scroll-behavior: smooth;
+      line-height: 1.5;
+    }
+
     .pantalla {
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      padding: 20px 16px 40px;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      text-align: center;
+      margin: 0 0 24px;
+      font-size: clamp(1.5rem, 4vw, 1.85rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      flex: 1;
+      align-items: start;
+    }
+    @media (min-width: 900px) {
+      .main-grid {
+        grid-template-columns: 1fr 340px;
+        gap: 28px;
+        align-items: start;
+      }
     }
 
     .cabecera {
-      padding: 20px;
+      padding: 12px 0 16px;
       text-align: center;
-      flex-shrink: 0;
-      height: 15vh;
-      max-height: 15vh;
-      overflow: auto;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .cabecera h2 {
       margin: 0;
-      font-size: 150%;
+      font-size: clamp(1.1rem, 3vw, 1.35rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      text-transform: capitalize;
+      order: 1;
+      width: 100%;
+    }
+    @media (min-width: 400px) {
+      .cabecera h2 { order: 0; width: auto; }
     }
 
     .flecha {
-      font-size: 24px;
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
       cursor: pointer;
       user-select: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+      transition: background 0.2s, transform 0.15s;
+    }
+    .flecha:hover {
+      background: #f8fafc;
+      transform: scale(1.05);
+    }
+    .flecha:active {
+      transform: scale(0.98);
+    }
+    .flecha:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
-    .contenido-flex {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .usuario-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+    }
+
+    .calendario-wrap {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
       padding: 20px;
       position: relative;
+      min-width: 0;
     }
 
     #loader {
       display: none;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       position: absolute;
+      inset: 0;
+      gap: 12px;
+      color: var(--text-secondary);
+      background: rgba(255,255,255,0.9);
+      border-radius: var(--radius);
     }
 
     .spinner {
-      width: 40px;
-      height: 40px;
-      border: 5px solid #ccc;
-      border-top: 5px solid #4a89dc;
+      width: 44px;
+      height: 44px;
+      border: 4px solid var(--border);
+      border-top-color: var(--accent);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 10px;
+      animation: spin 0.8s linear infinite;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    #tipoSelect {
-      font-size: 16px;
-      margin-bottom: 15px;
-      padding: 5px 10px;
-    }
-
     #calendario {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
+      gap: 6px;
       user-select: none;
       width: 100%;
-      max-width: 720px;
       opacity: 0;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.4s ease;
     }
 
     #calendario.visible {
       opacity: 1;
+      animation: fadeIn 0.35s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .resumen-mes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .resumen-mes span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .resumen-mes .punto-v { width: 10px; height: 10px; border-radius: 50%; background: var(--valentin); }
+    .resumen-mes .punto-j { width: 10px; height: 10px; border-radius: 50%; background: var(--joaquin); }
+
+    .leyenda-calendario {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .leyenda-calendario > div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .dia {
-      border: 1px solid #ccc;
+      border: 1px solid var(--border);
       padding: 12px 6px;
       text-align: center;
-      font-weight: bold;
-      min-height: 70px;
+      font-weight: 600;
+      min-height: 72px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      box-shadow: var(--shadow);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .dia:not(.inactivo):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .dia.inactivo {
-      color: #aaa;
-      background-color: #f9f9f9;
+      color: var(--text-secondary);
+      background: #f8fafc;
+      font-weight: 500;
     }
 
     .ocupado-valentin {
-      background-color: #a0d468;
-      color: #2f4f13;
+      background: linear-gradient(135deg, var(--valentin) 0%, #16a34a 100%);
+      color: white;
+      border-color: var(--valentin-dark);
     }
 
     .ocupado-joaquin {
-      background-color: #4a89dc;
+      background: linear-gradient(135deg, var(--joaquin) 0%, #2563eb 100%);
       color: white;
+      border-color: var(--joaquin-dark);
     }
 
     .sin-registro {
-      background-color: #eee;
+      background: var(--sin-registro);
+      color: var(--text-secondary);
     }
 
     .etiqueta {
-      font-size: 12px;
-      margin-top: 5px;
+      font-size: 11px;
+      margin-top: 4px;
+      font-weight: 500;
+      opacity: 0.95;
     }
 
-    .pantalla-botones {
-      height: 100vh;
-      padding: 20px;
+    .hoy {
+      color: #fef08a !important;
+      text-shadow: 0 0 1px rgba(0,0,0,0.3);
+      font-weight: 700;
+    }
+    .dia.sin-registro .hoy { color: #dc2626 !important; text-shadow: none; }
+
+    /* Sección Registrar */
+    .seccion-registro {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 24px 20px;
+      min-width: 0;
+      border-left: 4px solid var(--accent);
+    }
+    @media (min-width: 900px) {
+      .seccion-registro { position: sticky; top: 20px; }
+    }
+
+    .seccion-registro h1 {
+      margin: 0 0 16px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .fila-tipo {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       align-items: center;
-      text-align: center;
-    }
-
-    .botones {
-      text-align: center;
+      justify-content: center;
+      gap: 10px;
       margin-bottom: 20px;
     }
 
-    button {
-      padding: 12px 25px;
-      margin: 0 10px;
-      font-size: 18px;
+    .fila-tipo label {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    #tipoSelect {
+      font-size: 15px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      min-width: 140px;
       cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #tipoSelect:hover { border-color: #cbd5e1; }
+    #tipoSelect:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .botones {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .botones button {
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      border-radius: var(--radius-sm);
+      transition: transform 0.15s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+    .botones button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    .botones button:active {
+      transform: translateY(0);
+    }
+    .botones button:first-of-type {
+      background: linear-gradient(135deg, var(--valentin), #16a34a);
+      color: white;
+    }
+    .botones button:last-of-type {
+      background: linear-gradient(135deg, var(--joaquin), #2563eb);
+      color: white;
+    }
+    .botones button:focus-visible {
+      outline: 2px solid var(--text-primary);
+      outline-offset: 2px;
     }
 
     #resultado {
       text-align: center;
-      margin: 15px 0;
-      font-weight: bold;
-      color: green;
+      margin: 16px 0;
+      font-weight: 600;
+      color: var(--valentin-dark);
+      font-size: 0.95rem;
+      min-height: 1.5em;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    #resultado.mostrar {
+      animation: resultadoPulse 0.5s ease;
+    }
+    @keyframes resultadoPulse {
+      0% { opacity: 0; transform: scale(0.96); }
+      50% { transform: scale(1.02); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
-    #leyenda {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      font-size: 14px;
-    }
 
     .color-cuadro {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      vertical-align: middle;
-      margin-right: 6px;
-      border: 1px solid #aaa;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0,0,0,0.1);
     }
 
     .color-valentin {
-      background-color: #a0d468;
+      background: linear-gradient(135deg, var(--valentin), #16a34a);
     }
 
     .color-joaquin {
-      background-color: #4a89dc;
+      background: linear-gradient(135deg, var(--joaquin), #2563eb);
     }
 
-    .hoy {
-      color: red;
-      font-weight: bold;
+    .nuevo-tipo-wrap {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .nuevo-tipo-wrap button {
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px dashed var(--border);
+      background: #f8fafc;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nuevo-tipo-wrap button:hover {
+      background: #f1f5f9;
+      color: var(--text-primary);
+    }
+    .nuevo-tipo-wrap button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #inputNuevoTipo {
+      display: none;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    #inputNuevoTipo input {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      font-family: inherit;
+      min-width: 180px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #inputNuevoTipo input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    #inputNuevoTipo button {
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: var(--accent);
+      color: white;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+    }
+    #inputNuevoTipo button:hover {
+      background: var(--accent-hover);
     }
 
     .swal2-container {
-      backdrop-filter: blur(6px);
-      background-color: rgba(0, 0, 0, 0.4) !important;
+      backdrop-filter: blur(8px);
+      background-color: rgba(0, 0, 0, 0.45) !important;
+    }
+    .swal2-popup {
+      border-radius: var(--radius) !important;
+      font-family: 'DM Sans', sans-serif !important;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25) !important;
+    }
+    .swal2-confirm {
+      background: var(--accent) !important;
+      border-radius: var(--radius-sm) !important;
+      font-weight: 600 !important;
+    }
+    .swal2-confirm:hover { background: var(--accent-hover) !important; }
+
+    .calendario-wrap,
+    .seccion-registro {
+      animation: cardIn 0.4s ease backwards;
+    }
+    .seccion-registro { animation-delay: 0.08s; }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .page-title { margin-bottom: 20px; font-size: 1.35rem; }
+      .cabecera { gap: 10px; }
+      .cabecera h2 { font-size: 1.1rem; }
+      .flecha { width: 40px; height: 40px; font-size: 18px; }
+      .calendario-wrap { padding: 16px; }
+      .dia { min-height: 52px; padding: 8px 4px; font-size: 13px; }
+      .seccion-registro { padding: 20px 16px; border-left-width: 3px; }
+      .botones button { padding: 12px 22px; font-size: 0.95rem; }
     }
   </style>
 </head>
 <body>
 
 <div class="pantalla">
-  <div class="cabecera">
-    <span class="flecha" onclick="mesAnterior()">⬅️</span>
-    <h2 id="tituloMes">Registro General de Tareas</h2>
-    <span class="flecha" onclick="mesSiguiente()">➡️</span>
-  </div>
-  <div class="contenido-flex">
-    <div id="loader">
-      <div class="spinner"></div>
-      <div>Cargando...</div>
-    </div>
-    <div id="calendario"></div>
-  </div>
-</div>
+  <span class="usuario-badge" id="usuarioBadge" aria-hidden="true"></span>
+  <h1 class="page-title">Registro de tareas</h1>
 
-<div class="pantalla-botones">
-  <h1>Registrar Tarea</h1>
-  <div class="botones">
-    <button onclick="registrar('Valentín')">Valentín</button>
-    <button onclick="registrar('Joaquin')">Joaquin</button>
-  </div>
-  <div id="resultado"></div>
-  <div id="leyenda">
-    <div><span class="color-cuadro color-valentin"></span> Valentín</div>
-    <div><span class="color-cuadro color-joaquin"></span> Joaquin</div>
-    <div><span class="color-cuadro" style="background:#eee; border:1px solid #ccc;"></span> Sin registro</div>
-  </div>
-  <div style="text-align:center; margin:50px">
-      <label for="tipoSelect">Tipo:</label>
-      <select id="tipoSelect" onchange="filtrarPorTipo()"></select>
+  <div class="main-grid">
+    <div class="calendario-wrap">
+      <div class="cabecera">
+        <span class="flecha" onclick="mesAnterior()" title="Mes anterior (←)" aria-label="Mes anterior">←</span>
+        <h2 id="tituloMes">Registro General de Tareas</h2>
+        <span class="flecha" onclick="mesSiguiente()" title="Mes siguiente (→)" aria-label="Mes siguiente">→</span>
+      </div>
+      <div id="loader">
+        <div class="spinner"></div>
+        <div>Cargando...</div>
+      </div>
+      <div id="calendario"></div>
+      <div class="resumen-mes" id="resumenMes" aria-live="polite"></div>
+      <div class="leyenda-calendario" id="leyenda">
+        <div><span class="color-cuadro color-valentin" aria-hidden="true"></span> Valentín</div>
+        <div><span class="color-cuadro color-joaquin" aria-hidden="true"></span> Joaquin</div>
+        <div><span class="color-cuadro" style="background:var(--sin-registro);"></span> Sin registro</div>
+      </div>
     </div>
-  <div id="nuevoTipoContainer" style="margin-top: 10px; text-align: center;">
-  <button onclick="mostrarInputNuevoTipo()">➕ Agregar Tipo</button>
-  <div id="inputNuevoTipo" style="margin-top: 10px; display: none;  align-items: end;">
-    <input type="text" id="nuevoTipoTexto" placeholder="Nuevo tipo..." style="height: 30px; margin: 20px;" />
-    <button onclick="guardarNuevoTipo()" style="padding: 10px; font-size: 12px; height: 30px; margin: 20px; display: flex; align-items: center; ">Guardar</button>
-  </div>
-</div>
 
+    <section class="seccion-registro" aria-label="Registrar tarea">
+      <h1>Registrar tarea</h1>
+      <div class="fila-tipo">
+        <label for="tipoSelect">Tipo:</label>
+        <select id="tipoSelect" onchange="filtrarPorTipo()" aria-label="Filtrar por tipo de tarea"></select>
+      </div>
+      <div class="botones">
+        <button type="button" onclick="registrar('Valentín')">Valentín</button>
+        <button type="button" onclick="registrar('Joaquin')">Joaquin</button>
+      </div>
+      <div id="resultado" role="status"></div>
+      <div class="nuevo-tipo-wrap" id="nuevoTipoContainer">
+        <button type="button" onclick="mostrarInputNuevoTipo()">➕ Agregar tipo</button>
+        <div id="inputNuevoTipo">
+          <input type="text" id="nuevoTipoTexto" placeholder="Nuevo tipo..." autocomplete="off" />
+          <button type="button" onclick="guardarNuevoTipo()">Guardar</button>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
 
 <script>
@@ -246,10 +573,12 @@
   let mesActual = new Date().getMonth();
   let anioActual = new Date().getFullYear();
 
-  const mesHoy = new Date().getMonth();
-  const anioHoy = new Date().getFullYear();
-
   function crearCalendario(registros, anio, mes) {
+    const filtrados = registros.filter(r => {
+      const y = parseInt(r.fecha.split('-')[0], 10);
+      const m = parseInt(r.fecha.split('-')[1], 10) - 1;
+      return y === anio && m === mes;
+    });
     const calendario = document.getElementById('calendario');
     calendario.innerHTML = '';
 
@@ -276,7 +605,7 @@
     }
 
     const mapaRegistros = {};
-    registros.forEach(({ fecha, nombre }) => {
+    filtrados.forEach(({ fecha, nombre }) => {
       const fechaSolo = fecha.split("T")[0];
       mapaRegistros[fechaSolo] = nombre;
     });
@@ -303,6 +632,14 @@
     }
 
     calendario.classList.add('visible');
+
+    const resumen = document.getElementById('resumenMes');
+    const countV = filtrados.filter(r => r.nombre === 'Valentín').length;
+    const countJ = filtrados.filter(r => r.nombre === 'Joaquin').length;
+    resumen.innerHTML = '';
+    if (countV + countJ > 0) {
+      resumen.innerHTML = `<span><span class="punto-v" aria-hidden="true"></span> Valentín: ${countV} día${countV !== 1 ? 's' : ''}</span><span><span class="punto-j" aria-hidden="true"></span> Joaquin: ${countJ} día${countJ !== 1 ? 's' : ''}</span>`;
+    }
   }
 
   function mesAnterior() {
@@ -315,14 +652,12 @@
   }
 
   function mesSiguiente() {
-    if (anioActual < anioHoy || (anioActual === anioHoy && mesActual < mesHoy)) {
-      mesActual++;
-      if (mesActual > 11) {
-        mesActual = 0;
-        anioActual++;
-      }
-      filtrarPorTipo();
+    mesActual++;
+    if (mesActual > 11) {
+      mesActual = 0;
+      anioActual++;
     }
+    filtrarPorTipo();
   }
   
   function registrar(nombre) {
@@ -346,7 +681,12 @@
       body: JSON.stringify(payload)
     }).then(() => obtenerRegistros());
 
-    document.getElementById('resultado').innerText = `Nuevo Registro: ${nombre} - ${tipo} - ${fecha}`;
+    const resEl = document.getElementById('resultado');
+    resEl.innerText = `Nuevo Registro: ${nombre} - ${tipo} - ${fecha}`;
+    resEl.classList.remove('mostrar');
+    void resEl.offsetWidth;
+    resEl.classList.add('mostrar');
+    setTimeout(() => resEl.classList.remove('mostrar'), 600);
   }
 
   function obtenerRegistros() {
@@ -388,6 +728,17 @@
     crearCalendario(filtrados, anioActual, mesActual);
   }
 
+  function actualizarUsuarioBadge() {
+    const nombre = sessionStorage.getItem("nombreUsuario");
+    const badge = document.getElementById("usuarioBadge");
+    if (nombre) {
+      badge.textContent = "Hola, " + nombre;
+      badge.style.display = "";
+    } else {
+      badge.style.display = "none";
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     if (!sessionStorage.getItem("nombreUsuario")) {
       Swal.fire({
@@ -404,21 +755,42 @@
         allowOutsideClick: false,
         allowEscapeKey: false,
         confirmButtonText: 'Guardar',
+        customClass: { popup: 'swal-nuestro' },
         inputValidator: (value) => {
           if (!value) return 'Tenés que elegir un nombre';
         }
       }).then((result) => {
         if (result.isConfirmed) {
           sessionStorage.setItem("nombreUsuario", result.value);
+          actualizarUsuarioBadge();
         }
       });
+    } else {
+      actualizarUsuarioBadge();
     }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const target = e.target;
+        if (!target || target.tagName === "INPUT" || target.tagName === "SELECT" || target.isContentEditable) return;
+        e.preventDefault();
+        mesAnterior();
+      }
+      if (e.key === "ArrowRight" && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const target = e.target;
+        if (!target || target.tagName === "INPUT" || target.tagName === "SELECT" || target.isContentEditable) return;
+        e.preventDefault();
+        mesSiguiente();
+      }
+    });
 
     obtenerRegistros();
   });
 
   function mostrarInputNuevoTipo() {
-    document.getElementById("inputNuevoTipo").style.display = "flex";
+    const wrap = document.getElementById("inputNuevoTipo");
+    wrap.style.display = "flex";
+    setTimeout(() => document.getElementById("nuevoTipoTexto").focus(), 100);
   }
 
   function guardarNuevoTipo() {
@@ -426,7 +798,7 @@
     const nuevoTipo = input.value.trim();
 
     if (!nuevoTipo) {
-      Swal.fire('Error', 'El tipo no puede estar vacío', 'error');
+      Swal.fire({ title: 'Error', text: 'El tipo no puede estar vacío', icon: 'error', customClass: { popup: 'swal-nuestro' } });
       return;
     }
 
@@ -434,7 +806,7 @@
     const yaExiste = Array.from(select.options).some(opt => opt.value === nuevoTipo);
 
     if (yaExiste) {
-      Swal.fire('Ya existe', 'Ese tipo ya está en la lista', 'info');
+      Swal.fire({ title: 'Ya existe', text: 'Ese tipo ya está en la lista', icon: 'info', customClass: { popup: 'swal-nuestro' } });
       return;
     }
 
