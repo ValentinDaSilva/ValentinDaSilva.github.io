@@ -26,6 +26,10 @@
       --shadow-lg: 0 12px 40px -12px rgba(0,0,0,0.12);
       --radius: 14px;
       --radius-sm: 10px;
+      --safe-top: env(safe-area-inset-top, 0);
+      --safe-bottom: env(safe-area-inset-bottom, 0);
+      --safe-left: env(safe-area-inset-left, 0);
+      --safe-right: env(safe-area-inset-right, 0);
     }
 
     * { box-sizing: border-box; }
@@ -39,33 +43,50 @@
       color: var(--text-primary);
       scroll-behavior: smooth;
       line-height: 1.5;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .pantalla {
       min-height: 100vh;
+      min-height: calc(100vh - var(--safe-bottom));
       display: flex;
       flex-direction: column;
-      padding: 20px 16px 40px;
+      padding: 16px 12px 24px;
+      padding-top: max(16px, var(--safe-top));
+      padding-left: max(12px, var(--safe-left));
+      padding-right: max(12px, var(--safe-right));
+      padding-bottom: max(24px, var(--safe-bottom));
       position: relative;
       max-width: 1200px;
       margin: 0 auto;
     }
+    @media (min-width: 600px) {
+      .pantalla { padding: 20px 20px 40px; }
+    }
 
     .page-title {
       text-align: center;
-      margin: 0 0 24px;
-      font-size: clamp(1.5rem, 4vw, 1.85rem);
+      margin: 0 0 6px;
+      padding: 0 8px;
+      font-size: clamp(1.35rem, 4vw, 1.85rem);
       font-weight: 700;
       color: var(--text-primary);
       letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    @media (min-width: 600px) {
+      .page-title { margin-bottom: 12px; }
     }
 
     .main-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 16px;
       flex: 1;
       align-items: start;
+    }
+    @media (min-width: 600px) {
+      .main-grid { gap: 24px; }
     }
     @media (min-width: 900px) {
       .main-grid {
@@ -76,23 +97,27 @@
     }
 
     .cabecera {
-      padding: 12px 0 16px;
+      padding: 10px 0 12px;
       text-align: center;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
+    }
+    @media (min-width: 600px) {
+      .cabecera { padding: 12px 0 16px; gap: 12px; }
     }
 
     .cabecera h2 {
       margin: 0;
-      font-size: clamp(1.1rem, 3vw, 1.35rem);
+      font-size: clamp(1rem, 3vw, 1.35rem);
       font-weight: 700;
       color: var(--text-primary);
       text-transform: capitalize;
       order: 1;
       width: 100%;
+      padding: 0 4px;
     }
     @media (min-width: 400px) {
       .cabecera h2 { order: 0; width: auto; }
@@ -101,6 +126,8 @@
     .flecha {
       width: 44px;
       height: 44px;
+      min-width: 44px;
+      min-height: 44px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -120,6 +147,9 @@
     .flecha:active {
       transform: scale(0.98);
     }
+    @media (hover: none) {
+      .flecha:active { transform: scale(0.95); }
+    }
     .flecha:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
@@ -127,10 +157,10 @@
 
     .usuario-badge {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      padding: 8px 14px;
-      font-size: 13px;
+      top: max(12px, var(--safe-top));
+      right: max(12px, var(--safe-right));
+      padding: 6px 12px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
       background: var(--bg-card);
@@ -138,14 +168,21 @@
       border-radius: 999px;
       box-shadow: var(--shadow);
     }
+    @media (min-width: 600px) {
+      .usuario-badge { padding: 8px 14px; font-size: 13px; top: 16px; right: 16px; }
+    }
 
     .calendario-wrap {
       background: var(--bg-card);
       border-radius: var(--radius);
       box-shadow: var(--shadow-lg);
-      padding: 20px;
+      padding: 14px;
       position: relative;
       min-width: 0;
+      overflow: hidden;
+    }
+    @media (min-width: 600px) {
+      .calendario-wrap { padding: 20px; }
     }
 
     #loader {
@@ -177,11 +214,14 @@
     #calendario {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
+      gap: 4px;
       user-select: none;
       width: 100%;
       opacity: 0;
       transition: opacity 0.4s ease;
+    }
+    @media (min-width: 600px) {
+      #calendario { gap: 6px; }
     }
 
     #calendario.visible {
@@ -197,12 +237,15 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 16px;
-      margin-top: 16px;
-      padding-top: 16px;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
       border-top: 1px solid var(--border);
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-secondary);
+    }
+    @media (min-width: 600px) {
+      .resumen-mes { gap: 16px; margin-top: 16px; padding-top: 16px; font-size: 14px; }
     }
     .resumen-mes span {
       display: inline-flex;
@@ -216,12 +259,15 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 16px;
-      margin-top: 16px;
-      padding-top: 16px;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
       border-top: 1px solid var(--border);
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-secondary);
+    }
+    @media (min-width: 600px) {
+      .leyenda-calendario { gap: 16px; margin-top: 16px; padding-top: 16px; font-size: 13px; }
     }
     .leyenda-calendario > div {
       display: flex;
@@ -231,27 +277,45 @@
 
     .dia {
       border: 1px solid var(--border);
-      padding: 12px 6px;
+      padding: 6px 2px;
       text-align: center;
       font-weight: 600;
-      min-height: 72px;
+      min-height: 48px;
+      font-size: 13px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-radius: var(--radius-sm);
+      border-radius: 8px;
       background: var(--bg-card);
       box-shadow: var(--shadow);
       transition: transform 0.15s, box-shadow 0.15s;
     }
+    @media (min-width: 600px) {
+      .dia {
+        padding: 12px 6px;
+        min-height: 72px;
+        font-size: inherit;
+        border-radius: var(--radius-sm);
+      }
+    }
     .dia:not(.inactivo):hover {
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    @media (hover: none) {
+      .dia:not(.inactivo):active { transform: scale(0.98); }
     }
 
     .dia.inactivo {
       color: var(--text-secondary);
       background: #f8fafc;
       font-weight: 500;
+      font-size: 11px;
+      min-height: 40px;
+      padding: 4px 2px;
+    }
+    @media (min-width: 600px) {
+      .dia.inactivo { font-size: inherit; min-height: 72px; padding: 12px 6px; }
     }
 
     .ocupado-valentin {
@@ -272,10 +336,14 @@
     }
 
     .etiqueta {
-      font-size: 11px;
-      margin-top: 4px;
+      font-size: 9px;
+      margin-top: 2px;
       font-weight: 500;
       opacity: 0.95;
+      line-height: 1.1;
+    }
+    @media (min-width: 600px) {
+      .etiqueta { font-size: 11px; margin-top: 4px; }
     }
 
     .hoy {
@@ -290,20 +358,26 @@
       background: var(--bg-card);
       border-radius: var(--radius);
       box-shadow: var(--shadow-lg);
-      padding: 24px 20px;
+      padding: 18px 14px;
       min-width: 0;
-      border-left: 4px solid var(--accent);
+      border-top: 4px solid var(--accent);
+    }
+    @media (min-width: 600px) {
+      .seccion-registro { padding: 24px 20px; border-top: none; border-left: 4px solid var(--accent); }
     }
     @media (min-width: 900px) {
       .seccion-registro { position: sticky; top: 20px; }
     }
 
     .seccion-registro h1 {
-      margin: 0 0 16px;
-      font-size: 1.25rem;
+      margin: 0 0 14px;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--text-primary);
       text-align: center;
+    }
+    @media (min-width: 600px) {
+      .seccion-registro h1 { font-size: 1.25rem; margin-bottom: 16px; }
     }
 
     .fila-tipo {
@@ -312,7 +386,7 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .fila-tipo label {
@@ -328,9 +402,14 @@
       border-radius: var(--radius-sm);
       background: var(--bg-card);
       color: var(--text-primary);
-      min-width: 140px;
+      min-width: 120px;
+      width: 100%;
+      max-width: 200px;
       cursor: pointer;
       transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    @media (min-width: 600px) {
+      #tipoSelect { min-width: 140px; width: auto; max-width: none; }
     }
     #tipoSelect:hover { border-color: #cbd5e1; }
     #tipoSelect:focus {
@@ -341,14 +420,17 @@
 
     .botones {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 400px) {
+      .botones { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 12px; }
     }
 
     .botones button {
-      padding: 14px 28px;
+      padding: 14px 20px;
+      min-height: 48px;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
@@ -356,6 +438,11 @@
       border-radius: var(--radius-sm);
       transition: transform 0.15s, box-shadow 0.2s;
       font-family: inherit;
+      flex: 1;
+      min-width: 0;
+    }
+    @media (min-width: 400px) {
+      .botones button { flex: 0 1 auto; padding: 14px 28px; min-height: 44px; }
     }
     .botones button:hover {
       transform: translateY(-2px);
@@ -363,6 +450,10 @@
     }
     .botones button:active {
       transform: translateY(0);
+    }
+    @media (hover: none) {
+      .botones button:hover { transform: none; }
+      .botones button:active { transform: scale(0.98); }
     }
     .botones button:first-of-type {
       background: linear-gradient(135deg, var(--valentin), #16a34a);
@@ -376,6 +467,16 @@
       outline: 2px solid var(--text-primary);
       outline-offset: 2px;
     }
+    .botones button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .botones button:disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
 
     #resultado {
       text-align: center;
@@ -385,6 +486,20 @@
       font-size: 0.95rem;
       min-height: 1.5em;
       transition: opacity 0.3s, transform 0.3s;
+    }
+    .siguiente-texto {
+      text-align: center;
+      margin: 0 0 16px;
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: rgba(37, 99, 235, 0.08);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+    }
+    @media (min-width: 600px) {
+      .siguiente-texto { margin: 0 0 24px; padding: 10px 16px; font-size: 1rem; }
     }
     #resultado.mostrar {
       animation: resultadoPulse 0.5s ease;
@@ -413,10 +528,13 @@
     }
 
     .nuevo-tipo-wrap {
-      margin-top: 20px;
-      padding-top: 20px;
+      margin-top: 16px;
+      padding-top: 16px;
       border-top: 1px solid var(--border);
       text-align: center;
+    }
+    @media (min-width: 600px) {
+      .nuevo-tipo-wrap { margin-top: 20px; padding-top: 20px; }
     }
 
     .nuevo-tipo-wrap button {
@@ -455,8 +573,13 @@
       border-radius: var(--radius-sm);
       font-size: 15px;
       font-family: inherit;
-      min-width: 180px;
+      min-width: 0;
+      width: 100%;
+      max-width: 200px;
       transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    @media (min-width: 400px) {
+      #inputNuevoTipo input { min-width: 180px; width: auto; max-width: none; }
     }
     #inputNuevoTipo input:focus {
       outline: none;
@@ -505,16 +628,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 480px) {
-      .page-title { margin-bottom: 20px; font-size: 1.35rem; }
-      .cabecera { gap: 10px; }
-      .cabecera h2 { font-size: 1.1rem; }
-      .flecha { width: 40px; height: 40px; font-size: 18px; }
-      .calendario-wrap { padding: 16px; }
-      .dia { min-height: 52px; padding: 8px 4px; font-size: 13px; }
-      .seccion-registro { padding: 20px 16px; border-left-width: 3px; }
-      .botones button { padding: 12px 22px; font-size: 0.95rem; }
-    }
   </style>
 </head>
 <body>
@@ -522,6 +635,7 @@
 <div class="pantalla">
   <span class="usuario-badge" id="usuarioBadge" aria-hidden="true"></span>
   <h1 class="page-title">Registro de tareas</h1>
+  <p id="siguienteEnAnotarse" class="siguiente-texto" aria-live="polite"></p>
 
   <div class="main-grid">
     <div class="calendario-wrap">
@@ -550,8 +664,8 @@
         <select id="tipoSelect" onchange="filtrarPorTipo()" aria-label="Filtrar por tipo de tarea"></select>
       </div>
       <div class="botones">
-        <button type="button" onclick="registrar('Valentín')">Valentín</button>
-        <button type="button" onclick="registrar('Joaquin')">Joaquin</button>
+        <button type="button" id="btnValentin" onclick="registrar('Valentín')">Valentín</button>
+        <button type="button" id="btnJoaquin" onclick="registrar('Joaquin')">Joaquin</button>
       </div>
       <div id="resultado" role="status"></div>
       <div class="nuevo-tipo-wrap" id="nuevoTipoContainer">
@@ -569,6 +683,7 @@
   const scriptURL = "https://script.google.com/macros/s/AKfycbx-0cGI7_Uy5MkxHGGInuNHapzIYwjr6tkoRB31z5pPaTS--2WRm6fyWNV6-OyMx5Pm/exec";
   let todosLosRegistros = [];
   let tipoSeleccionado = "Basura";
+  let envioRealizado = false;
 
   let mesActual = new Date().getMonth();
   let anioActual = new Date().getFullYear();
@@ -634,11 +749,25 @@
     calendario.classList.add('visible');
 
     const resumen = document.getElementById('resumenMes');
-    const countV = filtrados.filter(r => r.nombre === 'Valentín').length;
-    const countJ = filtrados.filter(r => r.nombre === 'Joaquin').length;
+    const fechasValentin = new Set(
+      filtrados.filter(r => r.nombre === 'Valentín').map(r => (r.fecha || '').split('T')[0]).filter(Boolean)
+    );
+    const fechasJoaquin = new Set(
+      filtrados.filter(r => r.nombre === 'Joaquin').map(r => (r.fecha || '').split('T')[0]).filter(Boolean)
+    );
+    const countV = fechasValentin.size;
+    const countJ = fechasJoaquin.size;
     resumen.innerHTML = '';
     if (countV + countJ > 0) {
       resumen.innerHTML = `<span><span class="punto-v" aria-hidden="true"></span> Valentín: ${countV} día${countV !== 1 ? 's' : ''}</span><span><span class="punto-j" aria-hidden="true"></span> Joaquin: ${countJ} día${countJ !== 1 ? 's' : ''}</span>`;
+    }
+
+    const siguienteEl = document.getElementById('siguienteEnAnotarse');
+    if (siguienteEl) {
+      const conFecha = registros.filter(r => r.fecha && (r.nombre === 'Valentín' || r.nombre === 'Joaquin'));
+      const ultimo = conFecha.length ? conFecha.reduce((a, b) => (a.fecha > b.fecha ? a : b)) : null;
+      const siguiente = !ultimo ? 'Valentín o Joaquin' : (ultimo.nombre === 'Valentín' ? 'Joaquin' : 'Valentín');
+      siguienteEl.textContent = `El siguiente es: ${siguiente}`;
     }
   }
 
@@ -661,10 +790,18 @@
   }
   
   function registrar(nombre) {
+    if (envioRealizado) return;
+
     const ahora = new Date();
     const fecha = `${ahora.getFullYear()}-${String(ahora.getMonth()+1).padStart(2,'0')}-${String(ahora.getDate()).padStart(2,'0')}`;
     const tipo = tipoSeleccionado;
     const payload = { accion: "registrar", nombre, fecha, tipo , enviarCorreos};
+
+    envioRealizado = true;
+    const btnV = document.getElementById('btnValentin');
+    const btnJ = document.getElementById('btnJoaquin');
+    if (btnV) btnV.disabled = true;
+    if (btnJ) btnJ.disabled = true;
 
     const loader = document.getElementById('loader');
     const calendario = document.getElementById('calendario');
