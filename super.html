@@ -1,0 +1,491 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Gastos del súper</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Concepto: arriba el total entre los dos con su reparto; debajo dos listas tipo ticket, una por persona (apiladas en el celular). */
+:root{
+  --font-ui:'Bricolage Grotesque',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-num:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  --bg:#EBEFF2;
+  --surface:#FFFFFF;
+  --field:#F5F7F9;
+  --ink:#13202A;
+  --muted:#566673;
+  --line:#D3DBE1;
+  --a:#0B7285;
+  --b:#C2410C;
+  --on-accent:#FFFFFF;
+  --err:#B42318;
+  --hero-bg:#13202A;
+  --hero-fg:#F2F6F8;
+  --hero-muted:#A9B8C3;
+  --hero-track:#2B3C49;
+  --a-hero:#4FD1C5;
+  --b-hero:#FFA06A;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F161C;
+    --surface:#17212A;
+    --field:#0F161C;
+    --ink:#E8EEF2;
+    --muted:#93A3B0;
+    --line:#2A3844;
+    --a:#43C6B0;
+    --b:#FF9B5E;
+    --on-accent:#0F161C;
+    --err:#FF8A80;
+    --hero-bg:#1F2E3A;
+    --hero-track:#33465480;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F161C;
+  --surface:#17212A;
+  --field:#0F161C;
+  --ink:#E8EEF2;
+  --muted:#93A3B0;
+  --line:#2A3844;
+  --a:#43C6B0;
+  --b:#FF9B5E;
+  --on-accent:#0F161C;
+  --err:#FF8A80;
+  --hero-bg:#1F2E3A;
+  --hero-track:#33465480;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font-ui);font-size:16px;line-height:1.4;
+  padding-block:20px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+button,input{font:inherit;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.wrap{max-width:60rem;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+
+/* Encabezado */
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.top-text{min-width:0}
+.eyebrow{margin:0 0 4px;font-family:var(--font-num);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{margin:0;font-size:clamp(1.6rem,6vw,2.2rem);line-height:1.1;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+.lede{margin:6px 0 0;color:var(--muted);max-width:40ch}
+.reset{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.reset-q{font-size:.9rem;color:var(--muted)}
+.btn-ghost{min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);cursor:pointer;font-weight:600}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn-strong{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn-ghost:focus-visible,.rm:focus-visible,.toast-in button:focus-visible,.add button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* Total */
+.hero{background:var(--hero-bg);color:var(--hero-fg);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.hero .eyebrow{margin:0;color:var(--hero-muted)}
+.total{margin:0;font-family:var(--font-num);font-weight:600;font-size:clamp(1.75rem,8.5vw,3.25rem);line-height:1.05;letter-spacing:-.02em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.split{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--hero-track)}
+.split span{display:block;height:100%;width:0;transition:width .35s ease}
+#seg0{background:var(--a-hero)}
+#seg1{background:var(--b-hero)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:12px}
+.lg{min-width:0}
+.lg[data-p="0"]{--dot:var(--a-hero)}
+.lg[data-p="1"]{--dot:var(--b-hero)}
+.lg-top{display:flex;align-items:center;gap:8px;min-width:0}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--dot)}
+.lg-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.lg-pct{margin-left:auto;flex:none;font-family:var(--font-num);font-size:.8rem;color:var(--hero-muted)}
+.lg-amt{margin-top:2px;font-family:var(--font-num);font-size:1.05rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+
+/* Listas */
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:16px;align-items:start}
+.person{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.person[data-p="0"]{--accent:var(--a)}
+.person[data-p="1"]{--accent:var(--b)}
+.p-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.name{flex:1;min-width:0;width:100%;background:transparent;border:0;border-bottom:1px dashed transparent;border-radius:0;padding:2px 0;font-weight:800;font-size:1.3rem;letter-spacing:-.01em}
+.name:hover{border-bottom-color:var(--line)}
+.name:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
+.count{flex:none;font-family:var(--font-num);font-size:.8rem;color:var(--muted)}
+.sub-block{display:flex;flex-direction:column;gap:2px}
+.sub-label{margin:0;font-family:var(--font-num);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sub{margin:0;font-family:var(--font-num);font-weight:600;font-size:clamp(1.5rem,7vw,2rem);line-height:1.1;color:var(--accent);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+
+.add{display:flex;gap:8px}
+.price-field{flex:1;min-width:0;display:flex;align-items:center;gap:6px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--field)}
+.price-field:focus-within{border-color:var(--accent);outline:2px solid var(--accent);outline-offset:1px}
+.cur{font-family:var(--font-num);color:var(--muted)}
+.price-field input{flex:1;min-width:0;border:0;outline:none;background:transparent;padding:12px 0;font-family:var(--font-num);font-size:1.1rem;font-variant-numeric:tabular-nums}
+.price-field input::placeholder{color:var(--muted);opacity:.7}
+.add button{flex:none;min-height:48px;padding:0 18px;border:0;border-radius:10px;background:var(--accent);color:var(--on-accent);font-weight:700;cursor:pointer}
+.add button:active{transform:translateY(1px)}
+.err{margin:-6px 0 0;font-size:.875rem;color:var(--err)}
+
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.items li{display:grid;grid-template-columns:2.5rem 1fr 40px;align-items:center;gap:8px;padding:6px 0}
+.items li+li{border-top:1px dashed var(--line)}
+.items li.empty{display:block;padding:14px 0 6px;color:var(--muted);font-size:.95rem}
+.n{font-family:var(--font-num);font-size:.8rem;color:var(--muted)}
+.pr{text-align:right;font-family:var(--font-num);font-size:1.05rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.rm{width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:1.4rem;line-height:1;cursor:pointer}
+.rm:hover{background:var(--bg);color:var(--ink)}
+
+/* Aviso para deshacer */
+.toast{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;pointer-events:none;
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.toast-in{pointer-events:auto;display:flex;align-items:center;gap:14px;max-width:100%;background:var(--hero-bg);color:var(--hero-fg);border-radius:12px;padding:6px 6px 6px 16px;box-shadow:0 6px 24px rgba(0,0,0,.28)}
+.toast-in span{min-width:0;overflow-wrap:anywhere}
+.toast-in button{flex:none;min-height:40px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:var(--a-hero);font-weight:700;cursor:pointer}
+
+/* Celular: una lista a la vez, con el total y las pestañas siempre a la vista */
+.sticky{display:flex;flex-direction:column;gap:16px}
+.hero-row{display:flex;flex-direction:column;gap:14px}
+.tabs{display:none}
+.tab{min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;padding:6px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);cursor:pointer;text-align:left}
+.tab[data-p="0"]{--accent:var(--a)}
+.tab[data-p="1"]{--accent:var(--b)}
+.tab[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tab:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.tab-name{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;font-size:.9rem}
+.tab-amt{font-family:var(--font-num);font-size:.95rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:40rem){
+  body{padding-block:12px 40px}
+  .wrap{gap:12px}
+  .sticky{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;gap:8px;padding-block:6px 8px;background:var(--bg)}
+  .hero{padding:12px 16px;gap:8px;border-radius:14px}
+  .hero-row{flex-direction:row;align-items:baseline;justify-content:space-between;gap:12px}
+  .hero .eyebrow{flex:none}
+  .total{font-size:clamp(1.5rem,7.5vw,2rem);text-align:right}
+  .split{height:8px}
+  .legend{display:none}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .people{display:block}
+  .person.is-off{display:none}
+  .person{padding:16px;border-radius:14px}
+  .add button{min-height:52px;padding:0 20px}
+  .price-field input{padding:14px 0;font-size:1.25rem}
+  .items li{grid-template-columns:2.5rem 1fr 44px}
+  .rm{width:44px;height:44px}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="top-text">
+      <p class="eyebrow" id="today"></p>
+      <h1>Gastos del súper</h1>
+      <p class="lede">Cada uno carga sus precios. El total se suma solo.</p>
+    </div>
+    <div class="reset" id="reset"></div>
+  </header>
+
+  <div class="sticky">
+  <section class="hero" aria-label="Total entre los dos">
+    <div class="hero-row">
+      <p class="eyebrow">Total entre los dos</p>
+      <p class="total" id="total" aria-live="polite">$ 0,00</p>
+    </div>
+    <div class="split" id="split" role="img" aria-label="Todavía no hay gastos cargados"><span id="seg0"></span><span id="seg1"></span></div>
+    <div class="legend">
+      <div class="lg" data-p="0">
+        <div class="lg-top"><span class="dot"></span><span class="lg-name" id="lgName0">Yo</span><span class="lg-pct" id="lgPct0"></span></div>
+        <div class="lg-amt" id="lgAmt0">$ 0,00</div>
+      </div>
+      <div class="lg" data-p="1">
+        <div class="lg-top"><span class="dot"></span><span class="lg-name" id="lgName1">Mi hermano</span><span class="lg-pct" id="lgPct1"></span></div>
+        <div class="lg-amt" id="lgAmt1">$ 0,00</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tabs" role="group" aria-label="Elegir lista">
+    <button type="button" class="tab" data-p="0" id="tab0" aria-pressed="true"><span class="tab-name" id="tabName0">Yo</span><span class="tab-amt" id="tabAmt0">$ 0,00</span></button>
+    <button type="button" class="tab" data-p="1" id="tab1" aria-pressed="false"><span class="tab-name" id="tabName1">Mi hermano</span><span class="tab-amt" id="tabAmt1">$ 0,00</span></button>
+  </div>
+  </div>
+
+  <div class="people">
+    <section class="person" data-p="0" aria-label="Lista de la primera persona">
+      <div class="p-head">
+        <input class="name" id="name0" maxlength="24" autocomplete="off" spellcheck="false" aria-label="Nombre de la primera lista" value="Yo">
+        <span class="count" id="count0">0 precios</span>
+      </div>
+      <div class="sub-block">
+        <p class="sub-label">Subtotal</p>
+        <p class="sub" id="sub0" aria-live="polite">$ 0,00</p>
+      </div>
+      <form class="add" id="form0" novalidate>
+        <label class="price-field"><span class="cur" aria-hidden="true">$</span><input id="price0" inputmode="decimal" autocomplete="off" placeholder="0,00" aria-label="Precio a sumar a la primera lista"></label>
+        <button type="submit">Agregar</button>
+      </form>
+      <p class="err" id="err0" role="alert" hidden></p>
+      <ul class="items" id="list0"><li class="empty">Todavía no hay precios. Escribí uno arriba y tocá Agregar.</li></ul>
+    </section>
+
+    <section class="person is-off" data-p="1" aria-label="Lista de la segunda persona">
+      <div class="p-head">
+        <input class="name" id="name1" maxlength="24" autocomplete="off" spellcheck="false" aria-label="Nombre de la segunda lista" value="Mi hermano">
+        <span class="count" id="count1">0 precios</span>
+      </div>
+      <div class="sub-block">
+        <p class="sub-label">Subtotal</p>
+        <p class="sub" id="sub1" aria-live="polite">$ 0,00</p>
+      </div>
+      <form class="add" id="form1" novalidate>
+        <label class="price-field"><span class="cur" aria-hidden="true">$</span><input id="price1" inputmode="decimal" autocomplete="off" placeholder="0,00" aria-label="Precio a sumar a la segunda lista"></label>
+        <button type="submit">Agregar</button>
+      </form>
+      <p class="err" id="err1" role="alert" hidden></p>
+      <ul class="items" id="list1"><li class="empty">Todavía no hay precios. Escribí uno arriba y tocá Agregar.</li></ul>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" hidden>
+  <div class="toast-in"><span id="toastText"></span><button type="button" id="undoBtn">Deshacer</button></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var KEY = 'gastos-super-v1';
+
+  var fmt = null;
+  try {
+    fmt = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  } catch (e) {}
+  function money(c) {
+    var v = c / 100;
+    return fmt ? fmt.format(v) : '$ ' + v.toFixed(2).replace('.', ',');
+  }
+
+  //#parse-start
+  // Acepta 1500, 1500,50, 1.500,50 y 1500.50. Devuelve centavos o null.
+  function parsePrice(raw) {
+    var s = String(raw).replace(/[\s$]/g, '');
+    if (!s) return null;
+    if (/[^0-9.,]/.test(s)) return null;
+    if (s.indexOf(',') !== -1) {
+      if ((s.match(/,/g) || []).length > 1) return null;
+      s = s.replace(/\./g, '').replace(',', '.');
+    } else if (s.indexOf('.') !== -1) {
+      if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+      else if ((s.match(/\./g) || []).length > 1) return null;
+    }
+    var n = Number(s);
+    if (!isFinite(n) || n <= 0 || n >= 1e9) return null;
+    return Math.round(n * 100);
+  }
+  //#parse-end
+
+  var state = { names: ['Yo', 'Mi hermano'], lists: [[], []], next: 1 };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      var s = JSON.parse(raw);
+      if (!s || !Array.isArray(s.names) || !Array.isArray(s.lists) || s.lists.length !== 2) return;
+      var next = 1;
+      for (var i = 0; i < 2; i++) {
+        if (typeof s.names[i] === 'string') state.names[i] = s.names[i].slice(0, 24);
+        state.lists[i] = (Array.isArray(s.lists[i]) ? s.lists[i] : [])
+          .filter(function (x) { return x && isFinite(x.c) && x.c > 0; })
+          .map(function (x) {
+            var id = isFinite(x.id) ? x.id : next;
+            if (id >= next) next = id + 1;
+            return { id: id, c: Math.round(x.c) };
+          });
+      }
+      state.next = next;
+    } catch (e) {}
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function $(id) { return document.getElementById(id); }
+  var totalEl = $('total'), split = $('split'), seg = [$('seg0'), $('seg1')];
+  var P = [0, 1].map(function (i) {
+    return {
+      name: $('name' + i), sub: $('sub' + i), count: $('count' + i), form: $('form' + i),
+      price: $('price' + i), err: $('err' + i), list: $('list' + i),
+      lgName: $('lgName' + i), lgAmt: $('lgAmt' + i), lgPct: $('lgPct' + i)
+    };
+  });
+  var tabs = [$('tab0'), $('tab1')], tabName = [$('tabName0'), $('tabName1')], tabAmt = [$('tabAmt0'), $('tabAmt1')];
+  var sections = document.querySelectorAll('.person');
+  function setTab(i) {
+    for (var k = 0; k < 2; k++) {
+      tabs[k].setAttribute('aria-pressed', k === i ? 'true' : 'false');
+      sections[k].classList.toggle('is-off', k !== i);
+    }
+  }
+  function nameOf(i) {
+    var n = state.names[i].trim();
+    return n || ('Lista ' + (i + 1));
+  }
+
+  function renderList(i) {
+    var ul = P[i].list, items = state.lists[i];
+    ul.replaceChildren();
+    if (!items.length) {
+      var e = document.createElement('li');
+      e.className = 'empty';
+      e.textContent = 'Todavía no hay precios. Escribí uno arriba y tocá Agregar.';
+      ul.appendChild(e);
+      return;
+    }
+    for (var k = items.length - 1; k >= 0; k--) {
+      var item = items[k];
+      var li = document.createElement('li');
+      var n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = '#' + (k + 1);
+      var pr = document.createElement('span');
+      pr.className = 'pr';
+      pr.textContent = money(item.c);
+      var rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'rm';
+      rm.textContent = '×';
+      rm.setAttribute('aria-label', 'Quitar ' + money(item.c));
+      rm.addEventListener('click', removeItem.bind(null, i, item.id));
+      li.appendChild(n); li.appendChild(pr); li.appendChild(rm);
+      ul.appendChild(li);
+    }
+  }
+
+  function render() {
+    var totals = state.lists.map(function (l) { return l.reduce(function (a, x) { return a + x.c; }, 0); });
+    var total = totals[0] + totals[1];
+    var pcts = [0, 0];
+    if (total > 0) { pcts[0] = Math.round(totals[0] * 100 / total); pcts[1] = 100 - pcts[0]; }
+    totalEl.textContent = money(total);
+    seg[0].style.width = (total > 0 ? totals[0] * 100 / total : 0) + '%';
+    seg[1].style.width = (total > 0 ? totals[1] * 100 / total : 0) + '%';
+    split.setAttribute('aria-label', total > 0
+      ? nameOf(0) + ' ' + pcts[0] + ' %, ' + nameOf(1) + ' ' + pcts[1] + ' %'
+      : 'Todavía no hay gastos cargados');
+    for (var i = 0; i < 2; i++) {
+      P[i].sub.textContent = money(totals[i]);
+      P[i].lgName.textContent = nameOf(i);
+      P[i].lgAmt.textContent = money(totals[i]);
+      P[i].lgPct.textContent = total > 0 ? pcts[i] + ' %' : '';
+      tabName[i].textContent = nameOf(i);
+      tabAmt[i].textContent = money(totals[i]);
+      var n = state.lists[i].length;
+      P[i].count.textContent = n === 1 ? '1 precio' : n + ' precios';
+      renderList(i);
+    }
+  }
+
+  /* Aviso para deshacer */
+  var toast = $('toast'), toastText = $('toastText'), undoBtn = $('undoBtn');
+  var undoInfo = null, toastTimer = null;
+  function hideToast() { clearTimeout(toastTimer); toast.hidden = true; }
+  function showToast(msg) {
+    toastText.textContent = msg;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.hidden = true; undoInfo = null; }, 8000);
+  }
+  function removeItem(i, id) {
+    var arr = state.lists[i];
+    var idx = -1;
+    for (var k = 0; k < arr.length; k++) { if (arr[k].id === id) { idx = k; break; } }
+    if (idx < 0) return;
+    var item = arr.splice(idx, 1)[0];
+    undoInfo = { i: i, idx: idx, item: item };
+    save(); render();
+    showToast('Quitaste ' + money(item.c) + ' de ' + nameOf(i) + '.');
+  }
+  undoBtn.addEventListener('click', function () {
+    if (!undoInfo) return;
+    var arr = state.lists[undoInfo.i];
+    arr.splice(Math.min(undoInfo.idx, arr.length), 0, undoInfo.item);
+    undoInfo = null;
+    save(); render(); hideToast();
+  });
+
+  /* Agregar precios y editar nombres */
+  function onAdd(i, ev) {
+    ev.preventDefault();
+    var c = parsePrice(P[i].price.value);
+    if (c === null) {
+      P[i].err.textContent = 'Escribí un precio mayor a cero, por ejemplo 1500 o 1.250,50.';
+      P[i].err.hidden = false;
+      P[i].price.focus();
+      return;
+    }
+    P[i].err.hidden = true;
+    state.lists[i].push({ id: state.next++, c: c });
+    P[i].price.value = '';
+    save(); render();
+    P[i].price.focus();
+  }
+  [0, 1].forEach(function (i) {
+    P[i].form.addEventListener('submit', onAdd.bind(null, i));
+    tabs[i].addEventListener('click', function () { setTab(i); });
+    P[i].price.addEventListener('input', function () { P[i].err.hidden = true; });
+    P[i].name.addEventListener('input', function () {
+      state.names[i] = P[i].name.value.slice(0, 24);
+      save(); render();
+    });
+  });
+
+  /* Nueva compra, con confirmación dentro de la página */
+  var resetBox = $('reset');
+  function mkBtn(text, cls) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = cls; b.textContent = text;
+    return b;
+  }
+  function renderReset(confirming, focus) {
+    resetBox.replaceChildren();
+    if (!confirming) {
+      var b = mkBtn('Nueva compra', 'btn-ghost');
+      b.addEventListener('click', function () { renderReset(true, true); });
+      resetBox.appendChild(b);
+      if (focus) b.focus();
+      return;
+    }
+    var q = document.createElement('span');
+    q.className = 'reset-q';
+    q.textContent = '¿Borrar todos los precios?';
+    var yes = mkBtn('Borrar todo', 'btn-ghost btn-strong');
+    var no = mkBtn('Cancelar', 'btn-ghost');
+    yes.addEventListener('click', function () {
+      state.lists = [[], []];
+      undoInfo = null;
+      save(); render(); hideToast();
+      renderReset(false, true);
+    });
+    no.addEventListener('click', function () { renderReset(false, true); });
+    resetBox.appendChild(q); resetBox.appendChild(yes); resetBox.appendChild(no);
+    if (focus) no.focus();
+  }
+
+  /* Arranque */
+  try {
+    $('today').textContent = new Intl.DateTimeFormat('es-AR', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
+  } catch (e) {}
+  load();
+  P[0].name.value = state.names[0];
+  P[1].name.value = state.names[1];
+  render();
+  setTab(0);
+  renderReset(false, false);
+})();
+</script>
+
+</body></html>
