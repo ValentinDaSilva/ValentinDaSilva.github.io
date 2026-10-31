@@ -62,6 +62,12 @@ body[data-phase=idle] .primary{background:var(--text);color:var(--surface)}
 .tb .x{display:none}
 .tb[aria-pressed=true]{color:var(--muted);border-style:dashed;background:transparent}
 .tb[aria-pressed=true] .x{display:inline}
+dialog{width:min(92vw,24rem);border:1px solid var(--line);border-radius:16px;padding:0;background:var(--surface);color:var(--text)}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+.dbody{padding:1.25rem}
+.dbtns{display:grid;gap:.6rem;margin-top:1rem}
+.dbtns button{border-color:var(--line)}
+.dbtns .dprim{background:var(--text);color:var(--surface);border-color:transparent}
 @media (max-width:359px){.tb span{display:none}}
 @media (prefers-reduced-motion:reduce){.timer{transition:none}}
 </style>
@@ -96,6 +102,17 @@ body[data-phase=idle] .primary{background:var(--text);color:var(--surface)}
 </section>
 <p class="foot">Tu progreso se guarda solo en este dispositivo. Si cerrás la página a mitad de sesión, la retomás en pausa.</p>
 </main>
+<dialog id="dlg" aria-labelledby="dh">
+  <div class="dbody">
+    <h2 id="dh">¿Qué querés reiniciar?</h2>
+    <p class="muted" id="dtxt"></p>
+    <div class="dbtns">
+      <button id="dser" class="dprim"></button>
+      <button id="dall">Reiniciar todo</button>
+      <button id="dcan">Cancelar</button>
+    </div>
+  </div>
+</dialog>
 <script>
 (()=>{
 const $=id=>document.getElementById(id);
@@ -286,7 +303,36 @@ $("skip").onclick=()=>{
   lastSec=S.cfg[S.phase];cue(S.phase);saveSession();render();
 };
 function reset(){clearInterval(iv);letSleep();S=null;ls.del("jr.session");$("banner").hidden=true;render()}
-$("reset").onclick=reset;
+$("reset").onclick=askReset;
+// Reiniciar: pregunta si es todo o solo la serie actual (el temporizador queda en pausa mientras decidís)
+const dlg=$("dlg");let wasRunning=false,choice=null;
+function askReset(){
+  if(!S)return;
+  if(S.phase==="done"||typeof dlg.showModal!=="function"){reset();return}
+  wasRunning=S.running;pause();
+  const prep=S.phase==="prep";
+  $("dtxt").textContent=(prep?"Estás en la cuenta previa.":"Estás en la serie "+S.idx+" de "+S.cfg.series+".")+" Podés volver al inicio de "+(prep?"la preparación":"esta serie")+" o empezar la sesión desde cero.";
+  $("dser").textContent=prep?"Reiniciar la preparación":"Reiniciar la serie actual";
+  dlg.showModal();
+}
+function restartSeries(){
+  if(S.phase!=="prep")S.phase="action";
+  S.remMs=S.cfg[S.phase]*1000;lastSec=S.cfg[S.phase];
+  $("banner").hidden=true;
+  if(wasRunning){cue(S.phase);play()}else{saveSession();render()}
+}
+function closeDlg(c){choice=c;dlg.close()}
+$("dser").onclick=()=>closeDlg("series");
+$("dall").onclick=()=>closeDlg("all");
+$("dcan").onclick=()=>closeDlg(null);
+dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg(null)});
+dlg.addEventListener("close",()=>{
+  const c=choice;choice=null;
+  if(!S)return;
+  if(c==="all")reset();
+  else if(c==="series")restartSeries();
+  else if(wasRunning)play();
+});
 $("bd").onclick=reset;
 fieldsEl.addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;
