@@ -411,7 +411,7 @@ export const LcdScreen: React.FC<LcdScreenProps> = ({
 
   if (!isOn) {
     return (
-      <div className="w-full h-[124px] rounded-[6px] bg-[#9aa792] border-2 border-[#363d38] shadow-[inset_0_3px_8px_rgba(0,0,0,0.4)] flex items-center justify-center">
+      <div className="w-full h-full min-h-[124px] rounded-[6px] bg-[#9aa792] border-2 border-[#363d38] shadow-[inset_0_3px_8px_rgba(0,0,0,0.4)] flex items-center justify-center">
         <span className="text-[11px] font-mono tracking-widest text-[#1a221b]/35 select-none">
           APAGADA · PULSE ON
         </span>
@@ -1153,16 +1153,16 @@ export const LcdScreen: React.FC<LcdScreenProps> = ({
 
   return (
     <div
-      className="relative w-full h-[124px] rounded-[6px] bg-[#c7d4bd] lcd-pixel-grid border-2 border-[#363d38] shadow-[inset_0_3px_8px_rgba(0,0,0,0.38)] px-2.5 py-1.5 flex flex-col justify-between overflow-hidden"
+      className="relative w-full h-full min-h-[124px] rounded-[6px] bg-[#c7d4bd] lcd-pixel-grid border-2 border-[#363d38] shadow-[inset_0_3px_8px_rgba(0,0,0,0.38)] px-2.5 py-1.5 flex flex-col justify-between overflow-hidden"
       style={{ color: `rgba(19, 29, 20, ${inkOpacity})` }}
     >
       {renderStatusBar()}
 
       <div className="flex-1 flex flex-col justify-between overflow-hidden">
         {errorMsg ? (
-          <div className="flex flex-col items-center justify-center h-[84px] font-mono text-center">
-            <div className="text-[14px] font-bold tracking-tight">{errorMsg}</div>
-            <div className="text-[9.5px] mt-2 opacity-80">[AC] : Cancelar &nbsp; [◀][▶] : Ir</div>
+          <div className="flex flex-col items-center justify-center flex-1 font-mono text-center">
+            <div className="text-[14px] sm:text-[14px] font-bold tracking-tight">{errorMsg}</div>
+            <div className="text-[10px] mt-2 opacity-80">[AC] : Cancelar &nbsp; [◀][▶] : Ir</div>
           </div>
         ) : popup.type !== 'NONE' && popup.type !== 'STO_WAIT' && popup.type !== 'RCL_WAIT' && popup.type !== 'HYP_WAIT' ? (
           renderPopupContent()
@@ -1179,7 +1179,7 @@ export const LcdScreen: React.FC<LcdScreenProps> = ({
         ) : (
           <>
             {/* Expression Input Line */}
-            <div className="text-[13.5px] font-mono leading-snug overflow-x-auto overflow-y-hidden whitespace-nowrap thin-scroll min-h-[34px] flex items-center">
+            <div className="text-[15px] sm:text-[13.5px] font-mono leading-snug overflow-x-auto overflow-y-hidden whitespace-nowrap thin-scroll min-h-[38px] flex items-center">
               {solveExprMode && <span className="text-[10px] mr-1 opacity-75">EQ:</span>}
               <RenderAstList
                 list={ast}
@@ -1191,7 +1191,7 @@ export const LcdScreen: React.FC<LcdScreenProps> = ({
             </div>
 
             {/* Result Output Line */}
-            <div className="min-h-[28px] flex items-end justify-end overflow-x-auto thin-scroll">
+            <div className="min-h-[30px] flex items-end justify-end overflow-x-auto thin-scroll">
               {renderResultArea()}
             </div>
           </>

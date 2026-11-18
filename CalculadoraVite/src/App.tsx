@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Volume2, VolumeX, Sun, Moon, Keyboard } from 'lucide-react';
 import { CasioHardware, KeyId } from './components/CasioHardware';
-import { CompanionPanel } from './components/CompanionPanel';
 import {
   EqnScreenState,
   LcdDisplayResult,
@@ -150,8 +148,6 @@ function splitEquationOnEquals(list: AstList): { lhs: AstList; rhs: AstList } {
 }
 
 export default function App() {
-  const [darkTheme, setDarkTheme] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
   const [pressedKey, setPressedKey] = useState<KeyId | null>(null);
 
   // Core Calculator Session State
@@ -226,12 +222,7 @@ export default function App() {
 
   const audioCtxRef = useRef<AudioContext | null>(null);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkTheme);
-  }, [darkTheme]);
-
   const playClick = useCallback(() => {
-    if (!soundEnabled) return;
     try {
       const AudioCtor = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (!AudioCtor) return;
@@ -252,7 +243,7 @@ export default function App() {
     } catch {
       // Ignore audio errors
     }
-  }, [soundEnabled]);
+  }, []);
 
   const flashKey = (k: KeyId) => {
     setPressedKey(k);
@@ -2007,239 +1998,39 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [handleKeyPress, mode]);
 
-  // Preset Loader from Companion Panel
-  const handleLoadExample = (presetId: string) => {
-    setIsOn(true);
-    setErrorMsg(null);
-    setPopup({ type: 'NONE' });
-    setPrompt({ kind: 'NONE', inputBuf: '' });
-
-    if (presetId === 'EX_FRAC_SURD') {
-      setMode('COMP');
-      const exAst: AstList = [
-        {
-          id: genId(),
-          type: 'frac',
-          num: [
-            { id: genId(), type: 'sqrt', inner: [createTextNode('2')] },
-            createTextNode('+'),
-            { id: genId(), type: 'sqrt', inner: [createTextNode('8')] },
-          ],
-          den: [createTextNode('2')],
-        },
-      ];
-      setAst(exAst);
-      setCursor({ path: [], index: 1 });
-      const val = evaluateAst(exAst, { mode: 'COMP', setup, memory });
-      finalizeEvalResult(val, exAst);
-    } else if (presetId === 'EX_INTEGRAL') {
-      setMode('COMP');
-      const exAst: AstList = [
-        {
-          id: genId(),
-          type: 'integral',
-          expr: [{ id: genId(), type: 'pow', base: [createTextNode('X')], exp: [createTextNode('2')] }],
-          lower: [createTextNode('0')],
-          upper: [createTextNode('3')],
-        },
-      ];
-      setAst(exAst);
-      setCursor({ path: [], index: 1 });
-      const val = evaluateAst(exAst, { mode: 'COMP', setup, memory });
-      finalizeEvalResult(val, exAst);
-    } else if (presetId === 'EX_DERIV') {
-      setMode('COMP');
-      const exAst: AstList = [
-        {
-          id: genId(),
-          type: 'deriv',
-          expr: [
-            { id: genId(), type: 'pow', base: [createTextNode('X')], exp: [createTextNode('3')] },
-            createTextNode('+2X'),
-          ],
-          at: [createTextNode('2')],
-        },
-      ];
-      setAst(exAst);
-      setCursor({ path: [], index: 1 });
-      const val = evaluateAst(exAst, { mode: 'COMP', setup, memory });
-      finalizeEvalResult(val, exAst);
-    } else if (presetId === 'EX_SOLVE') {
-      setMode('COMP');
-      const exAst: AstList = [
-        { id: genId(), type: 'pow', base: [createTextNode('X')], exp: [createTextNode('2')] },
-        createTextNode('-5X+6=0'),
-      ];
-      setAst(exAst);
-      setResult(null);
-      setCursor({ path: [], index: exAst.length });
-      setPrompt({ kind: 'SOLVE_X', inputBuf: '4' });
-    } else if (presetId === 'EX_CMPLX') {
-      setMode('CMPLX');
-      const exAst: AstList = [createTextNode('(3+4𝐢)×(1-2𝐢)')];
-      setAst(exAst);
-      setCursor({ path: [], index: 1 });
-      const val = evaluateAst(exAst, { mode: 'CMPLX', setup, memory });
-      finalizeEvalResult(val, exAst);
-    } else if (presetId === 'EX_EQN_QUAD') {
-      setMode('EQN');
-      const sol = solveQuadratic(2, -4, -6);
-      setEqnState({
-        stage: 'RESULT',
-        eqnType: 'QUAD',
-        coeffs: [2, -4, -6],
-        cursorIdx: 2,
-        inputBuf: '',
-        solutions: sol,
-        solIdx: 0,
-      });
-    } else if (presetId === 'EX_STAT') {
-      setMode('STAT');
-      setStatType('A+BX');
-      setStatRows([
-        { x: 1, y: 2.1, freq: 1 },
-        { x: 2, y: 4.0, freq: 1 },
-        { x: 3, y: 5.9, freq: 1 },
-        { x: 4, y: 8.2, freq: 1 },
-        { x: 5, y: 9.8, freq: 1 },
-      ]);
-      setStatScreen({ stage: 'DATA', cursorRow: 0, cursorCol: 0, inputBuf: '' });
-    } else if (presetId === 'EX_TABLE') {
-      setMode('TABLE');
-      const fx: AstList = [
-        { id: genId(), type: 'pow', base: [createTextNode('X')], exp: [createTextNode('2')] },
-        createTextNode('-4'),
-      ];
-      setTableFx(fx);
-      setTableGx([]);
-      const rows = [-2, -1, 0, 1, 2, 3, 4].map((x) => ({ x, fx: x * x - 4 }));
-      setTableState({ stage: 'VIEW', start: -2, end: 4, step: 1, inputBuf: '', rows, scrollRow: 0 });
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
-      {/* Clean 3-Zone Top Header Bar */}
-      <header className="border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-8">
-          <span className="text-base font-bold tracking-tight text-slate-900 dark:text-white whitespace-nowrap shrink-0">
-            Casio fx-570LA PLUS
-          </span>
-
-          <div className="hidden md:flex items-center gap-5 text-xs text-slate-500 dark:text-slate-400">
-            <span>Natural-V.P.A.M.</span>
-            <span aria-hidden="true">·</span>
-            <span>8 Modos de cálculo</span>
-            <span aria-hidden="true">·</span>
-            <span>40 Constantes y Conversiones</span>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              type="button"
-              onClick={() => setSoundEnabled((s) => !s)}
-              title={soundEnabled ? 'Silenciar sonido de teclas' : 'Activar sonido de teclas'}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 whitespace-nowrap shrink-0 cursor-pointer transition-colors"
-            >
-              {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-              <span className="hidden sm:inline">{soundEnabled ? 'Sonido' : 'Silencio'}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setDarkTheme((d) => !d)}
-              title="Cambiar tema claro/oscuro"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 whitespace-nowrap shrink-0 cursor-pointer transition-colors"
-            >
-              {darkTheme ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
-              <span className="hidden sm:inline">{darkTheme ? 'Claro' : 'Oscuro'}</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Two-Column Laboratory Workspace */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Stage: Physical Casio fx-570LA PLUS Unit */}
-          <div className="lg:col-span-5 flex flex-col items-center">
-            <CasioHardware
-              onKeyPress={handleKeyPress}
-              pressedKey={pressedKey}
-              mode={mode}
-              baseSystem={baseSystem}
-              lcdProps={{
-                isOn,
-                shift,
-                alpha,
-                insertMode,
-                mode,
-                baseSystem,
-                setup,
-                memory,
-                ast,
-                cursor,
-                result,
-                errorMsg,
-                popup,
-                eqnState,
-                statType,
-                statRows,
-                statScreen,
-                matVecEditor,
-                tableState,
-                prompt,
-                hasHistoryAbove: history.length > 0 && historyNavIdx < history.length - 1,
-                hasHistoryBelow: historyNavIdx >= 0,
-                solveExprMode: ast.some((n) => n.type === 'text' && n.value === '='),
-              }}
-            />
-            <div className="mt-3 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-              <Keyboard className="w-3.5 h-3.5" />
-              <span>Soporta teclado físico · Enter (=), Backspace (DEL), Esc (AC), Flechas</span>
-            </div>
-          </div>
-
-          {/* Right Stage: Companion Tape, Memory, Constants & Interactive Guide */}
-          <div className="lg:col-span-7">
-            <CompanionPanel
-              mode={mode}
-              setup={setup}
-              memory={memory}
-              history={history}
-              onRecallHistory={(entry) => {
-                setIsOn(true);
-                setErrorMsg(null);
-                setPopup({ type: 'NONE' });
-                setMode(entry.mode);
-                setAst(cloneAstList(entry.inputAst));
-                setCursor({ path: [], index: entry.inputAst.length });
-                setResult(null);
-              }}
-              onClearHistory={() => {
-                setHistory([]);
-                setHistoryNavIdx(-1);
-              }}
-              onInsertConstant={(code) => {
-                setIsOn(true);
-                setErrorMsg(null);
-                setPopup({ type: 'NONE' });
-                insertText(`[C${code}]`);
-              }}
-              onInsertConversion={(code) => {
-                setIsOn(true);
-                setErrorMsg(null);
-                setPopup({ type: 'NONE' });
-                insertText(`[U${code}]`);
-              }}
-              onLoadExample={handleLoadExample}
-              onSelectMode={(m) => {
-                setIsOn(true);
-                switchMode(m);
-              }}
-            />
-          </div>
-        </div>
-      </main>
+    <div className="h-[100dvh] w-full bg-[#1e2228] sm:min-h-screen sm:h-auto sm:bg-slate-100 sm:flex sm:items-center sm:justify-center sm:p-4 overflow-hidden sm:overflow-auto">
+      <CasioHardware
+        onKeyPress={handleKeyPress}
+        pressedKey={pressedKey}
+        mode={mode}
+        baseSystem={baseSystem}
+        lcdProps={{
+          isOn,
+          shift,
+          alpha,
+          insertMode,
+          mode,
+          baseSystem,
+          setup,
+          memory,
+          ast,
+          cursor,
+          result,
+          errorMsg,
+          popup,
+          eqnState,
+          statType,
+          statRows,
+          statScreen,
+          matVecEditor,
+          tableState,
+          prompt,
+          hasHistoryAbove: history.length > 0 && historyNavIdx < history.length - 1,
+          hasHistoryBelow: historyNavIdx >= 0,
+          solveExprMode: ast.some((n) => n.type === 'text' && n.value === '='),
+        }}
+      />
     </div>
   );
 }
