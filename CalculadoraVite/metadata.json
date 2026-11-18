@@ -1,0 +1,6 @@
+{
+  "name": "Casio fx-570LA PLUS Emulador",
+  "description": "Emulador completo de la calculadora científica Casio fx-570LA PLUS con pantalla Natural-V.P.A.M. y todos sus modos de cálculo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
